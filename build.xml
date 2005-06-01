@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<project name="XmlSchema" basedir="." default="compile">
+
+	<property name="src.dir" value="${basedir}/src"/>
+	<property name="project.name" value="XmlSchema"/>
+	<property name="output.jar" value="${project.name}.jar"/>
+	<property name="build.dir" value="${basedir}/build"/>
+	<property name="build_classes.dir" value="${build.dir}/classes"/>
+	<property name="build_lib.dir" value="${build.dir}/lib"/>	
+	<property name="build_doc.dir" value="${build.dir}/apidoc"/>	
+	<property name="dist.dir" value="${build.dir}/dist"/>
+	<property name="dist.zip" value="${project.name}.zip"/>
+	<property name="srcdist.zip" value="${project.name}-src.zip"/>
+
+    <target name="prepare">
+		<mkdir dir="${build_classes.dir}"/>
+		<mkdir dir="${build_lib.dir}"/>
+    </target>
+
+    <target name="compile" depends="prepare" description="compiles the src and puts it in build/classes">
+		<javac srcdir="${src.dir}" destdir="${build_classes.dir}" debug="true" 
+		       deprecation="true">
+        	<include name="**/*.java" />
+	    </javac>
+    </target>
+
+    <target name="jar" depends="compile" description="compiles the src and creates XmlSchema.jar in  build/lib">
+        <jar jarfile="${build_lib.dir}/${output.jar}" compress="true" basedir="${build_classes.dir}"/>
+    </target>
+
+    <target name="javadoc" depends="compile" description="Javadoc for Xml Schema API.">
+        <mkdir dir="${build_doc.dir}"/>
+        <javadoc packagenames="org.apache.axis.xsd.*" 
+		             destdir="${build.dir}/apidoc" 
+		             windowtitle="${project.name} API"
+		             doctitle="${project.name}"
+					 bottom="Copyright &#169;  Infravio XML Schema Project. All Rights Reserved.">
+		
+            <classpath>
+                <pathelement location="${build_classes.dir}"/>
+            </classpath>
+            <sourcepath>
+                <pathelement location="${src.dir}"/>
+            </sourcepath>
+        </javadoc>
+    </target>
+
+    <target name="clean" depends="prepare" description="Clean all build products.">
+        <delete dir="${build.dir}"/>
+    </target>
+
+	<target name="dist" depends="jar,javadoc" description="Creates a binary distribution(XmlSchema.zip) in build/dist">
+	    <mkdir dir="${dist.dir}"/>
+		<zip zipfile="${dist.dir}/${dist.zip}">
+		    <zipfileset dir="${build_lib.dir}" prefix="${project.name}/lib"/>
+		    <zipfileset dir="${build_doc.dir}" prefix="${project.name}/doc"/>
+		</zip>	
+	</target>
+
+	<target name="srcdist" depends="compile" description="Creates a source distribution(XmlSchema-src.zip) in build/dist">
+	    <mkdir dir="${dist.dir}"/>
+		<zip zipfile="${dist.dir}/${srcdist.zip}">
+		    <zipfileset dir="${basedir}" includes="build.xml" prefix="${project.name}"/>
+			<zipfileset dir="${src.dir}" prefix="${project.name}/src"/>
+		</zip>	
+	</target>
+	
+</project>
