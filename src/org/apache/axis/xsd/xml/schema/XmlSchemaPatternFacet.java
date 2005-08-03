@@ -63,17 +63,19 @@
 package org.apache.axis.xsd.xml.schema;
 
 /**
- * Class for defining pattern facets. Represents the World Wide 
+ * Class for defining pattern facets. Represents the World Wide
  * Web Consortium (W3C) pattern facet.
  *
- * @author  mukund
+ * @author mukund
  */
 
 // Vidyanand - 16th Oct - initial implementation
 
 public class XmlSchemaPatternFacet extends XmlSchemaFacet {
 
-    /** Creates new XmlSchemaPatternFacet */
+    /**
+     * Creates new XmlSchemaPatternFacet
+     */
     public XmlSchemaPatternFacet() {
     }
 

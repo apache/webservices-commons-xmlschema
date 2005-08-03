@@ -63,8 +63,7 @@
 package org.apache.axis.xsd.xml.schema;
 
 /**
- *
- * @author  mukund
+ * @author mukund
  */
 
 // October 15th - momo - initial implementation
@@ -74,7 +73,9 @@ public abstract class XmlSchemaObject {
     int linePosition;
     String sourceURI;
 
-    /** Creates new XmlSchemaObject */
+    /**
+     * Creates new XmlSchemaObject
+     */
     protected XmlSchemaObject() {
     }
 

@@ -65,12 +65,14 @@ package org.apache.axis.xsd.xml.schema;
 /**
  * Returns detailed information about the schema exception.
  *
- * @author  mukund
+ * @author mukund
  */
 
 public class XmlSchemaException extends RuntimeException {
 
-    /** Creates new XmlSchemaException */
+    /**
+     * Creates new XmlSchemaException
+     */
     public XmlSchemaException() {
     }
 

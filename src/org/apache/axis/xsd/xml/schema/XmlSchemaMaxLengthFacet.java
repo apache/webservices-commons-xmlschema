@@ -63,17 +63,19 @@
 package org.apache.axis.xsd.xml.schema;
 
 /**
- * Class for defining maxLength facets. Represents the World Wide 
+ * Class for defining maxLength facets. Represents the World Wide
  * Web Consortium (W3C) maxLength facet.
  *
- * @author  mukund
+ * @author mukund
  */
 
 // Vidyanand - 16th Oct - initial implementation
 
 public class XmlSchemaMaxLengthFacet extends XmlSchemaNumericFacet {
 
-    /** Creates new XmlSchemaMaxLengthFacet */
+    /**
+     * Creates new XmlSchemaMaxLengthFacet
+     */
     public XmlSchemaMaxLengthFacet() {
     }
 

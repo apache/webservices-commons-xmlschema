@@ -64,10 +64,10 @@ package org.apache.axis.xsd.xml.schema;
 import org.apache.axis.xsd.enum.Enum;
 
 /**
- * Enumerations for the content model of the complex type. This 
+ * Enumerations for the content model of the complex type. This
  * represents the content in the post-schema-validation infoset.
  *
- * @author  mukund
+ * @author mukund
  */
 
 public class XmlSchemaContentType extends Enum {
@@ -75,7 +75,9 @@ public class XmlSchemaContentType extends Enum {
     static String[] members = new String[]{"ElementOnly", "Empty",
                                            "Mixed", "TextOnly"};
 
-    /** Creates new XmlSchemaContentType */
+    /**
+     * Creates new XmlSchemaContentType
+     */
     public XmlSchemaContentType() {
         super();
     }

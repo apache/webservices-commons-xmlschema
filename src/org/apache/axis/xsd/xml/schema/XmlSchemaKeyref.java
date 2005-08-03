@@ -62,28 +62,31 @@
 
 package org.apache.axis.xsd.xml.schema;
 
-import org.apache.axis.xsd.xml.QualifiedName;
+import javax.xml.namespace.QName;
+
 
 /**
- * Identifies a keyref constraint. Represents the World Wide Web 
+ * Identifies a keyref constraint. Represents the World Wide Web
  * Consortium (W3C) keyref element.
  *
- * @author  mukund
+ * @author mukund
  */
 
 public class XmlSchemaKeyref extends XmlSchemaIdentityConstraint {
 
-    /** Creates new XmlSchemaKeyref */
+    /**
+     * Creates new XmlSchemaKeyref
+     */
     public XmlSchemaKeyref() {
     }
 
-    QualifiedName refer;
+    QName refer;
 
-    public QualifiedName getRefer() {
+    public QName getRefer() {
         return refer;
     }
 
-    public void setRefer(QualifiedName refer) {
+    public void setRefer(QName refer) {
         this.refer = refer;
     }
 }

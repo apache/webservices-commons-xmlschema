@@ -66,15 +66,15 @@ import org.w3c.dom.Attr;
 /**
  * The base class for any element that can contain annotation elements.
  *
- * @author  mukund
+ * @author mukund
  */
 
 // October 15th - momo - initial implementation
 
 public class XmlSchemaAnnotated extends XmlSchemaObject {
     /**
-     * Defines an annotation. 
-     * Creates an annotation element. 
+     * Defines an annotation.
+     * Creates an annotation element.
      * Represents the W3C annotation element.
      */
     XmlSchemaAnnotation annotation;
@@ -84,7 +84,9 @@ public class XmlSchemaAnnotated extends XmlSchemaObject {
     public Attr[] unhandledAttributes;
 
 
-    /** Creates new XmlSchemaAnnotated */
+    /**
+     * Creates new XmlSchemaAnnotated
+     */
     public XmlSchemaAnnotated() {
     }
 

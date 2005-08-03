@@ -61,18 +61,21 @@
 
 package org.apache.axis.xsd.xml.schema;
 
-import org.apache.axis.xsd.xml.QualifiedName;
+import javax.xml.namespace.QName;
+
 
 /**
  * Class for the restriction of simpleType elements. Represents the World
  * Wide Web Consortium (W3C) restriction element for simple types.
  *
- * @author  mukund
+ * @author mukund
  */
 
 public class XmlSchemaSimpleTypeRestriction extends XmlSchemaSimpleTypeContent {
 
-    /** Creates new XmlSchemaSimpleTypeRestriction */
+    /**
+     * Creates new XmlSchemaSimpleTypeRestriction
+     */
     public XmlSchemaSimpleTypeRestriction() {
         facets = new XmlSchemaObjectCollection();
     }
@@ -87,13 +90,13 @@ public class XmlSchemaSimpleTypeRestriction extends XmlSchemaSimpleTypeContent {
         this.baseType = baseType;
     }
 
-    QualifiedName baseTypeName;
+    QName baseTypeName;
 
-    public QualifiedName getBaseTypeName() {
+    public QName getBaseTypeName() {
         return this.baseTypeName;
     }
 
-    public void setBaseTypeName(QualifiedName baseTypeName) {
+    public void setBaseTypeName(QName baseTypeName) {
         this.baseTypeName = baseTypeName;
     }
 

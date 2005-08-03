@@ -62,17 +62,19 @@
 package org.apache.axis.xsd.xml.schema;
 
 /**
- * Class that defines groups at the schema level that are referenced 
+ * Class that defines groups at the schema level that are referenced
  * from the complex types. Groups a set of element declarations so that
- * they can be incorporated as a group into complex type definitions. 
+ * they can be incorporated as a group into complex type definitions.
  * Represents the World Wide Web Consortium (W3C) group element.
  *
- * @author  mukund
+ * @author mukund
  */
 
 public class XmlSchemaGroup extends XmlSchemaAnnotated {
 
-    /** Creates new XmlSchemaGroup */
+    /**
+     * Creates new XmlSchemaGroup
+     */
     public XmlSchemaGroup() {
     }
 

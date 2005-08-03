@@ -61,19 +61,22 @@
 
 package org.apache.axis.xsd.xml.schema;
 
-import org.apache.axis.xsd.xml.QualifiedName;
+import javax.xml.namespace.QName;
+
 
 /**
- * Class used within complex types that defines the reference to 
+ * Class used within complex types that defines the reference to
  * groups defined at the schema level. Represents the World Wide
  * Web Consortium (W3C) group element with ref attribute.
  *
- * @author  mukund
+ * @author mukund
  */
 
 public class XmlSchemaGroupRef extends XmlSchemaParticle {
 
-    /** Creates new XmlSchemaGroupRef */
+    /**
+     * Creates new XmlSchemaGroupRef
+     */
     public XmlSchemaGroupRef() {
     }
 
@@ -83,13 +86,13 @@ public class XmlSchemaGroupRef extends XmlSchemaParticle {
         return this.particle;
     }
 
-    QualifiedName refName;
+    QName refName;
 
-    public QualifiedName getRefName() {
+    public QName getRefName() {
         return this.refName;
     }
 
-    public void setRefName(QualifiedName refName) {
+    public void setRefName(QName refName) {
         this.refName = refName;
     }
 

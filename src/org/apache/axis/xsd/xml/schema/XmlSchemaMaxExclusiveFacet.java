@@ -63,18 +63,19 @@
 package org.apache.axis.xsd.xml.schema;
 
 /**
- *
- * Class for defining maxExclusive facets. Represents the World Wide 
+ * Class for defining maxExclusive facets. Represents the World Wide
  * Web Consortium (W3C) maxExclusive facet.
  *
- * @author  mukund
+ * @author mukund
  */
 
 // Vidyanand - 16th Oct - initial implementation
 
 public class XmlSchemaMaxExclusiveFacet extends XmlSchemaFacet {
 
-    /** Creates new XmlSchemaMaxExclusiveFacet */
+    /**
+     * Creates new XmlSchemaMaxExclusiveFacet
+     */
     public XmlSchemaMaxExclusiveFacet() {
     }
 

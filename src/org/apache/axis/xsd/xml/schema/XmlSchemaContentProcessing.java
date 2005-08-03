@@ -64,10 +64,10 @@ package org.apache.axis.xsd.xml.schema;
 import org.apache.axis.xsd.enum.Enum;
 
 /**
- * Provides information about the validation mode of any 
+ * Provides information about the validation mode of any
  * and anyAttribute element replacements.
  *
- * @author  mukund
+ * @author mukund
  */
 
 public class XmlSchemaContentProcessing extends Enum {
@@ -75,7 +75,9 @@ public class XmlSchemaContentProcessing extends Enum {
     static String[] members = new String[]{"Lax", "None",
                                            "Skip", "Strict"};
 
-    /** Creates new XmlSeverityType */
+    /**
+     * Creates new XmlSeverityType
+     */
     public XmlSchemaContentProcessing() {
         super();
     }

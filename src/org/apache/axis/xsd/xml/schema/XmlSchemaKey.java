@@ -66,12 +66,14 @@ package org.apache.axis.xsd.xml.schema;
  * Identifies a key constraint. Represents the World Wide Web Consortium
  * (W3C) key element.
  *
- * @author  mukund
+ * @author mukund
  */
 
 public class XmlSchemaKey extends XmlSchemaIdentityConstraint {
 
-    /** Creates new XmlSchemaKey */
+    /**
+     * Creates new XmlSchemaKey
+     */
     public XmlSchemaKey() {
     }
 }

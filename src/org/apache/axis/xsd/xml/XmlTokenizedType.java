@@ -58,7 +58,7 @@ package org.apache.axis.xsd.xml;
 import org.apache.axis.xsd.enum.Enum;
 
 /**
- * @author momo 
+ * @author momo
  */
 
 // Oct 15th - Momo - Initial Impl
@@ -70,7 +70,9 @@ public class XmlTokenizedType extends Enum {
                                            "NMTOKENS", "NOTATION", "ENUMERATION",
                                            "QName", "NCName", "None"};
 
-    /** Creates new XmlSchemaForm */
+    /**
+     * Creates new XmlSchemaForm
+     */
     public XmlTokenizedType(String value) {
         super(value);
     }

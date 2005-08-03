@@ -61,29 +61,30 @@
 
 package org.apache.axis.xsd.xml.schema;
 
-import org.apache.axis.xsd.xml.QualifiedName;
+import javax.xml.namespace.QName;
+
 
 /**
- *
  * Class for the attribute group reference. Represents the World Wide
  * Web Consortium (W3C) attributeGroup element with the ref attribute.
- * 
- * @author  mukund
- * 
+ *
+ * @author mukund
  */
 public class XmlSchemaAttributeGroupRef extends XmlSchemaAnnotated {
 
-    /** Creates new XmlSchemaAttributeGroupRef */
+    /**
+     * Creates new XmlSchemaAttributeGroupRef
+     */
     public XmlSchemaAttributeGroupRef() {
     }
 
-    QualifiedName refName;
+    QName refName;
 
-    public QualifiedName getRefName() {
+    public QName getRefName() {
         return this.refName;
     }
 
-    public void setRefName(QualifiedName refName) {
+    public void setRefName(QName refName) {
         this.refName = refName;
     }
 

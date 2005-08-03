@@ -63,17 +63,19 @@
 package org.apache.axis.xsd.xml.schema;
 
 /**
- * Allows simple and complex types, groups, and attribute groups from 
- * external schema files to be redefined in the current schema. This 
+ * Allows simple and complex types, groups, and attribute groups from
+ * external schema files to be redefined in the current schema. This
  * class provides versioning for the schema elements. Represents the
  * World Wide Web Consortium (W3C) redefine element.
  *
- * @author  mukund
+ * @author mukund
  */
 
 public class XmlSchemaRedefine extends XmlSchemaExternal {
 
-    /** Creates new XmlSchemaRedefine */
+    /**
+     * Creates new XmlSchemaRedefine
+     */
     public XmlSchemaRedefine() {
         items = new XmlSchemaObjectCollection();
     }

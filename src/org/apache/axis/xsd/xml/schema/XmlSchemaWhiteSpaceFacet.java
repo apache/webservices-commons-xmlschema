@@ -65,14 +65,16 @@ package org.apache.axis.xsd.xml.schema;
  * Class for defining whiteSpace facets. Represents the World Wide
  * Web Consortium (W3C) whiteSpace facet.
  *
- * @author  mukund
+ * @author mukund
  */
 
 // Vidyanand - 16th Oct - initial implementation
 
 public class XmlSchemaWhiteSpaceFacet extends XmlSchemaFacet {
 
-    /** Creates new XmlSchemaWhiteSpaceFacet */
+    /**
+     * Creates new XmlSchemaWhiteSpaceFacet
+     */
     public XmlSchemaWhiteSpaceFacet() {
     }
 

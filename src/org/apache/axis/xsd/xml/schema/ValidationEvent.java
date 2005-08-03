@@ -64,13 +64,14 @@ package org.apache.axis.xsd.xml.schema;
 import java.util.EventObject;
 
 /**
- *
- * @author  mukund
+ * @author mukund
  */
 
 public class ValidationEvent extends EventObject {
 
-    /** Creates new ValidationEvent */
+    /**
+     * Creates new ValidationEvent
+     */
     public ValidationEvent(Object source) {
         super(source);
     }

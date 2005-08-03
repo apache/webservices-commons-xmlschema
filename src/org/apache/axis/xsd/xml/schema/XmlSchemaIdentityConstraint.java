@@ -62,16 +62,18 @@
 package org.apache.axis.xsd.xml.schema;
 
 /**
- * Class for the identity constraints: key, keyref, and unique elements.  
+ * Class for the identity constraints: key, keyref, and unique elements.
  *
- * @author  mukund
+ * @author mukund
  */
 
 // Vidyanand - should this be an abstract class ???
 
 public class XmlSchemaIdentityConstraint extends XmlSchemaAnnotated {
 
-    /** Creates new XmlSchemaIdentityConstraint */
+    /**
+     * Creates new XmlSchemaIdentityConstraint
+     */
     public XmlSchemaIdentityConstraint() {
         fields = new XmlSchemaObjectCollection();
     }

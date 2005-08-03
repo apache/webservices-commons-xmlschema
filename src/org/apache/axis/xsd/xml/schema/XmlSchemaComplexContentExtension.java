@@ -61,21 +61,24 @@
 
 package org.apache.axis.xsd.xml.schema;
 
-import org.apache.axis.xsd.xml.QualifiedName;
+import javax.xml.namespace.QName;
+
 
 /**
- * Class for complex types with a complex content model derived by extension. 
- * Extends the complex type by adding attributes or elements. Represents the 
+ * Class for complex types with a complex content model derived by extension.
+ * Extends the complex type by adding attributes or elements. Represents the
  * World Wide Web Consortium (W3C) extension element for complex content.
  *
- * @author  mukund
+ * @author mukund
  */
 
 // Vidyanand - 16th Oct - initial implementation
 
 public class XmlSchemaComplexContentExtension extends XmlSchemaContent {
 
-    /** Creates new XmlSchemaComplexContentExtension */
+    /**
+     * Creates new XmlSchemaComplexContentExtension
+     */
     public XmlSchemaComplexContentExtension() {
         attributes = new XmlSchemaObjectCollection();
 
@@ -100,13 +103,13 @@ public class XmlSchemaComplexContentExtension extends XmlSchemaContent {
     }
 
     /* Name of the built-in data type, simple type, or complex type.*/
-    QualifiedName baseTypeName;
+    QName baseTypeName;
 
-    public void setBaseTypeName(QualifiedName baseTypeName) {
+    public void setBaseTypeName(QName baseTypeName) {
         this.baseTypeName = baseTypeName;
     }
 
-    public QualifiedName getBaseTypeName() {
+    public QName getBaseTypeName() {
         return this.baseTypeName;
     }
 

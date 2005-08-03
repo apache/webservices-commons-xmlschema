@@ -62,14 +62,16 @@
 package org.apache.axis.xsd.xml.schema;
 
 /**
- * Allows only one of its children to appear in an instance. Represents 
+ * Allows only one of its children to appear in an instance. Represents
  * the World Wide Web Consortium (W3C) choice (compositor) element.
  *
- * @author  mukund
+ * @author mukund
  */
 public class XmlSchemaChoice extends XmlSchemaGroupBase {
 
-    /** Creates new XmlSchemaChoice */
+    /**
+     * Creates new XmlSchemaChoice
+     */
     public XmlSchemaChoice() {
     }
 

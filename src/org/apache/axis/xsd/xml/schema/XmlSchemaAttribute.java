@@ -61,13 +61,13 @@
 
 package org.apache.axis.xsd.xml.schema;
 
-import org.apache.axis.xsd.xml.QualifiedName;
+import javax.xml.namespace.QName;
 
 /**
  * Class for attribute types. Represents the World Wide Web Consortium
  * (W3C) attribute element.
  *
- * @author  mukund
+ * @author mukund
  */
 
 // October 15th - momo - initial implementation
@@ -78,10 +78,12 @@ public class XmlSchemaAttribute extends XmlSchemaAnnotated {
     String defaultValue, fixedValue, name;
     XmlSchemaForm form;
     XmlSchemaSimpleType schemaType;
-    QualifiedName schemaTypeName, qualifiedName, refName;
+    QName schemaTypeName, qualifiedName, refName;
     XmlSchemaUse use;
 
-    /** Creates new XmlSchemaAttribute */
+    /**
+     * Creates new XmlSchemaAttribute
+     */
     public XmlSchemaAttribute() {
         form = new XmlSchemaForm("None");
         use = new XmlSchemaUse("None");
@@ -115,11 +117,11 @@ public class XmlSchemaAttribute extends XmlSchemaAnnotated {
         this.form = form;
     }
 
-    public QualifiedName getQualifiedName() {
+    public QName getQName() {
         return qualifiedName;
     }
 
-    public void setQualifiedName(QualifiedName qualifiedName) {
+    public void setQName(QName qualifiedName) {
         this.qualifiedName = qualifiedName;
     }
 
@@ -131,11 +133,11 @@ public class XmlSchemaAttribute extends XmlSchemaAnnotated {
         this.name = name;
     }
 
-    public QualifiedName getRefName() {
+    public QName getRefName() {
         return refName;
     }
 
-    public void setRefName(QualifiedName refName) {
+    public void setRefName(QName refName) {
         this.refName = refName;
     }
 
@@ -147,11 +149,11 @@ public class XmlSchemaAttribute extends XmlSchemaAnnotated {
         this.schemaType = schemaType;
     }
 
-    public QualifiedName getSchemaTypeName() {
+    public QName getSchemaTypeName() {
         return schemaTypeName;
     }
 
-    public void setSchemaTypeName(QualifiedName schemaTypeName) {
+    public void setSchemaTypeName(QName schemaTypeName) {
         this.schemaTypeName = schemaTypeName;
     }
 

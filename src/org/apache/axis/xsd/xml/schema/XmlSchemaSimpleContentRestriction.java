@@ -61,21 +61,24 @@
 
 package org.apache.axis.xsd.xml.schema;
 
-import org.apache.axis.xsd.xml.QualifiedName;
+import javax.xml.namespace.QName;
+
 
 /**
  * Class for simple types that are derived by restriction. Restricts the
- * range of values for the element to a subset of the inherited simple types. 
- * Represents the World Wide Web Consortium (W3C) restriction element for simple content.  
+ * range of values for the element to a subset of the inherited simple types.
+ * Represents the World Wide Web Consortium (W3C) restriction element for simple content.
  *
- * @author  mukund
+ * @author mukund
  */
 
 // Vidyanand - 16th Oct - initial implementation
 
 public class XmlSchemaSimpleContentRestriction extends XmlSchemaContent {
 
-    /** Creates new XmlSchemaSimpleContentRestriction */
+    /**
+     * Creates new XmlSchemaSimpleContentRestriction
+     */
     public XmlSchemaSimpleContentRestriction() {
         facets = new XmlSchemaObjectCollection();
         attributes = new XmlSchemaObjectCollection();
@@ -111,13 +114,13 @@ public class XmlSchemaSimpleContentRestriction extends XmlSchemaContent {
     }
 
     /* Name of the built-in data type, simple type, or complex type.*/
-    QualifiedName baseTypeName;
+    QName baseTypeName;
 
-    public void setBaseTypeName(QualifiedName baseTypeName) {
+    public void setBaseTypeName(QName baseTypeName) {
         this.baseTypeName = baseTypeName;
     }
 
-    public QualifiedName getBaseTypeName() {
+    public QName getBaseTypeName() {
         return this.baseTypeName;
     }
 

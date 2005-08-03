@@ -64,10 +64,10 @@ package org.apache.axis.xsd.xml.schema;
 import org.w3c.dom.Element;
 
 /**
- * Abstract class for all facets that are used when simple types are 
+ * Abstract class for all facets that are used when simple types are
  * derived by restriction.
  *
- * @author  mukund
+ * @author mukund
  */
 
 // Vidyanand - 16th Oct - initial implementation
@@ -76,7 +76,9 @@ import org.w3c.dom.Element;
 
 public abstract class XmlSchemaFacet extends XmlSchemaAnnotated {
 
-    /** Creates new XmlSchemaFacet */
+    /**
+     * Creates new XmlSchemaFacet
+     */
 
 
     protected XmlSchemaFacet() {

@@ -74,8 +74,6 @@
 
 package org.apache.axis.xsd.xml.schema;
 
-
-import org.apache.axis.xsd.xml.QualifiedName;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -87,6 +85,7 @@ import org.w3c.dom.Text;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.namespace.QName;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -106,30 +105,31 @@ public class XmlSchemaSerializer {
     }
 
     public static void main(String[] args) throws Exception {
-        XmlSchema schema = XmlSchema.read(new java.io.FileReader(
-                "E:/projects/core/xml/schema/test/serializerTestCase/"
-                + "Test8ElementRefTest.xsd"), null);
+        XmlSchema schema = XmlSchema.read(new java.io.FileReader("E:/projects/core/xml/schema/test/serializerTestCase/"
+                                                                 + "Test8ElementRefTest.xsd"), null);
         //XmlSchemaSerializer serializer = new XmlSchemaSerializer();
-        Document[] serializedSchemas = XmlSchemaSerializer.serializeSchema(schema, true);
+        XmlSchemaSerializer.serializeSchema(schema, true);
     }
 
 
-    /************************************************************************
-     * Document[]  serializeSchema(XmlSchema schemaObj, 
-     *   boolean serializeIncluded)
-     *
+    /**
+     * *********************************************************************
+     * Document[]  serializeSchema(XmlSchema schemaObj,
+     * boolean serializeIncluded)
+     * <p/>
      * Serialize XmlSchema object pass back the document containing a schema
      * element as its root.
-     *
+     * <p/>
      * Parameter:
      * schemaObj - Schema object to serialize.
-     * serialzeIncluded - whether to serialize the included(imported) 
-     *                    schema or not. pass true for serialize all included 
-     *                    schema. 
-     *
+     * serialzeIncluded - whether to serialize the included(imported)
+     * schema or not. pass true for serialize all included
+     * schema.
+     * <p/>
      * Return:
-     * Array of Documents that include/imported. 
-     ************************************************************************/
+     * Array of Documents that include/imported.
+     * **********************************************************************
+     */
     public static Document[] serializeSchema(XmlSchema schemaObj,
                                              boolean serializeIncluded) throws XmlSchemaSerializerException {
         return new XmlSchemaSerializer().serializeSchemaElement(schemaObj,
@@ -156,7 +156,7 @@ public class XmlSchemaSerializer {
         schemaElement = serializedSchema;
 
         if (schemaObj.targetNamespace != null) {
-            serializedSchema.setAttributeNS(schemaObj.SCHEMA_NS,
+            serializedSchema.setAttributeNS(XmlSchema.SCHEMA_NS,
                                             "targetNamespace", schemaObj.targetNamespace);
 
             Object targetNS =
@@ -177,7 +177,7 @@ public class XmlSchemaSerializer {
             String formQualified = schemaObj.attributeFormDefault.getValue();
 
             if (!formQualified.equals("None"))
-                serializedSchema.setAttributeNS(schemaObj.SCHEMA_NS,
+                serializedSchema.setAttributeNS(XmlSchema.SCHEMA_NS,
                                                 "attributeFormDefault", convertString(formQualified));
         }
 
@@ -185,7 +185,7 @@ public class XmlSchemaSerializer {
             String formQualified = schemaObj.elementFormDefault.getValue();
 
             if (!formQualified.equals("None"))
-                serializedSchema.setAttributeNS(schemaObj.SCHEMA_NS,
+                serializedSchema.setAttributeNS(XmlSchema.SCHEMA_NS,
                                                 "elementFormDefault", convertString(formQualified));
         }
 
@@ -196,14 +196,14 @@ public class XmlSchemaSerializer {
             serializedSchema.appendChild(annotation);
         }
         if (schemaObj.id != null) {
-            serializedSchema.setAttributeNS(schemaObj.SCHEMA_NS, "id",
+            serializedSchema.setAttributeNS(XmlSchema.SCHEMA_NS, "id",
                                             schemaObj.id);
         }
         if (schemaObj.blockDefault != null) {
             String blockDefault = schemaObj.blockDefault.getValue();
             if (!blockDefault.equals("None")) {
                 blockDefault = convertString(blockDefault);
-                serializedSchema.setAttributeNS(schemaObj.SCHEMA_NS,
+                serializedSchema.setAttributeNS(XmlSchema.SCHEMA_NS,
                                                 "blockDefault", blockDefault);
             }
         }
@@ -211,13 +211,13 @@ public class XmlSchemaSerializer {
             String finalDefault = schemaObj.finalDefault.getValue();
             if (!finalDefault.equals("None")) {
                 finalDefault = convertString(finalDefault);
-                serializedSchema.setAttributeNS(schemaObj.SCHEMA_NS,
+                serializedSchema.setAttributeNS(XmlSchema.SCHEMA_NS,
                                                 "finalDefault", finalDefault);
             }
         }
 
         if (schemaObj.version != null) {
-            serializedSchema.setAttributeNS(schemaObj.SCHEMA_NS,
+            serializedSchema.setAttributeNS(XmlSchema.SCHEMA_NS,
                                             "version", schemaObj.version);
         }
         
@@ -330,7 +330,7 @@ public class XmlSchemaSerializer {
         }
 
         Element schemaEl = createNewElement(schemaDocs, "schema",
-                                            schemaObj.schema_ns_prefix, schemaObj.SCHEMA_NS);
+                                            schemaObj.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         Enumeration keys = schema_ns.keys();
 
@@ -339,43 +339,45 @@ public class XmlSchemaSerializer {
             //is wrong(namespace not set properly or bug in setting ns)
             String key = keys.nextElement().toString();
             String value = schema_ns.get(key).toString();
-            value = (value.length() > 1)? "xmlns:" + value : "xmlns";
+            value = (value.length() > 1) ? "xmlns:" + value : "xmlns";
             schemaEl.setAttributeNS("http://www.w3.org/2000/xmlns/",
                                     value, key);
         }
         return schemaEl;
     }
 
-    /************************************************************************
+    /**
+     * *********************************************************************
      * Element serializeInclude(Document doc, XmlSchemaInclude includeObj,
-     *      XmlSchema schema)throws XmlSchemaSerializerException 
-     *
+     * XmlSchema schema)throws XmlSchemaSerializerException
+     * <p/>
      * set appropriate attribute as per this object attribute availability.
      * Call included schema to append to this schema document collection.
      * Then add the document created into document pool.
-     *
+     * <p/>
      * Parameter:
      * doc          - Document the parent use.
      * includeObj   - XmlSchemaInclude that will be serialized.
      * schema       - Schema Document object of the parent.
-     *
+     * <p/>
      * Return:
      * Element object representation of XmlSchemaInclude
-     ************************************************************************/
+     * **********************************************************************
+     */
     Element serializeInclude(Document doc, XmlSchemaInclude includeObj,
                              XmlSchema schema, boolean serializeIncluded)
             throws XmlSchemaSerializerException {
 
         Element includeEl = createNewElement(doc, "include",
-                                             schema.schema_ns_prefix, schema.SCHEMA_NS);
+                                             schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         if (includeObj.schemaLocation != null) {
-            includeEl.setAttributeNS(schema.SCHEMA_NS, "schemaLocation",
+            includeEl.setAttributeNS(XmlSchema.SCHEMA_NS, "schemaLocation",
                                      includeObj.schemaLocation);
         }
 
         if (includeObj.id != null)
-            includeEl.setAttributeNS(schema.SCHEMA_NS, "id", includeObj.id);
+            includeEl.setAttributeNS(XmlSchema.SCHEMA_NS, "id", includeObj.id);
 
         if (includeObj.annotation != null) {
             Element annotation = serializeAnnotation(doc,
@@ -388,47 +390,48 @@ public class XmlSchemaSerializer {
         if (includedSchemaObj != null && serializeIncluded) {
             XmlSchemaSerializer includeSeri = new XmlSchemaSerializer();
             includeSeri.serializeSchemaElement(includedSchemaObj, true);
-            XmlSchemaObjectCollection ii = includedSchemaObj.getItems();
-            Document d = (Document) includeSeri.docs.get(0);
+//            XmlSchemaObjectCollection ii = includedSchemaObj.getItems();
             docs.addAll(includeSeri.docs);
         }
 
         return includeEl;
     }
 
-    /************************************************************************
+    /**
+     * *********************************************************************
      * Element serializeImport(Document doc, XmlSchemaImport importObj,
-     *      XmlSchema schema)throws XmlSchemaSerializerException 
-     *
-     * Add each of the attribute of XmlSchemaImport obj into import Element 
-     * Then serialize schema that is included by this import.  Include the 
+     * XmlSchema schema)throws XmlSchemaSerializerException
+     * <p/>
+     * Add each of the attribute of XmlSchemaImport obj into import Element
+     * Then serialize schema that is included by this import.  Include the
      * serialized schema into document pool.
-     *
+     * <p/>
      * Parameter:
      * doc          - Document the parent use.
      * includeObj   - XmlSchemaInclude that will be serialized.
      * schema       - Schema Document object of the parent.
-     *
+     * <p/>
      * Return:
      * Element object representation of XmlSchemaImport
-     ************************************************************************/
+     * **********************************************************************
+     */
     Element serializeImport(Document doc, XmlSchemaImport importObj,
                             XmlSchema schema, boolean serializeIncluded)
             throws XmlSchemaSerializerException {
 
         Element importEl = createNewElement(doc, "import",
-                                            schema.schema_ns_prefix, schema.SCHEMA_NS);
+                                            schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         if (importObj.namespace != null)
-            importEl.setAttributeNS(schema.SCHEMA_NS, "namespace",
+            importEl.setAttributeNS(XmlSchema.SCHEMA_NS, "namespace",
                                     importObj.namespace);
 
         if (importObj.schemaLocation != null && !importObj.schemaLocation.trim().equals(""))
-            importEl.setAttributeNS(schema.SCHEMA_NS, "schemaLocation",
+            importEl.setAttributeNS(XmlSchema.SCHEMA_NS, "schemaLocation",
                                     importObj.schemaLocation);
 
         if (importObj.id != null)
-            importEl.setAttributeNS(schema.SCHEMA_NS, "id", importObj.id);
+            importEl.setAttributeNS(XmlSchema.SCHEMA_NS, "id", importObj.id);
 
         if (importObj.annotation != null) {
             Element annotation = serializeAnnotation(doc,
@@ -448,37 +451,39 @@ public class XmlSchemaSerializer {
         return importEl;
     }
 
-    /************************************************************************
-     * Element serializeRedefine(Document doc, XmlSchemaRedefine redefineObj, 
-     *      XmlSchema schema)throws XmlSchemaSerializerException  
-     *
-     * Add each of the attribute of XmlSchemaImport obj into import Element 
-     * Then serialize schema that is included by this import.  Include the 
+    /**
+     * *********************************************************************
+     * Element serializeRedefine(Document doc, XmlSchemaRedefine redefineObj,
+     * XmlSchema schema)throws XmlSchemaSerializerException
+     * <p/>
+     * Add each of the attribute of XmlSchemaImport obj into import Element
+     * Then serialize schema that is included by this import.  Include the
      * serialized schema into document pool.
-     *
+     * <p/>
      * Parameter:
      * doc           - Document the parent use.
      * redefineObj   - XmlSchemaInclude that will be serialized.
      * schema        - Schema Document object of the parent.
-     *
+     * <p/>
      * Return:
      * Element object representation of XmlSchemaRedefine
-     ************************************************************************/
+     * **********************************************************************
+     */
     Element serializeRedefine(Document doc, XmlSchemaRedefine redefineObj,
                               XmlSchema schema) throws XmlSchemaSerializerException {
 
         Element redefine = createNewElement(doc, "redefine",
-                                            schema.schema_ns_prefix, schema.SCHEMA_NS);
+                                            schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         if (redefineObj.schemaLocation != null)
-            redefine.setAttributeNS(schema.SCHEMA_NS, "schemaLocation",
+            redefine.setAttributeNS(XmlSchema.SCHEMA_NS, "schemaLocation",
                                     redefineObj.schemaLocation);
         else
             throw new XmlSchemaSerializerException("redefine must have "
                                                    + "schemaLocation fields fill");
 
         if (redefineObj.id != null)
-            redefine.setAttributeNS(schema.SCHEMA_NS, "id", redefineObj.id);
+            redefine.setAttributeNS(XmlSchema.SCHEMA_NS, "id", redefineObj.id);
 
         if (redefineObj.annotation != null) {
             Element annotation = serializeAnnotation(doc,
@@ -517,111 +522,110 @@ public class XmlSchemaSerializer {
         return redefine;
     }
 
-    /************************************************************************
-     * Element serializeElement(Document doc, XmlSchemaElement elementObj, 
-     *   XmlSchema schema) throws XmlSchemaSerializerException
-     *
+    /**
+     * *********************************************************************
+     * Element serializeElement(Document doc, XmlSchemaElement elementObj,
+     * XmlSchema schema) throws XmlSchemaSerializerException
+     * <p/>
      * Each member of Element will be appended and pass the element
      * created.  Element processed according to w3c Recommendation
-     * May 2 2001. 
-     *
+     * May 2 2001.
+     * <p/>
      * Parameter:
      * doc           - Document the parent use.
      * elementObj   - XmlSchemaInclude that will be serialized.
      * schema        - Schema Document object of the parent.
-     *
+     * <p/>
      * Return:
      * Element object of element.
-     ************************************************************************/
+     * **********************************************************************
+     */
     Element serializeElement(Document doc, XmlSchemaElement elementObj,
                              XmlSchema schema) throws XmlSchemaSerializerException {
         Element serializedEl = createNewElement(doc, "element",
-                                                schema.schema_ns_prefix, schema.SCHEMA_NS);
+                                                schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
 
         if (elementObj.refName != null) {
 
-            String resolvedName = resolveQualifiedName(
-                    elementObj.refName, schema);
-            serializedEl.setAttributeNS(schema.SCHEMA_NS, "ref", resolvedName);
+            String resolvedName = resolveQName(elementObj.refName, schema);
+            serializedEl.setAttributeNS(XmlSchema.SCHEMA_NS, "ref", resolvedName);
         } else if (elementObj.name != null && elementObj.name.length() > 0) {
-            serializedEl.setAttributeNS(schema.SCHEMA_NS, "name",
+            serializedEl.setAttributeNS(XmlSchema.SCHEMA_NS, "name",
                                         elementObj.name);
         }
 
         if (elementObj.isAbstract)
-            serializedEl.setAttributeNS(schema.SCHEMA_NS, "abstract", "true");
+            serializedEl.setAttributeNS(XmlSchema.SCHEMA_NS, "abstract", "true");
 
         String block = elementObj.block.getValue();
         if (!block.equals("None")) {
             block = convertString(block);
-            serializedEl.setAttributeNS(schema.SCHEMA_NS, "block", block);
+            serializedEl.setAttributeNS(XmlSchema.SCHEMA_NS, "block", block);
         }
         if (elementObj.defaultValue != null)
-            serializedEl.setAttributeNS(schema.SCHEMA_NS, "default",
+            serializedEl.setAttributeNS(XmlSchema.SCHEMA_NS, "default",
                                         elementObj.defaultValue);
 
         String finalDerivation = elementObj.finalDerivation.getValue();
         if (!finalDerivation.equals("None")) {
             finalDerivation = convertString(finalDerivation);
-            serializedEl.setAttributeNS(schema.SCHEMA_NS, "final",
+            serializedEl.setAttributeNS(XmlSchema.SCHEMA_NS, "final",
                                         finalDerivation);
         }
         if (elementObj.fixedValue != null)
-            serializedEl.setAttributeNS(schema.SCHEMA_NS, "fixed",
+            serializedEl.setAttributeNS(XmlSchema.SCHEMA_NS, "fixed",
                                         elementObj.fixedValue);
 
         String formDef = elementObj.form.getValue();
         if (!formDef.equals("None")) {
             formDef = convertString(formDef);
-            serializedEl.setAttributeNS(schema.SCHEMA_NS, "form", formDef);
+            serializedEl.setAttributeNS(XmlSchema.SCHEMA_NS, "form", formDef);
         }
         if (elementObj.id != null)
-            serializedEl.setAttributeNS(schema.SCHEMA_NS, "id", elementObj.id);
+            serializedEl.setAttributeNS(XmlSchema.SCHEMA_NS, "id", elementObj.id);
 
         if (elementObj.maxOccurs < Long.MAX_VALUE && elementObj.maxOccurs > 1)
-            serializedEl.setAttributeNS(schema.SCHEMA_NS, "maxOccurs",
+            serializedEl.setAttributeNS(XmlSchema.SCHEMA_NS, "maxOccurs",
                                         elementObj.maxOccurs + "");
         else if (elementObj.maxOccurs == Long.MAX_VALUE)
-            serializedEl.setAttributeNS(schema.SCHEMA_NS, "maxOccurs",
+            serializedEl.setAttributeNS(XmlSchema.SCHEMA_NS, "maxOccurs",
                                         "unbounded");
         //else not serialized
         
         /*if(elementObj.minOccurs >1)
-		  serializedEl.setAttributeNS(schema.SCHEMA_NS, "minOccurs", 
+		  serializedEl.setAttributeNS(XmlSchema.SCHEMA_NS, "minOccurs",
 		  elementObj.minOccurs + "");*/
         
         //Change - SK and Ragu cos it wasnt picking up
         // minOccurs = 0
         if (elementObj.minOccurs < Long.MAX_VALUE && elementObj.minOccurs != 1)
-            serializedEl.setAttributeNS(schema.SCHEMA_NS, "minOccurs",
+            serializedEl.setAttributeNS(XmlSchema.SCHEMA_NS, "minOccurs",
                                         elementObj.minOccurs + "");
         else if (elementObj.minOccurs == Long.MAX_VALUE)
-            serializedEl.setAttributeNS(schema.SCHEMA_NS, "minOccurs",
+            serializedEl.setAttributeNS(XmlSchema.SCHEMA_NS, "minOccurs",
                                         "unbounded");
             
         /*
 		  if(elementObj.maxOccursString != null)
-		  serializedEl.setAttributeNS(schema.SCHEMA_NS, "maxOccurs", 
+		  serializedEl.setAttributeNS(XmlSchema.SCHEMA_NS, "maxOccurs",
 		  elementObj.maxOccursString);
 		  else if(elementObj.maxOccurs > 1)
-		  serializedEl.setAttributeNS(schema.SCHEMA_NS, "maxOccurs", 
+		  serializedEl.setAttributeNS(XmlSchema.SCHEMA_NS, "maxOccurs",
 		  elementObj.maxOccurs + "");
 
 		  if(elementObj.minOccurs > 1)
-		  serializedEl.setAttributeNS(schema.SCHEMA_NS, "minOccurs", 
+		  serializedEl.setAttributeNS(XmlSchema.SCHEMA_NS, "minOccurs",
 		  elementObj.minOccurs + "");
 		*/
         if (elementObj.substitutionGroup != null) {
-            String resolvedQName = resolveQualifiedName(
-                    elementObj.substitutionGroup, schema);
-            serializedEl.setAttributeNS(schema.SCHEMA_NS, "substitutionGroup",
+            String resolvedQName = resolveQName(elementObj.substitutionGroup, schema);
+            serializedEl.setAttributeNS(XmlSchema.SCHEMA_NS, "substitutionGroup",
                                         resolvedQName);
         }
         if (elementObj.schemaTypeName != null) {
-            String resolvedName = resolveQualifiedName(
-                    elementObj.schemaTypeName, schema);
-            serializedEl.setAttributeNS(schema.SCHEMA_NS, "type", resolvedName);
+            String resolvedName = resolveQName(elementObj.schemaTypeName, schema);
+            serializedEl.setAttributeNS(XmlSchema.SCHEMA_NS, "type", resolvedName);
         }
         if (elementObj.annotation != null) {
             Element annotationEl = serializeAnnotation(doc,
@@ -651,28 +655,30 @@ public class XmlSchemaSerializer {
         return serializedEl;
     }
 
-    /************************************************************************
-     * Element serializeSimpleType(Document doc, 
-     *    XmlSchemaSimpleType simpleTypeObj, XmlSchema schema) 
-     *    throws XmlSchemaSerializerException{
-     *
+    /**
+     * *********************************************************************
+     * Element serializeSimpleType(Document doc,
+     * XmlSchemaSimpleType simpleTypeObj, XmlSchema schema)
+     * throws XmlSchemaSerializerException{
+     * <p/>
      * Each member of simple type will be appended and pass the element
      * created.  Simple type processed according to w3c Recommendation
-     * May 2 2001. 
-     *
+     * May 2 2001.
+     * <p/>
      * Parameter:
      * doc               - Document the parent use.
      * simpleTypeObj     - XmlSchemaSimpleType that will be serialized.
      * schema            - Schema Document object of the parent.
-     *
+     * <p/>
      * Return:
      * Element object of SimpleType
-     ************************************************************************/
+     * **********************************************************************
+     */
     Element serializeSimpleType(Document doc, XmlSchemaSimpleType simpleTypeObj,
                                 XmlSchema schema) throws XmlSchemaSerializerException {
 
         Element serializedSimpleType = createNewElement(doc, "simpleType",
-                                                        schema.schema_ns_prefix, schema.SCHEMA_NS);
+                                                        schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
 
         String tmp;
@@ -680,13 +686,13 @@ public class XmlSchemaSerializer {
         if (!tmp.equals("None")) {
 
             tmp = convertString(tmp);
-            serializedSimpleType.setAttributeNS(schema.SCHEMA_NS, "final", tmp);
+            serializedSimpleType.setAttributeNS(XmlSchema.SCHEMA_NS, "final", tmp);
         }
         if (simpleTypeObj.id != null)
-            serializedSimpleType.setAttributeNS(schema.SCHEMA_NS, "id",
+            serializedSimpleType.setAttributeNS(XmlSchema.SCHEMA_NS, "id",
                                                 simpleTypeObj.id);
         if ((simpleTypeObj.name != null) && (!simpleTypeObj.name.equals("")))
-            serializedSimpleType.setAttributeNS(schema.SCHEMA_NS, "name",
+            serializedSimpleType.setAttributeNS(XmlSchema.SCHEMA_NS, "name",
                                                 simpleTypeObj.name);
         if (simpleTypeObj.annotation != null) {
             Element annotationEl = serializeAnnotation(doc,
@@ -720,46 +726,48 @@ public class XmlSchemaSerializer {
         return serializedSimpleType;
     }
 
-    /************************************************************************
-     * Element serializeSimpleTypeRestriction(Document doc, 
-     *    XmlSchemaSimpleTypeRestriction restrictionObj, XmlSchema schema) 
-     *    throws XmlSchemaSerializerException{
-     *
+    /**
+     * *********************************************************************
+     * Element serializeSimpleTypeRestriction(Document doc,
+     * XmlSchemaSimpleTypeRestriction restrictionObj, XmlSchema schema)
+     * throws XmlSchemaSerializerException{
+     * <p/>
      * Each member of simple type will be appended and pass the element
-     * created.  Simple type's <restriction> processed according to w3c 
-     * Recommendation May 2 2001. 
-     *
+     * created.  Simple type's <restriction> processed according to w3c
+     * Recommendation May 2 2001.
+     * <p/>
      * Parameter:
      * doc               - Document the parent use.
      * restrictionObj    - XmlSchemaRestriction that will be serialized.
      * schema            - Schema Document object of the parent.
-     *
+     * <p/>
      * Return:
      * Element of simple type restriction and its child.
-     ************************************************************************/
+     * **********************************************************************
+     */
     Element serializeSimpleTypeRestriction(Document doc,
                                            XmlSchemaSimpleTypeRestriction restrictionObj, XmlSchema schema)
             throws XmlSchemaSerializerException {
         //todo: need to implement any attribute that related to non schema namespace
         Element serializedRestriction = createNewElement(doc, "restriction",
-                                                         schema.schema_ns_prefix, schema.SCHEMA_NS);
+                                                         schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         if (schema.schema_ns_prefix.length() > 0)
             serializedRestriction.setPrefix(schema.schema_ns_prefix);
         if (restrictionObj.baseTypeName != null) {
-            String baseType = resolveQualifiedName(restrictionObj.baseTypeName, schema);
-            serializedRestriction.setAttributeNS(schema.SCHEMA_NS, "base", baseType);
+            String baseType = resolveQName(restrictionObj.baseTypeName, schema);
+            serializedRestriction.setAttributeNS(XmlSchema.SCHEMA_NS, "base", baseType);
         } else if (restrictionObj.baseType != null && restrictionObj.baseType
                 instanceof XmlSchemaSimpleType) {
             Element inlineSimpleType = serializeSimpleType(doc,
-                                                           (XmlSchemaSimpleType) restrictionObj.baseType, schema);
+                                                           restrictionObj.baseType, schema);
             serializedRestriction.appendChild(inlineSimpleType);
         } else
             throw new XmlSchemaSerializerException("restriction must be define "
                                                    + "with specifying base or inline simpleType");
 
         if (restrictionObj.id != null)
-            serializedRestriction.setAttributeNS(schema.SCHEMA_NS, "id",
+            serializedRestriction.setAttributeNS(XmlSchema.SCHEMA_NS, "id",
                                                  restrictionObj.id);
 
         if (restrictionObj.annotation != null) {
@@ -778,21 +786,23 @@ public class XmlSchemaSerializer {
         return serializedRestriction;
     }
 
-    /************************************************************************
-     * Element serializeFacet(Document doc, XmlSchemaFacet facetObj, 
-     *   XmlSchema schema) throws XmlSchemaSerializerException{
-     *
-     * detect what type of facet and cass appropriatelly, 
+    /**
+     * *********************************************************************
+     * Element serializeFacet(Document doc, XmlSchemaFacet facetObj,
+     * XmlSchema schema) throws XmlSchemaSerializerException{
+     * <p/>
+     * detect what type of facet and cass appropriatelly,
      * construct the element and pass it.
-     *
+     * <p/>
      * Parameter:
      * doc       - Document the parent use.
      * facetObj  - XmlSchemaFacet that will be serialized.
      * schema    - Schema Document object of the parent.
-     *
+     * <p/>
      * Return:
      * Element of simple type with facet.
-     ************************************************************************/
+     * **********************************************************************
+     */
     Element serializeFacet(Document doc, XmlSchemaFacet facetObj,
                            XmlSchema schema) throws XmlSchemaSerializerException {
 
@@ -840,7 +850,7 @@ public class XmlSchemaSerializer {
                                                    + facetObj.getClass().getName());
 
         if (facetObj.id != null)
-            serializedFacet.setAttributeNS(schema.SCHEMA_NS, "id", facetObj.id);
+            serializedFacet.setAttributeNS(XmlSchema.SCHEMA_NS, "id", facetObj.id);
         if (facetObj.annotation != null) {
             Element annotation = serializeAnnotation(doc, facetObj.annotation,
                                                      schema);
@@ -854,12 +864,12 @@ public class XmlSchemaSerializer {
                                    XmlSchema schema, String tagName) {
 
         Element facetEl = createNewElement(doc, tagName,
-                                           schema.schema_ns_prefix, schema.SCHEMA_NS);
+                                           schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
-        facetEl.setAttributeNS(schema.SCHEMA_NS, "value",
+        facetEl.setAttributeNS(XmlSchema.SCHEMA_NS, "value",
                                facetObj.value.toString());
         if (facetObj.fixed)
-            facetEl.setAttributeNS(schema.SCHEMA_NS, "fixed", "true");
+            facetEl.setAttributeNS(XmlSchema.SCHEMA_NS, "fixed", "true");
 
         if (facetObj.annotation != null) {
             Element annotation = serializeAnnotation(doc,
@@ -869,33 +879,35 @@ public class XmlSchemaSerializer {
         return facetEl;
     }
 
-    /************************************************************************
-     * Element serializeComplexType(Document doc, 
-     *    XmlSchemaComplexType complexTypeObj, XmlSchema schema) 
-     *    throws XmlSchemaSerializerException{
-     *   
+    /**
+     * *********************************************************************
+     * Element serializeComplexType(Document doc,
+     * XmlSchemaComplexType complexTypeObj, XmlSchema schema)
+     * throws XmlSchemaSerializerException{
+     * <p/>
      * Each member of complex type will be appended and pass the element
      * created.  Complex type processed according to w3c Recommendation
-     * May 2 2001. 
-     *
+     * May 2 2001.
+     * <p/>
      * Parameter:
      * doc             - Document the parent use.
      * complexTypeObj  - XmlSchemaFacet that will be serialized.
      * schema          - Schema Document object of the parent.
-     *
+     * <p/>
      * Return:
      * Element of complexType.
-     ************************************************************************/
+     * **********************************************************************
+     */
     Element serializeComplexType(Document doc,
                                  XmlSchemaComplexType complexTypeObj, XmlSchema schema)
             throws XmlSchemaSerializerException {
 
         //todo: need to implement abstract, id, mixed
         Element serializedComplexType = createNewElement(doc,
-                                                         "complexType", schema.schema_ns_prefix, schema.SCHEMA_NS);
+                                                         "complexType", schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         if ((complexTypeObj.name != null) && (!complexTypeObj.name.equals("")))
-            serializedComplexType.setAttributeNS(schema.SCHEMA_NS, "name",
+            serializedComplexType.setAttributeNS(XmlSchema.SCHEMA_NS, "name",
                                                  complexTypeObj.name);
         /*if(complexTypeObj.annotation != null){
 		  Element annotationEl = serializeAnnotation(doc, 
@@ -904,13 +916,13 @@ public class XmlSchemaSerializer {
 		  }*/
         
         if (complexTypeObj.isMixed)
-            serializedComplexType.setAttributeNS(schema.SCHEMA_NS,
+            serializedComplexType.setAttributeNS(XmlSchema.SCHEMA_NS,
                                                  "mixed", "true");
         if (complexTypeObj.isAbstract)
-            serializedComplexType.setAttributeNS(schema.SCHEMA_NS,
+            serializedComplexType.setAttributeNS(XmlSchema.SCHEMA_NS,
                                                  "abstract", "true");
         if (complexTypeObj.id != null)
-            serializedComplexType.setAttributeNS(schema.SCHEMA_NS, "id",
+            serializedComplexType.setAttributeNS(XmlSchema.SCHEMA_NS, "id",
                                                  complexTypeObj.id);
 
         if (complexTypeObj.contentModel instanceof XmlSchemaSimpleContent) {
@@ -946,13 +958,13 @@ public class XmlSchemaSerializer {
         String block = complexTypeObj.block.getValue();
         if (!block.equals("None")) {
             block = convertString(block);
-            serializedComplexType.setAttributeNS(schema.SCHEMA_NS,
+            serializedComplexType.setAttributeNS(XmlSchema.SCHEMA_NS,
                                                  "block", block);
         }
         String finalDerivation = complexTypeObj.finalDerivation.getValue();
         if (!finalDerivation.equals("None")) {
             finalDerivation = convertString(finalDerivation);
-            serializedComplexType.setAttributeNS(schema.SCHEMA_NS, "final",
+            serializedComplexType.setAttributeNS(XmlSchema.SCHEMA_NS, "final",
                                                  finalDerivation);
         }
 
@@ -963,44 +975,46 @@ public class XmlSchemaSerializer {
         return serializedComplexType;
     }
 
-    /************************************************************************
-     * Element serializeSequence(Document doc, XmlSchemaSequence sequenceObj, 
-     *    XmlSchema schema)throws XmlSchemaSerializerException{
-     *   
+    /**
+     * *********************************************************************
+     * Element serializeSequence(Document doc, XmlSchemaSequence sequenceObj,
+     * XmlSchema schema)throws XmlSchemaSerializerException{
+     * <p/>
      * Each member of complex type will be appended and pass the element
      * created.  `Complex type processed according to w3c Recommendation
-     * May 2 2001. 
-     *
+     * May 2 2001.
+     * <p/>
      * Parameter:
      * doc             - Document the parent use.
      * sequenceObj  - XmlSchemaFacet that will be serialized.
      * schema          - Schema Document object of the parent.
-     *
+     * <p/>
      * Return:
      * Element of sequence particle.
-     ************************************************************************/
+     * **********************************************************************
+     */
     Element serializeSequence(Document doc, XmlSchemaSequence sequenceObj,
                               XmlSchema schema) throws XmlSchemaSerializerException {
 
         Element sequence = createNewElement(doc, "sequence",
-                                            schema.schema_ns_prefix, schema.SCHEMA_NS);
+                                            schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
 
         if (sequenceObj.id != null)
-            sequence.setAttributeNS(schema.SCHEMA_NS, "id", sequenceObj.id);
+            sequence.setAttributeNS(XmlSchema.SCHEMA_NS, "id", sequenceObj.id);
 
 
         if (sequenceObj.maxOccurs < Long.MAX_VALUE && sequenceObj.maxOccurs > 1)
-            sequence.setAttributeNS(schema.SCHEMA_NS, "maxOccurs",
+            sequence.setAttributeNS(XmlSchema.SCHEMA_NS, "maxOccurs",
                                     sequenceObj.maxOccurs + "");
         else if (sequenceObj.maxOccurs == Long.MAX_VALUE)
-            sequence.setAttributeNS(schema.SCHEMA_NS, "maxOccurs",
+            sequence.setAttributeNS(XmlSchema.SCHEMA_NS, "maxOccurs",
                                     "unbounded");
         //else not serialized
         
             
         if (sequenceObj.minOccurs > 1)
-            sequence.setAttributeNS(schema.SCHEMA_NS, "minOccurs",
+            sequence.setAttributeNS(XmlSchema.SCHEMA_NS, "minOccurs",
                                     sequenceObj.minOccurs + "");
 
         XmlSchemaObjectCollection seqColl = sequenceObj.items;
@@ -1031,60 +1045,62 @@ public class XmlSchemaSerializer {
         return sequence;
     }
 
-    /************************************************************************
-     * Element serializeAttribute(Document doc, XmlSchemaAttribute attributeObj, 
-     *    XmlSchema schema) throws XmlSchemaSerializerException{
-     *   
+    /**
+     * *********************************************************************
+     * Element serializeAttribute(Document doc, XmlSchemaAttribute attributeObj,
+     * XmlSchema schema) throws XmlSchemaSerializerException{
+     * <p/>
      * Each member of complex type will be appended and pass the element
      * created.  `Complex type processed according to w3c Recommendation
-     * May 2 2001. 
-     *
+     * May 2 2001.
+     * <p/>
      * Parameter:
      * doc             - Document the parent use.
      * attributeObj    - XmlSchemaAttribute that will be serialized.
      * schema          - Schema Document object of the parent.
-     *
+     * <p/>
      * Return:
      * Element of attribute.
-     ************************************************************************/
+     * **********************************************************************
+     */
     Element serializeAttribute(Document doc, XmlSchemaAttribute attributeObj,
                                XmlSchema schema) throws XmlSchemaSerializerException {
 
         Element attribute = createNewElement(doc, "attribute",
-                                             schema.schema_ns_prefix, schema.SCHEMA_NS);
+                                             schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
         if (attributeObj.refName != null) {
             String refName =
-                    resolveQualifiedName(attributeObj.refName, schema);
-            attribute.setAttributeNS(schema.SCHEMA_NS, "ref", refName);
+                    resolveQName(attributeObj.refName, schema);
+            attribute.setAttributeNS(XmlSchema.SCHEMA_NS, "ref", refName);
         } else if (attributeObj.name != null)
-            attribute.setAttributeNS(schema.SCHEMA_NS, "name",
+            attribute.setAttributeNS(XmlSchema.SCHEMA_NS, "name",
                                      attributeObj.name);
 
         if (attributeObj.schemaTypeName != null) {
             String typeName =
-                    resolveQualifiedName(attributeObj.schemaTypeName, schema);
-            attribute.setAttributeNS(schema.SCHEMA_NS, "type", typeName);
+                    resolveQName(attributeObj.schemaTypeName, schema);
+            attribute.setAttributeNS(XmlSchema.SCHEMA_NS, "type", typeName);
         }
 
         if (attributeObj.defaultValue != null)
-            attribute.setAttributeNS(schema.SCHEMA_NS, "default",
+            attribute.setAttributeNS(XmlSchema.SCHEMA_NS, "default",
                                      attributeObj.defaultValue);
         if (attributeObj.fixedValue != null)
-            attribute.setAttributeNS(schema.SCHEMA_NS, "fixed",
+            attribute.setAttributeNS(XmlSchema.SCHEMA_NS, "fixed",
                                      attributeObj.fixedValue);
 
         String formType = attributeObj.form.getValue();
         if (!formType.equals("None")) {
             formType = convertString(formType);
-            attribute.setAttributeNS(schema.SCHEMA_NS, "form", formType);
+            attribute.setAttributeNS(XmlSchema.SCHEMA_NS, "form", formType);
         }
         if (attributeObj.id != null)
-            attribute.setAttributeNS(schema.SCHEMA_NS, "id", attributeObj.id);
+            attribute.setAttributeNS(XmlSchema.SCHEMA_NS, "id", attributeObj.id);
 
         String useType = attributeObj.use.getValue();
         if (!useType.equals("None")) {
             useType = convertString(useType);
-            attribute.setAttributeNS(schema.SCHEMA_NS, "use", useType);
+            attribute.setAttributeNS(XmlSchema.SCHEMA_NS, "use", useType);
         }
         if (attributeObj.annotation != null) {
             Element annotation = serializeAnnotation(doc,
@@ -1096,13 +1112,12 @@ public class XmlSchemaSerializer {
         if (attributeObj.schemaType != null) {
             try {
                 XmlSchemaSimpleType simpleType =
-                        (XmlSchemaSimpleType) attributeObj.schemaType;
+                        attributeObj.schemaType;
                 Element simpleTypeEl = serializeSimpleType(doc,
                                                            simpleType, schema);
                 attribute.appendChild(simpleTypeEl);
             } catch (ClassCastException e) {
-                throw new XmlSchemaSerializerException(
-                        "only inline simple type allow as attribute's inline type");
+                throw new XmlSchemaSerializerException("only inline simple type allow as attribute's inline type");
             }
         }
 
@@ -1157,52 +1172,54 @@ public class XmlSchemaSerializer {
         return attribute;
     }
 
-    /************************************************************************
-     * Element serializeChoice(Document doc, XmlSchemaChoice choiceObj, 
-     *   XmlSchema schema) throws XmlSchemaSerializerException{
-     *   
+    /**
+     * *********************************************************************
+     * Element serializeChoice(Document doc, XmlSchemaChoice choiceObj,
+     * XmlSchema schema) throws XmlSchemaSerializerException{
+     * <p/>
      * Each member of complex type will be appended and pass the element
      * created.  Complex type processed according to w3c Recommendation
-     * May 2 2001. 
-     *
+     * May 2 2001.
+     * <p/>
      * Parameter:
      * doc             - Document the parent use.
      * choiceObj       - XmlSchemaChoice that will be serialized.
      * schema          - Schema Document object of the parent.
-     *
+     * <p/>
      * Return:
      * Element of choice schema object.
-     ************************************************************************/
+     * **********************************************************************
+     */
     Element serializeChoice(Document doc, XmlSchemaChoice choiceObj,
                             XmlSchema schema) throws XmlSchemaSerializerException {
         //todo: handle any non schema attri ?
         
         Element choice = createNewElement(doc, "choice",
-                                          schema.schema_ns_prefix, schema.SCHEMA_NS);
+                                          schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
         if (choiceObj.id != null)
             if (choiceObj.id.length() > 0)
-                choice.setAttributeNS(schema.SCHEMA_NS, "id", choiceObj.id);
+                choice.setAttributeNS(XmlSchema.SCHEMA_NS, "id", choiceObj.id);
 
 
         if (choiceObj.maxOccurs < Long.MAX_VALUE && choiceObj.maxOccurs > 1)
-            choice.setAttributeNS(schema.SCHEMA_NS, "maxOccurs",
+            choice.setAttributeNS(XmlSchema.SCHEMA_NS, "maxOccurs",
                                   choiceObj.maxOccurs + "");
         else if (choiceObj.maxOccurs == Long.MAX_VALUE)
-            choice.setAttributeNS(schema.SCHEMA_NS, "maxOccurs",
+            choice.setAttributeNS(XmlSchema.SCHEMA_NS, "maxOccurs",
                                   "unbounded");
         //else not serialized
         
         if (choiceObj.minOccurs > 1)
-            choice.setAttributeNS(schema.SCHEMA_NS, "minOccurs",
+            choice.setAttributeNS(XmlSchema.SCHEMA_NS, "minOccurs",
                                   choiceObj.minOccurs + "");
                
 
         /*
 		  if(choiceObj.maxOccursString != null)
-		  choice.setAttributeNS(schema.SCHEMA_NS, "maxOccurs", 
+		  choice.setAttributeNS(XmlSchema.SCHEMA_NS, "maxOccurs",
 		  choiceObj.maxOccursString);
 		  else if(choiceObj.maxOccurs > 1)
-		  choice.setAttributeNS(schema.SCHEMA_NS, "maxOccurs", 
+		  choice.setAttributeNS(XmlSchema.SCHEMA_NS, "maxOccurs",
 		  choiceObj.maxOccurs +"");
 		*/  
             
@@ -1247,29 +1264,31 @@ public class XmlSchemaSerializer {
         return choice;
     }
 
-    /************************************************************************
-     * Element serializeAll(Document doc, XmlSchemaAll allObj, XmlSchema schema) 
-     *    throws XmlSchemaSerializerException{
-     *   
+    /**
+     * *********************************************************************
+     * Element serializeAll(Document doc, XmlSchemaAll allObj, XmlSchema schema)
+     * throws XmlSchemaSerializerException{
+     * <p/>
      * Each member of complex type will be appended and pass the element
      * created.  Complex type processed according to w3c Recommendation
-     * May 2 2001. 
-     *
+     * May 2 2001.
+     * <p/>
      * Parameter:
      * doc             - Document the parent use.
      * allObj          - XmlSchemaAll that will be serialized.
      * schema          - Schema Document object of the parent.
-     *
+     * <p/>
      * Return:
      * Element of particle all.
-     ************************************************************************/
+     * **********************************************************************
+     */
     Element serializeAll(Document doc, XmlSchemaAll allObj, XmlSchema schema)
             throws XmlSchemaSerializerException {
         Element allEl = createNewElement(doc, "all", schema.schema_ns_prefix,
-                                         schema.SCHEMA_NS);
+                                         XmlSchema.SCHEMA_NS);
 
         if (allObj.minOccurs == 0)
-            allEl.setAttributeNS(schema.SCHEMA_NS, "minOccurs", "0");
+            allEl.setAttributeNS(XmlSchema.SCHEMA_NS, "minOccurs", "0");
 
 
         if (allObj.annotation != null) {
@@ -1298,37 +1317,39 @@ public class XmlSchemaSerializer {
         return allEl;
     }
 
-    /************************************************************************
-     * Element serializeSimpleTypeList(Document doc, 
-     *    XmlSchemaSimpleTypeList listObj, XmlSchema schema)
-     *        throws XmlSchemaSerializerException{
-     *   
+    /**
+     * *********************************************************************
+     * Element serializeSimpleTypeList(Document doc,
+     * XmlSchemaSimpleTypeList listObj, XmlSchema schema)
+     * throws XmlSchemaSerializerException{
+     * <p/>
      * Each member of complex type will be appended and pass the element
      * created.  Complex type processed according to w3c Recommendation
-     * May 2 2001. 
-     *
+     * May 2 2001.
+     * <p/>
      * Parameter:
      * doc             - Document the parent use.
      * listObj         - XmlSchemaSimpleTypeList that will be serialized.
      * schema          - Schema Document object of the parent.
-     *
+     * <p/>
      * Return:
      * Element of simple type with list method.
-     ************************************************************************/
+     * **********************************************************************
+     */
     Element serializeSimpleTypeList(Document doc,
                                     XmlSchemaSimpleTypeList listObj, XmlSchema schema)
             throws XmlSchemaSerializerException {
 
         Element list = createNewElement(doc, "list",
-                                        schema.schema_ns_prefix, schema.SCHEMA_NS);
+                                        schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         if (listObj.itemTypeName != null) {
-            String listItemType = resolveQualifiedName(listObj.itemTypeName,
-                                                       schema);
-            list.setAttributeNS(schema.SCHEMA_NS, "itemType", listItemType);
+            String listItemType = resolveQName(listObj.itemTypeName,
+                                               schema);
+            list.setAttributeNS(XmlSchema.SCHEMA_NS, "itemType", listItemType);
         }
         if (listObj.id != null)
-            list.setAttributeNS(schema.SCHEMA_NS, "id", listObj.id);
+            list.setAttributeNS(XmlSchema.SCHEMA_NS, "id", listObj.id);
 
         else if (listObj.itemType != null) {
             Element inlineSimpleEl = serializeSimpleType(doc, listObj.itemType,
@@ -1342,35 +1363,37 @@ public class XmlSchemaSerializer {
         return list;
     }
 
-    /************************************************************************
-     * Element serializeSimpleTypeUnion(Document doc, 
-     *    XmlSchemaSimpleTypeUnion unionObj, XmlSchema schema) 
-     *    throws XmlSchemaSerializerException{
-     *   
+    /**
+     * *********************************************************************
+     * Element serializeSimpleTypeUnion(Document doc,
+     * XmlSchemaSimpleTypeUnion unionObj, XmlSchema schema)
+     * throws XmlSchemaSerializerException{
+     * <p/>
      * Each member of complex type will be appended and pass the element
      * created.  Complex type processed according to w3c Recommendation
-     * May 2 2001. 
-     *
+     * May 2 2001.
+     * <p/>
      * Parameter:
      * doc              - Document the parent use.
      * unionObj         - XmlSchemaSimpleTypeUnion that will be serialized.
      * schema           - Schema Document object of the parent.
-     *
+     * <p/>
      * Return:
      * Element of simple type with union method.
-     ************************************************************************/
+     * **********************************************************************
+     */
     Element serializeSimpleTypeUnion(Document doc,
                                      XmlSchemaSimpleTypeUnion unionObj, XmlSchema schema)
             throws XmlSchemaSerializerException {
 
 
         Element union = createNewElement(doc, "union",
-                                         schema.schema_ns_prefix, schema.SCHEMA_NS);
+                                         schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
         if (unionObj.id != null)
-            union.setAttributeNS(schema.SCHEMA_NS, "id", unionObj.id);
+            union.setAttributeNS(XmlSchema.SCHEMA_NS, "id", unionObj.id);
 
         if (unionObj.memberTypesSource != null)
-            union.setAttributeNS(schema.SCHEMA_NS, "memberTypes",
+            union.setAttributeNS(XmlSchema.SCHEMA_NS, "memberTypes",
                                  unionObj.memberTypesSource);
         else if (unionObj.baseTypes.getCount() > 0) {
             int baseTypesLength = unionObj.baseTypes.getCount();
@@ -1382,9 +1405,8 @@ public class XmlSchemaSerializer {
                                                    schema);
                     union.appendChild(baseType);
                 } catch (ClassCastException e) {
-                    throw new XmlSchemaSerializerException(
-                            "only inline simple type allow as attribute's "
-                            + "inline type");
+                    throw new XmlSchemaSerializerException("only inline simple type allow as attribute's "
+                                                           + "inline type");
                 }
             }
         }
@@ -1396,50 +1418,52 @@ public class XmlSchemaSerializer {
         return union;
     }
 
-    /************************************************************************
+    /**
+     * *********************************************************************
      * Element serializeAny(Document doc, XmlSchemaAny anyObj, XmlSchema schema)
-     *   
+     * <p/>
      * Each member of complex type will be appended and pass the element
      * created.  Complex type processed according to w3c Recommendation
-     * May 2 2001. 
-     *
+     * May 2 2001.
+     * <p/>
      * Parameter:
      * doc              - Document the parent use.
      * anyObj           - XmlSchemaAny that will be serialized.
      * schema           - Schema Document object of the parent.
-     *
+     * <p/>
      * Return:
      * Element of any that is part of its parent.
-     ************************************************************************/
+     * **********************************************************************
+     */
     Element serializeAny(Document doc, XmlSchemaAny anyObj, XmlSchema schema) {
         Element anyEl = createNewElement(doc, "any", schema.schema_ns_prefix,
-                                         schema.SCHEMA_NS);
+                                         XmlSchema.SCHEMA_NS);
         if (anyObj.id != null)
             if (anyObj.id.length() > 0)
-                anyEl.setAttributeNS(schema.SCHEMA_NS, "id", anyObj.id);
+                anyEl.setAttributeNS(XmlSchema.SCHEMA_NS, "id", anyObj.id);
 
 
         if (anyObj.maxOccurs < Long.MAX_VALUE && anyObj.maxOccurs > 1)
-            anyEl.setAttributeNS(schema.SCHEMA_NS, "maxOccurs",
+            anyEl.setAttributeNS(XmlSchema.SCHEMA_NS, "maxOccurs",
                                  anyObj.maxOccurs + "");
         else if (anyObj.maxOccurs == Long.MAX_VALUE)
-            anyEl.setAttributeNS(schema.SCHEMA_NS, "maxOccurs",
+            anyEl.setAttributeNS(XmlSchema.SCHEMA_NS, "maxOccurs",
                                  "unbounded");
         //else not serialized
         
         if (anyObj.minOccurs > 1)
-            anyEl.setAttributeNS(schema.SCHEMA_NS, "minOccurs",
+            anyEl.setAttributeNS(XmlSchema.SCHEMA_NS, "minOccurs",
                                  anyObj.minOccurs + "");
 
         if (anyObj.namespace != null)
-            anyEl.setAttributeNS(schema.SCHEMA_NS, "namespace",
+            anyEl.setAttributeNS(XmlSchema.SCHEMA_NS, "namespace",
                                  anyObj.namespace);
 
         if (anyObj.processContent != null) {
             String value = anyObj.processContent.getValue();
             if (!value.equals("None")) {
                 String processContent = convertString(value);
-                anyEl.setAttributeNS(schema.SCHEMA_NS, "processContents",
+                anyEl.setAttributeNS(XmlSchema.SCHEMA_NS, "processContents",
                                      processContent);
             }
         }
@@ -1452,31 +1476,33 @@ public class XmlSchemaSerializer {
         return anyEl;
     }
 
-    /************************************************************************
-     * Element serializeGroup(Document doc, XmlSchemaGroup groupObj, 
-     *    XmlSchema schema) throws XmlSchemaSerializerException{
-     *   
+    /**
+     * *********************************************************************
+     * Element serializeGroup(Document doc, XmlSchemaGroup groupObj,
+     * XmlSchema schema) throws XmlSchemaSerializerException{
+     * <p/>
      * Each member of complex type will be appended and pass the element
      * created.  Complex type processed according to w3c Recommendation
-     * May 2 2001. 
-     *
+     * May 2 2001.
+     * <p/>
      * Parameter:
      * doc                - Document the parent use.
      * groupObj           - XmlSchemaGroup that will be serialized.
      * schema             - Schema Document object of the parent.
-     *
+     * <p/>
      * Return:
      * Element of group elements.
-     ************************************************************************/
+     * **********************************************************************
+     */
     Element serializeGroup(Document doc, XmlSchemaGroup groupObj,
                            XmlSchema schema) throws XmlSchemaSerializerException {
 
         Element group = createNewElement(doc, "group",
-                                         schema.schema_ns_prefix, schema.SCHEMA_NS);
+                                         schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         if (groupObj.name != null) {
             if (groupObj.name.length() > 0) {
-                group.setAttributeNS(schema.SCHEMA_NS, "name", groupObj.name);
+                group.setAttributeNS(XmlSchema.SCHEMA_NS, "name", groupObj.name);
             }
         } else
             throw new XmlSchemaSerializerException("Group must have " +
@@ -1504,54 +1530,56 @@ public class XmlSchemaSerializer {
         return group;
     }
 
-    /************************************************************************
-     * Element serializeGroupRef(Document doc, XmlSchemaGroupRef groupRefObj, 
-     *    XmlSchema schema) throws XmlSchemaSerializerException{
-     *   
+    /**
+     * *********************************************************************
+     * Element serializeGroupRef(Document doc, XmlSchemaGroupRef groupRefObj,
+     * XmlSchema schema) throws XmlSchemaSerializerException{
+     * <p/>
      * Each member of complex type will be appended and pass the element
      * created.  Complex type processed according to w3c Recommendation
-     * May 2 2001. 
-     *
+     * May 2 2001.
+     * <p/>
      * Parameter:
      * doc                   - Document the parent use.
      * groupRefObj           - XmlSchemaGroupRef that will be serialized.
      * schema                - Schema Document object of the parent.
-     *
+     * <p/>
      * Return:
      * Element of group elements ref inside its parent.
-     ************************************************************************/
+     * **********************************************************************
+     */
     Element serializeGroupRef(Document doc, XmlSchemaGroupRef groupRefObj,
                               XmlSchema schema) throws XmlSchemaSerializerException {
 
         Element groupRef = createNewElement(doc, "group",
-                                            schema.schema_ns_prefix, schema.SCHEMA_NS);
+                                            schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         if (groupRefObj.refName != null) {
-            String groupRefName = resolveQualifiedName(groupRefObj.refName,
-                                                       schema);
-            groupRef.setAttributeNS(schema.SCHEMA_NS, "ref", groupRefName);
+            String groupRefName = resolveQName(groupRefObj.refName,
+                                               schema);
+            groupRef.setAttributeNS(XmlSchema.SCHEMA_NS, "ref", groupRefName);
         } else
             throw new XmlSchemaSerializerException("Group must have name or ref");
 
         if (groupRefObj.maxOccurs < Long.MAX_VALUE && groupRefObj.maxOccurs > 1)
-            groupRef.setAttributeNS(schema.SCHEMA_NS, "maxOccurs",
+            groupRef.setAttributeNS(XmlSchema.SCHEMA_NS, "maxOccurs",
                                     groupRefObj.maxOccurs + "");
         else if (groupRefObj.maxOccurs == Long.MAX_VALUE)
-            groupRef.setAttributeNS(schema.SCHEMA_NS, "maxOccurs",
+            groupRef.setAttributeNS(XmlSchema.SCHEMA_NS, "maxOccurs",
                                     "unbounded");
         //else not serialized
         
         if (groupRefObj.minOccurs > 1)
-            groupRef.setAttributeNS(schema.SCHEMA_NS, "minOccurs",
+            groupRef.setAttributeNS(XmlSchema.SCHEMA_NS, "minOccurs",
                                     groupRefObj.minOccurs + "");
 
         
         /*
 		  if(groupRefObj.maxOccursString != null)
-		  groupRef.setAttributeNS(schema.SCHEMA_NS, 
+		  groupRef.setAttributeNS(XmlSchema.SCHEMA_NS,
 		  "maxOccurs", groupRefObj.maxOccursString);
 		  else if(groupRefObj.maxOccurs > 1)
-		  groupRef.setAttributeNS(schema.SCHEMA_NS, 
+		  groupRef.setAttributeNS(XmlSchema.SCHEMA_NS,
 		  "maxOccurs", groupRefObj.maxOccurs + "");
 		*/
         
@@ -1581,28 +1609,30 @@ public class XmlSchemaSerializer {
         return groupRef;
     }
 
-    /************************************************************************
-     * Element serializeSimpleContent(Document doc, 
-     *    XmlSchemaSimpleContent simpleContentObj, XmlSchema schema) 
-     *        throws XmlSchemaSerializerException{
-     *   
+    /**
+     * *********************************************************************
+     * Element serializeSimpleContent(Document doc,
+     * XmlSchemaSimpleContent simpleContentObj, XmlSchema schema)
+     * throws XmlSchemaSerializerException{
+     * <p/>
      * Each member of complex type will be appended and pass the element
      * created.  Complex type processed according to w3c Recommendation
-     * May 2 2001. 
-     *
+     * May 2 2001.
+     * <p/>
      * Parameter:
      * doc               - Document the parent use.
      * simpleContentObj  - XmlSchemaSimpleContent that will be serialized.
      * schema            - Schema Document object of the parent.
-     *
+     * <p/>
      * Return:
      * Element of complex type simple content.
-     ************************************************************************/
+     * **********************************************************************
+     */
     Element serializeSimpleContent(Document doc,
                                    XmlSchemaSimpleContent simpleContentObj, XmlSchema schema)
             throws XmlSchemaSerializerException {
         Element simpleContent = createNewElement(doc, "simpleContent",
-                                                 schema.schema_ns_prefix, schema.SCHEMA_NS);
+                                                 schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         Element content;
         if (simpleContentObj.annotation != null) {
@@ -1628,29 +1658,31 @@ public class XmlSchemaSerializer {
         return simpleContent;
     }
 
-    /************************************************************************
-     * Element serializeComplexContent(Document doc, 
-     *    XmlSchemaComplexContent complexContentObj, XmlSchema schema) 
-     *    throws XmlSchemaSerializerException{
-     *   
+    /**
+     * *********************************************************************
+     * Element serializeComplexContent(Document doc,
+     * XmlSchemaComplexContent complexContentObj, XmlSchema schema)
+     * throws XmlSchemaSerializerException{
+     * <p/>
      * Each member of complex type will be appended and pass the element
      * created.  Complex type processed according to w3c Recommendation
-     * May 2 2001. 
-     *
+     * May 2 2001.
+     * <p/>
      * Parameter:
      * doc                - Document the parent use.
      * complexContentObj  - XmlSchemaComplexContent that will be serialized.
      * schema             - Schema Document object of the parent.
-     *
+     * <p/>
      * Return:
      * Element of complex type complex content.
-     ************************************************************************/
+     * **********************************************************************
+     */
     Element serializeComplexContent(Document doc,
                                     XmlSchemaComplexContent complexContentObj, XmlSchema schema)
             throws XmlSchemaSerializerException {
 
         Element complexContent = createNewElement(doc, "complexContent",
-                                                  schema.schema_ns_prefix, schema.SCHEMA_NS);
+                                                  schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
 
         if (complexContentObj.annotation != null) {
@@ -1660,9 +1692,9 @@ public class XmlSchemaSerializer {
         }
 
         if (complexContentObj.mixed)
-            complexContent.setAttributeNS(schema.SCHEMA_NS, "mixed", "true");
+            complexContent.setAttributeNS(XmlSchema.SCHEMA_NS, "mixed", "true");
         if (complexContentObj.id != null)
-            complexContent.setAttributeNS(schema.SCHEMA_NS, "id",
+            complexContent.setAttributeNS(XmlSchema.SCHEMA_NS, "id",
                                           complexContentObj.id);
 
         Element content;
@@ -1686,23 +1718,25 @@ public class XmlSchemaSerializer {
         return complexContent;
     }
 
-    /************************************************************************
-     * Element serializeIdentityConstraint(Document doc, 
-     *    XmlSchemaIdentityConstraint constraintObj, XmlSchema schema) 
-     *        throws XmlSchemaSerializerException{
-     *   
+    /**
+     * *********************************************************************
+     * Element serializeIdentityConstraint(Document doc,
+     * XmlSchemaIdentityConstraint constraintObj, XmlSchema schema)
+     * throws XmlSchemaSerializerException{
+     * <p/>
      * Each member of complex type will be appended and pass the element
      * created.  Complex type processed according to w3c Recommendation
-     * May 2 2001. 
-     *
+     * May 2 2001.
+     * <p/>
      * Parameter:
      * doc               - Document the parent use.
      * constraintObj     - XmlSchemaIdentityConstraint that will be serialized.
      * schema            - Schema Document object of the parent.
-     *
+     * <p/>
      * Return:
      * Element of key, keyref or unique that part of its parent.
-     ************************************************************************/
+     * **********************************************************************
+     */
     Element serializeIdentityConstraint(Document doc,
                                         XmlSchemaIdentityConstraint constraintObj, XmlSchema schema)
             throws XmlSchemaSerializerException {
@@ -1711,17 +1745,17 @@ public class XmlSchemaSerializer {
 
         if (constraintObj instanceof XmlSchemaUnique)
             constraint = createNewElement(doc, "unique",
-                                          schema.schema_ns_prefix, schema.SCHEMA_NS);
+                                          schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
         else if (constraintObj instanceof XmlSchemaKey)
             constraint = createNewElement(doc, "key",
-                                          schema.schema_ns_prefix, schema.SCHEMA_NS);
+                                          schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
         else if (constraintObj instanceof XmlSchemaKeyref) {
             constraint = createNewElement(doc, "keyref",
-                                          schema.schema_ns_prefix, schema.SCHEMA_NS);
+                                          schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
             XmlSchemaKeyref keyref = (XmlSchemaKeyref) constraintObj;
             if (keyref.refer != null) {
-                String keyrefStr = resolveQualifiedName(keyref.refer, schema);
-                constraint.setAttributeNS(schema.SCHEMA_NS,
+                String keyrefStr = resolveQName(keyref.refer, schema);
+                constraint.setAttributeNS(XmlSchema.SCHEMA_NS,
                                           "refer", keyrefStr);
             }
         } else
@@ -1729,7 +1763,7 @@ public class XmlSchemaSerializer {
                                                    + "constraint");
 
         if (constraintObj.name != null)
-            constraint.setAttributeNS(schema.SCHEMA_NS, "name",
+            constraint.setAttributeNS(XmlSchema.SCHEMA_NS, "name",
                                       constraintObj.name);
         if (constraintObj.annotation != null) {
             Element annotation = serializeAnnotation(doc,
@@ -1754,31 +1788,33 @@ public class XmlSchemaSerializer {
         return constraint;
     }
 
-    /************************************************************************
+    /**
+     * *********************************************************************
      * Element serializeSelector(Document doc, XmlSchemaXPath selectorObj,
-     *    XmlSchema schema) throws XmlSchemaSerializerException{
-     *   
+     * XmlSchema schema) throws XmlSchemaSerializerException{
+     * <p/>
      * Each member of complex type will be appended and pass the element
      * created.  Complex type processed according to w3c Recommendation
-     * May 2 2001. 
-     *
+     * May 2 2001.
+     * <p/>
      * Parameter:
      * doc               - Document the parent use.
      * selectorObj      - XmlSchemaXPath that will be serialized.
      * schema            - Schema Document object of the parent.
-     *
+     * <p/>
      * Return:
      * Element of selector with collection of xpath as its attrib.  The selector
      * itself is the part of identity type.  eg <key><selector xpath="..."
-     ************************************************************************/
+     * **********************************************************************
+     */
     Element serializeSelector(Document doc, XmlSchemaXPath selectorObj,
                               XmlSchema schema) throws XmlSchemaSerializerException {
 
         Element selector = createNewElement(doc, "selector",
-                                            schema.schema_ns_prefix, schema.SCHEMA_NS);
+                                            schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         if (selectorObj.xpath != null)
-            selector.setAttributeNS(schema.SCHEMA_NS, "xpath",
+            selector.setAttributeNS(XmlSchema.SCHEMA_NS, "xpath",
                                     selectorObj.xpath);
         else
             throw new XmlSchemaSerializerException("xpath can't be null");
@@ -1791,30 +1827,32 @@ public class XmlSchemaSerializer {
         return selector;
     }
 
-    /************************************************************************
-     * Element serializeField(Document doc, XmlSchemaXPath fieldObj, 
-     *    XmlSchema schema) throws XmlSchemaSerializerException
-     *   
+    /**
+     * *********************************************************************
+     * Element serializeField(Document doc, XmlSchemaXPath fieldObj,
+     * XmlSchema schema) throws XmlSchemaSerializerException
+     * <p/>
      * Each member of complex type will be appended and pass the element
      * created.  Complex type processed according to w3c Recommendation
-     * May 2 2001. 
-     *
+     * May 2 2001.
+     * <p/>
      * Parameter:
      * doc           - Document the parent use.
      * fieldObj      - XmlSchemaXPath that will be serialized.
      * schema        - Schema Document object of the parent.
-     *
+     * <p/>
      * Return:
      * field element that part of constraint.
-     ************************************************************************/
+     * **********************************************************************
+     */
     Element serializeField(Document doc, XmlSchemaXPath fieldObj,
                            XmlSchema schema) throws XmlSchemaSerializerException {
 
         Element field = createNewElement(doc, "field", schema.schema_ns_prefix,
-                                         schema.SCHEMA_NS);
+                                         XmlSchema.SCHEMA_NS);
 
         if (fieldObj.xpath != null)
-            field.setAttributeNS(schema.SCHEMA_NS, "xpath", fieldObj.xpath);
+            field.setAttributeNS(XmlSchema.SCHEMA_NS, "xpath", fieldObj.xpath);
         else
             throw new XmlSchemaSerializerException("xpath can't be null");
 
@@ -1827,29 +1865,31 @@ public class XmlSchemaSerializer {
         return field;
     }
 
-    /************************************************************************
-     * Element serializeAnnotation(Document doc, XmlSchemaAnnotation 
-     *    annotationObj, XmlSchema schema) 
-     *
-     *   
+    /**
+     * *********************************************************************
+     * Element serializeAnnotation(Document doc, XmlSchemaAnnotation
+     * annotationObj, XmlSchema schema)
+     * <p/>
+     * <p/>
      * Each member of complex type will be appended and pass the element
      * created.  Complex type processed according to w3c Recommendation
-     * May 2 2001. 
-     *
+     * May 2 2001.
+     * <p/>
      * Parameter:
      * doc               - Document the parent use.
      * annotationObj      - XmlSchemaAnnotation that will be serialized.
      * schema            - Schema Document object of the parent.
-     *
+     * <p/>
      * Return:
-     * annotation element that part of any type. will contain document and 
+     * annotation element that part of any type. will contain document and
      * appinfo for child.
-     ************************************************************************/
+     * **********************************************************************
+     */
     Element serializeAnnotation(Document doc, XmlSchemaAnnotation annotationObj,
                                 XmlSchema schema) {
 
         Element annotation = createNewElement(doc, "annotation",
-                                              schema.schema_ns_prefix, schema.SCHEMA_NS);
+                                              schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         XmlSchemaObjectCollection contents = annotationObj.items;
         int contentLength = contents.getCount();
@@ -1876,30 +1916,32 @@ public class XmlSchemaSerializer {
         return annotation;
     }
 
-    /************************************************************************
+    /**
+     * *********************************************************************
      * Element serializeAppInfo(Document doc,XmlSchemaAppInfo appInfoObj,
-     *    XmlSchema schema)
-     *
-     *   
+     * XmlSchema schema)
+     * <p/>
+     * <p/>
      * Each member of complex type will be appended and pass the element
      * created.  Complex type processed according to w3c Recommendation
-     * May 2 2001. 
-     *
+     * May 2 2001.
+     * <p/>
      * Parameter:
      * doc               - Document the parent use.
      * appInfoObj        - XmlSchemaAppInfo that will be serialized.
      * schema            - Schema Document object of the parent.
-     *
+     * <p/>
      * Return:
      * App info element that is part of the annotation.
-     ************************************************************************/
+     * **********************************************************************
+     */
     Element serializeAppInfo(Document doc, XmlSchemaAppInfo appInfoObj,
                              XmlSchema schema) {
 
         Element appInfoEl = createNewElement(doc, "appinfo",
-                                             schema.schema_ns_prefix, schema.SCHEMA_NS);
+                                             schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
         if (appInfoObj.source != null)
-            appInfoEl.setAttributeNS(schema.SCHEMA_NS, "source",
+            appInfoEl.setAttributeNS(XmlSchema.SCHEMA_NS, "source",
                                      appInfoObj.source);
 
         if (appInfoObj.markup != null) {
@@ -1923,36 +1965,37 @@ public class XmlSchemaSerializer {
         return appInfoEl;
     }
 
-    /************************************************************************
-     * Element serializeDocumentation(Document doc,XmlSchemaDocumentation 
-     *    documentationObj, XmlSchema schema){
-     *
-     *   
+    /**
+     * *********************************************************************
+     * Element serializeDocumentation(Document doc,XmlSchemaDocumentation
+     * documentationObj, XmlSchema schema){
+     * <p/>
+     * <p/>
      * Each member of complex type will be appended and pass the element
      * created.  Complex type processed according to w3c Recommendation
-     * May 2 2001. 
-     *
+     * May 2 2001.
+     * <p/>
      * Parameter:
      * doc               - Document the parent use.
      * documentationObj        - XmlSchemaAppInfo that will be serialized.
      * schema            - Schema Document object of the parent.
-     *
+     * <p/>
      * Return:
      * Element representation of documentation that is part of annotation.
-     ************************************************************************/
+     * **********************************************************************
+     */
     Element serializeDocumentation(Document doc, XmlSchemaDocumentation
             documentationObj, XmlSchema schema) {
 
 
         Element documentationEl = createNewElement(doc, "documentation",
-                                                   schema.schema_ns_prefix, schema.SCHEMA_NS);
+                                                   schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
         if (documentationObj.source != null)
-            documentationEl.setAttributeNS(schema.SCHEMA_NS, "source",
+            documentationEl.setAttributeNS(XmlSchema.SCHEMA_NS, "source",
                                            documentationObj.source);
         if (documentationObj.language != null)
-            documentationEl.setAttributeNS(
-                    "http://www.w3.org/XML/1998/namespace", "xml:lang",
-                    documentationObj.language);
+            documentationEl.setAttributeNS("http://www.w3.org/XML/1998/namespace", "xml:lang",
+                                           documentationObj.language);
 
         if (documentationObj.markup != null) {
             int markupLength = documentationObj.markup.getLength();
@@ -1975,41 +2018,43 @@ public class XmlSchemaSerializer {
         return documentationEl;
     }
 
-    /************************************************************************
-     * Element serializeSimpleContentRestriction(Document doc, 
-     *    XmlSchemaSimpleContentRestriction restrictionObj, XmlSchema schema) 
-     *    throws XmlSchemaSerializerException{
-     *
-     *   
+    /**
+     * *********************************************************************
+     * Element serializeSimpleContentRestriction(Document doc,
+     * XmlSchemaSimpleContentRestriction restrictionObj, XmlSchema schema)
+     * throws XmlSchemaSerializerException{
+     * <p/>
+     * <p/>
      * Each member of complex type will be appended and pass the element
      * created.  Complex type processed according to w3c Recommendation
-     * May 2 2001. 
-     *
+     * May 2 2001.
+     * <p/>
      * Parameter:
      * doc               - Document the parent use.
-     * restrictionObj    - XmlSchemaSimpleContentRestriction that will be 
-     *                       serialized.
+     * restrictionObj    - XmlSchemaSimpleContentRestriction that will be
+     * serialized.
      * schema            - Schema Document object of the parent.
-     *
+     * <p/>
      * Return:
-     *   Element of simple content restriction.
-     ************************************************************************/
+     * Element of simple content restriction.
+     * **********************************************************************
+     */
     Element serializeSimpleContentRestriction(Document doc,
                                               XmlSchemaSimpleContentRestriction restrictionObj, XmlSchema schema)
             throws XmlSchemaSerializerException {
 
         Element restriction = createNewElement(doc, "restriction",
-                                               schema.schema_ns_prefix, schema.SCHEMA_NS);
+                                               schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         if (restrictionObj.baseTypeName != null) {
             String baseTypeName =
-                    resolveQualifiedName(restrictionObj.baseTypeName, schema);
+                    resolveQName(restrictionObj.baseTypeName, schema);
 
-            restriction.setAttributeNS(schema.SCHEMA_NS, "base", baseTypeName);
+            restriction.setAttributeNS(XmlSchema.SCHEMA_NS, "base", baseTypeName);
 
         }
         if (restrictionObj.id != null)
-            restriction.setAttributeNS(schema.SCHEMA_NS, "id", restrictionObj.id);
+            restriction.setAttributeNS(XmlSchema.SCHEMA_NS, "id", restrictionObj.id);
 
         if (restrictionObj.annotation != null) {
             Element annotation = serializeAnnotation(doc,
@@ -2050,41 +2095,43 @@ public class XmlSchemaSerializer {
         return restriction;
     }
 
-    /************************************************************************
-     * Element serializeSimpleContentExtension(Document doc, 
-     *    XmlSchemaSimpleContentExtension extensionObj, XmlSchema schema)
-     *        throws XmlSchemaSerializerException{
-     *
-     *   
+    /**
+     * *********************************************************************
+     * Element serializeSimpleContentExtension(Document doc,
+     * XmlSchemaSimpleContentExtension extensionObj, XmlSchema schema)
+     * throws XmlSchemaSerializerException{
+     * <p/>
+     * <p/>
      * Each member of complex type will be appended and pass the element
      * created.  Complex type processed according to w3c Recommendation
-     * May 2 2001. 
-     *
+     * May 2 2001.
+     * <p/>
      * Parameter:
      * doc                 - Document the parent use.
-     * extensionObj        - XmlSchemaSimpleContentExtension 
-     *                       that will be serialized.
+     * extensionObj        - XmlSchemaSimpleContentExtension
+     * that will be serialized.
      * schema              - Schema Document object of the parent.
-     *
+     * <p/>
      * Return:
-     *   Element of simple content extension.
-     ************************************************************************/
+     * Element of simple content extension.
+     * **********************************************************************
+     */
     Element serializeSimpleContentExtension(Document doc,
                                             XmlSchemaSimpleContentExtension extensionObj, XmlSchema schema)
             throws XmlSchemaSerializerException {
 
         Element extension = createNewElement(doc, "extension",
-                                             schema.schema_ns_prefix, schema.SCHEMA_NS);
+                                             schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         if (extensionObj.baseTypeName != null) {
             String baseTypeName =
-                    resolveQualifiedName(extensionObj.baseTypeName, schema);
+                    resolveQName(extensionObj.baseTypeName, schema);
 
-            extension.setAttributeNS(schema.SCHEMA_NS, "base", baseTypeName);
+            extension.setAttributeNS(XmlSchema.SCHEMA_NS, "base", baseTypeName);
         }
 
         if (extensionObj.id != null)
-            extension.setAttributeNS(schema.SCHEMA_NS, "id", extensionObj.id);
+            extension.setAttributeNS(XmlSchema.SCHEMA_NS, "id", extensionObj.id);
 
         if (extensionObj.annotation != null) {
             Element annotation = serializeAnnotation(doc,
@@ -2115,40 +2162,41 @@ public class XmlSchemaSerializer {
         return extension;
     }
 
-    /************************************************************************
-     * Element serializeComplexContentRestriction(Document doc, 
-     *    XmlSchemaComplexContentRestriction restrictionObj, XmlSchema schema) 
-     *    throws XmlSchemaSerializerException{
-     *   
+    /**
+     * *********************************************************************
+     * Element serializeComplexContentRestriction(Document doc,
+     * XmlSchemaComplexContentRestriction restrictionObj, XmlSchema schema)
+     * throws XmlSchemaSerializerException{
+     * <p/>
      * Each member of complex type will be appended and pass the element
      * created.  Complex type processed according to w3c Recommendation
-     * May 2 2001. 
-     *
+     * May 2 2001.
+     * <p/>
      * Parameter:
      * doc                 - Document the parent use.
-     * restrictionObj        - XmlSchemaSimpleContentRestriction 
-     *                       that will be serialized.
+     * restrictionObj        - XmlSchemaSimpleContentRestriction
+     * that will be serialized.
      * schema              - Schema Document object of the parent.
-     *
+     * <p/>
      * Return:
-     *   Element of simple content restriction.
-     ************************************************************************/
+     * Element of simple content restriction.
+     * **********************************************************************
+     */
     Element serializeComplexContentRestriction(Document doc,
                                                XmlSchemaComplexContentRestriction restrictionObj, XmlSchema schema)
             throws XmlSchemaSerializerException {
 
         Element restriction = createNewElement(doc, "restriction",
-                                               schema.schema_ns_prefix, schema.SCHEMA_NS);
+                                               schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         if (restrictionObj.baseTypeName != null) {
-            String baseTypeName = resolveQualifiedName(
-                    restrictionObj.baseTypeName, schema);
-            restriction.setAttributeNS(schema.SCHEMA_NS,
+            String baseTypeName = resolveQName(restrictionObj.baseTypeName, schema);
+            restriction.setAttributeNS(XmlSchema.SCHEMA_NS,
                                        "base", baseTypeName);
         }
 
         if (restrictionObj.id != null)
-            restriction.setAttributeNS(schema.SCHEMA_NS, "id",
+            restriction.setAttributeNS(XmlSchema.SCHEMA_NS, "id",
                                        restrictionObj.id);
 
         if (restrictionObj.annotation != null) {
@@ -2199,34 +2247,36 @@ public class XmlSchemaSerializer {
         return restriction;
     }
 
-    /************************************************************************
-     * Element serializeComplexContentExtension(Document doc, 
-     *    XmlSchemaComplexContentExtension extensionObj, XmlSchema schema) 
-     *    throws XmlSchemaSerializerException{
-     *   
+    /**
+     * *********************************************************************
+     * Element serializeComplexContentExtension(Document doc,
+     * XmlSchemaComplexContentExtension extensionObj, XmlSchema schema)
+     * throws XmlSchemaSerializerException{
+     * <p/>
      * Each member of complex type will be appended and pass the element
      * created.  Complex type processed according to w3c Recommendation
-     * May 2 2001. 
-     *
+     * May 2 2001.
+     * <p/>
      * Parameter:
      * doc                 - Document the parent use.
-     * extensionObj        - XmlSchemaComplexContentRestriction 
-     *                       that will be serialized.
+     * extensionObj        - XmlSchemaComplexContentRestriction
+     * that will be serialized.
      * schema              - Schema Document object of the parent.
-     *
+     * <p/>
      * Return:
      * Element of complex content extension.
-     ************************************************************************/
+     * **********************************************************************
+     */
     Element serializeComplexContentExtension(Document doc,
                                              XmlSchemaComplexContentExtension extensionObj, XmlSchema schema)
             throws XmlSchemaSerializerException {
 
         Element extension = createNewElement(doc, "extension",
-                                             schema.schema_ns_prefix, schema.SCHEMA_NS);
+                                             schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
         if (extensionObj.baseTypeName != null) {
-            String baseType = resolveQualifiedName(extensionObj.baseTypeName,
-                                                   schema);
-            extension.setAttributeNS(schema.SCHEMA_NS, "base", baseType);
+            String baseType = resolveQName(extensionObj.baseTypeName,
+                                           schema);
+            extension.setAttributeNS(XmlSchema.SCHEMA_NS, "base", baseType);
         }
         if (extensionObj.annotation != null) {
             Element annotation = serializeAnnotation(doc,
@@ -2277,42 +2327,44 @@ public class XmlSchemaSerializer {
         return extension;
     }
 
-    /************************************************************************
+    /**
+     * *********************************************************************
      * Element serializeAnyAttribute(Document doc,
-     *    XmlSchemaAnyAttribute anyAttributeObj, XmlSchema schema)
-     *   
+     * XmlSchemaAnyAttribute anyAttributeObj, XmlSchema schema)
+     * <p/>
      * Each member of complex type will be appended and pass the element
      * created.  Complex type processed according to w3c Recommendation
-     * May 2 2001. 
-     *
+     * May 2 2001.
+     * <p/>
      * Parameter:
      * doc                 - Document the parent use.
-     * anyAttributeObj     - XmlSchemaAnyAttribute 
-     *                       that will be serialized.
+     * anyAttributeObj     - XmlSchemaAnyAttribute
+     * that will be serialized.
      * schema              - Schema Document object of the parent.
-     *
+     * <p/>
      * Return:
      * Element of any attribute element.
-     ************************************************************************/
+     * **********************************************************************
+     */
     Element serializeAnyAttribute(Document doc,
                                   XmlSchemaAnyAttribute anyAttributeObj, XmlSchema schema) {
 
         Element anyAttribute = createNewElement(doc, "anyAttribute",
-                                                schema.schema_ns_prefix, schema.SCHEMA_NS);
+                                                schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
 
         if (anyAttributeObj.namespace != null)
-            anyAttribute.setAttributeNS(schema.SCHEMA_NS, "namespace",
+            anyAttribute.setAttributeNS(XmlSchema.SCHEMA_NS, "namespace",
                                         anyAttributeObj.namespace);
 
         if (anyAttributeObj.id != null)
-            anyAttribute.setAttributeNS(schema.SCHEMA_NS, "id",
+            anyAttribute.setAttributeNS(XmlSchema.SCHEMA_NS, "id",
                                         anyAttributeObj.id);
 
         if (anyAttributeObj.processContent != null) {
             String processContent = anyAttributeObj.processContent.getValue();
             processContent = convertString(processContent);
-            anyAttribute.setAttributeNS(schema.SCHEMA_NS, "processContents",
+            anyAttribute.setAttributeNS(XmlSchema.SCHEMA_NS, "processContents",
                                         processContent);
         }
         if (anyAttributeObj.annotation != null) {
@@ -2324,41 +2376,43 @@ public class XmlSchemaSerializer {
         return anyAttribute;
     }
 
-    /************************************************************************
-     * Element serializeAttributeGroupRef(Document doc, 
-     *    XmlSchemaAttributeGroupRef attributeGroupObj, XmlSchema schema) 
-     *   throws XmlSchemaSerializerException
-     *   
+    /**
+     * *********************************************************************
+     * Element serializeAttributeGroupRef(Document doc,
+     * XmlSchemaAttributeGroupRef attributeGroupObj, XmlSchema schema)
+     * throws XmlSchemaSerializerException
+     * <p/>
      * Each member of complex type will be appended and pass the element
      * created.  Complex type processed according to w3c Recommendation
-     * May 2 2001. 
-     *
+     * May 2 2001.
+     * <p/>
      * Parameter:
      * doc                 - Document the parent use.
-     * attributeGroupObj     - XmlSchemaAttributeGroupRef 
-     *                       that will be serialized.
+     * attributeGroupObj     - XmlSchemaAttributeGroupRef
+     * that will be serialized.
      * schema              - Schema Document object of the parent.
-     *
+     * <p/>
      * Return:
      * Element of attribute group ref that part of type.
-     ************************************************************************/
+     * **********************************************************************
+     */
     Element serializeAttributeGroupRef(Document doc,
                                        XmlSchemaAttributeGroupRef attributeGroupObj, XmlSchema schema)
             throws XmlSchemaSerializerException {
 
         Element attributeGroupRef = createNewElement(doc, "attributeGroup",
-                                                     schema.schema_ns_prefix, schema.SCHEMA_NS);
+                                                     schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         if (attributeGroupObj.refName != null) {
-            String refName = resolveQualifiedName(attributeGroupObj.refName,
-                                                  schema);
-            attributeGroupRef.setAttributeNS(schema.SCHEMA_NS, "ref", refName);
+            String refName = resolveQName(attributeGroupObj.refName,
+                                          schema);
+            attributeGroupRef.setAttributeNS(XmlSchema.SCHEMA_NS, "ref", refName);
         } else
             throw new XmlSchemaSerializerException("Attribute group must have "
                                                    + "ref name set");
 
         if (attributeGroupObj.id != null)
-            attributeGroupRef.setAttributeNS(schema.SCHEMA_NS, "id",
+            attributeGroupRef.setAttributeNS(XmlSchema.SCHEMA_NS, "id",
                                              attributeGroupObj.id);
 
         if (attributeGroupObj.annotation != null) {
@@ -2369,39 +2423,41 @@ public class XmlSchemaSerializer {
         return attributeGroupRef;
     }
 
-    /************************************************************************
-     * Element serializeAttributeGroup(Document doc, 
-     *    XmlSchemaAttributeGroup attributeGroupObj, XmlSchema schema) 
-     *    throws XmlSchemaSerializerException{
-     *   
+    /**
+     * *********************************************************************
+     * Element serializeAttributeGroup(Document doc,
+     * XmlSchemaAttributeGroup attributeGroupObj, XmlSchema schema)
+     * throws XmlSchemaSerializerException{
+     * <p/>
      * Each member of complex type will be appended and pass the element
      * created.  Complex type processed according to w3c Recommendation
-     * May 2 2001. 
-     *
+     * May 2 2001.
+     * <p/>
      * Parameter:
      * doc                 - Document the parent use.
      * attributeGroupObj     - XmlSchemaAttributeGroup
-     *                       that will be serialized.
+     * that will be serialized.
      * schema              - Schema Document object of the parent.
-     *
+     * <p/>
      * Return:
      * Element of attribute group.
-     ************************************************************************/
+     * **********************************************************************
+     */
     Element serializeAttributeGroup(Document doc,
                                     XmlSchemaAttributeGroup attributeGroupObj, XmlSchema schema)
             throws XmlSchemaSerializerException {
 
         Element attributeGroup = createNewElement(doc, "attributeGroup",
-                                                  schema.schema_ns_prefix, schema.SCHEMA_NS);
+                                                  schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         if (attributeGroupObj.name != null)
-            attributeGroup.setAttributeNS(schema.SCHEMA_NS, "name",
+            attributeGroup.setAttributeNS(XmlSchema.SCHEMA_NS, "name",
                                           attributeGroupObj.name);
         else
             throw new XmlSchemaSerializerException("Attribute group must"
                                                    + "have name");
         if (attributeGroupObj.id != null)
-            attributeGroup.setAttributeNS(schema.SCHEMA_NS, "id",
+            attributeGroup.setAttributeNS(XmlSchema.SCHEMA_NS, "id",
                                           attributeGroupObj.id);
 
         if (attributeGroupObj.annotation != null) {
@@ -2439,7 +2495,7 @@ public class XmlSchemaSerializer {
                                Node children, XmlSchema schema) {
         Element elTmp = (Element) children;
         Element el = createNewElement(doc, elTmp.getTagName(),
-                                      schema.schema_ns_prefix, schema.SCHEMA_NS);
+                                      schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
         NamedNodeMap attributes = el.getAttributes();
         //check if child node has attribute  
         //create new element and append it if found
@@ -2447,7 +2503,7 @@ public class XmlSchemaSerializer {
         for (int i = 0; i < attributeLength; i++) {
             Node n = attributes.item(i); 
             //assuming attributes got to throw exception if not later
-            el.setAttributeNS(schema.SCHEMA_NS, n.getNodeName(),
+            el.setAttributeNS(XmlSchema.SCHEMA_NS, n.getNodeName(),
                               n.getNodeValue());
         }
         
@@ -2496,7 +2552,7 @@ public class XmlSchemaSerializer {
     //the prefix is there or not.
     private Element createNewElement(Document docs, String localName,
                                      String prefix, String namespace) {
-        String elementName = ((prefix.length() > 0)? prefix += ":"  : "")
+        String elementName = ((prefix.length() > 0) ? prefix += ":" : "")
                 + localName;
         return docs.createElementNS(namespace, elementName);
     }
@@ -2506,12 +2562,12 @@ public class XmlSchemaSerializer {
     //create new prefix corresponding to that namespace and store that in 
     //hash table.  Finally add the new prefix and namespace to <schema> 
     //element
-    private String resolveQualifiedName(QualifiedName names,
-                                        XmlSchema schemaObj) {
+    private String resolveQName(QName names,
+                                XmlSchema schemaObj) {
 
-        String namespace = names.getNameSpace();
-        String type[] = getParts(names.getName());
-        String typeName = (type.length > 1)? type[1]: type[0];
+        String namespace = names.getNamespaceURI();
+        String type[] = getParts(names.getLocalPart());
+        String typeName = (type.length > 1) ? type[1] : type[0];
         String prefixStr;
 
         Object prefix = schema_ns.get(namespace);
@@ -2528,7 +2584,7 @@ public class XmlSchemaSerializer {
         }
 
         prefixStr = prefix.toString();
-        prefixStr = (prefixStr.trim().length() > 0)?  prefixStr + ":" : "";
+        prefixStr = (prefixStr.trim().length() > 0) ? prefixStr + ":" : "";
 
         return prefixStr + typeName;
     }

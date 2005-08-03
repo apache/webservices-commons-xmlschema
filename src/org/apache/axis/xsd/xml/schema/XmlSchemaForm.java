@@ -64,9 +64,9 @@ package org.apache.axis.xsd.xml.schema;
 import org.apache.axis.xsd.enum.Enum;
 
 /**
- * Indicates if attributes or elements need to be qualified or left unqualified.  
+ * Indicates if attributes or elements need to be qualified or left unqualified.
  *
- * @author  mukund
+ * @author mukund
  */
 
 // October 15th - momo - initial implementation
@@ -77,7 +77,9 @@ public class XmlSchemaForm extends Enum {
 
     static String[] members = new String[]{"None", "Qualified", "Unqualified"};
 
-    /** Creates new XmlSchemaForm */
+    /**
+     * Creates new XmlSchemaForm
+     */
     public XmlSchemaForm() {
         super();
     }

@@ -69,13 +69,15 @@ import java.util.Vector;
  * An object collection class to handle XmlSchemaObjects when collections
  * are returned from method calls.
  *
- * @author  mukund
+ * @author mukund
  */
 public class XmlSchemaObjectCollection {
 
     Vector objects;
 
-    /** Creates new XmlSchemaObjectCollection */
+    /**
+     * Creates new XmlSchemaObjectCollection
+     */
     public XmlSchemaObjectCollection() {
         objects = new Vector();
     }

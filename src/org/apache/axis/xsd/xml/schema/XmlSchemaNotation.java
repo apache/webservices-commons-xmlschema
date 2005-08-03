@@ -64,19 +64,21 @@ package org.apache.axis.xsd.xml.schema;
 
 /**
  * Class represents a notation. An XML Schema definition language (XSD)
- * notation declaration is a reconstruction of XML 1.0 NOTATION 
+ * notation declaration is a reconstruction of XML 1.0 NOTATION
  * declarations. The purpose of notations is to describe the format of
- * non-XML data within an XML document. Represents the World Wide Web Consortium 
+ * non-XML data within an XML document. Represents the World Wide Web Consortium
  * (W3C) notation element.
  *
- * @author  mukund
+ * @author mukund
  */
 
 public class XmlSchemaNotation extends XmlSchemaAnnotated {
 
     String name, system, publicNotation;
 
-    /** Creates new XmlSchemaNotation */
+    /**
+     * Creates new XmlSchemaNotation
+     */
     public XmlSchemaNotation() {
     }
 

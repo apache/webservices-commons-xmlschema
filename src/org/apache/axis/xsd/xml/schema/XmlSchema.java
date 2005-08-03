@@ -61,9 +61,7 @@
 
 package org.apache.axis.xsd.xml.schema;
 
-
 import org.apache.axis.xsd.str.Tokenizer;
-import org.apache.axis.xsd.xml.QualifiedName;
 import org.apache.axis.xsd.xml.XDOMUtil;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -84,6 +82,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.namespace.QName;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -97,11 +96,11 @@ import java.util.Vector;
 
 
 /**
- * Contains the definition of a schema. All XML Schema definition language (XSD) 
- * elements are children of the schema element. Represents the World Wide Web 
+ * Contains the definition of a schema. All XML Schema definition language (XSD)
+ * elements are children of the schema element. Represents the World Wide Web
  * Consortium (W3C) schema element
  *
- * @author  mukund
+ * @author mukund
  */
 
 // Oct 15th - momo - initial impl
@@ -119,7 +118,7 @@ public class XmlSchema extends XmlSchemaAnnotated {
     XmlSchemaForm attributeFormDefault, elementFormDefault;
 
     // notation is global elements, all XmlSchemaObjectTable are READ-ONLY
-    XmlSchemaObjectTable attributeGroups, attributes, elements, groups, 
+    XmlSchemaObjectTable attributeGroups, attributes, elements, groups,
     notations, schemaTypes;
     XmlSchemaDerivationMethod blockDefault, finalDefault;
     XmlSchemaObjectCollection includes, items;
@@ -128,7 +127,9 @@ public class XmlSchema extends XmlSchemaAnnotated {
     Hashtable namespaces;
     String schema_ns_prefix = "";
 
-    /** Creates new XmlSchema */
+    /**
+     * Creates new XmlSchema
+     */
     public XmlSchema() {
         attributeFormDefault = new XmlSchemaForm("Qualified");
         elementFormDefault = new XmlSchemaForm("Qualified");
@@ -230,6 +231,10 @@ public class XmlSchema extends XmlSchemaAnnotated {
 
     public XmlSchemaObjectTable getElements() {
         return elements;
+    }
+
+    public XmlSchemaElement getElementByName(QName name) {
+        return (XmlSchemaElement) elements.getItem(name);
     }
 
     public XmlSchemaDerivationMethod getFinalDefault() {
@@ -387,8 +392,7 @@ public class XmlSchema extends XmlSchemaAnnotated {
              *			handleNotation
              */
 
-            for (Element el = XDOMUtil.getFirstChildElementNS(
-                    schemaEl, SCHEMA_NS); el != null;
+            for (Element el = XDOMUtil.getFirstChildElementNS(schemaEl, SCHEMA_NS); el != null;
                  el = XDOMUtil.getNextSiblingElementNS(el, SCHEMA_NS)) {
 
                 // String elPrefix = el.getPrefix() == null ? "" : el.getPrefix();
@@ -404,11 +408,9 @@ public class XmlSchema extends XmlSchemaAnnotated {
                 } else if (el.getLocalName().equals("element")) {
                     XmlSchemaElement element = handleElement(schema, el, schemaEl);
                     if (element.qualifiedName != null)
-                        schema.elements.collection.put(
-                                element.qualifiedName, element);
+                        schema.elements.collection.put(element.qualifiedName, element);
                     else if (element.refName != null)
-                        schema.elements.collection.put(
-                                element.refName, element);
+                        schema.elements.collection.put(element.refName, element);
                     schema.items.add(element);
                 } else if (el.getLocalName().equals("include")) {
                     XmlSchemaInclude include = handleInclude(schema,
@@ -508,8 +510,7 @@ public class XmlSchema extends XmlSchemaAnnotated {
                     XmlSchemaAttributeGroup group =
                             handleAttributeGroup(schema, el, schemaEl);
 
-                    redefine.attributeGroups.collection.put(
-                            group.name, group);
+                    redefine.attributeGroups.collection.put(group.name, group);
                     redefine.items.add(group);
                 } else if (el.getLocalName().equals("annotation")) {
                     XmlSchemaAnnotation annotation = handleAnnotation(el);
@@ -568,8 +569,7 @@ public class XmlSchema extends XmlSchemaAnnotated {
                 String name = simpleEl.getAttribute("name");
 
                 simpleType.name = simpleEl.getAttribute("name");
-                simpleType.qualifiedName = new QualifiedName(name,
-                                                             schema.targetNamespace);
+                simpleType.qualifiedName = new QName(schema.targetNamespace, name);
             }
 
             if (simpleEl.hasAttribute("final")) {
@@ -578,11 +578,9 @@ public class XmlSchema extends XmlSchemaAnnotated {
                 if (finalstr.equalsIgnoreCase("all") |
                         finalstr.equalsIgnoreCase("#all"))
 
-                    simpleType.setFinal(
-                            new XmlSchemaDerivationMethod("All"));
+                    simpleType.setFinal(new XmlSchemaDerivationMethod("All"));
                 else
-                    simpleType.setFinal(
-                            new XmlSchemaDerivationMethod(finalstr));
+                    simpleType.setFinal(new XmlSchemaDerivationMethod(finalstr));
             }
 
             Element simpleTypeAnnotationEl =
@@ -599,8 +597,7 @@ public class XmlSchema extends XmlSchemaAnnotated {
             Element unionEl, listEl, restrictionEl;
 
             if ((restrictionEl =
-                    XDOMUtil.getFirstChildElementNS(
-                            simpleEl, SCHEMA_NS, "restriction")) != null) {
+                    XDOMUtil.getFirstChildElementNS(simpleEl, SCHEMA_NS, "restriction")) != null) {
 
                 XmlSchemaSimpleTypeRestriction restriction =
                         new XmlSchemaSimpleTypeRestriction();
@@ -633,7 +630,7 @@ public class XmlSchema extends XmlSchemaAnnotated {
                     String name = restrictionEl.getAttribute("base");
                     String[] temp = Tokenizer.tokenize(name, ":");
                     String namespace = "";
-					
+
                     if (temp.length != 1) {
                         namespace = temp[0];
                     }
@@ -641,17 +638,15 @@ public class XmlSchema extends XmlSchemaAnnotated {
                     //let it crash because its mean being refered
                     //to unregistered namespace
                     namespace = schema.namespaces.get(namespace).toString();
-					name = Tokenizer.lastToken( name, ":")[1];	
-                    restriction.baseTypeName =
-                            new QualifiedName(name, namespace);
+                    name = Tokenizer.lastToken(name, ":")[1];
+                    restriction.baseTypeName = new QName(namespace, name);
                 } else if (inlineSimpleType != null) {
                     XmlSchemaSimpleType baseType =
                             handleSimpleType(schema, inlineSimpleType, schemaEl);
 
                     restriction.baseType = baseType;
                 }
-                for (Element el = XDOMUtil.getFirstChildElementNS(
-                        restrictionEl, SCHEMA_NS)
+                for (Element el = XDOMUtil.getFirstChildElementNS(restrictionEl, SCHEMA_NS)
                         ; el != null;
                      el = XDOMUtil.getNextSiblingElementNS(el, SCHEMA_NS)) {
 
@@ -708,9 +703,8 @@ public class XmlSchema extends XmlSchemaAnnotated {
                         
                     //Object nsFromEl = schema.namespaces.get(namespaceFromEl[0]); 
                     //namespace = (nsFromEl==null)?  "": nsFromEl.toString();
-					name = Tokenizer.lastToken( name, ":" )[1];    
-                    list.itemTypeName =
-                            new QualifiedName(name, namespace);
+                    name = Tokenizer.lastToken(name, ":")[1];
+                    list.itemTypeName = new QName(namespace, name);
 
                 } else if ((inlineListType =
                         XDOMUtil.getFirstChildElementNS(listEl, SCHEMA_NS,
@@ -764,9 +758,10 @@ public class XmlSchema extends XmlSchemaAnnotated {
                             prefix = member.substring(0, pos);
                             localName = member.substring(pos + 1);
                         }
-                        v.add(new QualifiedName(localName, (String) schema.namespaces.get(prefix)));
+                        v.add(new QName((String) schema.namespaces.get(prefix),
+                                        localName));
                     }
-                    union.memberTypesQNames = new QualifiedName[v.size()];
+                    union.memberTypesQNames = new QName[v.size()];
                     v.copyInto(union.memberTypesQNames);
                 }
 
@@ -852,8 +847,7 @@ public class XmlSchema extends XmlSchemaAnnotated {
                 //                  "":schema.targetNamespace;
                                         
                 ct.name = name;
-                ct.qualifiedName = new QualifiedName(name,
-                                                     schema.targetNamespace);
+                ct.qualifiedName = new QName(schema.targetNamespace, name);
             }
             for (Element el = XDOMUtil.getFirstChildElementNS(complexEl,
                                                               SCHEMA_NS)
@@ -887,7 +881,7 @@ public class XmlSchema extends XmlSchemaAnnotated {
                 } else if (el.getLocalName().equals("group")) {
                     XmlSchemaGroupRef group =
                             handleGroupRef(schema, el, schemaEl);
-                    ct.particle = (group.particle == null)? 
+                    ct.particle = (group.particle == null) ?
                             (XmlSchemaParticle) group : group.particle;
                 } else if (el.getLocalName().equals("simpleContent")) {
                     XmlSchemaSimpleContent simpleContent =
@@ -1006,15 +1000,13 @@ public class XmlSchema extends XmlSchemaAnnotated {
 
             if (restrictionEl.hasAttribute("base")) {
                 String name = restrictionEl.getAttribute("base");
-                Object result = schema.namespaces.get(
-                        Tokenizer.tokenize(name, ":")[0]);
+                Object result = schema.namespaces.get(Tokenizer.tokenize(name, ":")[0]);
 
                 if (result == null)
                     throw new XmlSchemaException("No namespace found in "
                                                  + "given base simple content type");
-				name = Tokenizer.lastToken( name, ":")[1];	
-                restriction.baseTypeName =
-                        new QualifiedName(name, result.toString());
+                name = Tokenizer.lastToken(name, ":")[1];
+                restriction.baseTypeName = new QName(result.toString(), name);
             }
 
             if (restrictionEl.hasAttribute("id"))
@@ -1076,9 +1068,8 @@ public class XmlSchema extends XmlSchemaAnnotated {
                 if (result == null)
                     throw new XmlSchemaException("No namespace found in "
                                                  + "given base simple content type");
-				name = Tokenizer.lastToken( name, ":")[1];	
-                ext.baseTypeName = new QualifiedName(name,
-                                                     result.toString());
+                name = Tokenizer.lastToken(name, ":")[1];
+                ext.baseTypeName = new QName(result.toString(), name);
             }
 
             for (
@@ -1126,9 +1117,8 @@ public class XmlSchema extends XmlSchemaAnnotated {
                     throw new XmlSchemaException("No namespace found in "
                                                  + "given base complex content base type");
 
-				name = Tokenizer.lastToken( name, ":")[1];	
-                restriction.baseTypeName = new QualifiedName(name,
-                                                             result.toString());
+                name = Tokenizer.lastToken(name, ":")[1];
+                restriction.baseTypeName = new QName(result.toString(), name);
             }
             for (Element el = XDOMUtil.getFirstChildElementNS(restrictionEl,
                                                               SCHEMA_NS)
@@ -1187,9 +1177,8 @@ public class XmlSchema extends XmlSchemaAnnotated {
                                                  + "given base complex content base type");
                     
                 //                    String namespace = (result==null)? "" : result.toString();
-				name = Tokenizer.lastToken( name, ":")[1];    
-                ext.baseTypeName = new QualifiedName(name,
-                                                     result.toString());
+                name = Tokenizer.lastToken(name, ":")[1];
+                ext.baseTypeName = new QName(result.toString(), name);
             }
 
             for (Element el = XDOMUtil.getFirstChildElementNS(extEl, SCHEMA_NS)
@@ -1249,8 +1238,8 @@ public class XmlSchema extends XmlSchemaAnnotated {
                     throw new XmlSchemaException("No namespace found in "
                                                  + "given ref name");
 
-				ref = Tokenizer.lastToken( ref, ":" )[1];
-                attrGroup.refName = new QualifiedName(ref, result.toString());
+                ref = Tokenizer.lastToken(ref, ":")[1];
+                attrGroup.refName = new QName(result.toString(), ref);
             }
 
             if (attrGroupEl.hasAttribute("id"))
@@ -1302,7 +1291,8 @@ public class XmlSchema extends XmlSchemaAnnotated {
             return sequence;
         }
 
-        private XmlSchemaAny handleAny(XmlSchema schema, Element anyEl,
+        private XmlSchemaAny handleAny(XmlSchema schema,
+                                       Element anyEl,
                                        Element schemaEl) {
 
             XmlSchemaAny any = new XmlSchemaAny();
@@ -1451,7 +1441,8 @@ public class XmlSchema extends XmlSchemaAnnotated {
         }
 
         private XmlSchemaAnyAttribute handleAnyAttribute(XmlSchema schema,
-                                                         Element anyAttrEl, Element schemaEl) {
+                                                         Element anyAttrEl,
+                                                         Element schemaEl) {
 
             XmlSchemaAnyAttribute anyAttr = new XmlSchemaAnyAttribute();
 
@@ -1463,8 +1454,7 @@ public class XmlSchema extends XmlSchemaAnnotated {
                 String contentProcessing = getEnumString(anyAttrEl,
                                                          "processContents");
 
-                anyAttr.processContent = new XmlSchemaContentProcessing(
-                        contentProcessing);
+                anyAttr.processContent = new XmlSchemaContentProcessing(contentProcessing);
             }
             if (anyAttrEl.hasAttribute("id"))
                 anyAttr.id = anyAttrEl.getAttribute("id");
@@ -1509,8 +1499,8 @@ public class XmlSchema extends XmlSchemaAnnotated {
                 if (result == null)
                     throw new XmlSchemaException("No namespace found in "
                                                  + "given ref group");
-				ref = Tokenizer.lastToken( ref, ":" )[1];
-                group.refName = new QualifiedName(ref, result.toString());
+                ref = Tokenizer.lastToken(ref, ":")[1];
+                group.refName = new QName(result.toString(), ref);
 
                 return group;
             }
@@ -1548,8 +1538,7 @@ public class XmlSchema extends XmlSchemaAnnotated {
                 //                  "" :schema.targetNamespace;
                     
                 attr.name = name;
-                attr.qualifiedName = new QualifiedName(name,
-                                                       schema.targetNamespace);
+                attr.qualifiedName = new QName(schema.targetNamespace, name);
             }
 
             if (attrEl.hasAttribute("type")) {
@@ -1566,8 +1555,8 @@ public class XmlSchema extends XmlSchemaAnnotated {
                     namespace = result.toString();
                 } else
                     namespace = schema.targetNamespace;
-				name = Tokenizer.lastToken( name, ":" )[1];
-                attr.schemaTypeName = new QualifiedName(name, namespace);
+                name = Tokenizer.lastToken(name, ":")[1];
+                attr.schemaTypeName = new QName(namespace, name);
             }
             if (attrEl.hasAttribute("default"))
                 attr.defaultValue = attrEl.getAttribute("default");
@@ -1601,8 +1590,8 @@ public class XmlSchema extends XmlSchemaAnnotated {
                     namespace = result.toString();
                 } else
                     namespace = schema.targetNamespace;
-				name = Tokenizer.lastToken( name, ":" )[1];
-                attr.refName = new QualifiedName(name, namespace);
+                name = Tokenizer.lastToken(name, ":")[1];
+                attr.refName = new QName(namespace, name);
                 attr.name = name;
             }
 
@@ -1685,7 +1674,8 @@ public class XmlSchema extends XmlSchemaAnnotated {
          *			handleAnyAttribute
          */
 
-        /***********
+        /**
+         * ********
          * handle_complex_content_restriction
          */
         XmlSchemaElement handleElement(XmlSchema schema, Element el,
@@ -1695,12 +1685,12 @@ public class XmlSchema extends XmlSchemaAnnotated {
 
             if (el.getAttributeNode("name") != null)
                 element.name = el.getAttribute("name");
-                
+
             //                String namespace = (schema.targetNamespace==null)?
-            //                                      "" : schema.targetNamespace;    
-                    
-            element.qualifiedName = new QualifiedName(element.name,
-                                                      schema.targetNamespace);
+            //                                      "" : schema.targetNamespace;
+
+            element.qualifiedName = new QName(schema.targetNamespace,
+                                              element.name);
 
             Element annotationEl = XDOMUtil.getFirstChildElementNS(el,
                                                                    SCHEMA_NS, "annotation");
@@ -1725,9 +1715,8 @@ public class XmlSchema extends XmlSchemaAnnotated {
                     namespace = result.toString();
                 } else
                     namespace = schema.targetNamespace;
-				typeName = Tokenizer.lastToken( typeName, ":" )[1];
-                element.schemaTypeName =
-                        new QualifiedName(typeName, namespace);
+                typeName = Tokenizer.lastToken(typeName, ":")[1];
+                element.schemaTypeName = new QName(namespace, typeName);
             } else if (el.getAttributeNode("ref") != null) {
                 String refName = el.getAttribute("ref");
 
@@ -1742,8 +1731,8 @@ public class XmlSchema extends XmlSchemaAnnotated {
                     namespace = result.toString();
                 } else
                     namespace = schema.targetNamespace;
-				refName = Tokenizer.lastToken( refName, ":" )[1];
-                element.setRefName(new QualifiedName(refName, namespace));
+                refName = Tokenizer.lastToken(refName, ":")[1];
+                element.setRefName(new QName(namespace, refName));
                 element.name = refName;
             }
 
@@ -1771,8 +1760,7 @@ public class XmlSchema extends XmlSchemaAnnotated {
                 XmlSchemaIdentityConstraint key =
                         handleConstraint(schema, keyEl, schemaEl, "Key");
                 element.constraints.add(key);
-            } else if ((keyrefEl = XDOMUtil.getFirstChildElementNS(
-                    el, SCHEMA_NS, "keyref")) != null) {
+            } else if ((keyrefEl = XDOMUtil.getFirstChildElementNS(el, SCHEMA_NS, "keyref")) != null) {
 
                 XmlSchemaKeyref keyRef =
                         (XmlSchemaKeyref) handleConstraint(schema, keyrefEl,
@@ -1789,8 +1777,8 @@ public class XmlSchema extends XmlSchemaAnnotated {
                         namespace = result.toString();
                     } else
                         namespace = schema.targetNamespace;
-					name = Tokenizer.lastToken( name, ":" )[1];
-                    keyRef.refer = new QualifiedName(name, namespace);
+                    name = Tokenizer.lastToken(name, ":")[1];
+                    keyRef.refer = new QName(namespace, name);
                 }
 
                 element.constraints.add(keyRef);
@@ -1843,8 +1831,7 @@ public class XmlSchema extends XmlSchemaAnnotated {
 
             try {
                 XmlSchemaIdentityConstraint constraint =
-                        (XmlSchemaIdentityConstraint) Class.forName(
-                                "org.apache.axis.xsd.xml.schema.XmlSchema" + type).newInstance();
+                        (XmlSchemaIdentityConstraint) Class.forName("org.apache.axis.xsd.xml.schema.XmlSchema" + type).newInstance();
 
                 if (constraintEl.hasAttribute("name"))
                     constraint.name = constraintEl.getAttribute("name");
@@ -1866,10 +1853,10 @@ public class XmlSchema extends XmlSchemaAnnotated {
                     } else
                         namespace = schema.targetNamespace;
 
-					name = Tokenizer.lastToken( name, ":" )[1];
-					constraint.name = name; // need to confirm as it is not name but refer
+                    name = Tokenizer.lastToken(name, ":")[1];
+                    constraint.name = name; // need to confirm as it is not name but refer
                     ((XmlSchemaKeyref) constraint).refer =
-                            new QualifiedName(name, namespace);
+                            new QName(namespace, name);
 
                 }
                 for (Element el = XDOMUtil.getFirstChildElementNS(constraintEl,
@@ -1945,8 +1932,7 @@ public class XmlSchema extends XmlSchemaAnnotated {
                     importEl.getAttribute("schemaLocation");
 
             if ((schemaImport.schemaLocation != null) && (!schemaImport.schemaLocation.equals("")))
-                schemaImport.schema = getXmlSchemaFromLocation(
-                        schemaImport.schemaLocation);
+                schemaImport.schema = getXmlSchemaFromLocation(schemaImport.schemaLocation);
             return schemaImport;
         }
 
@@ -1978,32 +1964,29 @@ public class XmlSchema extends XmlSchemaAnnotated {
         }
 
         /**
-         * Traversing if encounter appinfo or documentation 
+         * Traversing if encounter appinfo or documentation
          * add it to annotation collection
          */
         XmlSchemaAnnotation handleAnnotation(Element annotEl) {
             XmlSchemaObjectCollection content = new XmlSchemaObjectCollection();
             XmlSchemaAppInfo appInfoObj;
-            XmlSchemaDocumentation docsObj;                    
+            XmlSchemaDocumentation docsObj;
 
-            for(Element appinfo = XDOMUtil.getFirstChildElementNS(annotEl,
-                                                                  SCHEMA_NS, "appinfo");
-            appinfo != null;
-            appinfo = XDOMUtil.getNextSiblingElementNS(
-                                                       
-            
-            appinfo, SCHEMA_NS, "appinfo")){
+            for (Element appinfo = XDOMUtil.getFirstChildElementNS(annotEl,
+                                                                   SCHEMA_NS, "appinfo");
+                 appinfo != null;
+                 appinfo = XDOMUtil.getNextSiblingElementNS(appinfo, SCHEMA_NS, "appinfo")) {
 
                 appInfoObj = handleAppInfo(appinfo);
                 content.add(appInfoObj);
             }
-            for(Element documentation = XDOMUtil.getFirstChildElementNS(annotEl,
-                                                                        SCHEMA_NS, "documentation");
-            documentation != null;
-            documentation = XDOMUtil.getNextSiblingElementNS(documentation,
-                                                             
-            
-            SCHEMA_NS, "documentation")){
+            for (Element documentation = XDOMUtil.getFirstChildElementNS(annotEl,
+                                                                         SCHEMA_NS, "documentation");
+                 documentation != null;
+                 documentation = XDOMUtil.getNextSiblingElementNS(documentation,
+
+
+                                                                  SCHEMA_NS, "documentation")) {
 
                 docsObj = handleDocumentation(documentation);
                 content.add(docsObj);
@@ -2106,8 +2089,7 @@ public class XmlSchema extends XmlSchemaAnnotated {
                 if (derivationMethod.equals("#all"))
                     return new XmlSchemaDerivationMethod("All");
                 else
-                    return new XmlSchemaDerivationMethod(
-                            c + derivationMethod.substring(1));
+                    return new XmlSchemaDerivationMethod(c + derivationMethod.substring(1));
             }
             return new XmlSchemaDerivationMethod("None");
         }

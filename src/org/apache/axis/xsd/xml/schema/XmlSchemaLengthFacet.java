@@ -63,17 +63,19 @@
 package org.apache.axis.xsd.xml.schema;
 
 /**
- * Class for defining length facets. Represents the World Wide Web 
- * Consortium (W3C) length facet.  
+ * Class for defining length facets. Represents the World Wide Web
+ * Consortium (W3C) length facet.
  *
- * @author  mukund
+ * @author mukund
  */
 
 // Vidyanand - 16th Oct - initial implementation
 
 public class XmlSchemaLengthFacet extends XmlSchemaNumericFacet {
 
-    /** Creates new XmlSchemaLengthFacet */
+    /**
+     * Creates new XmlSchemaLengthFacet
+     */
     public XmlSchemaLengthFacet() {
     }
 

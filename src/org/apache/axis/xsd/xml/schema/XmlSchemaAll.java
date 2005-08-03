@@ -62,15 +62,17 @@
 package org.apache.axis.xsd.xml.schema;
 
 /**
- * Permits the elements in the group to appear (or not appear) 
+ * Permits the elements in the group to appear (or not appear)
  * in any order in the containing element. Represents the World
  * Wide Web Consortium (W3C) all element (compositor).
  *
- * @author  mukund
+ * @author mukund
  */
 public class XmlSchemaAll extends XmlSchemaGroupBase {
 
-    /** Creates new XmlSchemaAll */
+    /**
+     * Creates new XmlSchemaAll
+     */
     public XmlSchemaAll() {
     }
 

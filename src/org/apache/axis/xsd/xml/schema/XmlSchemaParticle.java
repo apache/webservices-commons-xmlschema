@@ -65,7 +65,7 @@ package org.apache.axis.xsd.xml.schema;
 /**
  * Base class for all particle types.
  *
- * @author  mukund
+ * @author mukund
  */
 
 // October 15th - momo - initial implementation
@@ -78,12 +78,11 @@ public class XmlSchemaParticle extends XmlSchemaAnnotated {
     String minOccursString;
 
     /**
-     * Creates new XmlSchemaParticle 
-     * Particle types are usually interchangeable. 
-     * A local element declaration or reference to a global element 
-     * declaration (element), a compositor ( sequence, choice, or all), 
+     * Creates new XmlSchemaParticle
+     * Particle types are usually interchangeable.
+     * A local element declaration or reference to a global element
+     * declaration (element), a compositor ( sequence, choice, or all),
      * a reference to a named content model group (group), or an element wildcard (any).
-     *
      */
     public XmlSchemaParticle() {
     }

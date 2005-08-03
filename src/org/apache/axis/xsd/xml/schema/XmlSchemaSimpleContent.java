@@ -62,17 +62,19 @@
 package org.apache.axis.xsd.xml.schema;
 
 /**
- * Class for simple types and complex types with a simple content model. 
- * Represents the World Wide Web Consortium (W3C) simpleContent element.  
+ * Class for simple types and complex types with a simple content model.
+ * Represents the World Wide Web Consortium (W3C) simpleContent element.
  *
- * @author  mukund
+ * @author mukund
  */
 
 // Vidyanand - 16th Oct - initial implementation
 
 public class XmlSchemaSimpleContent extends XmlSchemaContentModel {
 
-    /** Creates new XmlSchemaSimpleContent */
+    /**
+     * Creates new XmlSchemaSimpleContent
+     */
     public XmlSchemaSimpleContent() {
     }
 

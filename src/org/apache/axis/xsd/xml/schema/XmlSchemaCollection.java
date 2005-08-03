@@ -65,11 +65,13 @@ package org.apache.axis.xsd.xml.schema;
  * Contains a cache of XML Schema definition language (XSD).
  * This class cannot be inherited.
  *
- * @author  mukund
+ * @author mukund
  */
 public final class XmlSchemaCollection {
 
-    /** Creates new XmlSchemaCollection */
+    /**
+     * Creates new XmlSchemaCollection
+     */
     public XmlSchemaCollection() {
     }
 

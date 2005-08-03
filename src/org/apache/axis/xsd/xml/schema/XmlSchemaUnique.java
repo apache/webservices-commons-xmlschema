@@ -62,15 +62,17 @@
 package org.apache.axis.xsd.xml.schema;
 
 /**
- * Identifies a unique constraint among a set of elements. Represents 
+ * Identifies a unique constraint among a set of elements. Represents
  * the World Wide Web Consortium (W3C) unique element.
  *
- * @author  mukund
+ * @author mukund
  */
 
 public class XmlSchemaUnique extends XmlSchemaIdentityConstraint {
 
-    /** Creates new XmlSchemaUnique */
+    /**
+     * Creates new XmlSchemaUnique
+     */
     public XmlSchemaUnique() {
     }
 }

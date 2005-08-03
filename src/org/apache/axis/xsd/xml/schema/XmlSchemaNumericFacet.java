@@ -65,14 +65,16 @@ package org.apache.axis.xsd.xml.schema;
 /**
  * Abstract class for defining numeric facets.
  *
- * @author  mukund
+ * @author mukund
  */
 
 // Vidyanand - 16th Oct - initial implementation
 
 public abstract class XmlSchemaNumericFacet extends XmlSchemaFacet {
 
-    /** Creates new XmlSchemaNumericFacet */
+    /**
+     * Creates new XmlSchemaNumericFacet
+     */
     protected XmlSchemaNumericFacet() {
     }
 

@@ -62,18 +62,20 @@
 package org.apache.axis.xsd.xml.schema;
 
 /**
- * Enables any element from the specified namespace or namespaces 
+ * Enables any element from the specified namespace or namespaces
  * to appear in the containing complexType element. Represents the
  * World Wide Web Consortium (W3C) any element.
  *
- * @author  mukund
+ * @author mukund
  */
 
 // Feb 15th 2002 - Joni - Processing content will be initialized with "None"
 
 public class XmlSchemaAny extends XmlSchemaParticle {
 
-    /** Creates new XmlSchemaAny */
+    /**
+     * Creates new XmlSchemaAny
+     */
     public XmlSchemaAny() {
         processContent = new XmlSchemaContentProcessing("None");
     }

@@ -61,12 +61,13 @@
 
 package org.apache.axis.xsd.xml.schema;
 
-import org.apache.axis.xsd.xml.QualifiedName;
+import javax.xml.namespace.QName;
+
 
 /**
  * The base class for all simple types and complex types.
  *
- * @author  mukund
+ * @author mukund
  */
 
 // Oct 15th - momo - initial impl
@@ -80,9 +81,11 @@ public class XmlSchemaType extends XmlSchemaAnnotated {
 
     // name of the type
     String name;
-    QualifiedName qualifiedName;
+    QName qualifiedName;
 
-    /** Creates new XmlSchemaType */
+    /**
+     * Creates new XmlSchemaType
+     */
     public XmlSchemaType() {
         finalDerivation = new XmlSchemaDerivationMethod("None");
     }
@@ -127,11 +130,11 @@ public class XmlSchemaType extends XmlSchemaAnnotated {
         this.name = name;
     }
 
-    public QualifiedName getQualifiedName() {
+    public QName getQName() {
         return qualifiedName;
     }
 
-    public void setQualifiedName(QualifiedName qName) {
+    public void setQName(QName qName) {
         this.qualifiedName = qName;
     }
 }

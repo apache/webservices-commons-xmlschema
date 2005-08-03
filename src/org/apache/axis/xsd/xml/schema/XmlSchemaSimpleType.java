@@ -66,7 +66,7 @@ package org.apache.axis.xsd.xml.schema;
  * constraints for the values of attributes or elements with text-only
  * content. Represents the World Wide Web Consortium (W3C) simpleType element.
  *
- * @author  mukund
+ * @author mukund
  */
 
 // Oct 15th - momo - initial impl
@@ -75,7 +75,9 @@ public class XmlSchemaSimpleType extends XmlSchemaType {
 
     XmlSchemaSimpleTypeContent content;
 
-    /** Creates new XmlSchemaSimpleType */
+    /**
+     * Creates new XmlSchemaSimpleType
+     */
     public XmlSchemaSimpleType() {
     }
 

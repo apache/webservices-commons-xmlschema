@@ -65,14 +65,16 @@ package org.apache.axis.xsd.xml.schema;
  * Class for defining enumeration facets. Represents the World Wide
  * Web Consortium (W3C) enumeration facet.
  *
- * @author  mukund
+ * @author mukund
  */
 
 // Vidyanand - 16th Oct - initial implementation
 
 public class XmlSchemaEnumerationFacet extends XmlSchemaFacet {
 
-    /** Creates new XmlSchemaEnumerationFacet */
+    /**
+     * Creates new XmlSchemaEnumerationFacet
+     */
     public XmlSchemaEnumerationFacet() {
     }
 

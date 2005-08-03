@@ -63,10 +63,10 @@ package org.apache.axis.xsd.xml.schema;
 
 /**
  * Class for complex types. Defines a complex type that determines the
- * set of attributes and content of an element. Represents the World Wide 
+ * set of attributes and content of an element. Represents the World Wide
  * Web Consortium (W3C) complexType element.
  *
- * @author  mukund
+ * @author mukund
  */
 
 public class XmlSchemaComplexType extends XmlSchemaType {
@@ -79,7 +79,9 @@ public class XmlSchemaComplexType extends XmlSchemaType {
     XmlSchemaParticle particleType, particle;
     boolean isAbstract, isMixed;
 
-    /** Creates new XmlSchemaComplexType */
+    /**
+     * Creates new XmlSchemaComplexType
+     */
     public XmlSchemaComplexType() {
         attributes = new XmlSchemaObjectCollection();
         block = new XmlSchemaDerivationMethod("None");

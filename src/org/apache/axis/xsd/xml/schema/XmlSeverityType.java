@@ -66,14 +66,16 @@ import org.apache.axis.xsd.enum.Enum;
 /**
  * Represents the severity of the validation event.
  *
- * @author  mukund
+ * @author mukund
  */
 
 public class XmlSeverityType extends Enum {
 
     static String[] members = new String[]{"Error", "Warning"};
 
-    /** Creates new XmlSeverityType */
+    /**
+     * Creates new XmlSeverityType
+     */
     public XmlSeverityType() {
         super();
     }

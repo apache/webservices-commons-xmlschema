@@ -61,22 +61,25 @@
 
 package org.apache.axis.xsd.xml.schema;
 
-import org.apache.axis.xsd.xml.QualifiedName;
+import javax.xml.namespace.QName;
+
 
 /**
- * Class for complex types with a complex content model that are derived 
+ * Class for complex types with a complex content model that are derived
  * by restriction. Restricts the contents of the complex type to a subset
- * of the inherited complex type. Represents the World Wide Web Consortium 
+ * of the inherited complex type. Represents the World Wide Web Consortium
  * (W3C) restriction element for complex content.
  *
- * @author  mukund
+ * @author mukund
  */
 
 // Vidyanand - 16th Oct - initial implementation
 
 public class XmlSchemaComplexContentRestriction extends XmlSchemaContent {
 
-    /** Creates new XmlSchemaComplexContentRestriction */
+    /**
+     * Creates new XmlSchemaComplexContentRestriction
+     */
     public XmlSchemaComplexContentRestriction() {
         attributes = new XmlSchemaObjectCollection();
     }
@@ -102,13 +105,13 @@ public class XmlSchemaComplexContentRestriction extends XmlSchemaContent {
     }
 
     /* Name of the built-in data type, simple type, or complex type.*/
-    QualifiedName baseTypeName;
+    QName baseTypeName;
 
-    public void setBaseTypeName(QualifiedName baseTypeName) {
+    public void setBaseTypeName(QName baseTypeName) {
         this.baseTypeName = baseTypeName;
     }
 
-    public QualifiedName getBaseTypeName() {
+    public QName getBaseTypeName() {
         return this.baseTypeName;
     }
 

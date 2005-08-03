@@ -62,15 +62,17 @@
 package org.apache.axis.xsd.xml.schema;
 
 /**
- * The class to import schema components from any schema. 
+ * The class to import schema components from any schema.
  * Represents the World Wide Web Consortium (W3C) import element.
  *
- * @author  mukund
+ * @author mukund
  */
 
 public class XmlSchemaImport extends XmlSchemaExternal {
 
-    /** Creates new XmlSchemaImport */
+    /**
+     * Creates new XmlSchemaImport
+     */
     public XmlSchemaImport() {
         super();
     }

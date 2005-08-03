@@ -64,16 +64,18 @@ package org.apache.axis.xsd.xml.schema;
 import org.apache.axis.xsd.enum.Enum;
 
 /**
- * Indicator of how the attribute is used.  
+ * Indicator of how the attribute is used.
  *
- * @author  mukund
+ * @author mukund
  */
 public class XmlSchemaUse extends Enum {
 
     static String[] members = new String[]{"None", "Optional",
                                            "Prohibited", "Required"};
 
-    /** Creates new XmlSchemaUse */
+    /**
+     * Creates new XmlSchemaUse
+     */
     public XmlSchemaUse() {
         super();
     }

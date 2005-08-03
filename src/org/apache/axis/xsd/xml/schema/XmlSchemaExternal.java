@@ -64,12 +64,14 @@ package org.apache.axis.xsd.xml.schema;
 /**
  * An abstract class. Provides information about the included schema.
  *
- * @author  mukund
+ * @author mukund
  */
 
 public abstract class XmlSchemaExternal extends XmlSchemaAnnotated {
 
-    /** Creates new XmlSchemaExternal */
+    /**
+     * Creates new XmlSchemaExternal
+     */
     protected XmlSchemaExternal() {
     }
 

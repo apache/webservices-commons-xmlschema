@@ -64,10 +64,10 @@ package org.apache.axis.xsd.xml.schema;
 import org.w3c.dom.NodeList;
 
 /**
- * Defines application specific information within an annotation. 
+ * Defines application specific information within an annotation.
  * Represents the World Wide Web Consortium (W3C) appinfo element.
  *
- * @author  mukund
+ * @author mukund
  */
 
 // Jan 24 2002 - Joni - Change the Node into NodeList
@@ -85,10 +85,10 @@ public class XmlSchemaAppInfo extends XmlSchemaObject {
      */
     NodeList markup;
 
-    /** 
-     * Creates new XmlSchemaAppInfo 
+    /**
+     * Creates new XmlSchemaAppInfo
      * The default constructor initializes all fields to their default values.
-     * */
+     */
     public XmlSchemaAppInfo() {
     }
 

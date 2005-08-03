@@ -64,12 +64,14 @@ package org.apache.axis.xsd.xml.schema;
 /**
  * Abstract class for simple type content classes.
  *
- * @author  mukund
+ * @author mukund
  */
 
 public abstract class XmlSchemaSimpleTypeContent extends XmlSchemaAnnotated {
 
-    /** Creates new XmlSchemaSimpleTypeContent */
+    /**
+     * Creates new XmlSchemaSimpleTypeContent
+     */
     protected XmlSchemaSimpleTypeContent() {
     }
 

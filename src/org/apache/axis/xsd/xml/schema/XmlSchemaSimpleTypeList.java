@@ -61,18 +61,21 @@
 
 package org.apache.axis.xsd.xml.schema;
 
-import org.apache.axis.xsd.xml.QualifiedName;
+import javax.xml.namespace.QName;
+
 
 /**
  * Class for the list of simpleType elements. Defines a simpleType element
  * as a list of values of a specified data type. Represents the World Wide
  * Web Consortium (W3C) list element.
  *
- * @author  mukund
+ * @author mukund
  */
 public class XmlSchemaSimpleTypeList extends XmlSchemaSimpleTypeContent {
 
-    /** Creates new XmlSchemaSimpleTypeList */
+    /**
+     * Creates new XmlSchemaSimpleTypeList
+     */
     public XmlSchemaSimpleTypeList() {
     }
 
@@ -86,13 +89,13 @@ public class XmlSchemaSimpleTypeList extends XmlSchemaSimpleTypeContent {
         this.itemType = itemType;
     }
 
-    QualifiedName itemTypeName;
+    QName itemTypeName;
 
-    public QualifiedName getItemTypeName() {
+    public QName getItemTypeName() {
         return this.itemTypeName;
     }
 
-    public void setItemTypeName(QualifiedName itemTypeName) {
+    public void setItemTypeName(QName itemTypeName) {
         this.itemTypeName = itemTypeName;
     }
 

@@ -64,13 +64,14 @@ package org.apache.axis.xsd.xml.schema;
 import org.apache.axis.xsd.xml.XmlTokenizedType;
 
 /**
- *
- * @author  mukund
+ * @author mukund
  */
 
 public abstract class XmlSchemaDatatype {
 
-    /** Creates new XmlSchemaDatatype */
+    /**
+     * Creates new XmlSchemaDatatype
+     */
     public XmlSchemaDatatype() {
     }
 

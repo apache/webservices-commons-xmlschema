@@ -62,13 +62,14 @@
 package org.apache.axis.xsd.xml.schema;
 
 /**
- *
- * @author  mukund
+ * @author mukund
  */
 
 public class ValidationEventHandler {
 
-    /** Creates new ValidationEventHandler */
+    /**
+     * Creates new ValidationEventHandler
+     */
     public ValidationEventHandler() {
     }
 

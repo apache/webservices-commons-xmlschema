@@ -65,13 +65,14 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 
 /**
- *
- * @author  mukund
+ * @author mukund
  */
 
 public class Tokenizer {
 
-    /** Cannot create new Tokenizer */
+    /**
+     * Cannot create new Tokenizer
+     */
     private Tokenizer() {
     }
 

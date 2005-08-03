@@ -62,15 +62,17 @@
 package org.apache.axis.xsd.xml.schema;
 
 /**
- * Enables any attribute from the specified namespace or namespaces 
+ * Enables any attribute from the specified namespace or namespaces
  * to appear in the containing complexType element. Represents the
  * World Wide Web Consortium (W3C) anyAttribute element.
  *
- * @author  mukund
+ * @author mukund
  */
 public class XmlSchemaAnyAttribute extends XmlSchemaAnnotated {
 
-    /** Creates new XmlSchemaAnyAttribute */
+    /**
+     * Creates new XmlSchemaAnyAttribute
+     */
     public XmlSchemaAnyAttribute() {
         processContent = new XmlSchemaContentProcessing("None");
     }

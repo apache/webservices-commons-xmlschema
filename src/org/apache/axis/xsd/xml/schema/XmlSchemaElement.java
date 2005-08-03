@@ -61,12 +61,13 @@
 
 package org.apache.axis.xsd.xml.schema;
 
-import org.apache.axis.xsd.xml.QualifiedName;
+import javax.xml.namespace.QName;
+
 
 /**
- * Class for elements. Represents the World Wide Web Consortium (W3C) element element.  
+ * Class for elements. Represents the World Wide Web Consortium (W3C) element element.
  *
- * @author  mukund
+ * @author mukund
  */
 
 // October 15th - momo - initial implementation
@@ -79,21 +80,21 @@ public class XmlSchemaElement extends XmlSchemaParticle {
     XmlSchemaDerivationMethod block;
 
     /**
-     * The value after an element has been compiled to post-schema infoset. 
+     * The value after an element has been compiled to post-schema infoset.
      * This value is either from the type itself or, if not defined on the type, taken from the schema element.
      */
     XmlSchemaDerivationMethod blockResolved;
     XmlSchemaObjectCollection constraints;
 
     /**
-     * Provides the default value of the element if its content 
+     * Provides the default value of the element if its content
      * is a simple type or the element's content is textOnly.
      */
     String defaultValue;
     String fixedValue;
 
     /**
-     * Returns the correct common runtime library 
+     * Returns the correct common runtime library
      * object based upon the SchemaType for the element.
      */
     Object elementType;
@@ -102,34 +103,36 @@ public class XmlSchemaElement extends XmlSchemaParticle {
     XmlSchemaDerivationMethod finalDerivationResolved;
 
     /**
-     * The default value is the value of the elementFormDefault attribute for the schema element containing the attribute. 
+     * The default value is the value of the elementFormDefault attribute for the schema element containing the attribute.
      * The default is Unqualified.
      */
     XmlSchemaForm form;
     boolean isAbstract;
     boolean isNillable;
     String name;
-    QualifiedName qualifiedName;
-    QualifiedName refName;
+    QName qualifiedName;
+    QName refName;
 
     /**
-     * Returns the type of the element. 
+     * Returns the type of the element.
      * This can either be a complex type or a simple type.
      */
     XmlSchemaType schemaType;
 
     /**
-     * QualifiedName of a built-in data type defined in this schema or another 
+     * QName of a built-in data type defined in this schema or another
      * schema indicated by the specified namespace.
      */
-    QualifiedName schemaTypeName;
+    QName schemaTypeName;
 
     /**
-     * QualifiedName of an element that can be a substitute for this element.
+     * QName of an element that can be a substitute for this element.
      */
-    QualifiedName substitutionGroup;
+    QName substitutionGroup;
 
-    /** Creates new XmlSchemaElement */
+    /**
+     * Creates new XmlSchemaElement
+     */
     public XmlSchemaElement() {
         constraints = new XmlSchemaObjectCollection();
         isAbstract = false;
@@ -218,19 +221,19 @@ public class XmlSchemaElement extends XmlSchemaParticle {
         this.name = name;
     }
 
-    public QualifiedName getRefName() {
+    public QName getRefName() {
         return refName;
     }
 
-    public void setRefName(QualifiedName refName) {
+    public void setRefName(QName refName) {
         this.refName = refName;
     }
 
-    public QualifiedName getQualifiedName() {
+    public QName getQName() {
         return qualifiedName;
     }
 
-    public void setQualifiedName(QualifiedName qualifiedName) {
+    public void setQName(QName qualifiedName) {
         this.qualifiedName = qualifiedName;
     }
 
@@ -242,19 +245,19 @@ public class XmlSchemaElement extends XmlSchemaParticle {
         this.schemaType = schemaType;
     }
 
-    public QualifiedName getSchemaTypeName() {
+    public QName getSchemaTypeName() {
         return schemaTypeName;
     }
 
-    public void setSchemaTypeName(QualifiedName schemaTypeName) {
+    public void setSchemaTypeName(QName schemaTypeName) {
         this.schemaTypeName = schemaTypeName;
     }
 
-    public QualifiedName getSubstitutionGroup() {
+    public QName getSubstitutionGroup() {
         return substitutionGroup;
     }
 
-    public void setSubstitutionGroup(QualifiedName substitutionGroup) {
+    public void setSubstitutionGroup(QName substitutionGroup) {
         this.substitutionGroup = substitutionGroup;
     }
 

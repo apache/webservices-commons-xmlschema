@@ -64,13 +64,15 @@ package org.apache.axis.xsd.xml.schema;
 /**
  * An abstract class for XmlSchemaChoice, XmlSchemaAll, or XmlSchemaSequence.
  *
- * @author  mukund
+ * @author mukund
  */
 
 public abstract class XmlSchemaGroupBase extends XmlSchemaParticle {
     XmlSchemaObjectCollection items;
 
-    /** Creates new XmlSchemaGroupBase */
+    /**
+     * Creates new XmlSchemaGroupBase
+     */
     public XmlSchemaGroupBase() {
         items = new XmlSchemaObjectCollection();
     }

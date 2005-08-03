@@ -78,7 +78,9 @@ public class DOMUtil {
     // Constructors
     //
 
-    /** This class cannot be instantiated. */
+    /**
+     * This class cannot be instantiated.
+     */
     protected DOMUtil() {
     }
 
@@ -86,7 +88,9 @@ public class DOMUtil {
     // Public static methods
     //
 
-    /** Finds and returns the first child element node. */
+    /**
+     * Finds and returns the first child element node.
+     */
     public static Element getFirstChildElement(Node parent) {
 
         // search for node
@@ -103,7 +107,9 @@ public class DOMUtil {
 
     } // getFirstChildElement(Node):Element
 
-    /** Finds and returns the last child element node. */
+    /**
+     * Finds and returns the last child element node.
+     */
     public static Element getLastChildElement(Node parent) {
 
         // search for node
@@ -121,7 +127,9 @@ public class DOMUtil {
     } // getLastChildElement(Node):Element
 
 
-    /** Finds and returns the next sibling element node. */
+    /**
+     * Finds and returns the next sibling element node.
+     */
     public static Element getNextSiblingElement(Node node) {
 
         // search for node
@@ -138,7 +146,9 @@ public class DOMUtil {
 
     } // getNextSiblingElement(Node):Element
 
-    /** Finds and returns the first child node with the given name. */
+    /**
+     * Finds and returns the first child node with the given name.
+     */
     public static Element getFirstChildElement(Node parent, String elemName) {
 
         // search for node
@@ -157,7 +167,9 @@ public class DOMUtil {
 
     } // getFirstChildElement(Node,String):Element
 
-    /** Finds and returns the last child node with the given name. */
+    /**
+     * Finds and returns the last child node with the given name.
+     */
     public static Element getLastChildElement(Node parent, String elemName) {
 
         // search for node
@@ -176,7 +188,9 @@ public class DOMUtil {
 
     } // getLastChildElement(Node,String):Element
 
-    /** Finds and returns the next sibling node with the given name. */
+    /**
+     * Finds and returns the next sibling node with the given name.
+     */
     public static Element getNextSiblingElement(Node node, String elemName) {
 
         // search for node
@@ -195,7 +209,9 @@ public class DOMUtil {
 
     } // getNextSiblingdElement(Node,String):Element
 
-    /** Finds and returns the first child node with the given qualified name. */
+    /**
+     * Finds and returns the first child node with the given qualified name.
+     */
     public static Element getFirstChildElementNS(Node parent,
                                                  String uri, String localpart) {
 
@@ -217,7 +233,9 @@ public class DOMUtil {
 
     } // getFirstChildElementNS(Node,String,String):Element
 
-    /** Finds and returns the last child node with the given qualified name. */
+    /**
+     * Finds and returns the last child node with the given qualified name.
+     */
     public static Element getLastChildElementNS(Node parent,
                                                 String uri, String localpart) {
 
@@ -239,7 +257,9 @@ public class DOMUtil {
 
     } // getLastChildElementNS(Node,String,String):Element
 
-    /** Finds and returns the next sibling node with the given qualified name. */
+    /**
+     * Finds and returns the next sibling node with the given qualified name.
+     */
     public static Element getNextSiblingElementNS(Node node,
                                                   String uri, String localpart) {
 
@@ -261,7 +281,9 @@ public class DOMUtil {
 
     } // getNextSiblingdElementNS(Node,String,String):Element
 
-    /** Finds and returns the first child node with the given name. */
+    /**
+     * Finds and returns the first child node with the given name.
+     */
     public static Element getFirstChildElement(Node parent, String elemNames[]) {
 
         // search for node
@@ -282,7 +304,9 @@ public class DOMUtil {
 
     } // getFirstChildElement(Node,String[]):Element
 
-    /** Finds and returns the last child node with the given name. */
+    /**
+     * Finds and returns the last child node with the given name.
+     */
     public static Element getLastChildElement(Node parent, String elemNames[]) {
 
         // search for node
@@ -303,7 +327,9 @@ public class DOMUtil {
 
     } // getLastChildElement(Node,String[]):Element
 
-    /** Finds and returns the next sibling node with the given name. */
+    /**
+     * Finds and returns the next sibling node with the given name.
+     */
     public static Element getNextSiblingElement(Node node, String elemNames[]) {
 
         // search for node
@@ -324,7 +350,9 @@ public class DOMUtil {
 
     } // getNextSiblingdElement(Node,String[]):Element
 
-    /** Finds and returns the first child node with the given qualified name. */
+    /**
+     * Finds and returns the first child node with the given qualified name.
+     */
     public static Element getFirstChildElementNS(Node parent,
                                                  String[][] elemNames) {
 
@@ -348,7 +376,9 @@ public class DOMUtil {
 
     } // getFirstChildElementNS(Node,String[][]):Element
 
-    /** Finds and returns the last child node with the given qualified name. */
+    /**
+     * Finds and returns the last child node with the given qualified name.
+     */
     public static Element getLastChildElementNS(Node parent,
                                                 String[][] elemNames) {
 
@@ -372,7 +402,9 @@ public class DOMUtil {
 
     } // getLastChildElementNS(Node,String[][]):Element
 
-    /** Finds and returns the next sibling node with the given qualified name. */
+    /**
+     * Finds and returns the next sibling node with the given qualified name.
+     */
     public static Element getNextSiblingElementNS(Node node,
                                                   String[][] elemNames) {
 
@@ -517,12 +549,13 @@ public class DOMUtil {
         return node.getNodeName();
     } // getLocalName(Element):  String
 
-    /** returns local name of this element if not null, otherwise
-     returns the name of the node
+    /**
+     * returns local name of this element if not null, otherwise
+     * returns the name of the node
      */
     public static String getLocalName(Node node) {
         String name = node.getLocalName();
-        return (name != null)? name:node.getNodeName();
+        return (name != null) ? name : node.getNodeName();
     } // getLocalName(Element):  String
 
     public static Element getParent(Element elem) {

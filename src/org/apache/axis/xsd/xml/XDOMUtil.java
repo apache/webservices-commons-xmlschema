@@ -65,12 +65,13 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 /**
- *
- * @author  mukund
+ * @author mukund
  */
 public class XDOMUtil extends DOMUtil {
 
-    /** Creates a new instance of XDOMUtil */
+    /**
+     * Creates a new instance of XDOMUtil
+     */
     private XDOMUtil() {
     }
 

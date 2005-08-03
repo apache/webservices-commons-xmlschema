@@ -65,14 +65,16 @@ package org.apache.axis.xsd.xml.schema;
  * Class for defining fractionDigits facets. Represents the World Wide
  * Web Consortium (W3C) fractionDigits facet.
  *
- * @author  mukund
+ * @author mukund
  */
 
 // Vidyanand - 16th Oct - initial implementation
 
 public class XmlSchemaFractionDigitsFacet extends XmlSchemaNumericFacet {
 
-    /** Creates new XmlSchemaFractionDigitsFacet */
+    /**
+     * Creates new XmlSchemaFractionDigitsFacet
+     */
     public XmlSchemaFractionDigitsFacet() {
     }
 

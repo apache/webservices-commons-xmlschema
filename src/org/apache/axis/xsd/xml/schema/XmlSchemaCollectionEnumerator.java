@@ -63,12 +63,14 @@ package org.apache.axis.xsd.xml.schema;
 
 /**
  * Supports a simple iteration over a collection. This class cannot be inherited.
- * 
- * @author  mukund
+ *
+ * @author mukund
  */
 public final class XmlSchemaCollectionEnumerator {
 
-    /** Creates new XmlSchemaCollectionEnumerator */
+    /**
+     * Creates new XmlSchemaCollectionEnumerator
+     */
     public XmlSchemaCollectionEnumerator() {
     }
 

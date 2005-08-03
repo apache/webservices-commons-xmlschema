@@ -65,11 +65,13 @@ package org.apache.axis.xsd.xml.schema;
 /**
  * An enumerator class to walk the XmlSchemaObjectCollection collections.
  *
- * @author  mukund
+ * @author mukund
  */
 public class XmlSchemaObjectEnumerator {
 
-    /** Creates new XmlSchemaObjectEnumerator */
+    /**
+     * Creates new XmlSchemaObjectEnumerator
+     */
     public XmlSchemaObjectEnumerator() {
     }
 

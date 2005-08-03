@@ -64,14 +64,16 @@ package org.apache.axis.xsd.xml.schema;
 /**
  * An abstract class for schema content.
  *
- * @author  mukund
+ * @author mukund
  */
 
 // Vidyanand - 16th Oct - initial implementation
 
 public abstract class XmlSchemaContent extends XmlSchemaAnnotated {
 
-    /** Creates new XmlSchemaContent */
+    /**
+     * Creates new XmlSchemaContent
+     */
     protected XmlSchemaContent() {
     }
 

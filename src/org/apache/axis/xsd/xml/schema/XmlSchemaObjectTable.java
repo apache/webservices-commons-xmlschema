@@ -62,19 +62,18 @@
 
 package org.apache.axis.xsd.xml.schema;
 
-import org.apache.axis.xsd.xml.QualifiedName;
-
+import javax.xml.namespace.QName;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
 /**
- * A collection class that provides read-only helpers for XmlSchemaObject 
- * objects. This class is used to provide the collections for contained 
- * elements that are within the schema as collections that are accessed 
- * from the XmlSchema class (for example, Attributes, AttributeGroups, 
+ * A collection class that provides read-only helpers for XmlSchemaObject
+ * objects. This class is used to provide the collections for contained
+ * elements that are within the schema as collections that are accessed
+ * from the XmlSchema class (for example, Attributes, AttributeGroups,
  * Elements, and so on).
  *
- * @author  mukund
+ * @author mukund
  */
 
 // Vidyanand - 17th Oct - initial implementation
@@ -83,7 +82,9 @@ public class XmlSchemaObjectTable {
 
     Hashtable collection;
 
-    /** Creates new XmlSchemaObjectTable */
+    /**
+     * Creates new XmlSchemaObjectTable
+     */
     public XmlSchemaObjectTable() {
         this.collection = new Hashtable();
         ;
@@ -93,7 +94,7 @@ public class XmlSchemaObjectTable {
         return this.collection.size();
     }
 
-    public XmlSchemaObject getItem(QualifiedName name) {
+    public XmlSchemaObject getItem(QName name) {
         return (XmlSchemaObject) collection.get(name);
     }
 
@@ -105,7 +106,7 @@ public class XmlSchemaObjectTable {
         return collection.elements();
     }
 
-    public boolean contains(QualifiedName name) {
+    public boolean contains(QName name) {
         return collection.contains(name);
     }
 

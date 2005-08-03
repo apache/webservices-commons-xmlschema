@@ -66,7 +66,7 @@ import org.apache.axis.xsd.enum.Enum;
 /**
  * Provides different methods for preventing derivation.
  *
- * @author  mukund
+ * @author mukund
  */
 
 public class XmlSchemaDerivationMethod extends Enum {
@@ -74,7 +74,9 @@ public class XmlSchemaDerivationMethod extends Enum {
                                            "List", "None", "Restriction",
                                            "Substitution", "Union"};
 
-    /** Creates new XmlSeverityType */
+    /**
+     * Creates new XmlSeverityType
+     */
     public XmlSchemaDerivationMethod() {
         super();
     }

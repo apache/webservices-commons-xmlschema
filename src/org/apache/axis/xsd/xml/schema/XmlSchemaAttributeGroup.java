@@ -62,17 +62,19 @@
 package org.apache.axis.xsd.xml.schema;
 
 /**
- * Class for attribute groups. Groups a set of attribute declarations 
- * so that they can be incorporated as a group into complex type 
- * definitions. Represents the World Wide Web Consortium (W3C) 
+ * Class for attribute groups. Groups a set of attribute declarations
+ * so that they can be incorporated as a group into complex type
+ * definitions. Represents the World Wide Web Consortium (W3C)
  * attributeGroup element.
  *
- * @author  mukund
+ * @author mukund
  */
 
 public class XmlSchemaAttributeGroup extends XmlSchemaAnnotated {
 
-    /** Creates new XmlSchemaAttributeGroup */
+    /**
+     * Creates new XmlSchemaAttributeGroup
+     */
     public XmlSchemaAttributeGroup() {
         attributes = new XmlSchemaObjectCollection();
     }

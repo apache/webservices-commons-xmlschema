@@ -61,21 +61,22 @@
 
 package org.apache.axis.xsd.xml.schema;
 
-import org.apache.axis.xsd.xml.QualifiedName;
+import javax.xml.namespace.QName;
+
 
 /**
  * Class for the union of simpleType elements. Defines a simpleType element
- * as a list of values of a specified data type. Represents the World 
+ * as a list of values of a specified data type. Represents the World
  * Wide Web Consortium (W3C) union element.
  *
- * @author  mukund
+ * @author mukund
  */
 
 public class XmlSchemaSimpleTypeUnion extends XmlSchemaSimpleTypeContent {
 
     XmlSchemaObjectCollection baseTypes;
     String memberTypesSource;
-    QualifiedName[] memberTypesQNames;
+    QName[] memberTypesQNames;
 
     public XmlSchemaSimpleTypeUnion() {
         baseTypes = new XmlSchemaObjectCollection();
@@ -93,7 +94,7 @@ public class XmlSchemaSimpleTypeUnion extends XmlSchemaSimpleTypeContent {
         return this.memberTypesSource;
     }
 
-    public QualifiedName[] getMemberTypesQNames() {
+    public QName[] getMemberTypesQNames() {
         return this.memberTypesQNames;
     }
 

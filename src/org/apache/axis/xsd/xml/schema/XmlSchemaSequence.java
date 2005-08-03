@@ -63,23 +63,25 @@
 package org.apache.axis.xsd.xml.schema;
 
 /**
- * Requires the elements in the group to appear in the specified sequence 
- * within the containing element. Represents the World Wide Web Consortium 
+ * Requires the elements in the group to appear in the specified sequence
+ * within the containing element. Represents the World Wide Web Consortium
  * (W3C) sequence (compositor) element.
  *
- * @author  mukund
+ * @author mukund
  */
 
 public class XmlSchemaSequence extends XmlSchemaGroupBase {
 
-    /** Creates new XmlSchemaSequence */
+    /**
+     * Creates new XmlSchemaSequence
+     */
     public XmlSchemaSequence() {
     }
 
     /**
-     *  The elements contained within the compositor. 
-     *	Collection of XmlSchemaElement, XmlSchemaGroupRef, 
-     *  XmlSchemaChoice, XmlSchemaSequence, or XmlSchemaAny.
+     * The elements contained within the compositor.
+     * Collection of XmlSchemaElement, XmlSchemaGroupRef,
+     * XmlSchemaChoice, XmlSchemaSequence, or XmlSchemaAny.
      */
     public XmlSchemaObjectCollection getItems() {
         return items;

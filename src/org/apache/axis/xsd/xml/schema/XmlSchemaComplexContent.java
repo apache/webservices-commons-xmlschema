@@ -62,19 +62,21 @@
 package org.apache.axis.xsd.xml.schema;
 
 /**
- * Class that represents the complex content model for complex types. 
- * Contains extensions or restrictions on a complex type that has mixed 
- * content or elements only. Represents the World Wide Web Consortium (W3C) 
+ * Class that represents the complex content model for complex types.
+ * Contains extensions or restrictions on a complex type that has mixed
+ * content or elements only. Represents the World Wide Web Consortium (W3C)
  * complexContent element.
  *
- * @author  mukund
+ * @author mukund
  */
 
 // Vidyanand - 16th Oct - initial implementation
 
 public class XmlSchemaComplexContent extends XmlSchemaContentModel {
 
-    /** Creates new XmlSchemaComplexContent */
+    /**
+     * Creates new XmlSchemaComplexContent
+     */
     public XmlSchemaComplexContent() {
     }
 

@@ -62,8 +62,7 @@
 package org.apache.axis.xsd.enum;
 
 /**
- *
- * @author  mukund
+ * @author mukund
  */
 
 public abstract class Enum {
