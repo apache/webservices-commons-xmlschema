@@ -104,14 +104,6 @@ public class XmlSchemaSerializer {
         schema_ns = new Hashtable();
     }
 
-    public static void main(String[] args) throws Exception {
-        XmlSchema schema = XmlSchema.read(new java.io.FileReader("E:/projects/core/xml/schema/test/serializerTestCase/"
-                                                                 + "Test8ElementRefTest.xsd"), null);
-        //XmlSchemaSerializer serializer = new XmlSchemaSerializer();
-        XmlSchemaSerializer.serializeSchema(schema, true);
-    }
-
-
     /**
      * *********************************************************************
      * Document[]  serializeSchema(XmlSchema schemaObj,

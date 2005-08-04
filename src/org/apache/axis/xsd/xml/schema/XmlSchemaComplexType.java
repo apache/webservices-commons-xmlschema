@@ -82,7 +82,8 @@ public class XmlSchemaComplexType extends XmlSchemaType {
     /**
      * Creates new XmlSchemaComplexType
      */
-    public XmlSchemaComplexType() {
+    public XmlSchemaComplexType(XmlSchema schema) {
+        super(schema);
         attributes = new XmlSchemaObjectCollection();
         block = new XmlSchemaDerivationMethod("None");
         isAbstract = false;

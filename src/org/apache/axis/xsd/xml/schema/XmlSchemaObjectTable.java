@@ -63,8 +63,8 @@
 package org.apache.axis.xsd.xml.schema;
 
 import javax.xml.namespace.QName;
-import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * A collection class that provides read-only helpers for XmlSchemaObject
@@ -80,14 +80,13 @@ import java.util.Hashtable;
 
 public class XmlSchemaObjectTable {
 
-    Hashtable collection;
+    HashMap collection;
 
     /**
      * Creates new XmlSchemaObjectTable
      */
     public XmlSchemaObjectTable() {
-        this.collection = new Hashtable();
-        ;
+        this.collection = new HashMap();
     }
 
     public int getCount() {
@@ -98,21 +97,19 @@ public class XmlSchemaObjectTable {
         return (XmlSchemaObject) collection.get(name);
     }
 
-    public Enumeration getNames() {
-        return collection.keys();
+    public Iterator getNames() {
+        return collection.keySet().iterator();
     }
 
-    public Enumeration getValues() {
-        return collection.elements();
+    public Iterator getValues() {
+        return collection.values().iterator();
     }
 
     public boolean contains(QName name) {
-        return collection.contains(name);
+        return collection.containsKey(name);
     }
 
-    //TODO: think of smthg better 
-    public Object getEnumerator() {
-        return null;
+    public void add(QName name, XmlSchemaObject value) {
+        collection.put(name, value);
     }
-
 }

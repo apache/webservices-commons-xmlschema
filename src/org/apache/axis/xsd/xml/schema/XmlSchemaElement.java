@@ -72,7 +72,7 @@ import javax.xml.namespace.QName;
 
 // October 15th - momo - initial implementation
 
-public class XmlSchemaElement extends XmlSchemaParticle {
+public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver {
 
     /**
      * Attribute used to block a type derivation.
@@ -301,5 +301,9 @@ public class XmlSchemaElement extends XmlSchemaParticle {
         xml += "</" + prefix + "element>\n";
 
         return xml;
+    }
+
+    public void setType(XmlSchemaType type) {
+        this.schemaType = type;
     }
 }

@@ -81,12 +81,14 @@ public class XmlSchemaType extends XmlSchemaAnnotated {
 
     // name of the type
     String name;
-    QName qualifiedName;
+
+    XmlSchema schema;
 
     /**
      * Creates new XmlSchemaType
      */
-    public XmlSchemaType() {
+    public XmlSchemaType(XmlSchema schema) {
+        this.schema = schema;
         finalDerivation = new XmlSchemaDerivationMethod("None");
     }
 
@@ -131,10 +133,6 @@ public class XmlSchemaType extends XmlSchemaAnnotated {
     }
 
     public QName getQName() {
-        return qualifiedName;
-    }
-
-    public void setQName(QName qName) {
-        this.qualifiedName = qName;
+        return new QName(schema.targetNamespace, name);
     }
 }
