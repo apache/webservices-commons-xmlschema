@@ -110,11 +110,13 @@ public class XmlSchema extends XmlSchemaAnnotated {
     String targetNamespace = "DEFAULT", version;
     Hashtable namespaces;
     String schema_ns_prefix = "";
+    XmlSchemaCollection parent;
 
     /**
      * Creates new XmlSchema
      */
-    public XmlSchema() {
+    public XmlSchema(XmlSchemaCollection parent) {
+        this.parent = parent;
         attributeFormDefault = new XmlSchemaForm("Qualified");
         elementFormDefault = new XmlSchemaForm("Qualified");
         blockDefault = new XmlSchemaDerivationMethod("None");
@@ -130,13 +132,17 @@ public class XmlSchema extends XmlSchemaAnnotated {
         schemaTypes = new XmlSchemaObjectTable();
     }
 
-    public XmlSchema(String namespace) {
-        this();
+    public XmlSchema(String namespace, XmlSchemaCollection parent) {
+        this(parent);
         targetNamespace = namespace;
     }
 
     protected String getNamespace(String prefix) {
-        return "" + namespaces.get(prefix);
+        String ns = (String)namespaces.get(prefix);
+        if (ns == null) {
+            return parent.getNamespaceForPrefix(prefix);
+        }
+        return ns;
     }
 
     public XmlSchemaForm getAttributeFormDefault() {

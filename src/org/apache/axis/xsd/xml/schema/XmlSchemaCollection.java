@@ -94,7 +94,12 @@ public final class XmlSchemaCollection {
      */
     Map namespaces = new HashMap();
 
-    XmlSchema xsd = new XmlSchema(XmlSchema.SCHEMA_NS);
+    /**
+     * In-scope namespaces for XML processing
+     */
+    Map inScopeNamespaces = new HashMap();
+
+    XmlSchema xsd = new XmlSchema(XmlSchema.SCHEMA_NS, this);
 
     public void init() {
         XmlSchemaSimpleType type;
@@ -215,5 +220,13 @@ public final class XmlSchemaCollection {
             receiver.setType(type);
         }
         unresolvedTypes.remove(typeName);
+    }
+
+    public String getNamespaceForPrefix(String prefix) {
+        return (String)inScopeNamespaces.get(prefix);
+    }
+
+    public void mapNamespace(String prefix, String namespaceURI) {
+        inScopeNamespaces.put(prefix, namespaceURI);
     }
 }

@@ -29,7 +29,7 @@ public class SchemaBuilder {
 
     SchemaBuilder(XmlSchemaCollection collection) {
         this.collection = collection;
-        schema = new XmlSchema();
+        schema = new XmlSchema(collection);
     }
 
     XmlSchema build(Document doc, ValidationEventHandler veh) {
@@ -1392,7 +1392,7 @@ public class SchemaBuilder {
             String namespace = "";
 
             if (args.length > 1) {
-                Object result = schema.namespaces.get(args[0]);
+                Object result = schema.getNamespace(args[0]);
                 if (result == null)
                     throw new XmlSchemaException(
                             "Couldn't map prefix '" + args[0] +
@@ -1410,6 +1410,7 @@ public class SchemaBuilder {
                 // Could be a forward reference...
                 collection.addUnresolvedType(typeQName, element);
             }
+            element.schemaType = type;
         } else if (el.getAttributeNode("ref") != null) {
             String refName = el.getAttribute("ref");
 
@@ -1798,7 +1799,7 @@ public class SchemaBuilder {
 
     XmlSchema getXmlSchemaFromLocation(String schemaLocation) {
         try {
-            XmlSchema s = new XmlSchema();
+            XmlSchema s = new XmlSchema(collection);
             java.net.URL u = new java.net.URL(schemaLocation);
             java.io.InputStream uStream = u.openConnection().getInputStream();
             java.io.InputStreamReader readerS =

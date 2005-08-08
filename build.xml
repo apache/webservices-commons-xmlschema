@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="XmlSchema" basedir="." default="compile">
+<project name="XmlSchema" basedir="." default="jar">
 
 	<property name="src.dir" value="${basedir}/src"/>
 	<property name="project.name" value="XmlSchema"/>
