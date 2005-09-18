@@ -85,7 +85,7 @@ public class XmlSchemaAttribute extends XmlSchemaAnnotated {
      * Creates new XmlSchemaAttribute
      */
     public XmlSchemaAttribute() {
-        form = new XmlSchemaForm("None");
+        form = new XmlSchemaForm(XmlSchemaForm.NONE);
         use = new XmlSchemaUse("None");
     }
 

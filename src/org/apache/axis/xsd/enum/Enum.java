@@ -92,7 +92,7 @@ public abstract class Enum {
                     break;
                 }
                 if (i == values.length - 1)
-                    throw new EnumValueException("Bad Enumeration value");
+                    throw new EnumValueException("Bad Enumeration value '" + value + "'");
             }
         }
     }

@@ -88,7 +88,7 @@ public class SchemaBuilder {
                 schema.items.add(type);
                 collection.resolveType(type.getQName(), type);
             } else if (el.getLocalName().equals("element")) {
-                XmlSchemaElement element = handleElement(schema, el, schemaEl);
+                XmlSchemaElement element = handleElement(schema, el, schemaEl, true);
                 if (element.qualifiedName != null)
                     schema.elements.collection.put(element.qualifiedName, element);
                 else if (element.refName != null)
@@ -951,7 +951,7 @@ public class SchemaBuilder {
                 sequence.items.add(seq);
             } else if (el.getLocalName().equals("element")) {
                 XmlSchemaElement element = handleElement(schema, el,
-                                                         schemaEl);
+                                                         schemaEl, false);
                 sequence.items.add(element);
             } else if (el.getLocalName().equals("group")) {
                 XmlSchemaGroupRef group = handleGroupRef(schema, el,
@@ -1021,7 +1021,7 @@ public class SchemaBuilder {
                 choice.items.add(seq);
             } else if (el.getLocalName().equals("element")) {
                 XmlSchemaElement element =
-                        handleElement(schema, el, schemaEl);
+                        handleElement(schema, el, schemaEl, false);
                 choice.items.add(element);
             } else if (el.getLocalName().equals("group")) {
                 XmlSchemaGroupRef group =
@@ -1051,7 +1051,7 @@ public class SchemaBuilder {
              el != null; el = XDOMUtil.getNextSiblingElementNS(el, XmlSchema.SCHEMA_NS)) {
 
             if (el.getLocalName().equals("element")) {
-                XmlSchemaElement element = handleElement(schema, el, schemaEl);
+                XmlSchemaElement element = handleElement(schema, el, schemaEl, false);
                 all.items.add(element);
             } else if (el.getLocalName().equals("annotation")) {
                 XmlSchemaAnnotation annotation = handleAnnotation(el);
@@ -1361,8 +1361,10 @@ public class SchemaBuilder {
      * ********
      * handle_complex_content_restriction
      */
-    XmlSchemaElement handleElement(XmlSchema schema, Element el,
-                                   Element schemaEl) {
+    XmlSchemaElement handleElement(XmlSchema schema,
+                                   Element el,
+                                   Element schemaEl,
+                                   boolean isGlobal) {
 
         XmlSchemaElement element = new XmlSchemaElement();
 
@@ -1372,8 +1374,16 @@ public class SchemaBuilder {
         //                String namespace = (schema.targetNamespace==null)?
         //                                      "" : schema.targetNamespace;
 
-        element.qualifiedName = new QName(schema.targetNamespace,
-                                          element.name);
+        boolean isQualified = schema.getElementFormDefault().getValue().equals(XmlSchemaForm.QUALIFIED);
+        if (el.hasAttribute("form")) {
+            String formDef = el.getAttribute("form");
+            element.form = new XmlSchemaForm(formDef);
+            isQualified = formDef.equals(XmlSchemaForm.QUALIFIED);
+        }
+
+        String ns = isQualified || isGlobal ? schema.targetNamespace :
+                                                     null;
+        element.qualifiedName = new QName(ns, element.name);
 
         Element annotationEl =
                 XDOMUtil.getFirstChildElementNS(el,
@@ -1502,10 +1512,6 @@ public class SchemaBuilder {
         if (el.hasAttribute("fixed"))
             element.fixedValue = el.getAttribute("fixed");
 
-        if (el.hasAttribute("form")) {
-            String formDef = getEnumString(el, "form");
-            element.form = new XmlSchemaForm(formDef);
-        }
         if (el.hasAttribute("id"))
             element.id = el.getAttribute("id");
 
@@ -1768,7 +1774,7 @@ public class SchemaBuilder {
             char c = Character.toUpperCase(value.charAt(0));
             return new XmlSchemaForm(c + value.substring(1));
         } else
-            return new XmlSchemaForm("Unqualified");
+            return new XmlSchemaForm("unqualified");
     }
 
     //Check value entered by user and change according to .net spec,

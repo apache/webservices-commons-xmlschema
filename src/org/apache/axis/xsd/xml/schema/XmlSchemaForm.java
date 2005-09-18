@@ -75,7 +75,11 @@ import org.apache.axis.xsd.enum.Enum;
 
 public class XmlSchemaForm extends Enum {
 
-    static String[] members = new String[]{"None", "Qualified", "Unqualified"};
+    public static final String QUALIFIED = "qualified";
+    public static final String UNQUALIFIED = "unqualified";
+    public static final String NONE = "none";
+    
+    static String[] members = new String[]{NONE, QUALIFIED, UNQUALIFIED};
 
     /**
      * Creates new XmlSchemaForm

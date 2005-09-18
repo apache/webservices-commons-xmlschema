@@ -117,8 +117,8 @@ public class XmlSchema extends XmlSchemaAnnotated {
      */
     public XmlSchema(XmlSchemaCollection parent) {
         this.parent = parent;
-        attributeFormDefault = new XmlSchemaForm("Qualified");
-        elementFormDefault = new XmlSchemaForm("Qualified");
+        attributeFormDefault = new XmlSchemaForm(XmlSchemaForm.UNQUALIFIED);
+        elementFormDefault = new XmlSchemaForm(XmlSchemaForm.UNQUALIFIED);
         blockDefault = new XmlSchemaDerivationMethod("None");
         finalDefault = new XmlSchemaDerivationMethod("None");
         items = new XmlSchemaObjectCollection();

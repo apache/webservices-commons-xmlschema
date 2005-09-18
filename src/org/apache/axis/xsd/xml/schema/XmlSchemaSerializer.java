@@ -168,7 +168,7 @@ public class XmlSchemaSerializer {
         if (schemaObj.attributeFormDefault != null) {
             String formQualified = schemaObj.attributeFormDefault.getValue();
 
-            if (!formQualified.equals("None"))
+            if (!formQualified.equals(XmlSchemaForm.NONE))
                 serializedSchema.setAttributeNS(XmlSchema.SCHEMA_NS,
                                                 "attributeFormDefault", convertString(formQualified));
         }
@@ -176,7 +176,7 @@ public class XmlSchemaSerializer {
         if (schemaObj.elementFormDefault != null) {
             String formQualified = schemaObj.elementFormDefault.getValue();
 
-            if (!formQualified.equals("None"))
+            if (!formQualified.equals(XmlSchemaForm.NONE))
                 serializedSchema.setAttributeNS(XmlSchema.SCHEMA_NS,
                                                 "elementFormDefault", convertString(formQualified));
         }
@@ -570,7 +570,7 @@ public class XmlSchemaSerializer {
                                         elementObj.fixedValue);
 
         String formDef = elementObj.form.getValue();
-        if (!formDef.equals("None")) {
+        if (!formDef.equals(XmlSchemaForm.NONE)) {
             formDef = convertString(formDef);
             serializedEl.setAttributeNS(XmlSchema.SCHEMA_NS, "form", formDef);
         }
@@ -1082,7 +1082,7 @@ public class XmlSchemaSerializer {
                                      attributeObj.fixedValue);
 
         String formType = attributeObj.form.getValue();
-        if (!formType.equals("None")) {
+        if (!formType.equals(XmlSchemaForm.NONE)) {
             formType = convertString(formType);
             attribute.setAttributeNS(XmlSchema.SCHEMA_NS, "form", formType);
         }

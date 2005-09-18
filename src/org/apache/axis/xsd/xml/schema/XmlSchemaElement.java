@@ -137,7 +137,7 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver 
         constraints = new XmlSchemaObjectCollection();
         isAbstract = false;
         isNillable = false;
-        form = new XmlSchemaForm("None");
+        form = new XmlSchemaForm(XmlSchemaForm.NONE);
         finalDerivation = new XmlSchemaDerivationMethod("None");
         block = new XmlSchemaDerivationMethod("None");
     }

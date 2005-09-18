@@ -11,10 +11,18 @@
 	<property name="dist.dir" value="${build.dir}/dist"/>
 	<property name="dist.zip" value="${project.name}.zip"/>
 	<property name="srcdist.zip" value="${project.name}-src.zip"/>
+    <property name="test.dir" value="${basedir}/test"/>
+    <property name="test_classes.dir" value="${build.dir}/test-classes"/>
+    <property name="test_reports.dir" value="${build.dir}/test-reports"/>
 
     <target name="prepare">
 		<mkdir dir="${build_classes.dir}"/>
 		<mkdir dir="${build_lib.dir}"/>
+    </target>
+
+    <target name="prepare-tests">
+        <mkdir dir="${test_classes.dir}"/>
+        <mkdir dir="${test_reports.dir}"/>
     </target>
 
     <target name="compile" depends="prepare" description="compiles the src and puts it in build/classes">
@@ -24,7 +32,29 @@
 	    </javac>
     </target>
 
-    <target name="jar" depends="compile" description="compiles the src and creates XmlSchema.jar in  build/lib">
+    <target name="compile-tests" depends="prepare-tests, compile" description="compiles the tests and puts them in build/test-classes">
+		<javac srcdir="${test.dir}" destdir="${test_classes.dir}" debug="true"
+		       deprecation="true">
+        	<include name="**/*.java" />
+	    </javac>
+    </target>
+
+    <target name="test" depends="compile-tests" description="Runs the unit tests">
+        <junit printsummary="yes" haltonfailure="yes">
+            <classpath>
+                <pathelement location="${build_classes.dir}"/>
+                <pathelement location="${test_classes.dir}"/>
+            </classpath>
+
+            <batchtest todir="${test_reports.dir}">
+                <fileset dir="${test.dir}">
+                    <include name="**/*Test*.java"/>
+                </fileset>
+            </batchtest>
+        </junit>
+    </target>
+
+    <target name="jar" depends="compile, test" description="compiles the src and creates XmlSchema.jar in  build/lib">
         <jar jarfile="${build_lib.dir}/${output.jar}" compress="true" basedir="${build_classes.dir}"/>
     </target>
 
