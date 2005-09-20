@@ -26,8 +26,9 @@
     </target>
 
     <target name="compile" depends="prepare" description="compiles the src and puts it in build/classes">
-		<javac srcdir="${src.dir}" destdir="${build_classes.dir}" debug="true" 
-		       deprecation="true">
+		<javac srcdir="${src.dir}" destdir="${build_classes.dir}" debug="true"
+               source="1.2" target="1.2"
+               deprecation="true">
         	<include name="**/*.java" />
 	    </javac>
     </target>
@@ -35,6 +36,9 @@
     <target name="compile-tests" depends="prepare-tests, compile" description="compiles the tests and puts them in build/test-classes">
 		<javac srcdir="${test.dir}" destdir="${test_classes.dir}" debug="true"
 		       deprecation="true">
+            <classpath>
+                <pathelement location="${build_classes.dir}"/>
+            </classpath>
         	<include name="**/*.java" />
 	    </javac>
     </target>

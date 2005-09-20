@@ -19,13 +19,12 @@ import junit.framework.TestCase;
 
 import java.io.InputStream;
 import java.io.FileInputStream;
-import java.util.Iterator;
 
-import org.apache.axis.xsd.xml.schema.XmlSchemaCollection;
-import org.apache.axis.xsd.xml.schema.XmlSchemaElement;
-import org.apache.axis.xsd.xml.schema.XmlSchemaComplexType;
-import org.apache.axis.xsd.xml.schema.XmlSchemaSequence;
-import org.apache.axis.xsd.xml.schema.XmlSchemaObjectCollection;
+import org.apache.ws.commons.schema.XmlSchemaCollection;
+import org.apache.ws.commons.schema.XmlSchemaElement;
+import org.apache.ws.commons.schema.XmlSchemaComplexType;
+import org.apache.ws.commons.schema.XmlSchemaSequence;
+import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
 
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.namespace.QName;
