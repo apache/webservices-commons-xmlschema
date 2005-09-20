@@ -1780,8 +1780,7 @@ public class SchemaBuilder {
     XmlSchemaForm getFormDefault(Element el, String attrName) {
         if (el.getAttributeNode(attrName) != null) {
             String value = el.getAttribute(attrName);
-            char c = Character.toUpperCase(value.charAt(0));
-            return new XmlSchemaForm(c + value.substring(1));
+            return new XmlSchemaForm(value);
         } else
             return new XmlSchemaForm("unqualified");
     }

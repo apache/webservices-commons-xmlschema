@@ -49,7 +49,7 @@
                 <pathelement location="${build_classes.dir}"/>
                 <pathelement location="${test_classes.dir}"/>
             </classpath>
-
+            <formatter type="plain"/>
             <batchtest todir="${test_reports.dir}">
                 <fileset dir="${test.dir}">
                     <include name="**/*Test*.java"/>
