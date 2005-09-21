@@ -23,6 +23,7 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Attr;
 import org.apache.ws.commons.schema.utils.XDOMUtil;
 import org.apache.ws.commons.schema.utils.Tokenizer;
+import org.apache.ws.commons.schema.constants.Constants;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.namespace.QName;
@@ -1276,6 +1277,9 @@ public class SchemaBuilder {
             if (namespaceFromEl.length > 1) {
                 Object result =
                         schema.namespaces.get(namespaceFromEl[0]);
+                if (result == null && namespaceFromEl[0].equals(Constants.XMLNS_PREFIX)) {
+                    result = Constants.XMLNS_URI;
+                }
                 if (result == null)
                     throw new XmlSchemaException("No namespace found in"
                                                  + " given ref");

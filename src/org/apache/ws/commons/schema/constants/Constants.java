@@ -22,6 +22,12 @@ import javax.xml.namespace.QName;
  * Constants
  */
 public class Constants {
+    public static final String XMLNS_URI =
+        "http://www.w3.org/XML/1998/namespace";
+
+    public static final String XMLNS_PREFIX =
+        "xml";
+
     //
     // Schema Namespaces
     //
