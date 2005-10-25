@@ -752,14 +752,18 @@ public class SchemaBuilder {
 
         if (extEl.hasAttribute("base")) {
             String name = extEl.getAttribute("base");
-            String nsFromEl = Tokenizer.tokenize(name, ":")[0];
-            Object result = schema.namespaces.get(nsFromEl);
+            if (name.indexOf(':') != -1) {
+                String nsFromEl = Tokenizer.tokenize(name, ":")[0];
+                Object result = schema.namespaces.get(nsFromEl);
 
-            if (result == null)
-                throw new XmlSchemaException("No namespace found in "
-                                             + "given base simple content type");
-            name = Tokenizer.lastToken(name, ":")[1];
-            ext.baseTypeName = new QName(result.toString(), name);
+                if (result == null)
+                    throw new XmlSchemaException("No namespace found in "
+                            + "given base simple content type");
+                name = Tokenizer.lastToken(name, ":")[1];
+                ext.baseTypeName = new QName(result.toString(), name);
+            } else {
+                ext.baseTypeName = new QName(schema.getNamespace(""), name);
+            }
         }
 
         for (
@@ -1394,10 +1398,13 @@ public class SchemaBuilder {
             isQualified = formDef.equals(XmlSchemaForm.QUALIFIED);
         }
 
-        String ns = isQualified || isGlobal ? schema.targetNamespace :
+        String ns = (isQualified || isGlobal) ? schema.targetNamespace :
                                                      null;
-        element.qualifiedName = new QName(ns, element.name);
-
+        
+        if(element.name != null) {
+            element.qualifiedName = new QName(ns, element.name);
+        }
+        
         Element annotationEl =
                 XDOMUtil.getFirstChildElementNS(el,
                                                 XmlSchema.SCHEMA_NS,
