@@ -24,6 +24,7 @@ import org.w3c.dom.Attr;
 import org.apache.ws.commons.schema.utils.XDOMUtil;
 import org.apache.ws.commons.schema.utils.Tokenizer;
 import org.apache.ws.commons.schema.constants.Constants;
+import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.namespace.QName;
@@ -1823,17 +1824,7 @@ public class SchemaBuilder {
     }
 
     XmlSchema getXmlSchemaFromLocation(String schemaLocation) {
-        try {
-            XmlSchema s = new XmlSchema(collection);
-            java.net.URL u = new java.net.URL(schemaLocation);
-            java.io.InputStream uStream = u.openConnection().getInputStream();
-            java.io.InputStreamReader readerS =
-                    new java.io.InputStreamReader(uStream);
-
-            s = collection.read(readerS, null);
-            return s;
-        } catch (java.io.IOException e) {
-            throw new XmlSchemaException(e.getMessage());
-        }
+        XmlSchema s = collection.read(new InputSource(schemaLocation), null);
+        return s;
     }
 }
