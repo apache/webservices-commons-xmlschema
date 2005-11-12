@@ -19,6 +19,7 @@ package org.apache.ws.commons.schema;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Attr;
 import org.apache.ws.commons.schema.utils.XDOMUtil;
@@ -216,6 +217,11 @@ public class SchemaBuilder {
     }
 
     void setNamespaceAttributes(XmlSchema schema, Element schemaEl) {
+        // If this schema is embedded in a WSDL, we need to get the 
+        // namespaces from the all the parent nodes first.
+        Node parent = schemaEl.getParentNode();
+        if (parent instanceof Element) setNamespaceAttributes(schema, (Element) parent);
+        
         NamedNodeMap map = schemaEl.getAttributes();
         for (int i = 0; i < map.getLength(); i++) {
             if (map.item(i).getNodeName().startsWith("xmlns:")) {
@@ -1423,13 +1429,13 @@ public class SchemaBuilder {
             String namespace = "";
 
             if (args.length > 1) {
-                Object result = schema.getNamespace(args[0]);
+                String result = schema.getNamespace(args[0]);
                 if (result == null)
                     throw new XmlSchemaException(
                             "Couldn't map prefix '" + args[0] +
                             "' to a namespace");
 
-                namespace = result.toString();
+                namespace = result;
             } else
                 namespace = schema.targetNamespace;
             typeName = Tokenizer.lastToken(typeName, ":")[1];
