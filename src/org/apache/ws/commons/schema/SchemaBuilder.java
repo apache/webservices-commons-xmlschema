@@ -46,6 +46,8 @@ public class SchemaBuilder {
         schema = new XmlSchema(collection);
     }
 
+
+
     XmlSchema build(Document doc, ValidationEventHandler veh) {
         Element schemaEl = doc.getDocumentElement();
         return handleXmlSchemaElement(schemaEl);
@@ -1443,7 +1445,7 @@ public class SchemaBuilder {
                 populateElementNamespaces(el, elementNameSpaceMap);
                 Object elementNs = elementNameSpaceMap.get(args[0]);
                 String result  = elementNs!=null?elementNs.toString():schema.getNamespace(args[0]);
-                
+
                 if (result == null)
                     throw new XmlSchemaException(
                             "Couldn't map prefix '" + args[0] +
@@ -1857,7 +1859,30 @@ public class SchemaBuilder {
     }
 
     XmlSchema getXmlSchemaFromLocation(String schemaLocation) {
-        XmlSchema s = collection.read(new InputSource(schemaLocation), null);
-        return s;
+        //check and determine the nature of the schema reference
+        //if it's relative and a base URI is present, then the schema
+        //location needs to be taken by concatanting the base URI with the
+        //relative path
+
+        String baseURI = collection.baseUri;
+        if (baseURI!=null){
+            if (!isAbsoulte(schemaLocation)){
+                schemaLocation = baseURI +
+                                 (schemaLocation.startsWith("/")?"":"/")+
+                                 schemaLocation;
+            }
+        }
+
+
+        return collection.read(new InputSource(schemaLocation), null);
+    }
+
+    /**
+     * Find whether a given uri is relative or not
+     * @param uri
+     * @return
+     */
+    private boolean isAbsoulte(String uri){
+        return uri.startsWith("http://");
     }
 }

@@ -48,13 +48,26 @@ public final class XmlSchemaCollection {
      * Namespaces we know about.  Each one has an equivalent XmlSchema.
      */
     Map namespaces = new HashMap();
-
+     /**
+     * base URI is used as the base for loading the
+     * imports
+     */
+    String baseUri = null;
     /**
      * In-scope namespaces for XML processing
      */
     Map inScopeNamespaces = new HashMap();
 
     XmlSchema xsd = new XmlSchema(XmlSchema.SCHEMA_NS, this);
+
+    /**
+     * Set the base URI. This is used when schemas need to be
+     * loaded from relative locations
+     * @param baseUri
+     */
+    public void setBaseUri(String baseUri){
+        this.baseUri = baseUri;
+    }
 
     public void init() {
         XmlSchemaSimpleType type;
