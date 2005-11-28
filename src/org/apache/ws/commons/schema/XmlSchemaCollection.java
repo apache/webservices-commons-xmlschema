@@ -20,6 +20,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.apache.ws.commons.schema.constants.Constants;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
@@ -48,7 +49,7 @@ public final class XmlSchemaCollection {
      * Namespaces we know about.  Each one has an equivalent XmlSchema.
      */
     Map namespaces = new HashMap();
-     /**
+    /**
      * base URI is used as the base for loading the
      * imports
      */
@@ -69,36 +70,70 @@ public final class XmlSchemaCollection {
         this.baseUri = baseUri;
     }
 
+    /**
+     * This section should comply to the XMLSchema specification
+     * @see http://www.w3.org/TR/2004/PER-xmlschema-2-20040318/datatypes.html#built-in-datatypes
+     * todo - Some types may be missing.Need a thorough comparison with the mentioned document
+     * to fix it.
+     */
     public void init() {
-        XmlSchemaSimpleType type;
-        type = new XmlSchemaSimpleType(xsd);
-        type.setName("string");
-        xsd.addType(type);
-        type = new XmlSchemaSimpleType(xsd);
-        type.setName("int");
-        xsd.addType(type);
-        type = new XmlSchemaSimpleType(xsd);
-        type.setName("boolean");
-        xsd.addType(type);
-        type = new XmlSchemaSimpleType(xsd);
-        type.setName("float");
-        xsd.addType(type);
-        type = new XmlSchemaSimpleType(xsd);
-        type.setName("double");
-        xsd.addType(type);
-        type = new XmlSchemaSimpleType(xsd);
-        type.setName("long");
-        xsd.addType(type);
-        type = new XmlSchemaSimpleType(xsd);
-        type.setName("short");
-        xsd.addType(type);
-        type = new XmlSchemaSimpleType(xsd);
-        type.setName("qname");
-        xsd.addType(type);
+        //Primitive types
+        addSimpleType(xsd, Constants.XSD_STRING.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_BOOLEAN.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_FLOAT.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_DOUBLE.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_QNAME.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_DECIMAL.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_DURATION.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_DATE.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_DATETIME.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_DAY.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_MONTH.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_MONTHDAY.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_YEAR.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_YEARMONTH.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_NOTATION.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_HEXBIN.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_BASE64.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_ANYURI.getLocalPart());
+
+        //derived types from decimal
+        addSimpleType(xsd, Constants.XSD_LONG.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_SHORT.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_BYTE.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_INTEGER.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_INT.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_POSITIVEINTEGER.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_NEGATIVEINTEGER.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_NONPOSITIVEINTEGER.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_NONNEGATIVEINTEGER.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_UNSIGNEDBYTE.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_UNSIGNEDINT.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_UNSIGNEDLONG.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_UNSIGNEDSHORT.getLocalPart());
+
+        //derived types from string
+        addSimpleType(xsd, Constants.XSD_NAME.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_NCNAME.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_NMTOKEN.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_NMTOKENS.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_ENTITY.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_ENTITIES.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_ID.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_IDREF.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_IDREFS.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_LANGUAGE.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_TOKEN.getLocalPart());
 
         namespaces.put(XmlSchema.SCHEMA_NS, xsd);
     }
 
+    private void addSimpleType(XmlSchema schema,String typeName){
+        XmlSchemaSimpleType type;
+        type = new XmlSchemaSimpleType(schema);
+        type.setName(typeName);
+        schema.addType(type);
+    }
     public XmlSchema read(Reader r, ValidationEventHandler veh) {
         return read(new InputSource(r), veh);
     }
