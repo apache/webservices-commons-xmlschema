@@ -73,11 +73,33 @@ public final class XmlSchemaCollection {
     /**
      * This section should comply to the XMLSchema specification
      * @see http://www.w3.org/TR/2004/PER-xmlschema-2-20040318/datatypes.html#built-in-datatypes
-     * todo - Some types may be missing.Need a thorough comparison with the mentioned document
-     * to fix it.
+     *
+     * This needs to be inspected by another pair of eyes
      */
     public void init() {
-        //Primitive types
+        /*
+        Primitive types
+
+        3.2.1 string
+        3.2.2 boolean
+        3.2.3 decimal
+        3.2.4 float
+        3.2.5 double
+        3.2.6 duration
+        3.2.7 dateTime
+        3.2.8 time
+        3.2.9 date
+        3.2.10 gYearMonth
+        3.2.11 gYear
+        3.2.12 gMonthDay
+        3.2.13 gDay
+        3.2.14 gMonth
+        3.2.15 hexBinary
+        3.2.16 base64Binary
+        3.2.17 anyURI
+        3.2.18 QName
+        3.2.19 NOTATION
+        */
         addSimpleType(xsd, Constants.XSD_STRING.getLocalPart());
         addSimpleType(xsd, Constants.XSD_BOOLEAN.getLocalPart());
         addSimpleType(xsd, Constants.XSD_FLOAT.getLocalPart());
@@ -86,6 +108,7 @@ public final class XmlSchemaCollection {
         addSimpleType(xsd, Constants.XSD_DECIMAL.getLocalPart());
         addSimpleType(xsd, Constants.XSD_DURATION.getLocalPart());
         addSimpleType(xsd, Constants.XSD_DATE.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_TIME.getLocalPart());
         addSimpleType(xsd, Constants.XSD_DATETIME.getLocalPart());
         addSimpleType(xsd, Constants.XSD_DAY.getLocalPart());
         addSimpleType(xsd, Constants.XSD_MONTH.getLocalPart());
@@ -97,7 +120,36 @@ public final class XmlSchemaCollection {
         addSimpleType(xsd, Constants.XSD_BASE64.getLocalPart());
         addSimpleType(xsd, Constants.XSD_ANYURI.getLocalPart());
 
-        //derived types from decimal
+
+        /*
+         3.3.1 normalizedString
+        3.3.2 token
+        3.3.3 language
+        3.3.4 NMTOKEN
+        3.3.5 NMTOKENS
+        3.3.6 Name
+        3.3.7 NCName
+        3.3.8 ID
+        3.3.9 IDREF
+        3.3.10 IDREFS
+        3.3.11 ENTITY
+        3.3.12 ENTITIES
+        3.3.13 integer
+        3.3.14 nonPositiveInteger
+        3.3.15 negativeInteger
+        3.3.16 long
+        3.3.17 int
+        3.3.18 short
+        3.3.19 byte
+        3.3.20 nonNegativeInteger
+        3.3.21 unsignedLong
+        3.3.22 unsignedInt
+        3.3.23 unsignedShort
+        3.3.24 unsignedByte
+        3.3.25 positiveInteger
+        */
+
+         //derived types from decimal
         addSimpleType(xsd, Constants.XSD_LONG.getLocalPart());
         addSimpleType(xsd, Constants.XSD_SHORT.getLocalPart());
         addSimpleType(xsd, Constants.XSD_BYTE.getLocalPart());
@@ -114,6 +166,7 @@ public final class XmlSchemaCollection {
 
         //derived types from string
         addSimpleType(xsd, Constants.XSD_NAME.getLocalPart());
+        addSimpleType(xsd, Constants.XSD_NORMALIZEDSTRING.getLocalPart());
         addSimpleType(xsd, Constants.XSD_NCNAME.getLocalPart());
         addSimpleType(xsd, Constants.XSD_NMTOKEN.getLocalPart());
         addSimpleType(xsd, Constants.XSD_NMTOKENS.getLocalPart());

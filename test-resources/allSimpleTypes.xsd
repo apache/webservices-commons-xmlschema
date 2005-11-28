@@ -40,6 +40,7 @@
 	<xs:element name="PrimitiveNotation" type="xs:NOTATION"/>
 	<xs:element name="PrimitiveAnyURI" type="xs:anyURI"/>
 	<xs:element name="PrimitiveYearMonth" type="xs:gYearMonth"/>
+	<xs:element name="PrimitiveTime" type="xs:time"/>
 	<!--3.3.1 normalizedString
         3.3.2 token
         3.3.3 language
@@ -68,10 +69,28 @@
 
 -->
 	<xs:element name="DerivedPositiveInteger" type="xs:positiveInteger"/>
+	<xs:element name="DerivedNegativeInteger" type="xs:negativeInteger"/>
+	<xs:element name="DerivedNonNegativeInteger" type="xs:nonNegativeInteger"/>
+	<xs:element name="DerivedNonpositiveInteger" type="xs:nonPositiveInteger"/>
+	<xs:element name="DerivedUnsignedShort" type="xs:unsignedShort"/>
+	<xs:element name="DerivedUnsignedLong" type="xs:unsignedLong"/>
+	<xs:element name="DerivedUnsignedInt" type="xs:unsignedInt"/>
+	<xs:element name="DerivedUnsignedByte" type="xs:unsignedByte"/>
+	<xs:element name="DerivedLong" type="xs:long"/>
+	<xs:element name="DerivedShort" type="xs:short"/>
+	<xs:element name="DerivedInt" type="xs:int"/>
 	<xs:element name="DerivedByte" type="xs:byte"/>
 	<xs:element name="DerivedToken" type="xs:token"/>
 	<xs:element name="DerivedLanguage" type="xs:language"/>
 	<xs:element name="DerivedNMTOKEN" type="xs:NMTOKEN"/>
 	<xs:element name="DerivedNMTOKENS" type="xs:NMTOKENS"/>
-    <!-- todo Add the other types here -->
+	<xs:element name="DerivedID" type="xs:ID"/>
+	<xs:element name="DerivedIDRef" type="xs:IDREF"/>
+	<xs:element name="DerivedEntity" type="xs:ENTITY"/>
+	<xs:element name="DerivedEntities" type="xs:ENTITIES"/>
+	<xs:element name="DerivedName" type="xs:Name"/>
+	<xs:element name="DerivedNameToken" type="xs:NMTOKEN"/>
+	<xs:element name="DerivedNCName" type="xs:NCName"/>
+	<xs:element name="DerivedNormalizedString" type="xs:normalizedString"/>
+	<xs:element name="DerivedInteger" type="xs:integer"/>
 </xs:schema>
