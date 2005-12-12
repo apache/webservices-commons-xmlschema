@@ -1836,7 +1836,7 @@ public class SchemaBuilder {
     //according to w3c spec have to be "#all"
     //but in .net the valid enum value is "all".
     XmlSchemaDerivationMethod getDerivation(Element el, String attrName) {
-        if (el.hasAttribute(attrName)) {
+        if (el.hasAttribute(attrName) && !el.getAttribute(attrName).equals("")) {
             //#all | List of (extension | restriction | substitution
             String derivationMethod = el.getAttribute(attrName).trim();
             char c = Character.toUpperCase(derivationMethod.charAt(0));
