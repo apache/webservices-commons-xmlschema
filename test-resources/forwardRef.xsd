@@ -6,10 +6,10 @@
 
     <element name="attrTest">
         <complexType>
-            <attribute name="forward" type="xsd:int"/>
-            <sequence>
+             <sequence>
                 <element name="foo" type="xsd:string"/>
             </sequence>
+            <attribute name="forward" type="xsd:int"/>
         </complexType>
     </element>
 
