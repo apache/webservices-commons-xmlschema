@@ -58,7 +58,35 @@ public abstract class XmlSchemaObject {
     }
 
     public boolean equals(Object what) {
-        // toDO : implement this once everything completed
+        if (what == this) {
+            return true;
+        }
+        
+        // note: instanceof returns false if its first operand is null 
+        if (!(what instanceof XmlSchemaObject)) {
+            return false;
+        }
+        
+        XmlSchemaObject xso = (XmlSchemaObject) what;
+        
+        if (this.lineNumber != xso.lineNumber) {
+            return false;
+        }
+        
+        if (this.linePosition != xso.linePosition) {
+            return false;
+        }
+        
+        if (this.sourceURI != null) {
+            if (!this.sourceURI.equals(xso.sourceURI)) {
+                return false;
+            }
+
+            if (xso.sourceURI != null) {
+                return false;
+            }
+        }
+        
         return true;
     }
 
