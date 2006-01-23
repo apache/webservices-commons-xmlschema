@@ -81,7 +81,7 @@ public abstract class XmlSchemaObject {
             if (!this.sourceURI.equals(xso.sourceURI)) {
                 return false;
             }
-
+        } else {
             if (xso.sourceURI != null) {
                 return false;
             }
