@@ -268,8 +268,6 @@ public class SchemaBuilder {
 
         XmlSchemaSimpleType simpleType = new XmlSchemaSimpleType(schema);
         if (simpleEl.hasAttribute("name")) {
-            String name = simpleEl.getAttribute("name");
-
             simpleType.name = simpleEl.getAttribute("name");
         }
 
@@ -341,7 +339,7 @@ public class SchemaBuilder {
                 namespace = schema.namespaces.get(namespace).toString();
                 name = Tokenizer.lastToken(name, ":")[1];
                 restriction.baseTypeName = new QName(namespace, name);
-                simpleType.name = name;
+                //simpleType.name = name;
             } else if (inlineSimpleType != null) {
                 XmlSchemaSimpleType baseType =
                         handleSimpleType(schema, inlineSimpleType, schemaEl);
