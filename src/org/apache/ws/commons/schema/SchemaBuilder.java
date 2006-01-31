@@ -249,8 +249,10 @@ public class SchemaBuilder {
         } else {
             putNamespace("", schema.targetNamespace);
         }
-
-        collection.namespaces.put(schema.targetNamespace, schema);
+        // only populate it if it isn't already in there
+        if(!collection.namespaces.containsKey(schema.targetNamespace)){
+        	collection.namespaces.put(schema.targetNamespace, schema);
+        }
     }
 
     private void putNamespace(String prefix, String namespace) {
