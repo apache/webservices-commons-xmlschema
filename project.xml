@@ -1,0 +1,47 @@
+<project>
+  <pomVersion>4</pomVersion>
+  <groupId>ws-commons</groupId>
+  <artifactId>XmlSchema</artifactId>
+  <name>XmlSchema</name>
+  <currentVersion>1.0-SNAPSHOT</currentVersion>
+  <organization>
+    <name>Apache</name>
+    <url>http://www.apache.org/</url>
+  </organization>
+  <description>API to manipulate XmlSchema.</description>
+  <shortDescription>API to manipulate XmlSchema.</shortDescription>
+  <url>http://ws.codehaus.org/commons/XmlSchema</url>
+  <issueTrackingUrl>https://issues.apache.org/jira/browse/AXIS2</issueTrackingUrl>
+
+  <siteAddress>ws.apache.org/commons/XmlSchema/</siteAddress>
+  <siteDirectory>/www/ws.apache.org/commons/XmlSchema/</siteDirectory>
+  <distributionDirectory>/www/ws.apache.org/builds/</distributionDirectory>
+  
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <unitTestSourceDirectory>test</unitTestSourceDirectory>
+    <unitTest>
+      <includes>
+        <include>**/*Test.java</include>
+        <include>**/*TestCase.java</include>
+      </includes>
+      <excludes>
+        <exclude>**/*Abstract*</exclude>
+      </excludes>
+      <resources>
+        <resource>
+          <directory>test-resources</directory>
+          <filtering>false</filtering>
+        </resource>
+      </resources>
+    </unitTest>
+    <resources>
+      <resource>
+        <directory>src</directory>
+        <excludes>
+          <exclude>**/*.java</exclude>
+        </excludes>
+      </resource>
+    </resources>
+  </build>
+</project>
