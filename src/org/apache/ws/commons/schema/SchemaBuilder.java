@@ -1772,7 +1772,8 @@ public class SchemaBuilder {
         NodeList markup = getChild(content);
 
         if (!content.hasAttribute("source") &&
-                !content.hasAttribute("xml:lang") && markup.getLength() <= 0)
+                !content.hasAttribute("xml:lang") &&
+                (markup == null || markup.getLength() <= 0))
             return null;
 
         documentation.setSource(getAttribute(content, "source"));
