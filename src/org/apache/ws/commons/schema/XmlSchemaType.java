@@ -88,6 +88,9 @@ public class XmlSchemaType extends XmlSchemaAnnotated {
     }
 
     public QName getQName() {
+        if(name == null) {
+            return null;
+        }
         return new QName(schema.targetNamespace, name);
     }
 }
