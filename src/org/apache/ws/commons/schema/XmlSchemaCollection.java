@@ -197,7 +197,7 @@ public final class XmlSchemaCollection {
             docFac.setNamespaceAware(true);
             DocumentBuilder builder = docFac.newDocumentBuilder();
             Document doc = builder.parse(inputSource);
-            return read(doc, veh);
+            return read(doc, inputSource.getSystemId(), veh);
         } catch (ParserConfigurationException e) {
             throw new XmlSchemaException(e.getMessage());
         } catch (IOException e) {
@@ -225,12 +225,22 @@ public final class XmlSchemaCollection {
 
     public XmlSchema read(Document doc, ValidationEventHandler veh) {
         SchemaBuilder builder = new SchemaBuilder(this);
-        return builder.build(doc, veh);
+        return builder.build(doc, null, veh);
     }
 
     public XmlSchema read(Element elem) {
         SchemaBuilder builder = new SchemaBuilder(this);
-        return builder.handleXmlSchemaElement(elem);
+        return builder.handleXmlSchemaElement(elem, null);
+    }
+    
+    public XmlSchema read(Document doc, String uri, ValidationEventHandler veh) {
+        SchemaBuilder builder = new SchemaBuilder(this);
+        return builder.build(doc, uri, veh);
+    }
+
+    public XmlSchema read(Element elem, String uri) {
+        SchemaBuilder builder = new SchemaBuilder(this);
+        return builder.handleXmlSchemaElement(elem, uri);
     }
 
     /**

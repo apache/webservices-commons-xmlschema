@@ -6,6 +6,7 @@ import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.w3c.dom.Document;
 
 import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.File;
 /*
  * Copyright 2004,2005 The Apache Software Foundation.
  *
@@ -43,14 +44,15 @@ public class ImportTest extends TestCase {
      * @throws Exception
      */
     public void testSchemaImport2() throws Exception{
+        File file = new File("test-resources/importBase.xsd");
         //create a DOM document
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         documentBuilderFactory.setNamespaceAware(true);
         Document doc = documentBuilderFactory.newDocumentBuilder().
-                parse("test-resources/importBase.xsd");
+                parse(file.toURL().toString());
 
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(doc,null);
+        XmlSchema schema = schemaCol.read(doc,file.toURL().toString(),null);
         assertNotNull(schema);
 
     }

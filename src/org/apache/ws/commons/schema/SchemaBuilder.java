@@ -52,12 +52,12 @@ public class SchemaBuilder {
 
 
 
-    XmlSchema build(Document doc, ValidationEventHandler veh) {
+    XmlSchema build(Document doc, String uri, ValidationEventHandler veh) {
         Element schemaEl = doc.getDocumentElement();
-        return handleXmlSchemaElement(schemaEl);
+        return handleXmlSchemaElement(schemaEl, uri);
     }
 
-    XmlSchema handleXmlSchemaElement(Element schemaEl) {
+    XmlSchema handleXmlSchemaElement(Element schemaEl, String uri) {
         // get all the attributes along with the namespace declns
 
         setNamespaceAttributes(schema, schemaEl);
@@ -67,7 +67,7 @@ public class SchemaBuilder {
                 "attributeFormDefault"));
         schema.setBlockDefault(this.getDerivation(schemaEl, "blockDefault"));
         schema.setFinalDefault(this.getDerivation(schemaEl, "finalDefault"));
-        schema.setSourceURI(schemaEl.getOwnerDocument().getBaseURI());
+        schema.setSourceURI(uri);
 
         /***********
          * for ( each childElement)
