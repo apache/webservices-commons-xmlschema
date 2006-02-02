@@ -1,14 +1,11 @@
 package tests;
 
 import junit.framework.TestCase;
-import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchema;
+import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.w3c.dom.Document;
 
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 /*
  * Copyright 2004,2005 The Apache Software Foundation.
  *
@@ -41,16 +38,20 @@ public class ImportTest extends TestCase {
 
     }
 
+    /**
+     * variation of above don't set the base uri.
+     * @throws Exception
+     */
+    public void testSchemaImport2() throws Exception{
+        //create a DOM document
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        documentBuilderFactory.setNamespaceAware(true);
+        Document doc = documentBuilderFactory.newDocumentBuilder().
+                parse("test-resources/importBase.xsd");
 
-//    public void testSchemaImportRemote() throws Exception{
-//        //create a DOM document
-//        String schemaLocation = "http://131.107.72.15/SoapWsdl_BaseDataTypes_XmlFormatter_Service_Indigo/BaseDataTypesDocLitB.svc?xsd=xsd1";
-//        java.net.URL u = new java.net.URL(schemaLocation);
-//        InputStream uStream = u.openConnection().getInputStream();
-//
-//        XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-//        XmlSchema schema = schemaCol.read(new InputStreamReader(uStream),null);
-//        assertNotNull(schema);
-//
-//    }
+        XmlSchemaCollection schemaCol = new XmlSchemaCollection();
+        XmlSchema schema = schemaCol.read(doc,null);
+        assertNotNull(schema);
+
+    }
 }

@@ -33,6 +33,10 @@ import java.util.Vector;
 import java.util.StringTokenizer;
 import java.util.Map;
 import java.util.HashMap;
+import java.net.URL;
+import java.net.MalformedURLException;
+import java.io.IOException;
+import java.io.File;
 
 public class SchemaBuilder {
     Document doc;
@@ -63,6 +67,7 @@ public class SchemaBuilder {
                 "attributeFormDefault"));
         schema.setBlockDefault(this.getDerivation(schemaEl, "blockDefault"));
         schema.setFinalDefault(this.getDerivation(schemaEl, "finalDefault"));
+        schema.setSourceURI(schemaEl.getOwnerDocument().getBaseURI());
 
         /***********
          * for ( each childElement)
@@ -251,7 +256,7 @@ public class SchemaBuilder {
         }
         // only populate it if it isn't already in there
         if(!collection.namespaces.containsKey(schema.targetNamespace)){
-        	collection.namespaces.put(schema.targetNamespace, schema);
+            collection.namespaces.put(schema.targetNamespace, schema);
         }
     }
 
@@ -1687,8 +1692,14 @@ public class SchemaBuilder {
         schemaImport.schemaLocation =
                 importEl.getAttribute("schemaLocation");
 
-        if ((schemaImport.schemaLocation != null) && (!schemaImport.schemaLocation.equals("")))
-            schemaImport.schema = getXmlSchemaFromLocation(schemaImport.schemaLocation);
+        if ((schemaImport.schemaLocation != null) && (!schemaImport.schemaLocation.equals(""))) {
+            if(schema.getSourceURI()!=null) {
+                schemaImport.schema =
+                        getXmlSchemaFromLocation(schemaImport.schemaLocation, schema.getSourceURI());
+            } else {
+                schemaImport.schema = getXmlSchemaFromLocation(schemaImport.schemaLocation);
+            }
+        }
         return schemaImport;
     }
 
@@ -1711,9 +1722,13 @@ public class SchemaBuilder {
                 includeEl.getAttribute("schemaLocation");
 
 
-        include.schema =
-                getXmlSchemaFromLocation(include.schemaLocation);
-
+        if(schema.getSourceURI()!=null) {
+            include.schema =
+                    getXmlSchemaFromLocation(include.schemaLocation, schema.getSourceURI());
+        } else {
+            include.schema =
+                    getXmlSchemaFromLocation(include.schemaLocation);
+        }
         XmlSchemaObjectCollection coll = include.schema.getItems();
 
         return include;
@@ -1861,30 +1876,102 @@ public class SchemaBuilder {
     }
 
     XmlSchema getXmlSchemaFromLocation(String schemaLocation) {
-        //check and determine the nature of the schema reference
-        //if it's relative and a base URI is present, then the schema
-        //location needs to be taken by concatanting the base URI with the
-        //relative path
+        return getXmlSchemaFromLocation(schemaLocation, collection.baseUri);
+    }
 
-        String baseURI = collection.baseUri;
+    XmlSchema getXmlSchemaFromLocation(String schemaLocation, String baseURI) {
         if (baseURI!=null){
-            if (!isAbsoulte(schemaLocation)){
-                schemaLocation = baseURI +
-                                 (schemaLocation.startsWith("/")?"":"/")+
-                                 schemaLocation;
+            if (!isAbsolute(schemaLocation)){
+                try {
+                    schemaLocation = getURL(new URL(baseURI), schemaLocation).toString();    
+                } catch (Exception e) {
+                    schemaLocation = baseURI +
+                                     (schemaLocation.startsWith("/")?"":"/")+
+                                     schemaLocation;
+                }
             }
         }
-
-
         return collection.read(new InputSource(schemaLocation), null);
     }
 
     /**
      * Find whether a given uri is relative or not
+     *
      * @param uri
-     * @return
+     * @return boolean
      */
-    private boolean isAbsoulte(String uri){
+    private boolean isAbsolute(String uri) {
         return uri.startsWith("http://");
     }
+
+    /**
+     * This is essentially a call to "new URL(contextURL, spec)" with extra handling in case spec is
+     * a file.
+     *
+     * @param contextURL
+     * @param spec
+     * @return
+     * @throws java.io.IOException
+     */
+    private static URL getURL(URL contextURL, String spec) throws IOException {
+
+        // First, fix the slashes as windows filenames may have backslashes
+        // in them, but the URL class wont do the right thing when we later
+        // process this URL as the contextURL.
+        String path = spec.replace('\\', '/');
+
+        // See if we have a good URL.
+        URL url = null;
+
+        try {
+
+            // first, try to treat spec as a full URL
+            url = new URL(contextURL, path);
+
+            // if we are deail with files in both cases, create a url
+            // by using the directory of the context URL.
+            if ((contextURL != null) && url.getProtocol().equals("file")
+                    && contextURL.getProtocol().equals("file")) {
+                url = getFileURL(contextURL, path);
+            }
+        } catch (MalformedURLException me) {
+
+            // try treating is as a file pathname
+            url = getFileURL(contextURL, path);
+        }
+
+        // Everything is OK with this URL, although a file url constructed
+        // above may not exist.  This will be caught later when the URL is
+        // accessed.
+        return url;
+    }    // getURL
+
+    /**
+     * Method getFileURL
+     *
+     * @param contextURL
+     * @param path
+     * @return
+     * @throws IOException
+     */
+    private static URL getFileURL(URL contextURL, String path)
+            throws IOException {
+
+        if (contextURL != null) {
+
+            // get the parent directory of the contextURL, and append
+            // the spec string to the end.
+            String contextFileName = contextURL.getFile();
+            URL parent = null;
+            File parentFile = new File(contextFileName).getParentFile();
+            if (parentFile != null) {
+                parent = parentFile.toURL();
+            }
+            if (parent != null) {
+                return new URL(parent, path);
+            }
+        }
+
+        return new URL("file", "", path);
+    }    // getFileURL
 }
