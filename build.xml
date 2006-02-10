@@ -6,23 +6,52 @@
 	<property name="output.jar" value="${project.name}.jar"/>
 	<property name="build.dir" value="${basedir}/build"/>
 	<property name="build_classes.dir" value="${build.dir}/classes"/>
-	<property name="build_lib.dir" value="${build.dir}/lib"/>	
+	<property name="build_lib.dir" value="${build.dir}/lib"/>
 	<property name="build_doc.dir" value="${build.dir}/apidoc"/>	
 	<property name="dist.dir" value="${build.dir}/dist"/>
 	<property name="dist.zip" value="${project.name}.zip"/>
 	<property name="srcdist.zip" value="${project.name}-src.zip"/>
     <property name="test.dir" value="${basedir}/test"/>
-    <property name="test_classes.dir" value="${build.dir}/test-classes"/>
+	<property name="test_classes.dir" value="${build.dir}/test-classes"/>
     <property name="test_reports.dir" value="${build.dir}/test-reports"/>
 
     <target name="prepare">
 		<mkdir dir="${build_classes.dir}"/>
 		<mkdir dir="${build_lib.dir}"/>
+    	
+    	<condition property="downloadLibs">
+	      <not>
+	      	<available file="${build_lib.dir}/xmlunit-1.0.jar"/>
+	      </not>
+	    </condition>
+
+    	<antcall target="get-deps"/>
+	</target>
+
+	<target name="get-deps" if="downloadLibs">	
+    	<get src="http://www.ibiblio.org/maven2/xmlunit/xmlunit/1.0/xmlunit-1.0.jar"
+    		dest="${build_lib.dir}/xmlunit-1.0.jar"/>
     </target>
 
     <target name="prepare-tests">
         <mkdir dir="${test_classes.dir}"/>
         <mkdir dir="${test_reports.dir}"/>
+  	
+    	<condition property="needsTestsDownload">
+	      <not>
+	      	<available file="${build.dir}/xmlschema2002-01-16"/>
+	      </not>
+	    </condition>
+
+    	<antcall target="get-xml-schema-tests"/>
+   </target>
+    	
+	<target name="get-xml-schema-tests" if="needsTestsDownload">
+		<echo>Downloading 6MB XML Schema test suite. This make take a few minutes...</echo>
+		<get dest="${build.dir}/xsts-2002-01-16.tar.gz" 
+			src="http://www.w3.org/XML/2004/xml-schema-test-suite/xmlschema2002-01-16/xsts-2002-01-16.tar.gz"/>
+    	<gunzip src="${build.dir}/xsts-2002-01-16.tar.gz"/>
+		<untar src="${build.dir}/xsts-2002-01-16.tar" dest="${build.dir}"/>
     </target>
 
     <target name="compile" depends="prepare" description="compiles the src and puts it in build/classes">
@@ -38,6 +67,9 @@
 		       deprecation="true">
             <classpath>
                 <pathelement location="${build_classes.dir}"/>
+            	<fileset dir="${build_lib.dir}">
+            	   <include name="*.jar" />
+            	</fileset>
             </classpath>
         	<include name="**/*.java" />
 	    </javac>
@@ -48,6 +80,9 @@
             <classpath>
                 <pathelement location="${build_classes.dir}"/>
                 <pathelement location="${test_classes.dir}"/>
+            	<fileset dir="${build_lib.dir}">
+            	   <include name="*.jar" />
+            	</fileset>
             </classpath>
             <formatter type="plain"/>
             <batchtest todir="${test_reports.dir}">
@@ -55,6 +90,10 @@
                     <include name="**/*Test*.java"/>
                 </fileset>
             </batchtest>
+
+        	<sysproperty key="nistTestLocation" 
+        		value="${build.dir}/xmlschema2002-01-16/nisttest/NISTTestsAll"/>
+		
         </junit>
     </target>
 
@@ -68,8 +107,7 @@
 		             destdir="${build.dir}/apidoc" 
 		             windowtitle="${project.name} API"
 		             doctitle="${project.name}"
-					 bottom="Copyright &#169;  Infravio XML Schema Project. All Rights Reserved.">
-		
+					 bottom="Copyright &#169;  Apache XML Schema Project. All Rights Reserved.">
             <classpath>
                 <pathelement location="${build_classes.dir}"/>
             </classpath>

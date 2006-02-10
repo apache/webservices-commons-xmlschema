@@ -1,19 +1,21 @@
 package tests;
 
-import junit.framework.TestCase;
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.Iterator;
 
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
-import java.io.InputStream;
-import java.io.FileInputStream;
-import java.util.Iterator;
 
+import junit.framework.TestCase;
+
+import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
-import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.XmlSchemaComplexType;
-import org.apache.ws.commons.schema.XmlSchemaSequence;
+import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
-import sun.text.CompactShortArray;
+import org.apache.ws.commons.schema.XmlSchemaSequence;
 /*
  * Copyright 2004,2005 The Apache Software Foundation.
  *
@@ -35,10 +37,10 @@ public class TestElementRefs extends TestCase {
         QName ELEMENT_QNAME = new QName("http://soapinterop.org/types",
                 "attTests");
         InputStream is = new FileInputStream("test-resources/elementreferences.xsd");
-        XmlSchemaCollection schema = new XmlSchemaCollection();
-        schema.read(new StreamSource(is), null);
+        XmlSchemaCollection schemaCol = new XmlSchemaCollection();
+        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
 
-        XmlSchemaElement elem = schema.getElementByQName(ELEMENT_QNAME);
+        XmlSchemaElement elem = schemaCol.getElementByQName(ELEMENT_QNAME);
 
         assertNotNull(elem);
 
@@ -51,8 +53,9 @@ public class TestElementRefs extends TestCase {
             assertNotNull(innerElement.getRefName());
         }
 
-
-
+        // test writing
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        schema.write(bos);
     }
 
 }

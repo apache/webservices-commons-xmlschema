@@ -164,6 +164,15 @@
 
 	</developers>
 	
+    <dependencies>
+      <dependency>
+        <groupId>xmlunit</groupId>
+        <artifactId>xmlunit</artifactId>
+        <version>1.0</version>
+        <url>http://xmlunit.sourceforge.net/</url>
+      </dependency>
+    </dependencies>
+    
     <build>
         <nagEmailAddress></nagEmailAddress>
         <sourceDirectory>src</sourceDirectory>
