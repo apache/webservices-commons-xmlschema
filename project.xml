@@ -171,7 +171,9 @@
         <version>1.0</version>
         <url>http://xmlunit.sourceforge.net/</url>
       </dependency>
- <dependency>
+       <!-- the stax dependency is for the QName
+             We do not have the any dependency on Stax :)  -->
+       <dependency>
             <groupId>stax</groupId>
             <artifactId>stax-api</artifactId>
             <version>${stax.api.version}</version>
