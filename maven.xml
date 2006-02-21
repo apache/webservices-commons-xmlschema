@@ -11,14 +11,16 @@
     xmlns:ant="jelly:ant">
 
     <preGoal name="test:compile">
-        <u:file var="file" name="${maven.build.dir}/xmlschema2002-01-16"/>
-        <j:if test="${!file.exists()}">
-        	<echo>Downloading 6MB XML Schema test suite. This make take a few minutes...</echo>
-			<ant:get dest="${maven.build.dir}/xsts-2002-01-16.tar.gz" 
-				src="http://www.w3.org/XML/2004/xml-schema-test-suite/xmlschema2002-01-16/xsts-2002-01-16.tar.gz"/>
-	    	
-			<ant:gunzip src="${maven.build.dir}/xsts-2002-01-16.tar.gz"/>
-			<ant:untar src="${maven.build.dir}/xsts-2002-01-16.tar" dest="${maven.build.dir}"/>
+    	<j:if test="${maven.test.skip != 'true'}">
+	        <u:file var="file" name="${maven.build.dir}/xmlschema2002-01-16"/>
+	        <j:if test="${!file.exists()}">
+	        	<echo>Downloading 6MB XML Schema test suite. This make take a few minutes...</echo>
+				<ant:get dest="${maven.build.dir}/xsts-2002-01-16.tar.gz" 
+					src="http://www.w3.org/XML/2004/xml-schema-test-suite/xmlschema2002-01-16/xsts-2002-01-16.tar.gz"/>
+		    	
+				<ant:gunzip src="${maven.build.dir}/xsts-2002-01-16.tar.gz"/>
+				<ant:untar src="${maven.build.dir}/xsts-2002-01-16.tar" dest="${maven.build.dir}"/>
+	        </j:if>
         </j:if>
     </preGoal>
 </project>
