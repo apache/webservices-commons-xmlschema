@@ -36,13 +36,16 @@
     <target name="prepare-tests">
         <mkdir dir="${test_classes.dir}"/>
         <mkdir dir="${test_reports.dir}"/>
-  	
+    	
+    	<antcall target="prepareNistTest"/>
+    </target>
+    	
+    <target name="prepareNistTest">
     	<condition property="needsTestsDownload">
 	      <not>
 	      	<available file="${build.dir}/xmlschema2002-01-16"/>
 	      </not>
 	    </condition>
-
     	<antcall target="get-xml-schema-tests"/>
    </target>
     	

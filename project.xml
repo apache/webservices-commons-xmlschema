@@ -22,7 +22,7 @@
 	<!-- a unique name for this project -->
 	<name>Apache XmlSchema</name>
 	<id>XmlSchema</id>
-	<groupId>ws-commons</groupId>
+	<groupId>org.apache.ws.commons</groupId>
 	<package>org.apache.commons</package>
 	<currentVersion>${schema.version}</currentVersion>
 	<!-- details about the organization that 'owns' the project -->
@@ -38,7 +38,7 @@
 	<shortDescription>API to manipulate XmlSchema.</shortDescription>
 	<!-- the project home page -->
 	<url>http://ws.apache.org/commons/XmlSchema</url>
-	<issueTrackingUrl>http://issues.apache.org/jira/browse/WS-Commons</issueTrackingUrl>
+	<issueTrackingUrl>http://issues.apache.org/jira/browse/WSCOMMONS</issueTrackingUrl>
 	<siteAddress>ws.apache.org/commons/XmlSchema</siteAddress>
 	<siteDirectory>/www/ws.apache.org/commons/XmlSchema/</siteDirectory>
 	<distributionDirectory>/www/ws.apache.org/builds/</distributionDirectory>

@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  /*
+  * Copyright 2006 The Apache Software Foundation.
+  *
+  * Licensed under the Apache License, Version 2.0 (the "License");
+  * you may not use this file except in compliance with the License.
+  * You may obtain a copy of the License at
+  *
+  *      http://www.apache.org/licenses/LICENSE-2.0
+  *
+  * Unless required by applicable law or agreed to in writing, software
+  * distributed under the License is distributed on an "AS IS" BASIS,
+  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  * See the License for the specific language governing permissions and
+  * limitations under the License.
+  */
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.apache.ws.commons</groupId>
+  <artifactId>XmlSchema</artifactId>
+  <packaging>jar</packaging>
+  <name>XmlSchema</name>
+  <version>1.0-SNAPSHOT</version>
+  <description>XmlSchema API</description>
+  <organization>
+    <name>Apache Software Foundation</name>
+    <url>http://www.apache.org/</url>
+  </organization>
+  <url>http://ws.apache.org/commons/XmlSchema</url>
+  
+  <issueManagement>
+    <url>http://issues.apache.org/jira/browse/WSCOMMONS</url>
+  </issueManagement>
+  
+  <ciManagement>
+    <system>Continuum</system>
+    <url>unknown</url>
+    <notifiers>
+      <notifier>
+        <configuration>
+          <address>commons-dev@ws.apache.org</address>
+        </configuration>
+      </notifier>
+    </notifiers>
+  </ciManagement>
+  <inceptionYear>2004</inceptionYear>
+
+  <scm>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/webservices/commons/modules/XmlSchema</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/webservices/commons/modules/XmlSchema</developerConnection>
+    <url>http://svn.apache.org/viewcvs.cgi/webservices/commons/modules/XmlSchema</url>
+  </scm>
+
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <testSourceDirectory>test</testSourceDirectory>
+    <resources>
+      <resource>
+        <directory>src</directory>
+        <includes>
+          <include>**/*.xml</include>
+        </includes>
+        <excludes>
+          <exclude>**/package.html</exclude>
+        </excludes>
+      </resource>
+    </resources>
+    <testResources>
+      <testResource>
+        <directory>test-resources</directory>
+        <includes>
+          <include>**/*.xml</include>
+          <include>**/*.xsd</include>
+        </includes>
+      </testResource>
+    </testResources>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>generate-test-resources</phase>
+            <configuration>
+              <tasks>
+                <ant antfile="${basedir}/build.xml" inheritRefs="true">
+                  <property name="build.dir" value="${basedir}/target"/>
+                  <target name="prepareNistTest"/>
+                </ant>
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+    
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>xmlunit</groupId>
+      <artifactId>xmlunit</artifactId>
+      <version>1.0</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- the stax dependency is for the QName
+      We do not have the any dependency on Stax :)  -->
+    <dependency>
+      <groupId>stax</groupId>
+      <artifactId>stax-api</artifactId>
+      <version>1.0</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <!-- ========== -->
+  <!-- Developers -->
+  <!-- ========== -->
+  <developers>
+    <developer>
+      <name>Davanum Srinivas</name>
+      <id>dims</id>
+      <email>dims AT wso2.com</email>
+      <organization>WSO2</organization>
+    </developer>
+    <developer>
+      <name>Sanjiva Weerawarana</name>
+      <id>sanjiva</id>
+      <email>sanjiva AT wso2.com</email>
+      <organization>WSO2</organization>
+    </developer>
+    <developer>
+      <name>Glen Daniels</name>
+      <id>gdaniels</id>
+      <email>gdaniels AT apache.org</email>
+      <organization>Sonic Software</organization>
+    </developer>
+    <developer>
+      <name>Aleksander Slominski</name>
+      <id>alek</id>
+      <email>aslom AT cs.indiana.edu</email>
+      <organization>
+        Indiana University Extreme! Computing Lab
+      </organization>
+    </developer>
+    <developer>
+      <name>Srinath Perera</name>
+      <id>hemapani</id>
+      <email>hemapani AT apache.org</email>
+      <organization>Lanka Software Foundation</organization>
+      <url>http://www.apache.org/~hemapani</url>
+    </developer>
+    <developer>
+      <name>Eran Chinthaka</name>
+      <id>chinthaka</id>
+      <email>chinthaka AT wso2.com</email>
+      <organization>WSO2</organization>
+      <url>http://www.apache.org/~chinthaka</url>
+    </developer>
+    <developer>
+      <name>Dasarath Weerathunga</name>
+      <id>dasarath</id>
+      <email>dasarath AT opensource.lk</email>
+      <organization>Lanka Software Foundation</organization>
+    </developer>
+    <developer>
+      <name>Jaliya Ekanayake</name>
+      <id>jaliya</id>
+      <email>jaliya AT opensource.lk</email>
+      <organization>Virtusa / Lanka Software Foundation</organization>
+      <url>http://www.apache.org/~jaliya</url>
+    </developer>
+    <developer>
+      <name>Chathura Herath</name>
+      <id>chathura</id>
+      <email>chathura AT opensource.lk</email>
+      <organization>LSF/MIT</organization>
+      <url>www.apache.org/~chathura</url>
+    </developer>
+    <developer>
+      <name>Deepal Jayasinghe</name>
+      <id>deepal</id>
+      <email>deepal AT wso2.com</email>
+      <organization>WSO2</organization>
+      <url>http://www.apache.org/~deepal</url>
+    </developer>
+    <developer>
+      <name>Ajith Ranabahu</name>
+      <id>ajith</id>
+      <email>ajith AT wso2.com</email>
+      <organization>WSO2</organization>
+      <url>http://www.apache.org/~ajith</url>
+    </developer>
+    <developer>
+      <name>Venkat Reddy</name>
+      <id>venkat</id>
+      <email>vreddyp AT gmail.com</email>
+      <organization>Computer Associates</organization>
+    </developer>
+    <developer>
+      <name>Ashutosh Shahi</name>
+      <id>ashu</id>
+      <email>Ashutosh.Shahi AT ca.com</email>
+      <organization>Computer Associates</organization>
+    </developer>
+    <developer>
+      <name>Jayachandra Sekhara Rao Sunkara</name>
+      <id>jaya</id>
+      <email>jayachandra AT gmail.com</email>
+      <organization>Computer Associates</organization>
+    </developer>
+    <developer>
+      <name>Thilina Gunarathne</name>
+      <id>thilina</id>
+      <email>thilina AT opensource.lk</email>
+      <organization>Lanka Software Foundation</organization>
+    </developer>
+    <developer>
+      <name>Ruchith Fernando</name>
+      <id>ruchith</id>
+      <email>ruchith AT wso2.com</email>
+      <organization>WSO2</organization>
+    </developer>
+    <developer>
+      <name>Saminda Abeyruwan</name>
+      <id>saminda</id>
+      <email>saminda AT wso2.com</email>
+      <organization>WSO2</organization>
+    </developer>
+    <developer>
+      <name>Chamil Thanthrimudalige</name>
+      <id>chamil</id>
+      <email>chamil AT wso2.com</email>
+      <organization>WSO2</organization>
+    </developer>
+    <developer>
+      <name>Dan Diephouse</name>
+      <id>dandiep</id>
+      <email>dandiep AT apache.org</email>
+      <organization>Envoi Solutions</organization>
+    </developer>
+  </developers>
+
+  <distributionManagement>
+    <repository>
+      <id>apache-repo</id>
+      <name>Maven Central Repository</name>
+      <url>scpexe://cvs.apache.org/www/cvs.apache.org/maven-snapshot-repository</url>
+    </repository>
+    <snapshotRepository>
+      <id>apache-snapshots</id>
+      <name>Apache Development Repository</name>
+      <url>scp://minotaur.apache.org/www/cvs.apache.org/maven-snapshot-repository</url>
+    </snapshotRepository>
+    <site>
+      <id>website</id>
+      <url>scp://minotaur.apache.org/www/ws.apache.org/commons/XmlSchema</url>
+    </site>
+  </distributionManagement>
+</project>
