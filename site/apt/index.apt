@@ -1,0 +1,11 @@
+Overview
+  
+  The XmlSchema project is an API to read and write XML Schemas.
+
+  For information on how to use the XmlSchema API, please
+  see the {{{apidocs/index.html}javadocs}}. 
+
+Downloads
+
+  The 1.0 release can be found 
+  {{{http://www.apache.org/dyn/closer.cgi/maven-repository/org/apache/ws/commons/XmlSchema}here}}.
