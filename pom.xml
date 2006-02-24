@@ -148,6 +148,14 @@
     </plugins>
   </reporting>
   
+  <pluginRepositories>
+    <pluginRepository>
+      <id>snapshot</id>
+      <name>Snapshot repository</name>
+      <url>http://snapshots.maven.codehaus.org/maven2/</url>
+    </pluginRepository>
+  </pluginRepositories>
+  
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
