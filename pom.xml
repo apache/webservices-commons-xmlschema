@@ -3,7 +3,7 @@
   <groupId>org.apache.ws.commons</groupId>
   <artifactId>XmlSchema</artifactId>
   <name>XmlSchema</name>
-  <version>1.1-SNAPSHOT</version>
+  <version>1.0-SNAPSHOT</version>
   <description>XmlSchema API</description>
   <url>http://ws.apache.org/commons/XmlSchema</url>
   <issueManagement>
@@ -275,16 +275,16 @@
     <repository>
       <id>apache-repo</id>
       <name>Maven Central Repository</name>
-      <url>scp://people.apache.org/www/www.apache.org/dist/maven-repository</url>
+      <url>scpexe://people.apache.org/www/www.apache.org/dist/maven-repository</url>
     </repository>
     <snapshotRepository>
       <id>apache-snapshots</id>
       <name>Apache Development Repository</name>
-      <url>scp://minotaur.apache.org/www/cvs.apache.org/maven-snapshot-repository</url>
+      <url>scpexe://minotaur.apache.org/www/cvs.apache.org/maven-snapshot-repository</url>
     </snapshotRepository>
     <site>
       <id>website</id>
-      <url>scp://people.apache.org/www/ws.apache.org/commons/XmlSchema</url>
+      <url>scpexe://people.apache.org/www/ws.apache.org/commons/XmlSchema</url>
     </site>
   </distributionManagement>
 </project>
