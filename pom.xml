@@ -121,6 +121,12 @@
           <remoteRepositoryUrl>scp://people.apache.org/www/www.apache.org/dist/java-repository</remoteRepositoryUrl>
         </configuration>
       </plugin>
+      <plugin>
+        <artifactId>maven-release-plugin</artifactId>
+        <configuration>
+          <tagBase>https://svn.apache.org/repos/asf/webservices/commons/tags</tagBase>
+        </configuration>
+      </plugin>
     </plugins>
     
   </build>
