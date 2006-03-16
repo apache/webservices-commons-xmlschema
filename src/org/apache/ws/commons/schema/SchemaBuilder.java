@@ -600,6 +600,9 @@ public class SchemaBuilder {
             } else if (el.getLocalName().equals("annotation")) {
                 XmlSchemaAnnotation ann = handleAnnotation(el);
                 ct.setAnnotation(ann);
+            } else if (el.getLocalName().equals("anyAttribute")) {
+                XmlSchemaAnyAttribute anyAtt = handleAnyAttribute(schema,el,schemaEl);
+                ct.setAnyAttribute(anyAtt);
             }
             //}
         }
