@@ -11,7 +11,7 @@
     xmlns:ant="jelly:ant">
 
     <preGoal name="test:compile">
-    	<j:if test="${maven.test.skip != 'true'}">
+    	<j:if test="${maven.test.skip} != 'true'">
 	        <u:file var="file" name="${maven.build.dir}/xmlschema2002-01-16"/>
 	        <j:if test="${!file.exists()}">
 	        	<echo>Downloading 6MB XML Schema test suite. This make take a few minutes...</echo>
