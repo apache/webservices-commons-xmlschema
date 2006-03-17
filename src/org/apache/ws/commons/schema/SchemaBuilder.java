@@ -1966,7 +1966,19 @@ public class SchemaBuilder {
             // the spec string to the end.
             String contextFileName = contextURL.getFile();
             URL parent = null;
-            File parentFile = new File(contextFileName).getParentFile();
+            //the logic for finding the parent file is this.
+            //1.if the contextURI represents a file then take the parent file
+            //of it
+            //2. If the contextURI represents a directory, then take that as
+            //the parent
+            File parentFile;
+            File contextFile = new File(contextFileName);
+            if (contextFile.isDirectory()){
+                parentFile = contextFile;
+            }else{
+                parentFile = contextFile.getParentFile();
+            }
+
             if (parentFile != null) {
                 parent = parentFile.toURL();
             }
