@@ -90,8 +90,7 @@ public class XmlSchemaSerializer {
         schemaElement = serializedSchema;
 
         if (schemaObj.targetNamespace != null) {
-            serializedSchema.setAttributeNS(XmlSchema.SCHEMA_NS,
-                                            "targetNamespace", schemaObj.targetNamespace);
+            serializedSchema.setAttribute("targetNamespace", schemaObj.targetNamespace);
 
             Object targetNS =
                     schema_ns.get(schemaObj.targetNamespace);
@@ -101,7 +100,7 @@ public class XmlSchemaSerializer {
             if (targetNS == null) {
                 serializedSchema.setAttributeNS("http://www.w3.org/2000/xmlns/",
                                                 "xmlns", schemaObj.targetNamespace);
-                schema_ns.put(schemaObj.targetNamespace.toString(), "");
+                schema_ns.put(schemaObj.targetNamespace, "");
             }
         }
         
@@ -111,16 +110,14 @@ public class XmlSchemaSerializer {
             String formQualified = schemaObj.attributeFormDefault.getValue();
 
             if (!formQualified.equals(XmlSchemaForm.NONE))
-                serializedSchema.setAttributeNS(XmlSchema.SCHEMA_NS,
-                                                "attributeFormDefault", convertString(formQualified));
+                serializedSchema.setAttribute("attributeFormDefault", convertString(formQualified));
         }
 
         if (schemaObj.elementFormDefault != null) {
             String formQualified = schemaObj.elementFormDefault.getValue();
 
             if (!formQualified.equals(XmlSchemaForm.NONE))
-                serializedSchema.setAttributeNS(XmlSchema.SCHEMA_NS,
-                                                "elementFormDefault", convertString(formQualified));
+                serializedSchema.setAttribute("elementFormDefault", convertString(formQualified));
         }
 
 
@@ -130,29 +127,26 @@ public class XmlSchemaSerializer {
             serializedSchema.appendChild(annotation);
         }
         if (schemaObj.id != null) {
-            serializedSchema.setAttributeNS(XmlSchema.SCHEMA_NS, "id",
+            serializedSchema.setAttribute("id",
                                             schemaObj.id);
         }
         if (schemaObj.blockDefault != null) {
             String blockDefault = schemaObj.blockDefault.getValue();
             if (!blockDefault.equals("None")) {
                 blockDefault = convertString(blockDefault);
-                serializedSchema.setAttributeNS(XmlSchema.SCHEMA_NS,
-                                                "blockDefault", blockDefault);
+                serializedSchema.setAttribute("blockDefault", blockDefault);
             }
         }
         if (schemaObj.finalDefault != null) {
             String finalDefault = schemaObj.finalDefault.getValue();
             if (!finalDefault.equals("None")) {
                 finalDefault = convertString(finalDefault);
-                serializedSchema.setAttributeNS(XmlSchema.SCHEMA_NS,
-                                                "finalDefault", finalDefault);
+                serializedSchema.setAttribute("finalDefault", finalDefault);
             }
         }
 
         if (schemaObj.version != null) {
-            serializedSchema.setAttributeNS(XmlSchema.SCHEMA_NS,
-                                            "version", schemaObj.version);
+            serializedSchema.setAttribute("version", schemaObj.version);
         }
         
         //after serialize the schema add into documentation 
@@ -306,12 +300,12 @@ public class XmlSchemaSerializer {
                                              schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         if (includeObj.schemaLocation != null) {
-            includeEl.setAttributeNS(XmlSchema.SCHEMA_NS, "schemaLocation",
+            includeEl.setAttribute("schemaLocation",
                                      includeObj.schemaLocation);
         }
 
         if (includeObj.id != null)
-            includeEl.setAttributeNS(XmlSchema.SCHEMA_NS, "id", includeObj.id);
+            includeEl.setAttribute("id", includeObj.id);
 
         if (includeObj.annotation != null) {
             Element annotation = serializeAnnotation(doc,
@@ -357,15 +351,15 @@ public class XmlSchemaSerializer {
                                             schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         if (importObj.namespace != null)
-            importEl.setAttributeNS(XmlSchema.SCHEMA_NS, "namespace",
+            importEl.setAttribute("namespace",
                                     importObj.namespace);
 
         if (importObj.schemaLocation != null && !importObj.schemaLocation.trim().equals(""))
-            importEl.setAttributeNS(XmlSchema.SCHEMA_NS, "schemaLocation",
+            importEl.setAttribute("schemaLocation",
                                     importObj.schemaLocation);
 
         if (importObj.id != null)
-            importEl.setAttributeNS(XmlSchema.SCHEMA_NS, "id", importObj.id);
+            importEl.setAttribute("id", importObj.id);
 
         if (importObj.annotation != null) {
             Element annotation = serializeAnnotation(doc,
@@ -410,14 +404,14 @@ public class XmlSchemaSerializer {
                                             schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         if (redefineObj.schemaLocation != null)
-            redefine.setAttributeNS(XmlSchema.SCHEMA_NS, "schemaLocation",
+            redefine.setAttribute("schemaLocation",
                                     redefineObj.schemaLocation);
         else
             throw new XmlSchemaSerializerException("redefine must have "
                                                    + "schemaLocation fields fill");
 
         if (redefineObj.id != null)
-            redefine.setAttributeNS(XmlSchema.SCHEMA_NS, "id", redefineObj.id);
+            redefine.setAttribute("id", redefineObj.id);
 
         if (redefineObj.annotation != null) {
             Element annotation = serializeAnnotation(doc,
@@ -851,10 +845,9 @@ public class XmlSchemaSerializer {
 		  }*/
         
         if (complexTypeObj.isMixed)
-            serializedComplexType.setAttributeNS(XmlSchema.SCHEMA_NS,
-                                                 "mixed", "true");
+            serializedComplexType.setAttribute("mixed", "true");
         if (complexTypeObj.isAbstract)
-            serializedComplexType.setAttributeNS(XmlSchema.SCHEMA_NS,
+            serializedComplexType.setAttribute(
                                                  "abstract", "true");
         if (complexTypeObj.id != null)
             serializedComplexType.setAttribute("id",
@@ -893,7 +886,7 @@ public class XmlSchemaSerializer {
         String block = complexTypeObj.block.getValue();
         if (!block.equals("None")) {
             block = convertString(block);
-            serializedComplexType.setAttributeNS(XmlSchema.SCHEMA_NS,
+            serializedComplexType.setAttribute(
                                                  "block", block);
         }
         String finalDerivation = complexTypeObj.finalDerivation.getValue();
@@ -1508,27 +1501,16 @@ public class XmlSchemaSerializer {
             groupRef.setAttribute("minOccurs",
                                     groupRefObj.minOccurs + "");
 
-        
-        /*
-		  if(groupRefObj.maxOccursString != null)
-		  groupRef.setAttributeNS(XmlSchema.SCHEMA_NS,
-		  "maxOccurs", groupRefObj.maxOccursString);
-		  else if(groupRefObj.maxOccurs > 1)
-		  groupRef.setAttributeNS(XmlSchema.SCHEMA_NS,
-		  "maxOccurs", groupRefObj.maxOccurs + "");
-		*/
+
         
         if (groupRefObj.particle != null) {
             Element particleEl;
             if (groupRefObj.particle instanceof XmlSchemaChoice)
-                particleEl = serializeChoice(doc,
-                                             (XmlSchemaChoice) groupRefObj.particle, schema);
+                serializeChoice(doc, (XmlSchemaChoice) groupRefObj.particle, schema);
             else if (groupRefObj.particle instanceof XmlSchemaSequence)
-                particleEl = serializeSequence(doc,
-                                               (XmlSchemaSequence) groupRefObj.particle, schema);
+               serializeSequence(doc,(XmlSchemaSequence) groupRefObj.particle, schema);
             else if (groupRefObj.particle instanceof XmlSchemaAll)
-                particleEl = serializeAll(doc,
-                                          (XmlSchemaAll) groupRefObj.particle, schema);
+               serializeAll(doc,(XmlSchemaAll) groupRefObj.particle, schema);
             else
                 throw new XmlSchemaSerializerException("The content of group "
                                                        + "ref particle should be"
@@ -1690,7 +1672,7 @@ public class XmlSchemaSerializer {
             XmlSchemaKeyref keyref = (XmlSchemaKeyref) constraintObj;
             if (keyref.refer != null) {
                 String keyrefStr = resolveQName(keyref.refer, schema);
-                constraint.setAttributeNS(XmlSchema.SCHEMA_NS,
+                constraint.setAttribute(
                                           "refer", keyrefStr);
             }
         } else
@@ -2126,7 +2108,7 @@ public class XmlSchemaSerializer {
 
         if (restrictionObj.baseTypeName != null) {
             String baseTypeName = resolveQName(restrictionObj.baseTypeName, schema);
-            restriction.setAttributeNS(XmlSchema.SCHEMA_NS,
+            restriction.setAttribute(
                                        "base", baseTypeName);
         }
 
