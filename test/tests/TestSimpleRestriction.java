@@ -5,6 +5,7 @@ import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.XmlSchemaType;
 import org.apache.ws.commons.schema.XmlSchemaComplexType;
 import org.apache.ws.commons.schema.XmlSchemaSequence;
+import org.apache.ws.commons.schema.XmlSchema;
 
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
@@ -36,7 +37,7 @@ public class TestSimpleRestriction extends TestCase {
 
         InputStream is = new FileInputStream("test-resources/SimpleContentRestriction.xsd");
         XmlSchemaCollection schema = new XmlSchemaCollection();
-        schema.read(new StreamSource(is), null);
+        XmlSchema s = schema.read(new StreamSource(is), null);
 
         XmlSchemaType simpleType = schema.getTypeByQName(TYPE_QNAME);
         assertNotNull(simpleType);
@@ -46,6 +47,8 @@ public class TestSimpleRestriction extends TestCase {
 
         XmlSchemaType type = elem.getSchemaType();
         assertNotNull(type);
+
+     
 
     }
 }

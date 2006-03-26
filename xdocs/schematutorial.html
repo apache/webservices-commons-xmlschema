@@ -1,0 +1,92 @@
+<html>
+<head>
+  <meta http-equiv="content-type" content="">
+  <meta content="">
+  <title>Schema Tutorial</title>
+</head>
+
+<body>
+<h1>XML Schema Tutorial</h1>
+
+<h2>Introduction</h2>
+
+<p>Commons XML Schema model is a general purpose schema model that can be
+used when a Java objct tree representation of an Xml scheama is required.
+This short tutorial explains how the commons XML Schema can be utilized.</p>
+
+<h2>Structure and Dependancies</h2>
+
+<p>The core commons XML Schema classes have <strong>no</strong> third party
+dependancies. However it depends on the XMLUnit and JUnit libraries for unit
+testing and the maven build uses the StAX API libraries to access the
+javax.xml.namespace.QName class (which is not part of the JDK). Also the
+serialization mechanism uses the DOM serialization mechanism hence the JDK
+has to be 1.4 and upwards.</p>
+
+<p>The structure of the commons XMLSchema model is quite straightforward. It
+has a strict specification bound hierarchy of classes that represents each
+and every schema component. It is not based on a Interface-implementaion
+model which allows extensions and different implementations. However the
+schema specification is quite stable and complete hence a change is unlikely
+which makes the commons XmlSchema sufficient for almost all needs of schema
+handling.</p>
+
+<h2>Reading a Schema</h2>
+
+<p>The reader for the XML Schema model is called the ScheamCollection
+(org.apache.ws.commons.schema.XmlSchemaCollection). it has a static
+<em>read</em> method that returns a XmlSchema object which represents the
+whole schema. The XmlSchema instance returned can be used to access types and
+elements of the relevant schema by their qualified name.</p>
+
+<p>The read method has a parameter to pass in a validating event handler. The
+validating event handler can be used to pass in the custom validating
+procedures. However this particular handler has no effect on the reading of
+the schema yet and it is not a feature in this release of Commons XML Schema.
+The follwing code fragment shows how a file can be read through the
+SchemaCollection.</p>
+<pre> 
+InputStream is = new FileInputStream(fileName);
+XmlSchemaCollection schemaCol = new XmlSchemaCollection();
+XmlSchema schema = schemaCol.read(new StreamSource(is), null);</pre>
+
+<p>Note that null is passed for the validating handler since it has not
+effect yet.</p>
+
+<h2>Navigating the Schema Model</h2>
+
+<p>Navigation of the model once the XmlSchema model is obtained is also quite
+straight forward. All top level elements and types are available through the
+schema object as either</p>
+<pre>org.apache.ws.commons.schema.XmlSchemaObjectTable</pre>
+instances or can be accessed directly if it can have a QName reference. For
+example if the qualified name of an element is known then getElementByName
+method can be used to extract the XmlSchemaElement object directly from the
+schema object. The follwing code sample shows how such direct methods can be
+used to extract schema objects
+
+<p></p>
+<pre>   XmlSchemaType schemaType = schema.getTypeByQName(TYPE_QNAME);
+   XmlSchemaElement elem = schema.getElementByQName(ELEMENT_QNAME);</pre>
+
+<p>Note that the TYPE_QNAME and ELEMENT_QNAME represents QName objects.</p>
+
+<h2>Printing the Schema Model</h2>
+
+<p>Printing of the model once the XmlSchema model has been modified or
+constructed in-memory, is also quite straightforward. Schema object has a
+write method that can use an output stream</p>
+
+<p>The follwing code fragment shows how to write the schema into the System
+output stream.</p>
+<pre>schema.write(System.out);</pre>
+
+<!--<h2>Advanced Topics</h2>-->
+
+<h2>Conclusion</h2>
+
+<p>Commons XmlScheam is quite a versatile piece of code that can be used to
+manipulate and generate XML Schemas. It has a minimum of dependancies and can
+be used inside another project with ease.</p>
+</body>
+</html>

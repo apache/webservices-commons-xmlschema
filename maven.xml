@@ -1,26 +1,109 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!-- $Revision: 1.21 $ $Date: 2004-10-27 20:54:09 +0600 (Wed, 27 Oct 2004) $ -->
-
-<project default="jar"
-    xmlns:j="jelly:core"
-    xmlns:u="jelly:util"
-    xmlns:maven="jelly:maven"
-    xmlns:util="jelly:util"
-    xmlns:deploy="deploy"
-    xmlns:ant="jelly:ant">
-
-    <preGoal name="test:compile">
-        <j:if test="${context.getVariable('maven.test.skip') != 'true'}">
-		<u:file var="file" name="${maven.build.dir}/xmlschema2002-01-16"/>
-	        <j:if test="${!file.exists()}">
-	        	<echo>Downloading 6MB XML Schema test suite. This make take a few minutes...</echo>
-				<ant:get dest="${maven.build.dir}/xsts-2002-01-16.tar.gz" 
-					src="http://www.w3.org/XML/2004/xml-schema-test-suite/xmlschema2002-01-16/xsts-2002-01-16.tar.gz"/>
-		    	
+<project default="jar" xmlns:j="jelly:core" xmlns:u="jelly:util" xmlns:maven="jelly:maven" xmlns:util="jelly:util" xmlns:deploy="deploy" xmlns:ant="jelly:ant">
+	<j:set var="javadoc.dir" value="target/apidocs"/>
+	<j:set var="site.javadoc.dir" value="target/docs/apidocs"/>
+	<!-- A seperate goal to run the complete test suite -->
+	<goal name="all-tests">
+		<j:if test="${context.getVariable('maven.test.skip') != 'true'}">
+			<u:file var="file" name="${maven.build.dir}/xmlschema2002-01-16"/>
+			<j:if test="${!file.exists()}">
+				<echo>Downloading 6MB XML Schema test suite. This make take a few minutes...</echo>
+				<ant:get dest="${maven.build.dir}/xsts-2002-01-16.tar.gz" src="http://www.w3.org/XML/2004/xml-schema-test-suite/xmlschema2002-01-16/xsts-2002-01-16.tar.gz"/>
 				<ant:gunzip src="${maven.build.dir}/xsts-2002-01-16.tar.gz"/>
 				<ant:untar src="${maven.build.dir}/xsts-2002-01-16.tar" dest="${maven.build.dir}"/>
-	        </j:if>
-        </j:if>
-    </preGoal>
+			</j:if>
+			<!-- Run the tests!-->
+		</j:if>
+	</goal>
+	<!-- create javadocs as a post goal to the site and copy them to the 
+           target/docs folder -->
+	<postGoal name="site">
+		<attainGoal name="javadocs"/>
+		<ant:copy toDir="${site.javadoc.dir}">
+			<ant:fileset dir="${javadoc.dir}"/>
+		</ant:copy>
+	</postGoal>
+	<!-- goal to make the javadocs -->
+	<goal name="javadocs">
+		<ant:echo>+----------------------------------------------</ant:echo>
+		<ant:echo>| Generating Java docs </ant:echo>
+		<ant:echo>+----------------------------------------------</ant:echo>
+		<mkdir dir="${javadoc.dir}"/>
+		<ant:javadoc packagenames="org.apache.ws.commons.*" defaultexcludes="yes" destdir="${javadoc.dir}" author="true" breakiterator="true" version="true" use="true" windowtitle="XMLSchema API">
+			<ant:arg line="-J-Dhttp.proxy.port=${maven.proxy.port} -J-Dhttp.proxy.host=${maven.proxy.host}"/>
+			<ant:sourcepath>
+				<ant:pathelement location="src"/>
+			</ant:sourcepath>
+		</ant:javadoc>
+	</goal>
+	<!-- create the binary distribution -->
+	<goal name="dist-bin" prereqs="jar,javadocs">
+		<ant:echo>+----------------------------------------------</ant:echo>
+		<ant:echo>| Creating: XMLSchema Binary Distribution</ant:echo>
+		<ant:echo>+----------------------------------------------</ant:echo>
+		<property name="dist" value="target/dist/temp"/>
+		<mkdir dir="${dist}"/>
+		<mkdir dir="${dist}/apidocs"/>
+		<mkdir dir="${dist}/build"/>
+		<mkdir dir="${dist}/docs"/>
+		<mkdir dir="${dist}/lib"/>
+		<!--copy dependent jars-->
+		<deploy:copy-deps todir="${dist}/lib"/>
+		<ant:delete file="${dist}/lib/xmlunit-${xmlunit.version}.jar"/>
+		<!--copy api docs-->
+		<ant:copy toDir="${dist}/apidocs">
+			<ant:fileset dir="${javadoc.dir}"/>
+		</ant:copy>
+		<!--add the jar-->
+		<ant:copy toDir="${dist}/build">
+			<ant:fileset file="target/XmlSchema-${schema.version}.jar"/>
+		</ant:copy>
+		<!--add  other documents in Xdocs-->
+		<ant:copy toDir="${dist}/docs">
+			<ant:fileset dir="xdocs">
+				<ant:exclude name="**/.svn/**"/>
+			</ant:fileset>
+		</ant:copy>
+		<!--copy release notes, etc-->
+		<ant:copy toDir="${dist}">
+			<ant:fileset file="RELEASE-NOTE.txt"/>
+			<ant:fileset file="README.txt"/>
+			<ant:fileset file="LICENSE.txt"/>
+		</ant:copy>
+		<!--create the zip-->
+		<ant:zip file="target/dist/XmlSchema-${schema.version}-bin.zip">
+			<ant:fileset dir="${dist}/"/>
+		</ant:zip>
+		<ant:delete dir="${dist}"/>
+	</goal>
+	<!-- code to create the source distribution -->
+	<goal name="dist-src">
+		<ant:echo>+----------------------------------------------</ant:echo>
+		<ant:echo>| Creating: XMLSchema Source Distribution</ant:echo>
+		<ant:echo>+----------------------------------------------</ant:echo>
+		<ant:property name="dist" value="target/dist/temp"/>
+		<ant:copy toDir="${dist}">
+			<ant:fileset dir=".">
+				<ant:exclude name="**/.svn/**"/>
+				<ant:include name="**/src/**"/>
+				<ant:include name="**/test/**"/>
+			</ant:fileset>
+		</ant:copy>
+		<!-- Copy the master maven files src distro -->
+		<ant:copy toDir="${dist}">
+			<ant:fileset file="maven.xml"/>
+			<ant:fileset file="project.xml"/>
+			<ant:fileset file="project.properties"/>
+			<ant:fileset file="RELEASE-NOTE.txt"/>
+			<ant:fileset file="LICENSE.txt"/>
+		</ant:copy>
+		<!-- Zip up -->
+		<ant:zip file="target/dist/XmlSchema-${schema.version}-src.zip">
+			<ant:fileset dir="${dist}/"/>
+		</ant:zip>
+		<ant:delete dir="${dist}"/>
+	</goal>
+	<!-- dummy goal to create both the bin and source distributions -->
+	<goal name="release" prereqs="dist-bin,dist-src"/>
 </project>

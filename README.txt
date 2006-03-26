@@ -1,0 +1,26 @@
+======================================================
+Apache XMLSchema 1.0 build  (March 23rd, 2006)
+
+http://ws.apache.org/commons/XmlSchema/
+------------------------------------------------------
+
+___________________
+Documentation
+===================
+ 
+Documentation can be found in the 'docs' distribution of this release and in the main site.
+
+___________________
+Support
+===================
+ 
+Any problem with this release can be reported to ws-commons mailing list
+. If you are sending an email to the mailing
+list make sure to add the [XMLSchema] prefix to the subject.
+
+Mailing list subscription:
+    commons-dev-subscribe@ws.apache.org
+
+Thank you for using XMLSchema
+
+The XMLSchema Team.

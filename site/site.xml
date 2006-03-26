@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <project name="Maven">
-  <bannerLeft>
-    <name>XmlSchema</name>
-    <src>http://www.apache.org/images/asf-logo.gif</src>
-    <href>http://ws.apache.org/commons/XmlSchema</href>
-  </bannerLeft>
-
-  <body>
-    <links>
-      <item name="Apache" href="http://www.apache.org/" />
-      <item name="WS Commons" href="http://ws.apache.org/commons"/>
-    </links>
-
-    <menu name="XmlSchema API">
-      <item name="Home" href="index.html"/>
-    </menu>
-
+	<bannerLeft>
+		<name>XmlSchema</name>
+		<src>http://www.apache.org/images/asf-logo.gif</src>
+		<href>http://ws.apache.org/commons/XmlSchema</href>
+	</bannerLeft>
+	<body>
+		<links>
+			<item name="Apache" href="http://www.apache.org/"/>
+			<item name="WS Commons" href="http://ws.apache.org/commons"/>
+		</links>
+		<menu name="XML Schema">
+			<item name="Home" href="index.html"/>
+			<item name="Download" href="download.html"/>
+			<item name="Release Notes" href="release-notes.html"/>
+			<item name="General Information" href="about.html"/>
+		</menu>
+   
    ${reports}
 
   </body>

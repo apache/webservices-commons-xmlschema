@@ -34,8 +34,12 @@
 	<inceptionYear>2004</inceptionYear>
 	<package>org.apache.commons</package>
 	<logo>http://www.apache.org/images/asf-logo.gif</logo>
-	<description>API to manipulate XmlSchema.</description>
-	<shortDescription>API to manipulate XmlSchema.</shortDescription>
+	<description>Commons XMLSchema is a light weight schema object model that can be used to manipualte or
+          generate a schema. It has a clean, easy to use API and can easily be integrated into an existing project
+          since it has almost no dependancies on third party libraries.</description>
+	<shortDescription>
+          Schema library to manipulate a schema
+	</shortDescription>
 	<!-- the project home page -->
 	<url>http://ws.apache.org/commons/XmlSchema</url>
 	<issueTrackingUrl>http://issues.apache.org/jira/browse/WSCOMMONS</issueTrackingUrl>
@@ -75,7 +79,7 @@
 			<name>Srinath Perera</name>
 			<id>hemapani</id>
 			<email>hemapani AT apache.org</email>
-			<organization>Lanka Software Foundation</organization>
+			<organization>Indiana University</organization>
 			<url>http://www.apache.org/~hemapani</url>
 		</developer>
 		<developer>
@@ -95,14 +99,14 @@
 			<name>Jaliya Ekanayake</name>
 			<id>jaliya</id>
 			<email>jaliya AT opensource.lk</email>
-			<organization>Virtusa / Lanka Software Foundation</organization>
+			<organization>Indiana University</organization>
 			<url>http://www.apache.org/~jaliya</url>
 		</developer>
 		<developer>
 			<name>Chathura Herath</name>
 			<id>chathura</id>
 			<email>chathura AT opensource.lk</email>
-			<organization>LSF/MIT</organization>
+			<organization>Indiana University</organization>
 			<url>www.apache.org/~chathura</url>
 		</developer>
 		<developer>
@@ -161,7 +165,12 @@
 			<email>chamil AT wso2.com</email>
 			<organization>WSO2</organization>
 		</developer>
-
+         <developer>
+			<id>dandiep</id>
+			<name>Dan Diephouse</name>
+			<email>dandiep AT apache.org</email>
+			<organization>Envoi Solutions</organization>
+		</developer>
 	</developers>
 	
     <dependencies>
@@ -184,12 +193,13 @@
     </dependencies>
     
     <build>
-        <nagEmailAddress></nagEmailAddress>
+        <nagEmailAddress>commons-dev@ws.apache.org</nagEmailAddress>
         <sourceDirectory>src</sourceDirectory>
         <unitTestSourceDirectory>test</unitTestSourceDirectory>
 
         <unitTest>
             <excludes>
+                <exclude>**/NISTSchemaTest.java</exclude>
             </excludes>
             <includes>
                 <include>**/*Test*.java</include>
