@@ -31,6 +31,7 @@ import javax.xml.namespace.QName;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Iterator;
 
 
 public class XmlSchemaSerializer {
@@ -40,6 +41,8 @@ public class XmlSchemaSerializer {
     public static final String xsdNamespace = "http://www.w3.org/2001/XMLSchema";
     ArrayList docs;
     Element schemaElement;
+
+    private static final String XMLNS_NAMESPACE_URI = "http://www.w3.org/2000/xmlns/";
 
     private XmlSchemaSerializer() {
         docs = new ArrayList();
@@ -94,17 +97,17 @@ public class XmlSchemaSerializer {
 
             Object targetNS =
                     schema_ns.get(schemaObj.targetNamespace);
-            
+
             //if the namespace is not entered then add 
             //the targetNamespace as its
             if (targetNS == null) {
-                serializedSchema.setAttributeNS("http://www.w3.org/2000/xmlns/",
+                serializedSchema.setAttributeNS(XMLNS_NAMESPACE_URI,
                                                 "xmlns", schemaObj.targetNamespace);
                 schema_ns.put(schemaObj.targetNamespace, "");
             }
         }
-        
-        
+
+
         //todo: implement xml:lang, 
         if (schemaObj.attributeFormDefault != null) {
             String formQualified = schemaObj.attributeFormDefault.getValue();
@@ -148,8 +151,25 @@ public class XmlSchemaSerializer {
         if (schemaObj.version != null) {
             serializedSchema.setAttribute("version", schemaObj.version);
         }
-        
-        //after serialize the schema add into documentation 
+
+        //add the extra namespace decalarations if any are available
+        Hashtable prefixToNamespaceMap = schemaObj.getPrefixToNamespaceMap();
+        if (null!=prefixToNamespaceMap && !prefixToNamespaceMap.isEmpty()){
+            Iterator iterator = prefixToNamespaceMap.keySet().iterator();
+            while (iterator.hasNext()) {
+                String key =  (String)iterator.next();
+                if (!"".equals(key)){
+                serializedSchema.setAttributeNS(XMLNS_NAMESPACE_URI,
+                                                "xmlns:"+key,
+                        (String)prefixToNamespaceMap.get(key));
+                }
+
+            }
+
+        }
+
+
+        //after serialize the schema add into documentation
         //and add to document collection array  which at the end 
         //returned
         serializeSchemaChild(items, serializedSchema, serializedSchemaDocs,
@@ -268,7 +288,7 @@ public class XmlSchemaSerializer {
             String key = keys.nextElement().toString();
             String value = schema_ns.get(key).toString();
             value = (value.length() > 1) ? "xmlns:" + value : "xmlns";
-            schemaEl.setAttributeNS("http://www.w3.org/2000/xmlns/",
+            schemaEl.setAttributeNS(XMLNS_NAMESPACE_URI,
                                     value, key);
         }
         return schemaEl;
@@ -520,11 +540,11 @@ public class XmlSchemaSerializer {
             serializedEl.setAttribute("maxOccurs",
                                         "unbounded");
         //else not serialized
-        
+
         /*if(elementObj.minOccurs >1)
-		  serializedEl.setAttribute("minOccurs",
-		  elementObj.minOccurs + "");*/
-        
+            serializedEl.setAttribute("minOccurs",
+            elementObj.minOccurs + "");*/
+
         //Change - SK and Ragu cos it wasnt picking up
         // minOccurs = 0
         if (elementObj.minOccurs < Long.MAX_VALUE && elementObj.minOccurs != 1)
@@ -533,19 +553,19 @@ public class XmlSchemaSerializer {
         else if (elementObj.minOccurs == Long.MAX_VALUE)
             serializedEl.setAttribute("minOccurs",
                                         "unbounded");
-            
-        /*
-		  if(elementObj.maxOccursString != null)
-		  serializedEl.setAttribute("maxOccurs",
-		  elementObj.maxOccursString);
-		  else if(elementObj.maxOccurs > 1)
-		  serializedEl.setAttribute("maxOccurs",
-		  elementObj.maxOccurs + "");
 
-		  if(elementObj.minOccurs > 1)
-		  serializedEl.setAttribute("minOccurs",
-		  elementObj.minOccurs + "");
-		*/
+        /*
+            if(elementObj.maxOccursString != null)
+            serializedEl.setAttribute("maxOccurs",
+            elementObj.maxOccursString);
+            else if(elementObj.maxOccurs > 1)
+            serializedEl.setAttribute("maxOccurs",
+            elementObj.maxOccurs + "");
+
+            if(elementObj.minOccurs > 1)
+            serializedEl.setAttribute("minOccurs",
+            elementObj.minOccurs + "");
+          */
         if (elementObj.substitutionGroup != null) {
             String resolvedQName = resolveQName(elementObj.substitutionGroup, schema);
             serializedEl.setAttribute("substitutionGroup",
@@ -562,7 +582,7 @@ public class XmlSchemaSerializer {
         }
         if (elementObj.schemaType != null && elementObj.schemaTypeName == null) {
             if (elementObj.schemaType instanceof XmlSchemaComplexType) {
-                
+
                 Element complexType = serializeComplexType(doc,
                                                            (XmlSchemaComplexType) elementObj.schemaType, schema);
                 serializedEl.appendChild(complexType);
@@ -651,7 +671,7 @@ public class XmlSchemaSerializer {
         }/*else
 		   throw new XmlSchemaSerializerException("simple type must be set "
 		   + "with content, either union, restriction or list");*/
-        
+
         return serializedSimpleType;
     }
 
@@ -843,7 +863,7 @@ public class XmlSchemaSerializer {
 		  complexTypeObj.annotation, schema);
 		  serializedComplexType.appendChild(annotationEl);
 		  }*/
-        
+
         if (complexTypeObj.isMixed)
             serializedComplexType.setAttribute("mixed", "true");
         if (complexTypeObj.isAbstract)
@@ -939,8 +959,8 @@ public class XmlSchemaSerializer {
             sequence.setAttribute("maxOccurs",
                                     "unbounded");
         //else not serialized
-        
-            
+
+
         if (sequenceObj.minOccurs > 1)
             sequence.setAttribute("minOccurs",
                                     sequenceObj.minOccurs + "");
@@ -1061,7 +1081,7 @@ public class XmlSchemaSerializer {
             // if it is present then it is likely that it is a namespace prefix
             // do what is neccesary to get the real namespace for it and make 
             // required changes to the prefix 
-			
+
             for (int i = 0; i < unhandled.length; i++) {
                 String name = unhandled[i].getNodeName();
                 String value = unhandled[i].getNodeValue();
@@ -1121,7 +1141,7 @@ public class XmlSchemaSerializer {
     Element serializeChoice(Document doc, XmlSchemaChoice choiceObj,
                             XmlSchema schema) throws XmlSchemaSerializerException {
         //todo: handle any non schema attri ?
-        
+
         Element choice = createNewElement(doc, "choice",
                                           schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
         if (choiceObj.id != null)
@@ -1136,22 +1156,22 @@ public class XmlSchemaSerializer {
             choice.setAttribute("maxOccurs",
                                   "unbounded");
         //else not serialized
-        
+
         if (choiceObj.minOccurs > 1)
             choice.setAttribute("minOccurs",
                                   choiceObj.minOccurs + "");
-               
+
 
         /*
-		  if(choiceObj.maxOccursString != null)
-		  choice.setAttribute("maxOccurs",
-		  choiceObj.maxOccursString);
-		  else if(choiceObj.maxOccurs > 1)
-		  choice.setAttribute("maxOccurs",
-		  choiceObj.maxOccurs +"");
-		*/  
-            
-        
+            if(choiceObj.maxOccursString != null)
+            choice.setAttribute("maxOccurs",
+            choiceObj.maxOccursString);
+            else if(choiceObj.maxOccurs > 1)
+            choice.setAttribute("maxOccurs",
+            choiceObj.maxOccurs +"");
+          */
+
+
         if (choiceObj.annotation != null) {
             Element annotation = serializeAnnotation(doc,
                                                      choiceObj.annotation, schema);
@@ -1378,7 +1398,7 @@ public class XmlSchemaSerializer {
             anyEl.setAttribute("maxOccurs",
                                  "unbounded");
         //else not serialized
-        
+
         if (anyObj.minOccurs > 1)
             anyEl.setAttribute("minOccurs",
                                  anyObj.minOccurs + "");
@@ -1496,13 +1516,13 @@ public class XmlSchemaSerializer {
             groupRef.setAttribute("maxOccurs",
                                     "unbounded");
         //else not serialized
-        
+
         if (groupRefObj.minOccurs > 1)
             groupRef.setAttribute("minOccurs",
                                     groupRefObj.minOccurs + "");
 
 
-        
+
         if (groupRefObj.particle != null) {
             Element particleEl;
             if (groupRefObj.particle instanceof XmlSchemaChoice)
@@ -2418,12 +2438,12 @@ public class XmlSchemaSerializer {
         //create new element and append it if found
         int attributeLength = attributes.getLength();
         for (int i = 0; i < attributeLength; i++) {
-            Node n = attributes.item(i); 
+            Node n = attributes.item(i);
             //assuming attributes got to throw exception if not later
             el.setAttribute(n.getNodeName(),
                               n.getNodeValue());
         }
-        
+
         //check any descendant of this node
         //if there then append its child
         NodeList decendants = el.getChildNodes();
@@ -2494,9 +2514,9 @@ public class XmlSchemaSerializer {
             prefix = "gen" + magicNumber;
             schema_ns.put(namespace, prefix);
 
-            
+
             //setting xmlns in schema
-            schemaElement.setAttributeNS("http://www.w3.org/2000/xmlns/",
+            schemaElement.setAttributeNS(XMLNS_NAMESPACE_URI,
                                          "xmlns:" + prefix.toString(), namespace);
         }
 
