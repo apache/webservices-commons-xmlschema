@@ -1462,8 +1462,13 @@ public class SchemaBuilder {
 
                 namespace = result;
             } else {
-                namespace = schema.targetNamespace;
+                //in this case the namespace to be picked is the default
+                //namespace of the schema
+                //the default namespace is taken to be having the empty
+                //string prefix
+                namespace = schema.getNamespace("");
             }
+
             typeName = Tokenizer.lastToken(typeName, ":")[1];
             QName typeQName = new QName(namespace, typeName);
             element.schemaTypeName = typeQName;
