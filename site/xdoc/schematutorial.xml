@@ -1,13 +1,9 @@
-<html>
-<head>
-  <meta http-equiv="content-type" content="">
-  <meta content="">
-  <title>Schema Tutorial</title>
-</head>
-
-<body lang="en">
-<h1>XML Schema Tutorial</h1>
-<h2Content</h2>
+<xdoc>
+  <properties>
+    <title>XML Schema Tutorial</title>
+  </properties>
+<body>
+<section name="Contents">
 <ul>
   <li><a href="#intro">Introduction</a></li>
   <li><a href="#dependencies">Structure and Dependencies</a></li>
@@ -16,14 +12,17 @@
   <li><a href="#printing">Printing the Schema Model</a></li>
   <li><a href="#conclusion">Conclusion</a></li>
 </ul>
+</section>
+
 <a name="intro"></a>
-<h2>Introduction</h2>
+<section name="Introduction">
 
 <p>Commons XML Schema model is a general purpose schema model that can be
 used when a Java object tree representation of an Xml schema is required.
 This short tutorial explains how the Commons XML Schema can be utilized.</p>
 <a name="dependencies"></a>
-<h2>Structure and Dependencies</h2>
+</section>
+<section name="Structure and Dependencies">
 
 <p>The core commons XML Schema classes have <strong>no</strong> third party
 dependencies. However it depends on the XMLUnit and JUnit libraries for unit
@@ -39,9 +38,10 @@ model which allows extensions and different implementations. However, the
 schema specification is quite stable and complete, hence a change is
 unlikelyl, which makes the commons XmlSchema sufficient for almost all needs
 of schema handling.</p>
-<a name="reading"></a>
-<h2>Reading a Schema</h2>
+</section>
 
+<section name="Reading a Schema">
+<a name="reading"></a>
 <p>The reader for the XML Schema model is called the SchemaCollection
 (org.apache.ws.commons.schema.XmlSchemaCollection). It has a static
 <em>read</em> method that returns a XmlSchema object which represents the
@@ -61,8 +61,11 @@ XmlSchema schema = schemaCol.read(new StreamSource(is), null);</pre>
 
 <p>Note that null is passed for the validating handler since it has no effect
 yet.</p>
+</section>
+
 <a name="navigating"></a>
-<h2>Navigating the Schema Model</h2>
+
+<section name="Navigating the Schema Model">
 
 <p>Navigation of the model once the XmlSchema model is obtained is also quite
 straight forward. All top level elements and types are available through the
@@ -87,12 +90,14 @@ constructed in-memory, is also quite straightforward. Schema object has a
 <p>The following code fragment shows how to write the schema into the System
 output stream.</p>
 <pre>schema.write(System.out);</pre>
+</section>
+
 <!--<h2>Advanced Topics</h2>-->
 <a name="conclusion"></a>
-<h2>Conclusion</h2>
-
+<section name="Conclusion">
 <p>Commons XmlSchema is quite a versatile piece of code that can be used to
 manipulate and generate XML Schemas. It has minimum dependencies and can be
 used inside another project with ease.</p>
+</section>
 </body>
-</html>
+</xdoc>

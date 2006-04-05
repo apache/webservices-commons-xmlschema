@@ -200,6 +200,7 @@
 				<artifactId>maven-site-plugin</artifactId>
 				<configuration>
 					<siteDirectory>${basedir}/site</siteDirectory>
+                    <resourcesDirectory>${basedir}/site/resources</resourcesDirectory>
 				</configuration>
 			</plugin>
 			<plugin>
