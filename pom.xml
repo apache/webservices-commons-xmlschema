@@ -3,7 +3,7 @@
   <groupId>org.apache.ws.commons</groupId>
   <artifactId>XmlSchema</artifactId>
   <name>XmlSchema</name>
-  <version>SNAPSHT</version>
+  <version>SNAPSHOT</version>
   <description>XmlSchema API</description>
   <url>http://ws.apache.org/commons/XmlSchema</url>
   <issueManagement>
