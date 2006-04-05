@@ -3,7 +3,7 @@
   <groupId>org.apache.ws.commons</groupId>
   <artifactId>XmlSchema</artifactId>
   <name>XmlSchema</name>
-  <version>SNAPSHOT</version>
+  <version>1.0.1</version>
   <description>XmlSchema API</description>
   <url>http://ws.apache.org/commons/XmlSchema</url>
   <issueManagement>
@@ -144,9 +144,9 @@
     </developer>
   </developers>
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/webservices/commons/modules/XmlSchema/tags/XmlSchema-1.0.1</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/webservices/commons/modules/XmlSchema/tags/XmlSchema-1.0.1</developerConnection>
-    <url>http://svn.apache.org/viewcvs.cgi/webservices/commons/modules/XmlSchema/tags/XmlSchema-1.0.1</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/webservices/commons/modules/XmlSchema/tags/1.0.1</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/webservices/commons/modules/XmlSchema/tags/1.0.1</developerConnection>
+    <url>http://svn.apache.org/viewcvs.cgi/webservices/commons/modules/XmlSchema/tags/1.0.1</url>
   </scm>
   <organization>
     <name>Apache Software Foundation</name>
