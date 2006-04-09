@@ -61,6 +61,12 @@ public class SchemaBuilder {
         // get all the attributes along with the namespace declns
 
         setNamespaceAttributes(schema, schemaEl);
+        
+        // only populate it if it isn't already in there
+        if(!collection.namespaces.containsKey(schema.targetNamespace)){
+            collection.namespaces.put(schema.targetNamespace, schema);
+        }
+        
         schema.setElementFormDefault(this.getFormDefault(schemaEl,
                 "elementFormDefault"));
         schema.setAttributeFormDefault(this.getFormDefault(schemaEl,
@@ -253,10 +259,6 @@ public class SchemaBuilder {
                 schema.targetNamespace = contain;
         } else {
             putNamespace("", schema.targetNamespace);
-        }
-        // only populate it if it isn't already in there
-        if(!collection.namespaces.containsKey(schema.targetNamespace)){
-            collection.namespaces.put(schema.targetNamespace, schema);
         }
     }
 
