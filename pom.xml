@@ -165,6 +165,13 @@
           <exclude>**/package.html</exclude>
         </excludes>
       </resource>
+      <resource>
+        <targetPath>META-INF</targetPath>
+        <directory>${basedir}</directory>
+        <includes>
+          <include>LICENSE*</include>
+        </includes>
+      </resource>
     </resources>
     <testResources>
       <testResource>
@@ -176,6 +183,37 @@
       </testResource>
     </testResources>
     <plugins>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>src-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>assembly</goal>
+            </goals>
+            <configuration>
+              <descriptor>assembly-src.xml</descriptor>
+              <finalName>XmlSchema-${project.version}</finalName>
+              <outputDirectory>target/src-package</outputDirectory>
+              <workDirectory>target/assembly/work</workDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>bin-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>assembly</goal>
+            </goals>
+            <configuration>
+              <descriptor>assembly-bin.xml</descriptor>
+              <finalName>XmlSchema-${project.version}</finalName>
+              <outputDirectory>target/src-package</outputDirectory>
+              <workDirectory>target/assembly/work</workDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <artifactId>maven-antrun-plugin</artifactId>
         <executions>

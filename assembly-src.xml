@@ -1,0 +1,27 @@
+<assembly>
+  <id>src</id>
+  <formats>
+    <format>tar.gz</format>
+    <format>zip</format>
+  </formats>
+  <fileSets>
+    <fileSet>
+      <includes>
+        <include>README*</include>
+        <include>LICENSE*</include>
+        <include>NOTICE*</include>
+        <include>pom.xml</include>
+        <include>build.xml</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>src</directory>
+    </fileSet>
+    <fileSet>
+      <directory>test</directory>
+    </fileSet>
+    <fileSet>
+      <directory>test-resources</directory>
+    </fileSet>
+  </fileSets>
+</assembly>
