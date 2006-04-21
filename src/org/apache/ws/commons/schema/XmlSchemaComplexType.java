@@ -16,6 +16,8 @@
 
 package org.apache.ws.commons.schema;
 
+import org.apache.ws.commons.schema.constants.BlockConstants;
+
 /**
  * Class for complex types. Defines a complex type that determines the
  * set of attributes and content of an element. Represents the World Wide
@@ -40,7 +42,7 @@ public class XmlSchemaComplexType extends XmlSchemaType {
     public XmlSchemaComplexType(XmlSchema schema) {
         super(schema);
         attributes = new XmlSchemaObjectCollection();
-        block = new XmlSchemaDerivationMethod("None");
+        block = new XmlSchemaDerivationMethod(BlockConstants.NONE);
         isAbstract = false;
         isMixed = false;
     }

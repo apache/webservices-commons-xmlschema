@@ -17,6 +17,7 @@
 package org.apache.ws.commons.schema;
 
 import org.apache.ws.commons.schema.constants.Enum;
+import org.apache.ws.commons.schema.constants.BlockConstants;
 
 /**
  * Enumerations for the content model of the complex type. This
@@ -27,8 +28,11 @@ import org.apache.ws.commons.schema.constants.Enum;
 
 public class XmlSchemaContentType extends Enum {
 
-    static String[] members = new String[]{"ElementOnly", "Empty",
-                                           "Mixed", "TextOnly"};
+    static String[] members = new String[]{
+            BlockConstants.ELEMENT_ONLY,
+            BlockConstants.EMPTY,
+            BlockConstants.MIXED,
+            BlockConstants.TEXT_ONLY};
 
     /**
      * Creates new XmlSchemaContentType

@@ -33,6 +33,7 @@ import javax.xml.namespace.QName;
 /**
  */
 public class TestForwardRefs extends TestCase {
+    
     public void testForwardRefs() throws Exception {
         QName ELEMENT_QNAME = new QName("http://soapinterop.org/types",
                                         "attrTest");

@@ -16,6 +16,8 @@
 
 package org.apache.ws.commons.schema;
 
+import org.apache.ws.commons.schema.constants.BlockConstants;
+
 import javax.xml.namespace.QName;
 
 
@@ -44,7 +46,7 @@ public class XmlSchemaType extends XmlSchemaAnnotated {
      */
     public XmlSchemaType(XmlSchema schema) {
         this.schema = schema;
-        finalDerivation = new XmlSchemaDerivationMethod("None");
+        finalDerivation = new XmlSchemaDerivationMethod(BlockConstants.NONE);
     }
 
     public Object getBaseSchemaType() {

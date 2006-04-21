@@ -16,6 +16,8 @@
 
 package org.apache.ws.commons.schema;
 
+import org.apache.ws.commons.schema.constants.BlockConstants;
+
 import javax.xml.namespace.QName;
 
 /**
@@ -41,7 +43,7 @@ public class XmlSchemaAttribute extends XmlSchemaAnnotated {
      */
     public XmlSchemaAttribute() {
         form = new XmlSchemaForm(XmlSchemaForm.NONE);
-        use = new XmlSchemaUse("None");
+        use = new XmlSchemaUse(BlockConstants.NONE);
     }
 
     public Object getAttributeType() {

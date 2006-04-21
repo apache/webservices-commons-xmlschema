@@ -16,6 +16,8 @@
 
 package org.apache.ws.commons.schema;
 
+import org.apache.ws.commons.schema.constants.BlockConstants;
+
 /**
  * Enables any attribute from the specified namespace or namespaces
  * to appear in the containing complexType element. Represents the
@@ -29,7 +31,8 @@ public class XmlSchemaAnyAttribute extends XmlSchemaAnnotated {
      * Creates new XmlSchemaAnyAttribute
      */
     public XmlSchemaAnyAttribute() {
-        processContent = new XmlSchemaContentProcessing("None");
+        processContent = new XmlSchemaContentProcessing(
+                BlockConstants.NONE);
     }
 
     String namespace;

@@ -25,6 +25,7 @@ import org.w3c.dom.Attr;
 import org.apache.ws.commons.schema.utils.XDOMUtil;
 import org.apache.ws.commons.schema.utils.Tokenizer;
 import org.apache.ws.commons.schema.constants.Constants;
+import org.apache.ws.commons.schema.constants.BlockConstants;
 import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -286,7 +287,7 @@ public class SchemaBuilder {
             if (finalstr.equalsIgnoreCase("all") |
                     finalstr.equalsIgnoreCase("#all"))
 
-                simpleType.setFinal(new XmlSchemaDerivationMethod("All"));
+                simpleType.setFinal(new XmlSchemaDerivationMethod(BlockConstants.ALL));
             else
                 simpleType.setFinal(new XmlSchemaDerivationMethod(finalstr));
         }
@@ -613,7 +614,7 @@ public class SchemaBuilder {
             if (blockStr.equalsIgnoreCase("all") |
                     blockStr.equalsIgnoreCase("#all")) {
 
-                ct.setBlock(new XmlSchemaDerivationMethod("All"));
+                ct.setBlock(new XmlSchemaDerivationMethod(BlockConstants.ALL));
             } else
                 ct.setBlock(new XmlSchemaDerivationMethod(blockStr));
             //ct.setBlock(new XmlSchemaDerivationMethod(block));
@@ -623,7 +624,7 @@ public class SchemaBuilder {
             if (finalstr.equalsIgnoreCase("all") |
                     finalstr.equalsIgnoreCase("#all")) {
 
-                ct.setFinal(new XmlSchemaDerivationMethod("All"));
+                ct.setFinal(new XmlSchemaDerivationMethod(BlockConstants.ALL));
             } else
                 ct.setFinal(new XmlSchemaDerivationMethod(finalstr));
         }
@@ -1866,23 +1867,20 @@ public class SchemaBuilder {
         if (el.hasAttribute(attrName) && !el.getAttribute(attrName).equals("")) {
             //#all | List of (extension | restriction | substitution
             String derivationMethod = el.getAttribute(attrName).trim();
-            char c = Character.toUpperCase(derivationMethod.charAt(0));
             if (derivationMethod.equals("#all"))
-                return new XmlSchemaDerivationMethod("All");
+                return new XmlSchemaDerivationMethod(BlockConstants.ALL);
             else
-                return new XmlSchemaDerivationMethod(c + derivationMethod.substring(1));
+                return new XmlSchemaDerivationMethod(derivationMethod);
         }
-        return new XmlSchemaDerivationMethod("None");
+        return new XmlSchemaDerivationMethod(BlockConstants.NONE);
     }
 
     //Check value entered by user and change according to .net spec, user
     String getEnumString(Element el, String attrName) {
         if (el.hasAttribute(attrName)) {
-            String contentProcessing = el.getAttribute(attrName).trim();
-            char c = Character.toUpperCase(contentProcessing.charAt(0));
-            return c + contentProcessing.substring(1);
+            return el.getAttribute(attrName).trim();
         }
-        return "None";
+        return BlockConstants.NONE;
     }
 
     XmlSchema getXmlSchemaFromLocation(String schemaLocation) {

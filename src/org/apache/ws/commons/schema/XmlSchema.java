@@ -17,6 +17,7 @@
 package org.apache.ws.commons.schema;
 
 import org.w3c.dom.Document;
+import org.apache.ws.commons.schema.constants.BlockConstants;
 
 import javax.xml.namespace.QName;
 import javax.xml.transform.OutputKeys;
@@ -74,8 +75,8 @@ public class XmlSchema extends XmlSchemaAnnotated {
         this.parent = parent;
         attributeFormDefault = new XmlSchemaForm(XmlSchemaForm.UNQUALIFIED);
         elementFormDefault = new XmlSchemaForm(XmlSchemaForm.UNQUALIFIED);
-        blockDefault = new XmlSchemaDerivationMethod("None");
-        finalDefault = new XmlSchemaDerivationMethod("None");
+        blockDefault = new XmlSchemaDerivationMethod(BlockConstants.NONE);
+        finalDefault = new XmlSchemaDerivationMethod(BlockConstants.NONE);
         items = new XmlSchemaObjectCollection();
         includes = new XmlSchemaObjectCollection();
         namespaces = new Hashtable();

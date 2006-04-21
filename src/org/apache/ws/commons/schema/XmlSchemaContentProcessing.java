@@ -16,6 +16,8 @@
 
 package org.apache.ws.commons.schema;
 
+import org.apache.ws.commons.schema.constants.BlockConstants;
+
 /**
  * Provides information about the validation mode of any
  * and anyAttribute element replacements.
@@ -25,8 +27,12 @@ package org.apache.ws.commons.schema;
 
 public class XmlSchemaContentProcessing extends org.apache.ws.commons.schema.constants.Enum {
 
-    static String[] members = new String[]{"Lax", "None",
-                                           "Skip", "Strict"};
+    static String[] members = new String[]{
+            BlockConstants.LAX,
+            BlockConstants.NONE,
+            BlockConstants.SKIP,
+            BlockConstants.STRICT
+    };
 
     /**
      * Creates new XmlSeverityType
