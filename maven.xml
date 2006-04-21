@@ -106,4 +106,9 @@
 	</goal>
 	<!-- dummy goal to create both the bin and source distributions -->
 	<goal name="release" prereqs="dist-bin,dist-src"/>
+        
+        <!-- Making the jar automatically copied to the local repository during a build -->
+        <goal name="jar">
+           <attainGoal name="jar:install"/>
+        </goal>
 </project>
