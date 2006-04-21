@@ -801,11 +801,11 @@ public class XmlSchemaSerializer {
 
         if (facetObj.id != null)
             serializedFacet.setAttribute("id", facetObj.id);
-        if (facetObj.annotation != null) {
-            Element annotation = serializeAnnotation(doc, facetObj.annotation,
-                                                     schema);
-            serializedFacet.appendChild(annotation);
-        }
+//        if (facetObj.annotation != null) {
+//            Element annotation = serializeAnnotation(doc, facetObj.annotation,
+//                                                     schema);
+//            serializedFacet.appendChild(annotation);
+//        }
 
         return serializedFacet;
     }
@@ -1457,6 +1457,12 @@ public class XmlSchemaSerializer {
             throw new XmlSchemaSerializerException("Group must have " +
                                                    "name or ref");
 
+         /* annotations are supposed to be written first!!!!! */
+        if (groupObj.annotation != null) {
+            Element annotation = serializeAnnotation(doc,
+                                                     groupObj.annotation, schema);
+            group.appendChild(annotation);
+        }
 
         if (groupObj.particle instanceof XmlSchemaSequence) {
             Element sequence = serializeSequence(doc,
@@ -1471,11 +1477,7 @@ public class XmlSchemaSerializer {
                                        (XmlSchemaAll) groupObj.particle, schema);
             group.appendChild(all);
         }
-        if (groupObj.annotation != null) {
-            Element annotation = serializeAnnotation(doc,
-                                                     groupObj.annotation, schema);
-            group.appendChild(annotation);
-        }
+
         return group;
     }
 
