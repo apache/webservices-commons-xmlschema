@@ -202,9 +202,17 @@ public class XmlSchema extends XmlSchemaAnnotated {
         serialize_internal(this, writer);
     }
 
+    public Document[] getAllSchemas() {
+        try {
+            return XmlSchemaSerializer.serializeSchema(this, true);
+        } catch (XmlSchemaSerializer.XmlSchemaSerializerException e) {
+            throw new XmlSchemaException(e.getMessage());
+        }
+    }
+
     private static void serialize_internal(XmlSchema schema, Writer out) {
         try {
-            Document[] serializedSchemas = XmlSchemaSerializer.serializeSchema(schema, true);
+            Document[] serializedSchemas = XmlSchemaSerializer.serializeSchema(schema, false);
             TransformerFactory trFac = TransformerFactory.newInstance();
             Source source = new DOMSource(serializedSchemas[0]);
             Result result = new StreamResult(out);
