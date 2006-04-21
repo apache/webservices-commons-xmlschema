@@ -2437,7 +2437,7 @@ public class XmlSchemaSerializer {
     private void appendElement(Document doc, Element parent,
                                Node children, XmlSchema schema) {
         Element elTmp = (Element) children;
-        Element el = createNewElement(doc, elTmp.getTagName(),
+        Element el = createNewElement(doc, elTmp.getLocalName(),
                                       schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
         NamedNodeMap attributes = el.getAttributes();
         //check if child node has attribute  
