@@ -20,7 +20,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.EntityResolver;
 import org.apache.ws.commons.schema.constants.Constants;
+import org.apache.ws.commons.schema.resolver.URIResolver;
+import org.apache.ws.commons.schema.resolver.DefaultURIResolver;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
@@ -59,6 +62,12 @@ public final class XmlSchemaCollection {
      */
     Map inScopeNamespaces = new HashMap();
 
+    /**
+     * An org.xml.sax.EntityResolver that is used to
+     * resolve the imports/includes
+     */
+    URIResolver schemaResolver = new DefaultURIResolver();
+
     XmlSchema xsd = new XmlSchema(XmlSchema.SCHEMA_NS, this);
 
     /**
@@ -68,6 +77,14 @@ public final class XmlSchemaCollection {
      */
     public void setBaseUri(String baseUri){
         this.baseUri = baseUri;
+    }
+
+    /**
+     * Register a custom URI resolver
+     * @param schemaResolver
+     */
+    public void setSchemaResolver(URIResolver schemaResolver) {
+        this.schemaResolver = schemaResolver;
     }
 
     /**

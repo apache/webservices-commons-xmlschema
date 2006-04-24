@@ -26,7 +26,6 @@ import org.apache.ws.commons.schema.utils.XDOMUtil;
 import org.apache.ws.commons.schema.utils.Tokenizer;
 import org.apache.ws.commons.schema.constants.Constants;
 import org.apache.ws.commons.schema.constants.BlockConstants;
-import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.namespace.QName;
@@ -34,10 +33,6 @@ import java.util.Vector;
 import java.util.StringTokenizer;
 import java.util.Map;
 import java.util.HashMap;
-import java.net.URL;
-import java.net.MalformedURLException;
-import java.io.IOException;
-import java.io.File;
 
 public class SchemaBuilder {
     Document doc;
@@ -62,12 +57,12 @@ public class SchemaBuilder {
         // get all the attributes along with the namespace declns
 
         setNamespaceAttributes(schema, schemaEl);
-        
+
         // only populate it if it isn't already in there
         if(!collection.namespaces.containsKey(schema.targetNamespace)){
             collection.namespaces.put(schema.targetNamespace, schema);
         }
-        
+
         schema.setElementFormDefault(this.getFormDefault(schemaEl,
                 "elementFormDefault"));
         schema.setAttributeFormDefault(this.getFormDefault(schemaEl,
@@ -186,17 +181,15 @@ public class SchemaBuilder {
         XmlSchemaRedefine redefine = new XmlSchemaRedefine();
         redefine.schemaLocation =
                 redefineEl.getAttribute("schemaLocation");
-
+        //redefine has no such thing called a namespace!
         redefine.schema =
-                getXmlSchemaFromLocation(redefine.schemaLocation);
+                resolveXmlSchema(null,redefine.schemaLocation);
 
         for (Element el = XDOMUtil.getFirstChildElementNS(redefineEl,
                 XmlSchema.SCHEMA_NS)
                 ; el != null;
                   el = XDOMUtil.getNextSiblingElementNS(el, XmlSchema.SCHEMA_NS)) {
 
-            //                    String elPrefix = el.getPrefix() == null ? "" : el.getPrefix();
-            //                    if(elPrefix.equals(schema.schema_ns_prefix)) {
             if (el.getLocalName().equals("simpleType")) {
                 XmlSchemaType type =
                         handleSimpleType(schema, el, schemaEl);
@@ -1703,14 +1696,20 @@ public class SchemaBuilder {
         schemaImport.schemaLocation =
                 importEl.getAttribute("schemaLocation");
 
-        if ((schemaImport.schemaLocation != null) && (!schemaImport.schemaLocation.equals(""))) {
+
             if(schema.getSourceURI()!=null) {
                 schemaImport.schema =
-                        getXmlSchemaFromLocation(schemaImport.schemaLocation, schema.getSourceURI());
+                        resolveXmlSchema(
+                                schemaImport.namespace,
+                                schemaImport.schemaLocation,
+                                schema.getSourceURI());
             } else {
-                schemaImport.schema = getXmlSchemaFromLocation(schemaImport.schemaLocation);
+                schemaImport.schema =
+                        resolveXmlSchema(
+                                schemaImport.namespace,
+                                schemaImport.schemaLocation);
             }
-        }
+
         return schemaImport;
     }
 
@@ -1732,13 +1731,21 @@ public class SchemaBuilder {
         include.schemaLocation =
                 includeEl.getAttribute("schemaLocation");
 
+        //includes are not supposed to have a target namespace
+        // we should be passing in a null in place of the target
+        //namespace
 
         if(schema.getSourceURI()!=null) {
             include.schema =
-                    getXmlSchemaFromLocation(include.schemaLocation, schema.getSourceURI());
+                    resolveXmlSchema(
+                            null,
+                            include.schemaLocation,
+                            schema.getSourceURI());
         } else {
             include.schema =
-                    getXmlSchemaFromLocation(include.schemaLocation);
+                    resolveXmlSchema(
+                            null,
+                            include.schemaLocation);
         }
         XmlSchemaObjectCollection coll = include.schema.getItems();
 
@@ -1883,115 +1890,60 @@ public class SchemaBuilder {
         return BlockConstants.NONE;
     }
 
-    XmlSchema getXmlSchemaFromLocation(String schemaLocation) {
-        return getXmlSchemaFromLocation(schemaLocation, collection.baseUri);
-    }
-
-    XmlSchema getXmlSchemaFromLocation(String schemaLocation, String baseURI) {
-        if (baseURI!=null){
-            if (!isAbsolute(schemaLocation)){
-                try {
-                    schemaLocation = getURL(new URL(baseURI), schemaLocation).toString();    
-                } catch (Exception e) {
-                    schemaLocation = baseURI +
-                                     (schemaLocation.startsWith("/")?"":"/")+
-                                     schemaLocation;
-                }
-            }
-        }
-        return collection.read(new InputSource(schemaLocation), null);
-    }
-
     /**
-     * Find whether a given uri is relative or not
-     *
-     * @param uri
-     * @return boolean
-     */
-    private boolean isAbsolute(String uri) {
-        return uri.startsWith("http://");
-    }
-
-    /**
-     * This is essentially a call to "new URL(contextURL, spec)" with extra handling in case spec is
-     * a file.
-     *
-     * @param contextURL
-     * @param spec
+     * Resolve the schemas
+     * @param targetNamespace
+     * @param schemaLocation
      * @return
-     * @throws java.io.IOException
      */
-    private static URL getURL(URL contextURL, String spec) throws IOException {
-
-        // First, fix the slashes as windows filenames may have backslashes
-        // in them, but the URL class wont do the right thing when we later
-        // process this URL as the contextURL.
-        String path = spec.replace('\\', '/');
-
-        // See if we have a good URL.
-        URL url = null;
-
+    XmlSchema resolveXmlSchema(String targetNamespace,
+                               String schemaLocation,
+                               String baseUri) {
+        //use the entity resolver provided
         try {
-
-            // first, try to treat spec as a full URL
-            url = new URL(contextURL, path);
-
-            // if we are deail with files in both cases, create a url
-            // by using the directory of the context URL.
-            if ((contextURL != null) && url.getProtocol().equals("file")
-                    && contextURL.getProtocol().equals("file")) {
-                url = getFileURL(contextURL, path);
-            }
-        } catch (MalformedURLException me) {
-
-            // try treating is as a file pathname
-            url = getFileURL(contextURL, path);
+            return collection.read(
+                    collection.schemaResolver.
+                            resolveEntity(targetNamespace,schemaLocation,baseUri)
+                    , null);
+        } catch (Exception e) {
+           throw new RuntimeException(e);
         }
 
-        // Everything is OK with this URL, although a file url constructed
-        // above may not exist.  This will be caught later when the URL is
-        // accessed.
-        return url;
-    }    // getURL
+    }
 
     /**
-     * Method getFileURL
-     *
-     * @param contextURL
-     * @param path
+     * Resolve the schemas
+     * @param targetNamespace
+     * @param schemaLocation
      * @return
-     * @throws IOException
      */
-    private static URL getFileURL(URL contextURL, String path)
-            throws IOException {
+    XmlSchema resolveXmlSchema(String targetNamespace,
+                               String schemaLocation) {
+       return resolveXmlSchema(targetNamespace,schemaLocation,
+               collection.baseUri);
 
-        if (contextURL != null) {
+    }
+//    XmlSchema getXmlSchemaFromLocation(String schemaLocation) {
+//        return getXmlSchemaFromLocation(schemaLocation, collection.baseUri);
+//    }
+//
+//    XmlSchema getXmlSchemaFromLocation(String schemaLocation, String baseURI) {
+//
+//        if (baseURI!=null){
+//            if (!isAbsolute(schemaLocation)){
+//                try {
+//                    schemaLocation = getURL(new URL(baseURI), schemaLocation).toString();
+//                } catch (Exception e) {
+//                    schemaLocation = baseURI +
+//                                     (schemaLocation.startsWith("/")?"":"/")+
+//                                     schemaLocation;
+//                }
+//            }
+//        }
+//        return collection.read(new InputSource(schemaLocation), null);
+//    }
 
-            // get the parent directory of the contextURL, and append
-            // the spec string to the end.
-            String contextFileName = contextURL.getFile();
-            URL parent = null;
-            //the logic for finding the parent file is this.
-            //1.if the contextURI represents a file then take the parent file
-            //of it
-            //2. If the contextURI represents a directory, then take that as
-            //the parent
-            File parentFile;
-            File contextFile = new File(contextFileName);
-            if (contextFile.isDirectory()){
-                parentFile = contextFile;
-            }else{
-                parentFile = contextFile.getParentFile();
-            }
 
-            if (parentFile != null) {
-                parent = parentFile.toURL();
-            }
-            if (parent != null) {
-                return new URL(parent, path);
-            }
-        }
 
-        return new URL("file", "", path);
-    }    // getFileURL
+
 }
