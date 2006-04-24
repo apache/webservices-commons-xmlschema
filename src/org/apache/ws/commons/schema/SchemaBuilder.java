@@ -1696,7 +1696,7 @@ public class SchemaBuilder {
         schemaImport.schemaLocation =
                 importEl.getAttribute("schemaLocation");
 
-
+        if ((schemaImport.schemaLocation != null) && (!schemaImport.schemaLocation.equals(""))) {
             if(schema.getSourceURI()!=null) {
                 schemaImport.schema =
                         resolveXmlSchema(
@@ -1709,7 +1709,7 @@ public class SchemaBuilder {
                                 schemaImport.namespace,
                                 schemaImport.schemaLocation);
             }
-
+        }
         return schemaImport;
     }
 
@@ -1923,27 +1923,5 @@ public class SchemaBuilder {
                collection.baseUri);
 
     }
-//    XmlSchema getXmlSchemaFromLocation(String schemaLocation) {
-//        return getXmlSchemaFromLocation(schemaLocation, collection.baseUri);
-//    }
-//
-//    XmlSchema getXmlSchemaFromLocation(String schemaLocation, String baseURI) {
-//
-//        if (baseURI!=null){
-//            if (!isAbsolute(schemaLocation)){
-//                try {
-//                    schemaLocation = getURL(new URL(baseURI), schemaLocation).toString();
-//                } catch (Exception e) {
-//                    schemaLocation = baseURI +
-//                                     (schemaLocation.startsWith("/")?"":"/")+
-//                                     schemaLocation;
-//                }
-//            }
-//        }
-//        return collection.read(new InputSource(schemaLocation), null);
-//    }
-
-
-
 
 }
