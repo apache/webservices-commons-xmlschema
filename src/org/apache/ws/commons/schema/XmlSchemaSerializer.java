@@ -71,7 +71,7 @@ public class XmlSchemaSerializer {
     public static Document[] serializeSchema(XmlSchema schemaObj,
                                              boolean serializeIncluded) throws XmlSchemaSerializerException {
         return new XmlSchemaSerializer().serializeSchemaElement(schemaObj,
-                                                                serializeIncluded);
+                serializeIncluded);
     }
 
     Document[] serializeSchemaElement(XmlSchema schemaObj,
@@ -103,7 +103,7 @@ public class XmlSchemaSerializer {
             //the targetNamespace as its
             if (targetNS == null) {
                 serializedSchema.setAttributeNS(XMLNS_NAMESPACE_URI,
-                                                "xmlns", schemaObj.targetNamespace);
+                        "xmlns", schemaObj.targetNamespace);
                 schema_ns.put(schemaObj.targetNamespace, "");
             }
         }
@@ -127,12 +127,12 @@ public class XmlSchemaSerializer {
 
         if (schemaObj.annotation != null) {
             Element annotation = serializeAnnotation(serializedSchemaDocs,
-                                                     schemaObj.annotation, schemaObj);
+                    schemaObj.annotation, schemaObj);
             serializedSchema.appendChild(annotation);
         }
         if (schemaObj.id != null) {
             serializedSchema.setAttribute("id",
-                                            schemaObj.id);
+                    schemaObj.id);
         }
         if (schemaObj.blockDefault != null) {
             String blockDefault = schemaObj.blockDefault.getValue();
@@ -160,9 +160,9 @@ public class XmlSchemaSerializer {
             while (iterator.hasNext()) {
                 String key =  (String)iterator.next();
                 if (!"".equals(key)){
-                serializedSchema.setAttributeNS(XMLNS_NAMESPACE_URI,
-                                                "xmlns:"+key,
-                        (String)prefixToNamespaceMap.get(key));
+                    serializedSchema.setAttributeNS(XMLNS_NAMESPACE_URI,
+                            "xmlns:"+key,
+                            (String)prefixToNamespaceMap.get(key));
                 }
 
             }
@@ -174,7 +174,7 @@ public class XmlSchemaSerializer {
         //and add to document collection array  which at the end 
         //returned
         serializeSchemaChild(items, serializedSchema, serializedSchemaDocs,
-                             schemaObj, serializeIncluded);
+                schemaObj, serializeIncluded);
 
         serializedSchemaDocs.appendChild(serializedSchema);
         docs.add(serializedSchemaDocs);
@@ -199,45 +199,56 @@ public class XmlSchemaSerializer {
          * group, attrributeGroup, Attribute, include, import and redefine.
          * if any of the member found then serialize the component.
          */
+
+        // Since imports and includes need to be the first items of the
+        // serialized schema. So this loop does the serialization of the
+        // imports and includes
+
+        for (int i = 0; i < itemsLength; i++) {
+            XmlSchemaObject obj = items.getItem(i);
+            if (obj instanceof XmlSchemaInclude) {
+                Element e = serializeInclude(serializedSchemaDocs,
+                        (XmlSchemaInclude) obj, schemaObj, serializeIncluded);
+                serializedSchema.appendChild(e);
+            } else if (obj instanceof XmlSchemaImport) {
+                Element e = serializeImport(serializedSchemaDocs,
+                        (XmlSchemaImport) obj, schemaObj, serializeIncluded);
+                serializedSchema.appendChild(e);
+            }
+        }
+
+        // reloop to serialize the others
         for (int i = 0; i < itemsLength; i++) {
             XmlSchemaObject obj = items.getItem(i);
 
             if (obj instanceof XmlSchemaElement) {
                 Element e = serializeElement(serializedSchemaDocs,
-                                             (XmlSchemaElement) obj, schemaObj);
+                        (XmlSchemaElement) obj, schemaObj);
                 serializedSchema.appendChild(e);
 
             } else if (obj instanceof XmlSchemaSimpleType) {
                 Element e = serializeSimpleType(serializedSchemaDocs,
-                                                (XmlSchemaSimpleType) obj, schemaObj);
+                        (XmlSchemaSimpleType) obj, schemaObj);
                 serializedSchema.appendChild(e);
             } else if (obj instanceof XmlSchemaComplexType) {
                 Element e = serializeComplexType(serializedSchemaDocs,
-                                                 (XmlSchemaComplexType) obj, schemaObj);
+                        (XmlSchemaComplexType) obj, schemaObj);
                 serializedSchema.appendChild(e);
             } else if (obj instanceof XmlSchemaGroup) {
                 Element e = serializeGroup(serializedSchemaDocs,
-                                           (XmlSchemaGroup) obj, schemaObj);
+                        (XmlSchemaGroup) obj, schemaObj);
                 serializedSchema.appendChild(e);
             } else if (obj instanceof XmlSchemaAttributeGroup) {
                 Element e = serializeAttributeGroup(serializedSchemaDocs,
-                                                    (XmlSchemaAttributeGroup) obj, schemaObj);
+                        (XmlSchemaAttributeGroup) obj, schemaObj);
                 serializedSchema.appendChild(e);
             } else if (obj instanceof XmlSchemaAttribute) {
                 Element e = serializeAttribute(serializedSchemaDocs,
-                                               (XmlSchemaAttribute) obj, schemaObj);
+                        (XmlSchemaAttribute) obj, schemaObj);
                 serializedSchema.appendChild(e);
             } else if (obj instanceof XmlSchemaRedefine) {
                 Element e = serializeRedefine(serializedSchemaDocs,
-                                              (XmlSchemaRedefine) obj, schemaObj);
-                serializedSchema.appendChild(e);
-            } else if (obj instanceof XmlSchemaInclude) {
-                Element e = serializeInclude(serializedSchemaDocs,
-                                             (XmlSchemaInclude) obj, schemaObj, serializeIncluded);
-                serializedSchema.appendChild(e);
-            } else if (obj instanceof XmlSchemaImport) {
-                Element e = serializeImport(serializedSchemaDocs,
-                                            (XmlSchemaImport) obj, schemaObj, serializeIncluded);
+                        (XmlSchemaRedefine) obj, schemaObj);
                 serializedSchema.appendChild(e);
             }
         }
@@ -279,7 +290,7 @@ public class XmlSchemaSerializer {
         }
 
         Element schemaEl = createNewElement(schemaDocs, "schema",
-                                            schemaObj.schema_ns_prefix, XmlSchema.SCHEMA_NS);
+                schemaObj.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         Enumeration keys = schema_ns.keys();
 
@@ -290,7 +301,7 @@ public class XmlSchemaSerializer {
             String value = schema_ns.get(key).toString();
             value = (value.length() > 1) ? "xmlns:" + value : "xmlns";
             schemaEl.setAttributeNS(XMLNS_NAMESPACE_URI,
-                                    value, key);
+                    value, key);
         }
         return schemaEl;
     }
@@ -318,11 +329,11 @@ public class XmlSchemaSerializer {
             throws XmlSchemaSerializerException {
 
         Element includeEl = createNewElement(doc, "include",
-                                             schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
+                schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         if (includeObj.schemaLocation != null) {
             includeEl.setAttribute("schemaLocation",
-                                     includeObj.schemaLocation);
+                    includeObj.schemaLocation);
         }
 
         if (includeObj.id != null)
@@ -330,7 +341,7 @@ public class XmlSchemaSerializer {
 
         if (includeObj.annotation != null) {
             Element annotation = serializeAnnotation(doc,
-                                                     includeObj.annotation, schema);
+                    includeObj.annotation, schema);
             includeEl.appendChild(annotation);
         }
 
@@ -369,22 +380,22 @@ public class XmlSchemaSerializer {
             throws XmlSchemaSerializerException {
 
         Element importEl = createNewElement(doc, "import",
-                                            schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
+                schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         if (importObj.namespace != null)
             importEl.setAttribute("namespace",
-                                    importObj.namespace);
+                    importObj.namespace);
 
         if (importObj.schemaLocation != null && !importObj.schemaLocation.trim().equals(""))
             importEl.setAttribute("schemaLocation",
-                                    importObj.schemaLocation);
+                    importObj.schemaLocation);
 
         if (importObj.id != null)
             importEl.setAttribute("id", importObj.id);
 
         if (importObj.annotation != null) {
             Element annotation = serializeAnnotation(doc,
-                                                     importObj.annotation, schema);
+                    importObj.annotation, schema);
 
             importEl.appendChild(annotation);
         }
@@ -422,21 +433,21 @@ public class XmlSchemaSerializer {
                               XmlSchema schema) throws XmlSchemaSerializerException {
 
         Element redefine = createNewElement(doc, "redefine",
-                                            schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
+                schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         if (redefineObj.schemaLocation != null)
             redefine.setAttribute("schemaLocation",
-                                    redefineObj.schemaLocation);
+                    redefineObj.schemaLocation);
         else
             throw new XmlSchemaSerializerException("redefine must have "
-                                                   + "schemaLocation fields fill");
+                    + "schemaLocation fields fill");
 
         if (redefineObj.id != null)
             redefine.setAttribute("id", redefineObj.id);
 
         if (redefineObj.annotation != null) {
             Element annotation = serializeAnnotation(doc,
-                                                     redefineObj.annotation, schema);
+                    redefineObj.annotation, schema);
             redefine.appendChild(annotation);
         }
         int itemsLength = redefineObj.items.getCount();
@@ -444,27 +455,27 @@ public class XmlSchemaSerializer {
             XmlSchemaObject obj = redefineObj.items.getItem(i);
             if (obj instanceof XmlSchemaSimpleType) {
                 Element simpleType = serializeSimpleType(doc,
-                                                         (XmlSchemaSimpleType) obj, schema);
+                        (XmlSchemaSimpleType) obj, schema);
                 redefine.appendChild(simpleType);
             } else if (obj instanceof XmlSchemaComplexType) {
                 Element complexType = serializeComplexType(doc,
-                                                           (XmlSchemaComplexType) obj, schema);
+                        (XmlSchemaComplexType) obj, schema);
                 redefine.appendChild(complexType);
             } else if (obj instanceof XmlSchemaGroupRef) {
                 Element groupRef = serializeGroupRef(doc,
-                                                     (XmlSchemaGroupRef) obj, schema);
+                        (XmlSchemaGroupRef) obj, schema);
                 redefine.appendChild(groupRef);
             } else if (obj instanceof XmlSchemaGroup) {
                 Element group = serializeGroup(doc,
-                                               (XmlSchemaGroup) obj, schema);
+                        (XmlSchemaGroup) obj, schema);
                 redefine.appendChild(group);
             } else if (obj instanceof XmlSchemaAttributeGroup) {
                 Element attributeGroup = serializeAttributeGroup(doc,
-                                                                 (XmlSchemaAttributeGroup) obj, schema);
+                        (XmlSchemaAttributeGroup) obj, schema);
                 redefine.appendChild(attributeGroup);
             } else if (obj instanceof XmlSchemaAttributeGroupRef) {
                 Element attributeGroupRef = serializeAttributeGroupRef(doc,
-                                                                       (XmlSchemaAttributeGroupRef) obj, schema);
+                        (XmlSchemaAttributeGroupRef) obj, schema);
                 redefine.appendChild(attributeGroupRef);
             }
         }
@@ -492,7 +503,7 @@ public class XmlSchemaSerializer {
     Element serializeElement(Document doc, XmlSchemaElement elementObj,
                              XmlSchema schema) throws XmlSchemaSerializerException {
         Element serializedEl = createNewElement(doc, "element",
-                                                schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
+                schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
 
         if (elementObj.refName != null) {
@@ -501,7 +512,7 @@ public class XmlSchemaSerializer {
             serializedEl.setAttribute("ref", resolvedName);
         } else if (elementObj.name != null && elementObj.name.length() > 0) {
             serializedEl.setAttribute("name",
-                                        elementObj.name);
+                    elementObj.name);
         }
 
         if (elementObj.isAbstract)
@@ -514,17 +525,17 @@ public class XmlSchemaSerializer {
         }
         if (elementObj.defaultValue != null)
             serializedEl.setAttribute("default",
-                                        elementObj.defaultValue);
+                    elementObj.defaultValue);
 
         String finalDerivation = elementObj.finalDerivation.getValue();
         if (!finalDerivation.equals(BlockConstants.NONE)) {
             finalDerivation = convertString(finalDerivation);
             serializedEl.setAttribute("final",
-                                        finalDerivation);
+                    finalDerivation);
         }
         if (elementObj.fixedValue != null)
             serializedEl.setAttribute("fixed",
-                                        elementObj.fixedValue);
+                    elementObj.fixedValue);
 
         String formDef = elementObj.form.getValue();
         if (!formDef.equals(XmlSchemaForm.NONE)) {
@@ -536,10 +547,10 @@ public class XmlSchemaSerializer {
 
         if (elementObj.maxOccurs < Long.MAX_VALUE && elementObj.maxOccurs > 1)
             serializedEl.setAttribute("maxOccurs",
-                                        elementObj.maxOccurs + "");
+                    elementObj.maxOccurs + "");
         else if (elementObj.maxOccurs == Long.MAX_VALUE)
             serializedEl.setAttribute("maxOccurs",
-                                        "unbounded");
+                    "unbounded");
         //else not serialized
 
         /*if(elementObj.minOccurs >1)
@@ -550,10 +561,10 @@ public class XmlSchemaSerializer {
         // minOccurs = 0
         if (elementObj.minOccurs < Long.MAX_VALUE && elementObj.minOccurs != 1)
             serializedEl.setAttribute("minOccurs",
-                                        elementObj.minOccurs + "");
+                    elementObj.minOccurs + "");
         else if (elementObj.minOccurs == Long.MAX_VALUE)
             serializedEl.setAttribute("minOccurs",
-                                        "unbounded");
+                    "unbounded");
 
         /*
             if(elementObj.maxOccursString != null)
@@ -570,7 +581,7 @@ public class XmlSchemaSerializer {
         if (elementObj.substitutionGroup != null) {
             String resolvedQName = resolveQName(elementObj.substitutionGroup, schema);
             serializedEl.setAttribute("substitutionGroup",
-                                        resolvedQName);
+                    resolvedQName);
         }
         if (elementObj.schemaTypeName != null) {
             String resolvedName = resolveQName(elementObj.schemaTypeName, schema);
@@ -578,26 +589,26 @@ public class XmlSchemaSerializer {
         }
         if (elementObj.annotation != null) {
             Element annotationEl = serializeAnnotation(doc,
-                                                       elementObj.annotation, schema);
+                    elementObj.annotation, schema);
             serializedEl.appendChild(annotationEl);
         }
         if (elementObj.schemaType != null && elementObj.schemaTypeName == null) {
             if (elementObj.schemaType instanceof XmlSchemaComplexType) {
 
                 Element complexType = serializeComplexType(doc,
-                                                           (XmlSchemaComplexType) elementObj.schemaType, schema);
+                        (XmlSchemaComplexType) elementObj.schemaType, schema);
                 serializedEl.appendChild(complexType);
             } else if (elementObj.schemaType instanceof XmlSchemaSimpleType) {
                 Element simpleType = serializeSimpleType(doc,
-                                                         (XmlSchemaSimpleType) elementObj.schemaType, schema);
+                        (XmlSchemaSimpleType) elementObj.schemaType, schema);
                 serializedEl.appendChild(simpleType);
             }
         }
         if (elementObj.constraints.getCount() > 0) {
             for (int i = 0; i < elementObj.constraints.getCount(); i++) {
                 Element constraint = serializeIdentityConstraint(doc,
-                                                                 (XmlSchemaIdentityConstraint) elementObj.constraints.getItem(i),
-                                                                 schema);
+                        (XmlSchemaIdentityConstraint) elementObj.constraints.getItem(i),
+                        schema);
                 serializedEl.appendChild(constraint);
             }
         }
@@ -628,7 +639,7 @@ public class XmlSchemaSerializer {
                                 XmlSchema schema) throws XmlSchemaSerializerException {
 
         Element serializedSimpleType = createNewElement(doc, "simpleType",
-                                                        schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
+                schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
 
         String tmp;
@@ -640,28 +651,28 @@ public class XmlSchemaSerializer {
         }
         if (simpleTypeObj.id != null)
             serializedSimpleType.setAttribute("id",
-                                                simpleTypeObj.id);
+                    simpleTypeObj.id);
         if ((simpleTypeObj.name != null) && (!simpleTypeObj.name.equals("")))
             serializedSimpleType.setAttribute("name",
-                                                simpleTypeObj.name);
+                    simpleTypeObj.name);
         if (simpleTypeObj.annotation != null) {
             Element annotationEl = serializeAnnotation(doc,
-                                                       simpleTypeObj.annotation, schema);
+                    simpleTypeObj.annotation, schema);
             serializedSimpleType.appendChild(annotationEl);
         }
         if (simpleTypeObj.content != null) {
             if (simpleTypeObj.content instanceof XmlSchemaSimpleTypeRestriction) {
                 Element restEl = serializeSimpleTypeRestriction(doc,
-                                                                (XmlSchemaSimpleTypeRestriction) simpleTypeObj.content,
-                                                                schema);
+                        (XmlSchemaSimpleTypeRestriction) simpleTypeObj.content,
+                        schema);
                 serializedSimpleType.appendChild(restEl);
             } else if (simpleTypeObj.content instanceof XmlSchemaSimpleTypeList) {
                 Element listEl = serializeSimpleTypeList(doc,
-                                                         (XmlSchemaSimpleTypeList) simpleTypeObj.content, schema);
+                        (XmlSchemaSimpleTypeList) simpleTypeObj.content, schema);
                 serializedSimpleType.appendChild(listEl);
             } else if (simpleTypeObj.content instanceof XmlSchemaSimpleTypeUnion) {
                 Element unionEl = serializeSimpleTypeUnion(doc,
-                                                           (XmlSchemaSimpleTypeUnion) simpleTypeObj.content, schema);
+                        (XmlSchemaSimpleTypeUnion) simpleTypeObj.content, schema);
                 serializedSimpleType.appendChild(unionEl);
             }/*else 
 			   throw new XmlSchemaSerializerException("Invalid type inserted "
@@ -700,7 +711,7 @@ public class XmlSchemaSerializer {
             throws XmlSchemaSerializerException {
         //todo: need to implement any attribute that related to non schema namespace
         Element serializedRestriction = createNewElement(doc, "restriction",
-                                                         schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
+                schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         if (schema.schema_ns_prefix.length() > 0)
             serializedRestriction.setPrefix(schema.schema_ns_prefix);
@@ -710,26 +721,26 @@ public class XmlSchemaSerializer {
         } else if (restrictionObj.baseType != null && restrictionObj.baseType
                 instanceof XmlSchemaSimpleType) {
             Element inlineSimpleType = serializeSimpleType(doc,
-                                                           restrictionObj.baseType, schema);
+                    restrictionObj.baseType, schema);
             serializedRestriction.appendChild(inlineSimpleType);
         } else
             throw new XmlSchemaSerializerException("restriction must be define "
-                                                   + "with specifying base or inline simpleType");
+                    + "with specifying base or inline simpleType");
 
         if (restrictionObj.id != null)
             serializedRestriction.setAttribute("id",
-                                                 restrictionObj.id);
+                    restrictionObj.id);
 
         if (restrictionObj.annotation != null) {
             Element annotation = serializeAnnotation(doc,
-                                                     restrictionObj.annotation, schema);
+                    restrictionObj.annotation, schema);
             serializedRestriction.appendChild(annotation);
         }
         if (restrictionObj.facets.getCount() > 0) {
             int facetsNum = restrictionObj.facets.getCount();
             for (int i = 0; i < facetsNum; i++) {
                 Element facetEl = serializeFacet(doc,
-                                                 (XmlSchemaFacet) restrictionObj.facets.getItem(i), schema);
+                        (XmlSchemaFacet) restrictionObj.facets.getItem(i), schema);
                 serializedRestriction.appendChild(facetEl);
             }
         }
@@ -761,43 +772,43 @@ public class XmlSchemaSerializer {
 
         if (facetObj instanceof XmlSchemaMinExclusiveFacet)
             serializedFacet = constructFacet(facetObj, doc, schema,
-                                             "minExclusive");
+                    "minExclusive");
         else if (facetObj instanceof XmlSchemaMinInclusiveFacet)
             serializedFacet = constructFacet(facetObj, doc, schema,
-                                             "minInclusive");
+                    "minInclusive");
         else if (facetObj instanceof XmlSchemaMaxExclusiveFacet)
             serializedFacet = constructFacet(facetObj, doc, schema,
-                                             "maxExclusive");
+                    "maxExclusive");
         else if (facetObj instanceof XmlSchemaMaxInclusiveFacet)
             serializedFacet = constructFacet(facetObj, doc, schema,
-                                             "maxInclusive");
+                    "maxInclusive");
         else if (facetObj instanceof XmlSchemaTotalDigitsFacet)
             serializedFacet = constructFacet(facetObj, doc, schema,
-                                             "totalDigits");
+                    "totalDigits");
         else if (facetObj instanceof XmlSchemaFractionDigitsFacet)
             serializedFacet = constructFacet(facetObj, doc, schema,
-                                             "fractionDigits");
+                    "fractionDigits");
         else if (facetObj instanceof XmlSchemaLengthFacet)
             serializedFacet = constructFacet(facetObj, doc, schema,
-                                             "length");
+                    "length");
         else if (facetObj instanceof XmlSchemaMinLengthFacet)
             serializedFacet = constructFacet(facetObj, doc, schema,
-                                             "minLength");
+                    "minLength");
         else if (facetObj instanceof XmlSchemaMaxLengthFacet)
             serializedFacet = constructFacet(facetObj, doc, schema,
-                                             "maxLength");
+                    "maxLength");
         else if (facetObj instanceof XmlSchemaEnumerationFacet)
             serializedFacet = constructFacet(facetObj, doc, schema,
-                                             "enumeration");
+                    "enumeration");
         else if (facetObj instanceof XmlSchemaWhiteSpaceFacet)
             serializedFacet = constructFacet(facetObj, doc, schema,
-                                             "whiteSpace");
+                    "whiteSpace");
         else if (facetObj instanceof XmlSchemaPatternFacet)
             serializedFacet = constructFacet(facetObj, doc, schema,
-                                             "pattern");
+                    "pattern");
         else
             throw new XmlSchemaSerializerException("facet not exist "
-                                                   + facetObj.getClass().getName());
+                    + facetObj.getClass().getName());
 
         if (facetObj.id != null)
             serializedFacet.setAttribute("id", facetObj.id);
@@ -814,16 +825,16 @@ public class XmlSchemaSerializer {
                                    XmlSchema schema, String tagName) {
 
         Element facetEl = createNewElement(doc, tagName,
-                                           schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
+                schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         facetEl.setAttribute("value",
-                               facetObj.value.toString());
+                facetObj.value.toString());
         if (facetObj.fixed)
             facetEl.setAttribute("fixed", "true");
 
         if (facetObj.annotation != null) {
             Element annotation = serializeAnnotation(doc,
-                                                     facetObj.annotation, schema);
+                    facetObj.annotation, schema);
             facetEl.appendChild(annotation);
         }
         return facetEl;
@@ -854,11 +865,11 @@ public class XmlSchemaSerializer {
 
         //todo: need to implement abstract, id, mixed
         Element serializedComplexType = createNewElement(doc,
-                                                         "complexType", schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
+                "complexType", schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         if ((complexTypeObj.name != null) && (!complexTypeObj.name.equals("")))
             serializedComplexType.setAttribute("name",
-                                                 complexTypeObj.name);
+                    complexTypeObj.name);
         /*if(complexTypeObj.annotation != null){
 		  Element annotationEl = serializeAnnotation(doc, 
 		  complexTypeObj.annotation, schema);
@@ -869,38 +880,38 @@ public class XmlSchemaSerializer {
             serializedComplexType.setAttribute("mixed", "true");
         if (complexTypeObj.isAbstract)
             serializedComplexType.setAttribute(
-                                                 "abstract", "true");
+                    "abstract", "true");
         if (complexTypeObj.id != null)
             serializedComplexType.setAttribute("id",
-                                                 complexTypeObj.id);
+                    complexTypeObj.id);
 
         if (complexTypeObj.contentModel instanceof XmlSchemaSimpleContent) {
             Element simpleContent = serializeSimpleContent(doc,
-                                                           (XmlSchemaSimpleContent) complexTypeObj.contentModel, schema);
+                    (XmlSchemaSimpleContent) complexTypeObj.contentModel, schema);
             serializedComplexType.appendChild(simpleContent);
         } else if (complexTypeObj.contentModel instanceof
                 XmlSchemaComplexContent) {
 
             Element complexContent = serializeComplexContent(doc,
-                                                             (XmlSchemaComplexContent) complexTypeObj.contentModel, schema);
+                    (XmlSchemaComplexContent) complexTypeObj.contentModel, schema);
             serializedComplexType.appendChild(complexContent);
         }
 
         if (complexTypeObj.particle instanceof XmlSchemaSequence) {
             Element sequence = serializeSequence(doc,
-                                                 (XmlSchemaSequence) complexTypeObj.particle, schema);
+                    (XmlSchemaSequence) complexTypeObj.particle, schema);
             serializedComplexType.appendChild(sequence);
         } else if (complexTypeObj.particle instanceof XmlSchemaChoice) {
             Element choice = serializeChoice(doc,
-                                             (XmlSchemaChoice) complexTypeObj.particle, schema);
+                    (XmlSchemaChoice) complexTypeObj.particle, schema);
             serializedComplexType.appendChild(choice);
         } else if (complexTypeObj.particle instanceof XmlSchemaAll) {
             Element all = serializeAll(doc,
-                                       (XmlSchemaAll) complexTypeObj.particle, schema);
+                    (XmlSchemaAll) complexTypeObj.particle, schema);
             serializedComplexType.appendChild(all);
         } else if (complexTypeObj.particle instanceof XmlSchemaGroupRef) {
             Element group = serializeGroupRef(doc,
-                                              (XmlSchemaGroupRef) complexTypeObj.particle, schema);
+                    (XmlSchemaGroupRef) complexTypeObj.particle, schema);
             serializedComplexType.appendChild(group);
         }
 
@@ -908,13 +919,13 @@ public class XmlSchemaSerializer {
         if (!block.equals(BlockConstants.NONE)) {
             block = convertString(block);
             serializedComplexType.setAttribute(
-                                                 "block", block);
+                    "block", block);
         }
         String finalDerivation = complexTypeObj.finalDerivation.getValue();
         if (!finalDerivation.equals(BlockConstants.NONE)) {
             finalDerivation = convertString(finalDerivation);
             serializedComplexType.setAttribute("final",
-                                                 finalDerivation);
+                    finalDerivation);
         }
 
         XmlSchemaObjectCollection attrColl = complexTypeObj.attributes;
@@ -946,7 +957,7 @@ public class XmlSchemaSerializer {
                               XmlSchema schema) throws XmlSchemaSerializerException {
 
         Element sequence = createNewElement(doc, "sequence",
-                                            schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
+                schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
 
         if (sequenceObj.id != null)
@@ -955,16 +966,16 @@ public class XmlSchemaSerializer {
 
         if (sequenceObj.maxOccurs < Long.MAX_VALUE && sequenceObj.maxOccurs > 1)
             sequence.setAttribute("maxOccurs",
-                                    sequenceObj.maxOccurs + "");
+                    sequenceObj.maxOccurs + "");
         else if (sequenceObj.maxOccurs == Long.MAX_VALUE)
             sequence.setAttribute("maxOccurs",
-                                    "unbounded");
+                    "unbounded");
         //else not serialized
 
 
         if (sequenceObj.minOccurs > 1)
             sequence.setAttribute("minOccurs",
-                                    sequenceObj.minOccurs + "");
+                    sequenceObj.minOccurs + "");
 
         XmlSchemaObjectCollection seqColl = sequenceObj.items;
         int containLength = seqColl.getCount();
@@ -972,19 +983,19 @@ public class XmlSchemaSerializer {
             XmlSchemaObject obj = seqColl.getItem(i);
             if (obj instanceof XmlSchemaElement) {
                 Element el = serializeElement(doc,
-                                              (XmlSchemaElement) obj, schema);
+                        (XmlSchemaElement) obj, schema);
                 sequence.appendChild(el);
             } else if (obj instanceof XmlSchemaGroupRef) {
                 Element group = serializeGroupRef(doc,
-                                                  (XmlSchemaGroupRef) obj, schema);
+                        (XmlSchemaGroupRef) obj, schema);
                 sequence.appendChild(group);
             } else if (obj instanceof XmlSchemaChoice) {
                 Element choice = serializeChoice(doc,
-                                                 (XmlSchemaChoice) obj, schema);
+                        (XmlSchemaChoice) obj, schema);
                 sequence.appendChild(choice);
             } else if (obj instanceof XmlSchemaSequence) {
                 Element sequenceChild = serializeSequence(doc,
-                                                          (XmlSchemaSequence) obj, schema);
+                        (XmlSchemaSequence) obj, schema);
                 sequence.appendChild(sequenceChild);
             } else if (obj instanceof XmlSchemaAny) {
                 Element any = serializeAny(doc, (XmlSchemaAny) obj, schema);
@@ -1016,14 +1027,14 @@ public class XmlSchemaSerializer {
                                XmlSchema schema) throws XmlSchemaSerializerException {
 
         Element attribute = createNewElement(doc, "attribute",
-                                             schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
+                schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
         if (attributeObj.refName != null) {
             String refName =
                     resolveQName(attributeObj.refName, schema);
             attribute.setAttribute("ref", refName);
         } else if (attributeObj.name != null)
             attribute.setAttribute("name",
-                                     attributeObj.name);
+                    attributeObj.name);
 
         if (attributeObj.schemaTypeName != null) {
             String typeName =
@@ -1033,10 +1044,10 @@ public class XmlSchemaSerializer {
 
         if (attributeObj.defaultValue != null)
             attribute.setAttribute("default",
-                                     attributeObj.defaultValue);
+                    attributeObj.defaultValue);
         if (attributeObj.fixedValue != null)
             attribute.setAttribute("fixed",
-                                     attributeObj.fixedValue);
+                    attributeObj.fixedValue);
 
         String formType = attributeObj.form.getValue();
         if (!formType.equals(XmlSchemaForm.NONE)) {
@@ -1053,7 +1064,7 @@ public class XmlSchemaSerializer {
         }
         if (attributeObj.annotation != null) {
             Element annotation = serializeAnnotation(doc,
-                                                     attributeObj.annotation, schema);
+                    attributeObj.annotation, schema);
             attribute.appendChild(annotation);
         }
 
@@ -1063,7 +1074,7 @@ public class XmlSchemaSerializer {
                 XmlSchemaSimpleType simpleType =
                         attributeObj.schemaType;
                 Element simpleTypeEl = serializeSimpleType(doc,
-                                                           simpleType, schema);
+                        simpleType, schema);
                 attribute.appendChild(simpleTypeEl);
             } catch (ClassCastException e) {
                 throw new XmlSchemaSerializerException("only inline simple type allow as attribute's inline type");
@@ -1144,7 +1155,7 @@ public class XmlSchemaSerializer {
         //todo: handle any non schema attri ?
 
         Element choice = createNewElement(doc, "choice",
-                                          schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
+                schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
         if (choiceObj.id != null)
             if (choiceObj.id.length() > 0)
                 choice.setAttribute("id", choiceObj.id);
@@ -1152,15 +1163,15 @@ public class XmlSchemaSerializer {
 
         if (choiceObj.maxOccurs < Long.MAX_VALUE && choiceObj.maxOccurs > 1)
             choice.setAttribute("maxOccurs",
-                                  choiceObj.maxOccurs + "");
+                    choiceObj.maxOccurs + "");
         else if (choiceObj.maxOccurs == Long.MAX_VALUE)
             choice.setAttribute("maxOccurs",
-                                  "unbounded");
+                    "unbounded");
         //else not serialized
 
         if (choiceObj.minOccurs > 1)
             choice.setAttribute("minOccurs",
-                                  choiceObj.minOccurs + "");
+                    choiceObj.minOccurs + "");
 
 
         /*
@@ -1175,7 +1186,7 @@ public class XmlSchemaSerializer {
 
         if (choiceObj.annotation != null) {
             Element annotation = serializeAnnotation(doc,
-                                                     choiceObj.annotation, schema);
+                    choiceObj.annotation, schema);
             choice.appendChild(annotation);
         }
 
@@ -1190,19 +1201,19 @@ public class XmlSchemaSerializer {
 
                 if (obj instanceof XmlSchemaElement) {
                     Element el = serializeElement(doc,
-                                                  (XmlSchemaElement) obj, schema);
+                            (XmlSchemaElement) obj, schema);
                     choice.appendChild(el);
                 } else if (obj instanceof XmlSchemaGroupRef) {
                     Element group = serializeGroupRef(doc,
-                                                      (XmlSchemaGroupRef) obj, schema);
+                            (XmlSchemaGroupRef) obj, schema);
                     choice.appendChild(group);
                 } else if (obj instanceof XmlSchemaChoice) {
                     Element inlineChoice = serializeChoice(doc,
-                                                           (XmlSchemaChoice) obj, schema);
+                            (XmlSchemaChoice) obj, schema);
                     choice.appendChild(inlineChoice);
                 } else if (obj instanceof XmlSchemaSequence) {
                     Element inlineSequence = serializeSequence(doc,
-                                                               (XmlSchemaSequence) obj, schema);
+                            (XmlSchemaSequence) obj, schema);
                     choice.appendChild(inlineSequence);
                 } else if (obj instanceof XmlSchemaAny) {
                     Element any = serializeAny(doc, (XmlSchemaAny) obj, schema);
@@ -1234,7 +1245,7 @@ public class XmlSchemaSerializer {
     Element serializeAll(Document doc, XmlSchemaAll allObj, XmlSchema schema)
             throws XmlSchemaSerializerException {
         Element allEl = createNewElement(doc, "all", schema.schema_ns_prefix,
-                                         XmlSchema.SCHEMA_NS);
+                XmlSchema.SCHEMA_NS);
 
         if (allObj.minOccurs == 0)
             allEl.setAttribute("minOccurs", "0");
@@ -1242,7 +1253,7 @@ public class XmlSchemaSerializer {
 
         if (allObj.annotation != null) {
             Element annotation = serializeAnnotation(doc, allObj.annotation,
-                                                     schema);
+                    schema);
             allEl.appendChild(annotation);
         }
 
@@ -1255,11 +1266,11 @@ public class XmlSchemaSerializer {
                 XmlSchemaObject obj = itemColl.getItem(i);
                 if (obj instanceof XmlSchemaElement) {
                     Element el = serializeElement(doc, (XmlSchemaElement) obj,
-                                                  schema);
+                            schema);
                     allEl.appendChild(el);
                 } else
                     throw new XmlSchemaSerializerException("Only element "
-                                                           + "allowed as child of all model type");
+                            + "allowed as child of all model type");
             }
         }
 
@@ -1290,11 +1301,11 @@ public class XmlSchemaSerializer {
             throws XmlSchemaSerializerException {
 
         Element list = createNewElement(doc, "list",
-                                        schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
+                schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         if (listObj.itemTypeName != null) {
             String listItemType = resolveQName(listObj.itemTypeName,
-                                               schema);
+                    schema);
             list.setAttribute("itemType", listItemType);
         }
         if (listObj.id != null)
@@ -1302,7 +1313,7 @@ public class XmlSchemaSerializer {
 
         else if (listObj.itemType != null) {
             Element inlineSimpleEl = serializeSimpleType(doc, listObj.itemType,
-                                                         schema);
+                    schema);
             list.appendChild(inlineSimpleEl);
         }
         if (listObj.annotation != null) {
@@ -1337,31 +1348,31 @@ public class XmlSchemaSerializer {
 
 
         Element union = createNewElement(doc, "union",
-                                         schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
+                schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
         if (unionObj.id != null)
             union.setAttribute("id", unionObj.id);
 
         if (unionObj.memberTypesSource != null)
             union.setAttribute("memberTypes",
-                                 unionObj.memberTypesSource);
+                    unionObj.memberTypesSource);
         else if (unionObj.baseTypes.getCount() > 0) {
             int baseTypesLength = unionObj.baseTypes.getCount();
             Element baseType;
             for (int i = 0; i < baseTypesLength; i++) {
                 try {
                     baseType = serializeSimpleType(doc,
-                                                   (XmlSchemaSimpleType) unionObj.baseTypes.getItem(i),
-                                                   schema);
+                            (XmlSchemaSimpleType) unionObj.baseTypes.getItem(i),
+                            schema);
                     union.appendChild(baseType);
                 } catch (ClassCastException e) {
                     throw new XmlSchemaSerializerException("only inline simple type allow as attribute's "
-                                                           + "inline type");
+                            + "inline type");
                 }
             }
         }
         if (unionObj.annotation != null) {
             Element annotation = serializeAnnotation(doc, unionObj.annotation,
-                                                     schema);
+                    schema);
             union.appendChild(annotation);
         }
         return union;
@@ -1386,7 +1397,7 @@ public class XmlSchemaSerializer {
      */
     Element serializeAny(Document doc, XmlSchemaAny anyObj, XmlSchema schema) {
         Element anyEl = createNewElement(doc, "any", schema.schema_ns_prefix,
-                                         XmlSchema.SCHEMA_NS);
+                XmlSchema.SCHEMA_NS);
         if (anyObj.id != null)
             if (anyObj.id.length() > 0)
                 anyEl.setAttribute("id", anyObj.id);
@@ -1394,31 +1405,31 @@ public class XmlSchemaSerializer {
 
         if (anyObj.maxOccurs < Long.MAX_VALUE && anyObj.maxOccurs > 1)
             anyEl.setAttribute("maxOccurs",
-                                 anyObj.maxOccurs + "");
+                    anyObj.maxOccurs + "");
         else if (anyObj.maxOccurs == Long.MAX_VALUE)
             anyEl.setAttribute("maxOccurs",
-                                 "unbounded");
+                    "unbounded");
         //else not serialized
 
         if (anyObj.minOccurs > 1)
             anyEl.setAttribute("minOccurs",
-                                 anyObj.minOccurs + "");
+                    anyObj.minOccurs + "");
 
         if (anyObj.namespace != null)
             anyEl.setAttribute("namespace",
-                                 anyObj.namespace);
+                    anyObj.namespace);
 
         if (anyObj.processContent != null) {
             String value = anyObj.processContent.getValue();
             if (!value.equals(BlockConstants.NONE)) {
                 String processContent = convertString(value);
                 anyEl.setAttribute("processContents",
-                                     processContent);
+                        processContent);
             }
         }
         if (anyObj.annotation != null) {
             Element annotation = serializeAnnotation(doc,
-                                                     anyObj.annotation, schema);
+                    anyObj.annotation, schema);
             anyEl.appendChild(annotation);
         }
 
@@ -1447,7 +1458,7 @@ public class XmlSchemaSerializer {
                            XmlSchema schema) throws XmlSchemaSerializerException {
 
         Element group = createNewElement(doc, "group",
-                                         schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
+                schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         if (groupObj.name != null) {
             if (groupObj.name.length() > 0) {
@@ -1455,26 +1466,26 @@ public class XmlSchemaSerializer {
             }
         } else
             throw new XmlSchemaSerializerException("Group must have " +
-                                                   "name or ref");
+                    "name or ref");
 
-         /* annotations are supposed to be written first!!!!! */
+        /* annotations are supposed to be written first!!!!! */
         if (groupObj.annotation != null) {
             Element annotation = serializeAnnotation(doc,
-                                                     groupObj.annotation, schema);
+                    groupObj.annotation, schema);
             group.appendChild(annotation);
         }
 
         if (groupObj.particle instanceof XmlSchemaSequence) {
             Element sequence = serializeSequence(doc,
-                                                 (XmlSchemaSequence) groupObj.particle, schema);
+                    (XmlSchemaSequence) groupObj.particle, schema);
             group.appendChild(sequence);
         } else if (groupObj.particle instanceof XmlSchemaChoice) {
             Element choice = serializeChoice(doc,
-                                             (XmlSchemaChoice) groupObj.particle, schema);
+                    (XmlSchemaChoice) groupObj.particle, schema);
             group.appendChild(choice);
         } else if (groupObj.particle instanceof XmlSchemaAll) {
             Element all = serializeAll(doc,
-                                       (XmlSchemaAll) groupObj.particle, schema);
+                    (XmlSchemaAll) groupObj.particle, schema);
             group.appendChild(all);
         }
 
@@ -1503,26 +1514,26 @@ public class XmlSchemaSerializer {
                               XmlSchema schema) throws XmlSchemaSerializerException {
 
         Element groupRef = createNewElement(doc, "group",
-                                            schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
+                schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         if (groupRefObj.refName != null) {
             String groupRefName = resolveQName(groupRefObj.refName,
-                                               schema);
+                    schema);
             groupRef.setAttribute("ref", groupRefName);
         } else
             throw new XmlSchemaSerializerException("Group must have name or ref");
 
         if (groupRefObj.maxOccurs < Long.MAX_VALUE && groupRefObj.maxOccurs > 1)
             groupRef.setAttribute("maxOccurs",
-                                    groupRefObj.maxOccurs + "");
+                    groupRefObj.maxOccurs + "");
         else if (groupRefObj.maxOccurs == Long.MAX_VALUE)
             groupRef.setAttribute("maxOccurs",
-                                    "unbounded");
+                    "unbounded");
         //else not serialized
 
         if (groupRefObj.minOccurs > 1)
             groupRef.setAttribute("minOccurs",
-                                    groupRefObj.minOccurs + "");
+                    groupRefObj.minOccurs + "");
 
 
 
@@ -1531,18 +1542,18 @@ public class XmlSchemaSerializer {
             if (groupRefObj.particle instanceof XmlSchemaChoice)
                 serializeChoice(doc, (XmlSchemaChoice) groupRefObj.particle, schema);
             else if (groupRefObj.particle instanceof XmlSchemaSequence)
-               serializeSequence(doc,(XmlSchemaSequence) groupRefObj.particle, schema);
+                serializeSequence(doc,(XmlSchemaSequence) groupRefObj.particle, schema);
             else if (groupRefObj.particle instanceof XmlSchemaAll)
-               serializeAll(doc,(XmlSchemaAll) groupRefObj.particle, schema);
+                serializeAll(doc,(XmlSchemaAll) groupRefObj.particle, schema);
             else
                 throw new XmlSchemaSerializerException("The content of group "
-                                                       + "ref particle should be"
-                                                       + " sequence, choice or all reference:  "
-                                                       + "www.w3.org/TR/xmlschema-1#element-group-3.7.2");
+                        + "ref particle should be"
+                        + " sequence, choice or all reference:  "
+                        + "www.w3.org/TR/xmlschema-1#element-group-3.7.2");
         }
         if (groupRefObj.annotation != null) {
             Element annotation = serializeAnnotation(doc,
-                                                     groupRefObj.annotation, schema);
+                    groupRefObj.annotation, schema);
             groupRef.appendChild(annotation);
         }
 
@@ -1572,27 +1583,27 @@ public class XmlSchemaSerializer {
                                    XmlSchemaSimpleContent simpleContentObj, XmlSchema schema)
             throws XmlSchemaSerializerException {
         Element simpleContent = createNewElement(doc, "simpleContent",
-                                                 schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
+                schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         Element content;
         if (simpleContentObj.annotation != null) {
             Element annotation = serializeAnnotation(doc,
-                                                     simpleContentObj.annotation, schema);
+                    simpleContentObj.annotation, schema);
             simpleContent.appendChild(annotation);
         }
         if (simpleContentObj.content instanceof
                 XmlSchemaSimpleContentRestriction)
             content = serializeSimpleContentRestriction(doc,
-                                                        (XmlSchemaSimpleContentRestriction) simpleContentObj.content,
-                                                        schema);
+                    (XmlSchemaSimpleContentRestriction) simpleContentObj.content,
+                    schema);
         else if (simpleContentObj.content instanceof
                 XmlSchemaSimpleContentExtension)
             content = serializeSimpleContentExtension(doc,
-                                                      (XmlSchemaSimpleContentExtension) simpleContentObj.content,
-                                                      schema);
+                    (XmlSchemaSimpleContentExtension) simpleContentObj.content,
+                    schema);
         else
             throw new XmlSchemaSerializerException("content of simple content "
-                                                   + "must be restriction or extension");
+                    + "must be restriction or extension");
 
         simpleContent.appendChild(content);
         return simpleContent;
@@ -1622,12 +1633,12 @@ public class XmlSchemaSerializer {
             throws XmlSchemaSerializerException {
 
         Element complexContent = createNewElement(doc, "complexContent",
-                                                  schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
+                schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
 
         if (complexContentObj.annotation != null) {
             Element annotation = serializeAnnotation(doc,
-                                                     complexContentObj.annotation, schema);
+                    complexContentObj.annotation, schema);
             complexContent.appendChild(annotation);
         }
 
@@ -1635,23 +1646,23 @@ public class XmlSchemaSerializer {
             complexContent.setAttribute("mixed", "true");
         if (complexContentObj.id != null)
             complexContent.setAttribute("id",
-                                          complexContentObj.id);
+                    complexContentObj.id);
 
         Element content;
         if (complexContentObj.content instanceof
                 XmlSchemaComplexContentRestriction)
 
             content = serializeComplexContentRestriction(doc,
-                                                         (XmlSchemaComplexContentRestriction) complexContentObj.content,
-                                                         schema);
+                    (XmlSchemaComplexContentRestriction) complexContentObj.content,
+                    schema);
         else if (complexContentObj.content instanceof
                 XmlSchemaComplexContentExtension)
             content = serializeComplexContentExtension(doc,
-                                                       (XmlSchemaComplexContentExtension) complexContentObj.content,
-                                                       schema);
+                    (XmlSchemaComplexContentExtension) complexContentObj.content,
+                    schema);
         else
             throw new XmlSchemaSerializerException("content of complexContent "
-                                                   + "must be restriction or extension");
+                    + "must be restriction or extension");
 
         complexContent.appendChild(content);
 
@@ -1685,35 +1696,35 @@ public class XmlSchemaSerializer {
 
         if (constraintObj instanceof XmlSchemaUnique)
             constraint = createNewElement(doc, "unique",
-                                          schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
+                    schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
         else if (constraintObj instanceof XmlSchemaKey)
             constraint = createNewElement(doc, "key",
-                                          schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
+                    schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
         else if (constraintObj instanceof XmlSchemaKeyref) {
             constraint = createNewElement(doc, "keyref",
-                                          schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
+                    schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
             XmlSchemaKeyref keyref = (XmlSchemaKeyref) constraintObj;
             if (keyref.refer != null) {
                 String keyrefStr = resolveQName(keyref.refer, schema);
                 constraint.setAttribute(
-                                          "refer", keyrefStr);
+                        "refer", keyrefStr);
             }
         } else
             throw new XmlSchemaSerializerException("not valid identity "
-                                                   + "constraint");
+                    + "constraint");
 
         if (constraintObj.name != null)
             constraint.setAttribute("name",
-                                      constraintObj.name);
+                    constraintObj.name);
         if (constraintObj.annotation != null) {
             Element annotation = serializeAnnotation(doc,
-                                                     constraintObj.annotation, schema);
+                    constraintObj.annotation, schema);
             constraint.appendChild(annotation);
         }
 
         if (constraintObj.selector != null) {
             Element selector = serializeSelector(doc,
-                                                 constraintObj.selector, schema);
+                    constraintObj.selector, schema);
             constraint.appendChild(selector);
         }
         XmlSchemaObjectCollection fieldColl = constraintObj.fields;
@@ -1721,7 +1732,7 @@ public class XmlSchemaSerializer {
             int fieldLength = fieldColl.getCount();
             for (int i = 0; i < fieldLength; i++) {
                 Element field = serializeField(doc,
-                                               (XmlSchemaXPath) fieldColl.getItem(i), schema);
+                        (XmlSchemaXPath) fieldColl.getItem(i), schema);
                 constraint.appendChild(field);
             }
         }
@@ -1751,17 +1762,17 @@ public class XmlSchemaSerializer {
                               XmlSchema schema) throws XmlSchemaSerializerException {
 
         Element selector = createNewElement(doc, "selector",
-                                            schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
+                schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         if (selectorObj.xpath != null)
             selector.setAttribute("xpath",
-                                    selectorObj.xpath);
+                    selectorObj.xpath);
         else
             throw new XmlSchemaSerializerException("xpath can't be null");
 
         if (selectorObj.annotation != null) {
             Element annotation = serializeAnnotation(doc,
-                                                     selectorObj.annotation, schema);
+                    selectorObj.annotation, schema);
             selector.appendChild(annotation);
         }
         return selector;
@@ -1789,7 +1800,7 @@ public class XmlSchemaSerializer {
                            XmlSchema schema) throws XmlSchemaSerializerException {
 
         Element field = createNewElement(doc, "field", schema.schema_ns_prefix,
-                                         XmlSchema.SCHEMA_NS);
+                XmlSchema.SCHEMA_NS);
 
         if (fieldObj.xpath != null)
             field.setAttribute("xpath", fieldObj.xpath);
@@ -1798,7 +1809,7 @@ public class XmlSchemaSerializer {
 
         if (fieldObj.annotation != null) {
             Element annotation = serializeAnnotation(doc,
-                                                     fieldObj.annotation, schema);
+                    fieldObj.annotation, schema);
             field.appendChild(annotation);
         }
 
@@ -1829,7 +1840,7 @@ public class XmlSchemaSerializer {
                                 XmlSchema schema) {
 
         Element annotation = createNewElement(doc, "annotation",
-                                              schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
+                schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         XmlSchemaObjectCollection contents = annotationObj.items;
         int contentLength = contents.getCount();
@@ -1846,7 +1857,7 @@ public class XmlSchemaSerializer {
                         (XmlSchemaDocumentation) obj;
 
                 Element documentationEl = serializeDocumentation(doc,
-                                                                 documentation, schema);
+                        documentation, schema);
 
 
                 annotation.appendChild(documentationEl);
@@ -1879,10 +1890,10 @@ public class XmlSchemaSerializer {
                              XmlSchema schema) {
 
         Element appInfoEl = createNewElement(doc, "appinfo",
-                                             schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
+                schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
         if (appInfoObj.source != null)
             appInfoEl.setAttribute("source",
-                                     appInfoObj.source);
+                    appInfoObj.source);
 
         if (appInfoObj.markup != null) {
             int markupLength = appInfoObj.markup.getLength();
@@ -1929,13 +1940,13 @@ public class XmlSchemaSerializer {
 
 
         Element documentationEl = createNewElement(doc, "documentation",
-                                                   schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
+                schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
         if (documentationObj.source != null)
             documentationEl.setAttribute("source",
-                                           documentationObj.source);
+                    documentationObj.source);
         if (documentationObj.language != null)
             documentationEl.setAttributeNS("http://www.w3.org/XML/1998/namespace", "xml:lang",
-                                           documentationObj.language);
+                    documentationObj.language);
 
         if (documentationObj.markup != null) {
             int markupLength = documentationObj.markup.getLength();
@@ -1984,7 +1995,7 @@ public class XmlSchemaSerializer {
             throws XmlSchemaSerializerException {
 
         Element restriction = createNewElement(doc, "restriction",
-                                               schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
+                schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         if (restrictionObj.baseTypeName != null) {
             String baseTypeName =
@@ -1998,7 +2009,7 @@ public class XmlSchemaSerializer {
 
         if (restrictionObj.annotation != null) {
             Element annotation = serializeAnnotation(doc,
-                                                     restrictionObj.annotation, schema);
+                    restrictionObj.annotation, schema);
             restriction.appendChild(annotation);
         }
         int attrCollLength = restrictionObj.attributes.getCount();
@@ -2007,29 +2018,29 @@ public class XmlSchemaSerializer {
 
             if (obj instanceof XmlSchemaAttribute) {
                 Element attribute = serializeAttribute(doc,
-                                                       (XmlSchemaAttribute) obj, schema);
+                        (XmlSchemaAttribute) obj, schema);
                 restriction.appendChild(attribute);
             } else if (obj instanceof XmlSchemaAttributeGroupRef) {
                 Element attributeGroup = serializeAttributeGroupRef(doc,
-                                                                    (XmlSchemaAttributeGroupRef) obj, schema);
+                        (XmlSchemaAttributeGroupRef) obj, schema);
                 restriction.appendChild(attributeGroup);
             }
         }
         if (restrictionObj.baseType != null) {
             Element inlineSimpleType = serializeSimpleType(doc,
-                                                           restrictionObj.baseType, schema);
+                    restrictionObj.baseType, schema);
             restriction.appendChild(inlineSimpleType);
         }
         if (restrictionObj.anyAttribute != null) {
             Element anyAttribute = serializeAnyAttribute(doc,
-                                                         restrictionObj.anyAttribute, schema);
+                    restrictionObj.anyAttribute, schema);
             restriction.appendChild(anyAttribute);
         }
         XmlSchemaObjectCollection facets = restrictionObj.facets;
         int facetLength = facets.getCount();
         for (int i = 0; i < facetLength; i++) {
             Element facet = serializeFacet(doc,
-                                           (XmlSchemaFacet) facets.getItem(i), schema);
+                    (XmlSchemaFacet) facets.getItem(i), schema);
             restriction.appendChild(facet);
         }
         return restriction;
@@ -2061,7 +2072,7 @@ public class XmlSchemaSerializer {
             throws XmlSchemaSerializerException {
 
         Element extension = createNewElement(doc, "extension",
-                                             schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
+                schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         if (extensionObj.baseTypeName != null) {
             String baseTypeName =
@@ -2075,7 +2086,7 @@ public class XmlSchemaSerializer {
 
         if (extensionObj.annotation != null) {
             Element annotation = serializeAnnotation(doc,
-                                                     extensionObj.annotation, schema);
+                    extensionObj.annotation, schema);
             extension.appendChild(annotation);
         }
 
@@ -2086,11 +2097,11 @@ public class XmlSchemaSerializer {
 
             if (obj instanceof XmlSchemaAttribute) {
                 Element attribute = serializeAttribute(doc,
-                                                       (XmlSchemaAttribute) obj, schema);
+                        (XmlSchemaAttribute) obj, schema);
                 extension.appendChild(attribute);
             } else if (obj instanceof XmlSchemaAttributeGroupRef) {
                 Element attributeGroupRef = serializeAttributeGroupRef(doc,
-                                                                       (XmlSchemaAttributeGroupRef) obj, schema);
+                        (XmlSchemaAttributeGroupRef) obj, schema);
                 extension.appendChild(attributeGroupRef);
             }
         }
@@ -2099,10 +2110,10 @@ public class XmlSchemaSerializer {
          * anyAttribute must come *after* any other attributes
          */
         if (extensionObj.anyAttribute != null) {
-                  Element anyAttribute = serializeAnyAttribute(doc,
-                                                               extensionObj.anyAttribute, schema);
-                  extension.appendChild(anyAttribute);
-              }
+            Element anyAttribute = serializeAnyAttribute(doc,
+                    extensionObj.anyAttribute, schema);
+            extension.appendChild(anyAttribute);
+        }
 
         return extension;
     }
@@ -2132,39 +2143,39 @@ public class XmlSchemaSerializer {
             throws XmlSchemaSerializerException {
 
         Element restriction = createNewElement(doc, "restriction",
-                                               schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
+                schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         if (restrictionObj.baseTypeName != null) {
             String baseTypeName = resolveQName(restrictionObj.baseTypeName, schema);
             restriction.setAttribute(
-                                       "base", baseTypeName);
+                    "base", baseTypeName);
         }
 
         if (restrictionObj.id != null)
             restriction.setAttribute("id",
-                                       restrictionObj.id);
+                    restrictionObj.id);
 
         if (restrictionObj.annotation != null) {
             Element annotation = serializeAnnotation(doc,
-                                                     restrictionObj.annotation, schema);
+                    restrictionObj.annotation, schema);
             restriction.appendChild(annotation);
         }
 
         if (restrictionObj.particle instanceof XmlSchemaSequence) {
             Element sequenceParticle = serializeSequence(doc,
-                                                         (XmlSchemaSequence) restrictionObj.particle, schema);
+                    (XmlSchemaSequence) restrictionObj.particle, schema);
             restriction.appendChild(sequenceParticle);
         } else if (restrictionObj.particle instanceof XmlSchemaChoice) {
             Element choiceParticle = serializeChoice(doc,
-                                                     (XmlSchemaChoice) restrictionObj.particle, schema);
+                    (XmlSchemaChoice) restrictionObj.particle, schema);
             restriction.appendChild(choiceParticle);
         } else if (restrictionObj.particle instanceof XmlSchemaAll) {
             Element allParticle = serializeAll(doc,
-                                               (XmlSchemaAll) restrictionObj.particle, schema);
+                    (XmlSchemaAll) restrictionObj.particle, schema);
             restriction.appendChild(allParticle);
         } else if (restrictionObj.particle instanceof XmlSchemaGroupRef) {
             Element groupRefParticle = serializeGroupRef(doc,
-                                                         (XmlSchemaGroupRef) restrictionObj.particle, schema);
+                    (XmlSchemaGroupRef) restrictionObj.particle, schema);
             restriction.appendChild(groupRefParticle);
         }
 
@@ -2174,18 +2185,18 @@ public class XmlSchemaSerializer {
 
             if (obj instanceof XmlSchemaAttribute) {
                 Element attr = serializeAttribute(doc,
-                                                  (XmlSchemaAttribute) obj, schema);
+                        (XmlSchemaAttribute) obj, schema);
                 restriction.appendChild(attr);
             } else if (obj instanceof XmlSchemaAttribute) {
                 Element attrGroup = serializeAttributeGroupRef(doc,
-                                                               (XmlSchemaAttributeGroupRef) obj, schema);
+                        (XmlSchemaAttributeGroupRef) obj, schema);
                 restriction.appendChild(attrGroup);
             }
         }
 
         if (restrictionObj.anyAttribute != null) {
             Element anyAttribute = serializeAnyAttribute(doc,
-                                                         restrictionObj.anyAttribute, schema);
+                    restrictionObj.anyAttribute, schema);
             restriction.appendChild(anyAttribute);
         }
 
@@ -2217,34 +2228,34 @@ public class XmlSchemaSerializer {
             throws XmlSchemaSerializerException {
 
         Element extension = createNewElement(doc, "extension",
-                                             schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
+                schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
         if (extensionObj.baseTypeName != null) {
             String baseType = resolveQName(extensionObj.baseTypeName,
-                                           schema);
+                    schema);
             extension.setAttribute("base", baseType);
         }
         if (extensionObj.annotation != null) {
             Element annotation = serializeAnnotation(doc,
-                                                     extensionObj.annotation, schema);
+                    extensionObj.annotation, schema);
             extension.appendChild(annotation);
         }
 
 
         if (extensionObj.particle instanceof XmlSchemaSequence) {
             Element sequenceParticle = serializeSequence(doc,
-                                                         (XmlSchemaSequence) extensionObj.particle, schema);
+                    (XmlSchemaSequence) extensionObj.particle, schema);
             extension.appendChild(sequenceParticle);
         } else if (extensionObj.particle instanceof XmlSchemaChoice) {
             Element choiceParticle = serializeChoice(doc,
-                                                     (XmlSchemaChoice) extensionObj.particle, schema);
+                    (XmlSchemaChoice) extensionObj.particle, schema);
             extension.appendChild(choiceParticle);
         } else if (extensionObj.particle instanceof XmlSchemaAll) {
             Element allParticle = serializeAll(doc,
-                                               (XmlSchemaAll) extensionObj.particle, schema);
+                    (XmlSchemaAll) extensionObj.particle, schema);
             extension.appendChild(allParticle);
         } else if (extensionObj.particle instanceof XmlSchemaGroupRef) {
             Element groupRefParticle = serializeGroupRef(doc,
-                                                         (XmlSchemaGroupRef) extensionObj.particle, schema);
+                    (XmlSchemaGroupRef) extensionObj.particle, schema);
             extension.appendChild(groupRefParticle);
         }
 
@@ -2254,18 +2265,18 @@ public class XmlSchemaSerializer {
 
             if (obj instanceof XmlSchemaAttribute) {
                 Element attr = serializeAttribute(doc,
-                                                  (XmlSchemaAttribute) obj, schema);
+                        (XmlSchemaAttribute) obj, schema);
                 extension.appendChild(attr);
             } else if (obj instanceof XmlSchemaAttributeGroupRef) {
                 Element attrGroup = serializeAttributeGroupRef(doc,
-                                                               (XmlSchemaAttributeGroupRef) obj, schema);
+                        (XmlSchemaAttributeGroupRef) obj, schema);
                 extension.appendChild(attrGroup);
             }
         }
 
         if (extensionObj.anyAttribute != null) {
             Element anyAttribute = serializeAnyAttribute(doc,
-                                                         extensionObj.anyAttribute, schema);
+                    extensionObj.anyAttribute, schema);
             extension.appendChild(anyAttribute);
         }
 
@@ -2295,26 +2306,26 @@ public class XmlSchemaSerializer {
                                   XmlSchemaAnyAttribute anyAttributeObj, XmlSchema schema) {
 
         Element anyAttribute = createNewElement(doc, "anyAttribute",
-                                                schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
+                schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
 
         if (anyAttributeObj.namespace != null)
             anyAttribute.setAttribute("namespace",
-                                        anyAttributeObj.namespace);
+                    anyAttributeObj.namespace);
 
         if (anyAttributeObj.id != null)
             anyAttribute.setAttribute("id",
-                                        anyAttributeObj.id);
+                    anyAttributeObj.id);
 
         if (anyAttributeObj.processContent != null) {
             String processContent = anyAttributeObj.processContent.getValue();
             processContent = convertString(processContent);
             anyAttribute.setAttribute("processContents",
-                                        processContent);
+                    processContent);
         }
         if (anyAttributeObj.annotation != null) {
             Element annotation = serializeAnnotation(doc,
-                                                     anyAttributeObj.annotation, schema);
+                    anyAttributeObj.annotation, schema);
             anyAttribute.appendChild(annotation);
         }
 
@@ -2346,23 +2357,23 @@ public class XmlSchemaSerializer {
             throws XmlSchemaSerializerException {
 
         Element attributeGroupRef = createNewElement(doc, "attributeGroup",
-                                                     schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
+                schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         if (attributeGroupObj.refName != null) {
             String refName = resolveQName(attributeGroupObj.refName,
-                                          schema);
+                    schema);
             attributeGroupRef.setAttribute("ref", refName);
         } else
             throw new XmlSchemaSerializerException("Attribute group must have "
-                                                   + "ref name set");
+                    + "ref name set");
 
         if (attributeGroupObj.id != null)
             attributeGroupRef.setAttribute("id",
-                                             attributeGroupObj.id);
+                    attributeGroupObj.id);
 
         if (attributeGroupObj.annotation != null) {
             Element annotation = serializeAnnotation(doc,
-                                                     attributeGroupObj.annotation, schema);
+                    attributeGroupObj.annotation, schema);
             attributeGroupRef.appendChild(annotation);
         }
         return attributeGroupRef;
@@ -2393,21 +2404,21 @@ public class XmlSchemaSerializer {
             throws XmlSchemaSerializerException {
 
         Element attributeGroup = createNewElement(doc, "attributeGroup",
-                                                  schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
+                schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         if (attributeGroupObj.name != null)
             attributeGroup.setAttribute("name",
-                                          attributeGroupObj.name);
+                    attributeGroupObj.name);
         else
             throw new XmlSchemaSerializerException("Attribute group must"
-                                                   + "have name");
+                    + "have name");
         if (attributeGroupObj.id != null)
             attributeGroup.setAttribute("id",
-                                          attributeGroupObj.id);
+                    attributeGroupObj.id);
 
         if (attributeGroupObj.annotation != null) {
             Element annotation = serializeAnnotation(doc,
-                                                     attributeGroupObj.annotation, schema);
+                    attributeGroupObj.annotation, schema);
             attributeGroup.appendChild(annotation);
         }
         int attributesLength = attributeGroupObj.attributes.getCount();
@@ -2416,18 +2427,18 @@ public class XmlSchemaSerializer {
 
             if (obj instanceof XmlSchemaAttribute) {
                 Element attr = serializeAttribute(doc, (XmlSchemaAttribute) obj,
-                                                  schema);
+                        schema);
                 attributeGroup.appendChild(attr);
             } else if (obj instanceof XmlSchemaAttributeGroupRef) {
                 Element attrGroup = serializeAttributeGroupRef(doc,
-                                                               (XmlSchemaAttributeGroupRef) obj, schema);
+                        (XmlSchemaAttributeGroupRef) obj, schema);
                 attributeGroup.appendChild(attrGroup);
             }
         }
 
         if (attributeGroupObj.anyAttribute != null) {
             Element anyAttribute = serializeAnyAttribute(doc,
-                                                         attributeGroupObj.anyAttribute, schema);
+                    attributeGroupObj.anyAttribute, schema);
             attributeGroup.appendChild(anyAttribute);
         }
 
@@ -2440,7 +2451,7 @@ public class XmlSchemaSerializer {
                                Node children, XmlSchema schema) {
         Element elTmp = (Element) children;
         Element el = createNewElement(doc, elTmp.getLocalName(),
-                                      schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
+                schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
         NamedNodeMap attributes = el.getAttributes();
         //check if child node has attribute  
         //create new element and append it if found
@@ -2449,7 +2460,7 @@ public class XmlSchemaSerializer {
             Node n = attributes.item(i);
             //assuming attributes got to throw exception if not later
             el.setAttribute(n.getNodeName(),
-                              n.getNodeValue());
+                    n.getNodeValue());
         }
 
         //check any descendant of this node
@@ -2525,7 +2536,7 @@ public class XmlSchemaSerializer {
 
             //setting xmlns in schema
             schemaElement.setAttributeNS(XMLNS_NAMESPACE_URI,
-                                         "xmlns:" + prefix.toString(), namespace);
+                    "xmlns:" + prefix.toString(), namespace);
         }
 
         prefixStr = prefix.toString();
