@@ -68,7 +68,7 @@ public class DefaultURIResolver implements URIResolver {
      * @param uri
      * @return boolean
      */
-    private boolean isAbsolute(String uri) {
+    protected boolean isAbsolute(String uri) {
         return uri.startsWith("http://");
     }
 
@@ -82,7 +82,7 @@ public class DefaultURIResolver implements URIResolver {
      * @return
      * @throws java.io.IOException
      */
-    private URL getURL(URL contextURL, String spec) throws IOException {
+    protected URL getURL(URL contextURL, String spec) throws IOException {
 
         // First, fix the slashes as windows filenames may have backslashes
         // in them, but the URL class wont do the right thing when we later
@@ -123,7 +123,7 @@ public class DefaultURIResolver implements URIResolver {
      * @return
      * @throws IOException
      */
-    private URL getFileURL(URL contextURL, String path)
+    protected URL getFileURL(URL contextURL, String path)
             throws IOException {
 
         if (contextURL != null) {
