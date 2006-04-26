@@ -16,10 +16,6 @@
 
 package org.apache.ws.commons.schema;
 
-/**
- * @author mukund
- */
-
 public abstract class XmlSchemaDatatype {
 
     /**

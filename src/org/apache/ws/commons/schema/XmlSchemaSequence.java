@@ -20,8 +20,6 @@ package org.apache.ws.commons.schema;
  * Requires the elements in the group to appear in the specified sequence
  * within the containing element. Represents the World Wide Web Consortium
  * (W3C) sequence (compositor) element.
- *
- * @author mukund
  */
 
 public class XmlSchemaSequence extends XmlSchemaGroupBase {

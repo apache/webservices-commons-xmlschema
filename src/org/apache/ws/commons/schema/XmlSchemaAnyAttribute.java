@@ -22,8 +22,6 @@ import org.apache.ws.commons.schema.constants.BlockConstants;
  * Enables any attribute from the specified namespace or namespaces
  * to appear in the containing complexType element. Represents the
  * World Wide Web Consortium (W3C) anyAttribute element.
- *
- * @author mukund
  */
 public class XmlSchemaAnyAttribute extends XmlSchemaAnnotated {
 

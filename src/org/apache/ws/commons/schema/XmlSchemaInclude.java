@@ -20,8 +20,6 @@ package org.apache.ws.commons.schema;
  * Class to include declarations and definitions from an external schema.
  * Allows them to be available for processing in the containing schema.
  * Represents the World Wide Web Consortium (W3C) include element.
- *
- * @author mukund
  */
 
 public class XmlSchemaInclude extends XmlSchemaExternal {

@@ -21,8 +21,6 @@ import org.w3c.dom.NodeList;
 /**
  * Defines application specific information within an annotation.
  * Represents the World Wide Web Consortium (W3C) appinfo element.
- *
- * @author mukund
  */
 
 // Jan 24 2002 - Joni - Change the Node into NodeList

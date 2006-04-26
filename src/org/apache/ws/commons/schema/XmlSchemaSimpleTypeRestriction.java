@@ -22,8 +22,6 @@ import javax.xml.namespace.QName;
 /**
  * Class for the restriction of simpleType elements. Represents the World
  * Wide Web Consortium (W3C) restriction element for simple types.
- *
- * @author mukund
  */
 
 public class XmlSchemaSimpleTypeRestriction extends XmlSchemaSimpleTypeContent {

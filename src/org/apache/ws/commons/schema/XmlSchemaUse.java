@@ -20,8 +20,6 @@ import org.apache.ws.commons.schema.constants.BlockConstants;
 
 /**
  * Indicator of how the attribute is used.
- *
- * @author mukund
  */
 public class XmlSchemaUse extends org.apache.ws.commons.schema.constants.Enum {
 

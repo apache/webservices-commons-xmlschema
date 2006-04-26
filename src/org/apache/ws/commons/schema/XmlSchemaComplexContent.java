@@ -21,8 +21,6 @@ package org.apache.ws.commons.schema;
  * Contains extensions or restrictions on a complex type that has mixed
  * content or elements only. Represents the World Wide Web Consortium (W3C)
  * complexContent element.
- *
- * @author mukund
  */
 
 // Vidyanand - 16th Oct - initial implementation

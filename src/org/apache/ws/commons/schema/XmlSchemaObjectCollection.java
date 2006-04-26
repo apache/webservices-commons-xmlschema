@@ -22,8 +22,6 @@ import java.util.Vector;
 /**
  * An object collection class to handle XmlSchemaObjects when collections
  * are returned from method calls.
- *
- * @author mukund
  */
 public class XmlSchemaObjectCollection {
 

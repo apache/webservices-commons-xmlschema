@@ -18,11 +18,7 @@ package org.apache.ws.commons.schema;
 
 /**
  * Base class for all particle types.
- *
- * @author mukund
  */
-
-// October 15th - momo - initial implementation
 
 public class XmlSchemaParticle extends XmlSchemaAnnotated {
 

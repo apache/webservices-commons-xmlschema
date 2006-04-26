@@ -22,8 +22,6 @@ import org.apache.ws.commons.schema.constants.BlockConstants;
  * Class for complex types. Defines a complex type that determines the
  * set of attributes and content of an element. Represents the World Wide
  * Web Consortium (W3C) complexType element.
- *
- * @author mukund
  */
 
 public class XmlSchemaComplexType extends XmlSchemaType {

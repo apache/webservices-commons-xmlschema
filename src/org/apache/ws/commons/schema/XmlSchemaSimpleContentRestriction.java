@@ -23,11 +23,7 @@ import javax.xml.namespace.QName;
  * Class for simple types that are derived by restriction. Restricts the
  * range of values for the element to a subset of the inherited simple types.
  * Represents the World Wide Web Consortium (W3C) restriction element for simple content.
- *
- * @author mukund
  */
-
-// Vidyanand - 16th Oct - initial implementation
 
 public class XmlSchemaSimpleContentRestriction extends XmlSchemaContent {
 

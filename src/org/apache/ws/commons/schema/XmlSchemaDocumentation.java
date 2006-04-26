@@ -22,8 +22,6 @@ import org.w3c.dom.NodeList;
  * Class that specifies information to be read or used by humans
  * within an annotation. Represents the World Wide Web Consortium
  * (W3C) documentation element.
- *
- * @author mukund
  */
 
 public class XmlSchemaDocumentation extends XmlSchemaObject {

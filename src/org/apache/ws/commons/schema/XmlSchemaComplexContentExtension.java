@@ -23,11 +23,7 @@ import javax.xml.namespace.QName;
  * Class for complex types with a complex content model derived by extension.
  * Extends the complex type by adding attributes or elements. Represents the
  * World Wide Web Consortium (W3C) extension element for complex content.
- *
- * @author mukund
  */
-
-// Vidyanand - 16th Oct - initial implementation
 
 public class XmlSchemaComplexContentExtension extends XmlSchemaContent {
 

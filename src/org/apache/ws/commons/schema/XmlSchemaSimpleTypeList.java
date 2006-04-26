@@ -23,8 +23,6 @@ import javax.xml.namespace.QName;
  * Class for the list of simpleType elements. Defines a simpleType element
  * as a list of values of a specified data type. Represents the World Wide
  * Web Consortium (W3C) list element.
- *
- * @author mukund
  */
 public class XmlSchemaSimpleTypeList extends XmlSchemaSimpleTypeContent {
 

@@ -19,8 +19,6 @@ package org.apache.ws.commons.schema;
 
 /**
  * Returns detailed information about the schema exception.
- *
- * @author mukund
  */
 
 public class XmlSchemaException extends RuntimeException {

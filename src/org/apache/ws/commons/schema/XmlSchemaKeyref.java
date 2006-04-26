@@ -22,8 +22,6 @@ import javax.xml.namespace.QName;
 /**
  * Identifies a keyref constraint. Represents the World Wide Web
  * Consortium (W3C) keyref element.
- *
- * @author mukund
  */
 
 public class XmlSchemaKeyref extends XmlSchemaIdentityConstraint {

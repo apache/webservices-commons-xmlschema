@@ -20,13 +20,7 @@ import org.apache.ws.commons.schema.constants.Enum;
 
 /**
  * Indicates if attributes or elements need to be qualified or left unqualified.
- *
- * @author mukund
  */
-
-// October 15th - momo - initial implementation
-// Jan 16th - Vidyanand - changed Quailified to qualified and Unqualified to unqualified 
-// Feb 12th - Joni change qualified to Qualified  and unqualified to Unqualified 
 
 public class XmlSchemaForm extends Enum {
 

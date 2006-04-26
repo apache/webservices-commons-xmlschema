@@ -16,12 +16,6 @@
 
 package org.apache.ws.commons.schema;
 
-/**
- * @author momo
- */
-
-// Oct 15th - Momo - Initial Impl
-
 public class XmlTokenizedType extends org.apache.ws.commons.schema.constants.Enum {
 
     static String[] members = new String[]{"CDATA", "IDREF", "IDREFS",

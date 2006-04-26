@@ -18,11 +18,7 @@ package org.apache.ws.commons.schema;
 
 /**
  * Class for the identity constraints: key, keyref, and unique elements.
- *
- * @author mukund
  */
-
-// Vidyanand - should this be an abstract class ???
 
 public class XmlSchemaIdentityConstraint extends XmlSchemaAnnotated {
 

@@ -18,11 +18,7 @@ package org.apache.ws.commons.schema;
 
 /**
  * Abstract class for defining numeric facets.
- *
- * @author mukund
  */
-
-// Vidyanand - 16th Oct - initial implementation
 
 public abstract class XmlSchemaNumericFacet extends XmlSchemaFacet {
 

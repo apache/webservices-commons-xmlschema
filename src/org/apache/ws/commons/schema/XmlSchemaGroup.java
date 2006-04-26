@@ -21,8 +21,6 @@ package org.apache.ws.commons.schema;
  * from the complex types. Groups a set of element declarations so that
  * they can be incorporated as a group into complex type definitions.
  * Represents the World Wide Web Consortium (W3C) group element.
- *
- * @author mukund
  */
 
 public class XmlSchemaGroup extends XmlSchemaAnnotated {

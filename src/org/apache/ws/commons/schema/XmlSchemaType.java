@@ -23,11 +23,7 @@ import javax.xml.namespace.QName;
 
 /**
  * The base class for all simple types and complex types.
- *
- * @author mukund
  */
-
-// Oct 15th - momo - initial impl
 
 public class XmlSchemaType extends XmlSchemaAnnotated {
 

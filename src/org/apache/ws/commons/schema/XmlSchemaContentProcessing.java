@@ -21,8 +21,6 @@ import org.apache.ws.commons.schema.constants.BlockConstants;
 /**
  * Provides information about the validation mode of any
  * and anyAttribute element replacements.
- *
- * @author mukund
  */
 
 public class XmlSchemaContentProcessing extends org.apache.ws.commons.schema.constants.Enum {

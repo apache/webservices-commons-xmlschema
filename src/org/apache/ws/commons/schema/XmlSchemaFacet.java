@@ -21,13 +21,7 @@ import org.w3c.dom.Element;
 /**
  * Abstract class for all facets that are used when simple types are
  * derived by restriction.
- *
- * @author mukund
  */
-
-// Vidyanand - 16th Oct - initial implementation
-// Vidyanand - 17th Oct - added the construct method
-// Vidyanand -  6th Dec - changed RuntimeExceptions thrown to XmlSchemaExceptions
 
 public abstract class XmlSchemaFacet extends XmlSchemaAnnotated {
 

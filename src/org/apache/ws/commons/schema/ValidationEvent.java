@@ -18,10 +18,6 @@ package org.apache.ws.commons.schema;
 
 import java.util.EventObject;
 
-/**
- * @author mukund
- */
-
 public class ValidationEvent extends EventObject {
 
     /**

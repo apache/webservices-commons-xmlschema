@@ -21,8 +21,6 @@ import org.apache.ws.commons.schema.constants.BlockConstants;
 
 /**
  * Represents the severity of the validation event.
- *
- * @author mukund
  */
 
 public class XmlSeverityType extends Enum {

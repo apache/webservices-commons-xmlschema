@@ -23,11 +23,7 @@ import javax.xml.namespace.QName;
  * Class for simple types that are derived by extension. Extends the simple
  * type content of the element by adding attributes. Represents the World Wide
  * Web Consortium (W3C) extension element for simple content.
- *
- * @author mukund
  */
-
-// Vidyanand - 16th Oct - initial implementation
 
 public class XmlSchemaSimpleContentExtension extends XmlSchemaContent {
 

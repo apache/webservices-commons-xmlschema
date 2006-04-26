@@ -16,10 +16,6 @@
 
 package org.apache.ws.commons.schema.constants;
 
-/**
- * @author mukund
- */
-
 public abstract class Enum {
 
     public static String NULL = "NULL";

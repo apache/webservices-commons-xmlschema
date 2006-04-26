@@ -16,12 +16,6 @@
 
 package org.apache.ws.commons.schema;
 
-/**
- * @author mukund
- */
-
-// October 15th - momo - initial implementation
-
 public abstract class XmlSchemaObject {
     int lineNumber;
     int linePosition;

@@ -23,11 +23,7 @@ import javax.xml.namespace.QName;
 
 /**
  * Class for elements. Represents the World Wide Web Consortium (W3C) element element.
- *
- * @author mukund
  */
-
-// October 15th - momo - initial implementation
 
 public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver {
 

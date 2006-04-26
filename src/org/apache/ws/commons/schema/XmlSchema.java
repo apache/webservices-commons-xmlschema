@@ -39,8 +39,6 @@ import java.util.Hashtable;
  * Contains the definition of a schema. All XML Schema definition language (XSD)
  * elements are children of the schema element. Represents the World Wide Web
  * Consortium (W3C) schema element
- *
- * @author mukund
  */
 
 // Oct 15th - momo - initial impl

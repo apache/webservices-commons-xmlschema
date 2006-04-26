@@ -22,11 +22,7 @@ import org.apache.ws.commons.schema.constants.BlockConstants;
  * Enables any element from the specified namespace or namespaces
  * to appear in the containing complexType element. Represents the
  * World Wide Web Consortium (W3C) any element.
- *
- * @author mukund
  */
-
-// Feb 15th 2002 - Joni - Processing content will be initialized with "None"
 
 public class XmlSchemaAny extends XmlSchemaParticle {
 

@@ -19,11 +19,7 @@ package org.apache.ws.commons.schema;
 /**
  * Class for defining fractionDigits facets. Represents the World Wide
  * Web Consortium (W3C) fractionDigits facet.
- *
- * @author mukund
  */
-
-// Vidyanand - 16th Oct - initial implementation
 
 public class XmlSchemaFractionDigitsFacet extends XmlSchemaNumericFacet {
 

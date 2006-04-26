@@ -18,8 +18,6 @@ package org.apache.ws.commons.schema;
 
 /**
  * Abstract class for simple type content classes.
- *
- * @author mukund
  */
 
 public abstract class XmlSchemaSimpleTypeContent extends XmlSchemaAnnotated {

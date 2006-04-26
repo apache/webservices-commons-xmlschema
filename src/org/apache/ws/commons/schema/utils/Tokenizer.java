@@ -19,10 +19,6 @@ package org.apache.ws.commons.schema.utils;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-/**
- * @author mukund
- */
-
 public class Tokenizer {
 
     /**

@@ -20,9 +20,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.apache.ws.commons.schema.utils.DOMUtil;
 
-/**
- * @author mukund
- */
 public class XDOMUtil extends DOMUtil {
 
     /**

@@ -20,11 +20,7 @@ import org.w3c.dom.Attr;
 
 /**
  * The base class for any element that can contain annotation elements.
- *
- * @author mukund
  */
-
-// October 15th - momo - initial implementation
 
 public class XmlSchemaAnnotated extends XmlSchemaObject {
     /**

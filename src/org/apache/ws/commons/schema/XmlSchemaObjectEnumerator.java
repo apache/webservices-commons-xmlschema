@@ -18,8 +18,6 @@ package org.apache.ws.commons.schema;
 
 /**
  * An enumerator class to walk the XmlSchemaObjectCollection collections.
- *
- * @author mukund
  */
 public class XmlSchemaObjectEnumerator {
 

@@ -21,8 +21,6 @@ package org.apache.ws.commons.schema;
  * external schema files to be redefined in the current schema. This
  * class provides versioning for the schema elements. Represents the
  * World Wide Web Consortium (W3C) redefine element.
- *
- * @author mukund
  */
 
 public class XmlSchemaRedefine extends XmlSchemaExternal {

@@ -22,8 +22,6 @@ import org.apache.ws.commons.schema.constants.BlockConstants;
 /**
  * Enumerations for the content model of the complex type. This
  * represents the content in the post-schema-validation infoset.
- *
- * @author mukund
  */
 
 public class XmlSchemaContentType extends Enum {

@@ -22,8 +22,6 @@ import javax.xml.namespace.QName;
 /**
  * Class for the attribute group reference. Represents the World Wide
  * Web Consortium (W3C) attributeGroup element with the ref attribute.
- *
- * @author mukund
  */
 public class XmlSchemaAttributeGroupRef extends XmlSchemaAnnotated {
 

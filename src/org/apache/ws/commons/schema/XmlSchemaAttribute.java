@@ -23,8 +23,6 @@ import javax.xml.namespace.QName;
 /**
  * Class for attribute types. Represents the World Wide Web Consortium
  * (W3C) attribute element.
- *
- * @author mukund
  */
 
 // October 15th - momo - initial implementation

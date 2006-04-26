@@ -18,8 +18,6 @@ package org.apache.ws.commons.schema;
 
 /**
  * An abstract class for XmlSchemaChoice, XmlSchemaAll, or XmlSchemaSequence.
- *
- * @author mukund
  */
 
 public abstract class XmlSchemaGroupBase extends XmlSchemaParticle {

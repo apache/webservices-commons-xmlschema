@@ -18,8 +18,6 @@ package org.apache.ws.commons.schema;
 
 /**
  * An abstract class. Provides information about the included schema.
- *
- * @author mukund
  */
 
 public abstract class XmlSchemaExternal extends XmlSchemaAnnotated {

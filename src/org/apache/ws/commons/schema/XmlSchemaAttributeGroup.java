@@ -21,8 +21,6 @@ package org.apache.ws.commons.schema;
  * so that they can be incorporated as a group into complex type
  * definitions. Represents the World Wide Web Consortium (W3C)
  * attributeGroup element.
- *
- * @author mukund
  */
 
 public class XmlSchemaAttributeGroup extends XmlSchemaAnnotated {

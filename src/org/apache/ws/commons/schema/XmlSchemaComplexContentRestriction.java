@@ -24,11 +24,7 @@ import javax.xml.namespace.QName;
  * by restriction. Restricts the contents of the complex type to a subset
  * of the inherited complex type. Represents the World Wide Web Consortium
  * (W3C) restriction element for complex content.
- *
- * @author mukund
  */
-
-// Vidyanand - 16th Oct - initial implementation
 
 public class XmlSchemaComplexContentRestriction extends XmlSchemaContent {
 

@@ -26,11 +26,7 @@ import java.util.Iterator;
  * elements that are within the schema as collections that are accessed
  * from the XmlSchema class (for example, Attributes, AttributeGroups,
  * Elements, and so on).
- *
- * @author mukund
  */
-
-// Vidyanand - 17th Oct - initial implementation
 
 public class XmlSchemaObjectTable {
 

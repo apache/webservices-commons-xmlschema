@@ -20,10 +20,7 @@ import org.apache.ws.commons.schema.constants.BlockConstants;
 
 /**
  * Provides different methods for preventing derivation.
- *
- * @author mukund
  */
-
 public class XmlSchemaDerivationMethod extends org.apache.ws.commons.schema.constants.Enum {
     static String[] members = new String[]{
             BlockConstants.ALL,

@@ -20,11 +20,7 @@ package org.apache.ws.commons.schema;
  * Class defines a simple type that determines the information and
  * constraints for the values of attributes or elements with text-only
  * content. Represents the World Wide Web Consortium (W3C) simpleType element.
- *
- * @author mukund
  */
-
-// Oct 15th - momo - initial impl
 
 public class XmlSchemaSimpleType extends XmlSchemaType {
 

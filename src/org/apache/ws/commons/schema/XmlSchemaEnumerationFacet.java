@@ -19,11 +19,7 @@ package org.apache.ws.commons.schema;
 /**
  * Class for defining enumeration facets. Represents the World Wide
  * Web Consortium (W3C) enumeration facet.
- *
- * @author mukund
  */
-
-// Vidyanand - 16th Oct - initial implementation
 
 public class XmlSchemaEnumerationFacet extends XmlSchemaFacet {
 

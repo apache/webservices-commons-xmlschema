@@ -19,10 +19,7 @@ package org.apache.ws.commons.schema;
 /**
  * An abstract class for schema content.
  *
- * @author mukund
  */
-
-// Vidyanand - 16th Oct - initial implementation
 
 public abstract class XmlSchemaContent extends XmlSchemaAnnotated {
 

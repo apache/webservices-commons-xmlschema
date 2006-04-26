@@ -22,8 +22,6 @@ package org.apache.ws.commons.schema;
  * declarations. The purpose of notations is to describe the format of
  * non-XML data within an XML document. Represents the World Wide Web Consortium
  * (W3C) notation element.
- *
- * @author mukund
  */
 
 public class XmlSchemaNotation extends XmlSchemaAnnotated {
