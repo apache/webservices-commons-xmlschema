@@ -1262,11 +1262,17 @@ public class SchemaBuilder {
                 Object result = schema.namespaces.get(type[0]);
                 if (result == null)
                     throw new XmlSchemaException("No namespace found"
-                            + " in given attribute type");
+                            + " in given attribute type for " + type[0]);
 
                 namespace = result.toString();
-            } else
-                namespace = schema.targetNamespace;
+            } else{
+                //if the namespace prefix is missing in a type then the correct
+                //resolution would be take the default namespace of the schema
+                //as the namespace of that type
+                // the default namespace has the empty prefix
+                namespace = schema.getNamespace("");
+            }
+
             name = Tokenizer.lastToken(name, ":")[1];
             attr.schemaTypeName = new QName(namespace, name);
         }
@@ -1906,7 +1912,7 @@ public class SchemaBuilder {
                             resolveEntity(targetNamespace,schemaLocation,baseUri)
                     , null);
         } catch (Exception e) {
-           throw new RuntimeException(e);
+            throw new RuntimeException(e);
         }
 
     }
@@ -1919,8 +1925,8 @@ public class SchemaBuilder {
      */
     XmlSchema resolveXmlSchema(String targetNamespace,
                                String schemaLocation) {
-       return resolveXmlSchema(targetNamespace,schemaLocation,
-               collection.baseUri);
+        return resolveXmlSchema(targetNamespace,schemaLocation,
+                collection.baseUri);
 
     }
 
