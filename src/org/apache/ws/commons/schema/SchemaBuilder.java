@@ -243,6 +243,8 @@ public class SchemaBuilder {
                 schema.namespaces.put("", map.item(i).getNodeValue());
             }
         }
+
+        //no targetnamespace found !
         if (schemaEl.getAttributeNode("targetNamespace") != null) {
             String contain = schemaEl.getAttribute("targetNamespace");
 
@@ -252,18 +254,17 @@ public class SchemaBuilder {
             if (!contain.equals(""))
                 schema.targetNamespace = contain;
         } else {
-            putNamespace("", schema.targetNamespace);
+           //do nothing here
         }
     }
 
     private void putNamespace(String prefix, String namespace) {
-        if (!schema.namespaces.containsKey(prefix)) {
-            schema.namespaces.put(prefix, namespace);
-        } else {
-            String genPrefix = "gen" +
+        while(schema.namespaces.containsKey(prefix)){
+           prefix = "gen" +
                     new java.util.Random().nextInt(999);
-            schema.namespaces.put(prefix, namespace);
         }
+        schema.namespaces.put(prefix, namespace);
+
     }
 
     XmlSchemaSimpleType handleSimpleType(XmlSchema schema,
