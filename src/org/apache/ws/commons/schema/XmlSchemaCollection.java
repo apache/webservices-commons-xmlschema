@@ -16,14 +16,14 @@
 
 package org.apache.ws.commons.schema;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.EntityResolver;
-import org.apache.ws.commons.schema.constants.Constants;
-import org.apache.ws.commons.schema.resolver.URIResolver;
-import org.apache.ws.commons.schema.resolver.DefaultURIResolver;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
@@ -34,14 +34,14 @@ import javax.xml.transform.Source;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.Reader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+
+import org.apache.ws.commons.schema.constants.Constants;
+import org.apache.ws.commons.schema.resolver.DefaultURIResolver;
+import org.apache.ws.commons.schema.resolver.URIResolver;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  * Contains a cache of XML Schema definition language (XSD).
