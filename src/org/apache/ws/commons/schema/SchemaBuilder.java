@@ -22,6 +22,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Attr;
+import org.xml.sax.InputSource;
 import org.apache.ws.commons.schema.utils.XDOMUtil;
 import org.apache.ws.commons.schema.utils.Tokenizer;
 import org.apache.ws.commons.schema.constants.Constants;
@@ -46,8 +47,6 @@ public class SchemaBuilder {
         schema = new XmlSchema(collection);
     }
 
-
-
     XmlSchema build(Document doc, String uri, ValidationEventHandler veh) {
         Element schemaEl = doc.getDocumentElement();
         return handleXmlSchemaElement(schemaEl, uri);
@@ -58,6 +57,11 @@ public class SchemaBuilder {
 
         setNamespaceAttributes(schema, schemaEl);
 
+        if (uri != null)
+            collection.systemId2Schemas.put(uri, schema);
+        
+        collection.schemas.add(schema);
+        
         // only populate it if it isn't already in there
         if(!collection.namespaces.containsKey(schema.targetNamespace)){
             collection.namespaces.put(schema.targetNamespace, schema);
@@ -1907,15 +1911,23 @@ public class SchemaBuilder {
                                String schemaLocation,
                                String baseUri) {
         //use the entity resolver provided
-        try {
-            return collection.read(
-                    collection.schemaResolver.
-                            resolveEntity(targetNamespace,schemaLocation,baseUri)
-                    , null);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        XmlSchema schema = null;
+        InputSource source = collection.schemaResolver.
+            resolveEntity(targetNamespace,schemaLocation,baseUri);
+        
+        if (source.getSystemId() != null) {
+            schema = collection.getXmlSchema(source.getSystemId());
         }
-
+        
+        if (schema == null) {
+            try {
+                return collection.read(source, null);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+        
+        return schema;
     }
 
     /**
