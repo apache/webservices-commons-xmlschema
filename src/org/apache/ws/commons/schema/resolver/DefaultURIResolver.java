@@ -5,6 +5,8 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.MalformedURLException;
 /*
@@ -44,17 +46,18 @@ public class DefaultURIResolver implements URIResolver {
                                      String schemaLocation,
                                      String baseUri){
 
-        if (baseUri!=null){
-            if (!isAbsolute(schemaLocation)){
-                try {
-                    schemaLocation =
-                            getURL(new URL(baseUri), schemaLocation).toString();
-                } catch (Exception e) {
-                    schemaLocation = baseUri +
-                            (schemaLocation.startsWith("/")?"":"/")+
-                            schemaLocation;
-                }
+        if (baseUri!=null) {
+            try
+            {
+                String ref = new URI(baseUri).resolve(new URI(schemaLocation)).toString();
+
+                return new InputSource(ref);
             }
+            catch (URISyntaxException e1)
+            {
+                throw new RuntimeException(e1);
+            }
+
         }
         return new InputSource(schemaLocation);
 

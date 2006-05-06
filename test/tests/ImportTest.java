@@ -33,7 +33,7 @@ public class ImportTest extends TestCase {
                 parse("test-resources/importBase.xsd");
 
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        schemaCol.setBaseUri("test-resources");
+        schemaCol.setBaseUri("test-resources/");
         XmlSchema schema = schemaCol.read(doc,null);
         assertNotNull(schema);
 
