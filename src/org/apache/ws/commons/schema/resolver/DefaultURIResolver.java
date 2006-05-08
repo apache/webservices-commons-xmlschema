@@ -46,9 +46,13 @@ public class DefaultURIResolver implements URIResolver {
                                      String schemaLocation,
                                      String baseUri){
 
-        if (baseUri!=null) {
+        if (baseUri!=null) 
+        {
             try
             {
+                File baseFile = new File(baseUri);
+                if (baseFile.exists()) baseUri = baseFile.toURI().toString();
+                
                 String ref = new URI(baseUri).resolve(new URI(schemaLocation)).toString();
 
                 return new InputSource(ref);
