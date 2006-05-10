@@ -16,14 +16,17 @@
 
 package org.apache.ws.commons.schema;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.EntityResolver;
-import org.apache.ws.commons.schema.constants.Constants;
-import org.apache.ws.commons.schema.resolver.URIResolver;
-import org.apache.ws.commons.schema.resolver.DefaultURIResolver;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
@@ -34,14 +37,14 @@ import javax.xml.transform.Source;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.Reader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+
+import org.apache.ws.commons.schema.constants.Constants;
+import org.apache.ws.commons.schema.resolver.DefaultURIResolver;
+import org.apache.ws.commons.schema.resolver.URIResolver;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  * Contains a cache of XML Schema definition language (XSD).
@@ -63,6 +66,11 @@ public final class XmlSchemaCollection {
     Map inScopeNamespaces = new HashMap();
 
     /**
+     * Schemas in this colelction sorted by system id.
+     */
+    Map systemId2Schemas = new HashMap();
+    
+    /**
      * An org.xml.sax.EntityResolver that is used to
      * resolve the imports/includes
      */
@@ -70,6 +78,11 @@ public final class XmlSchemaCollection {
 
     XmlSchema xsd = new XmlSchema(XmlSchema.SCHEMA_NS, this);
 
+    /** 
+     * A Set of all the scehmas in this collection.
+     */
+    Set schemas = new HashSet();
+    
     /**
      * Set the base URI. This is used when schemas need to be
      * loaded from relative locations
@@ -267,6 +280,23 @@ public final class XmlSchemaCollection {
         init();
     }
 
+    /**
+     * Retreive an XmlSchema from the collection by its system ID.
+     * @param systemId
+     * @return
+     */
+    public XmlSchema getXmlSchema(String systemId) {
+        return (XmlSchema) systemId2Schemas.get(systemId);
+    }
+    
+    /**
+     * Return a Set of all the XmlSchemas in this collection.
+     * @return
+     */
+    public Set getXmlSchemas() {
+        return Collections.unmodifiableSet(schemas);
+    }
+    
     public XmlSchemaElement getElementByQName(QName qname) {
         XmlSchema schema = (XmlSchema)namespaces.get(qname.getNamespaceURI());
         if (schema == null) {

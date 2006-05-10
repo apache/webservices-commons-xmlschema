@@ -3,7 +3,7 @@
   <groupId>org.apache.ws.commons</groupId>
   <artifactId>XmlSchema</artifactId>
   <name>XmlSchema</name>
-  <version>SNAPSHOT</version>
+  <version>1.0.3</version>
   <description>XmlSchema API</description>
   <url>http://ws.apache.org/commons/XmlSchema</url>
   <issueManagement>
@@ -144,9 +144,9 @@
     </developer>
   </developers>
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/webservices/commons/modules/XmlSchema/tags/XmlSchema-1.0.1</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/webservices/commons/modules/XmlSchema/tags/XmlSchema-1.0.1</developerConnection>
-    <url>http://svn.apache.org/viewcvs.cgi/webservices/commons/modules/XmlSchema/tags/XmlSchema-1.0.1</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/webservices/commons/modules/XmlSchema/tags/XmlSchema-1.0.3</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/webservices/commons/modules/XmlSchema/tags/XmlSchema-1.0.3</developerConnection>
+    <url>http://svn.apache.org/viewcvs.cgi/webservices/commons/modules/XmlSchema/tags/XmlSchema-1.0.3</url>
   </scm>
   <organization>
     <name>Apache Software Foundation</name>
@@ -183,37 +183,6 @@
       </testResource>
     </testResources>
     <plugins>
-      <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>src-assembly</id>
-            <phase>package</phase>
-            <goals>
-              <goal>assembly</goal>
-            </goals>
-            <configuration>
-              <descriptor>assembly-src.xml</descriptor>
-              <finalName>XmlSchema-${project.version}</finalName>
-              <outputDirectory>target/src-package</outputDirectory>
-              <workDirectory>target/assembly/work</workDirectory>
-            </configuration>
-          </execution>
-          <execution>
-            <id>bin-assembly</id>
-            <phase>package</phase>
-            <goals>
-              <goal>assembly</goal>
-            </goals>
-            <configuration>
-              <descriptor>assembly-bin.xml</descriptor>
-              <finalName>XmlSchema-${project.version}</finalName>
-              <outputDirectory>target/src-package</outputDirectory>
-              <workDirectory>target/assembly/work</workDirectory>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
       <plugin>
         <artifactId>maven-antrun-plugin</artifactId>
         <executions>
@@ -252,7 +221,7 @@
         </executions>
         <configuration>
           <remoteRepositoryId>apache</remoteRepositoryId>
-          <remoteRepositoryUrl>scp://people.apache.org/www/www.apache.org/dist/java-repository</remoteRepositoryUrl>
+          <remoteRepositoryUrl>scp://people.apache.org/www/cvs.apache.org/repository</remoteRepositoryUrl>
         </configuration>
       </plugin>
       <plugin>
@@ -263,6 +232,52 @@
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>release</id>
+      <activation>
+        <property>
+          <name>release</name>
+          <value></value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>src-assembly</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>assembly</goal>
+                </goals>
+                <configuration>
+                  <descriptor>assembly-src.xml</descriptor>
+                  <finalName>XmlSchema-${project.version}</finalName>
+                  <outputDirectory>target/src-package</outputDirectory>
+                  <workDirectory>target/assembly/work</workDirectory>
+                </configuration>
+              </execution>
+              <execution>
+                <id>bin-assembly</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>assembly</goal>
+                </goals>
+                <configuration>
+                  <descriptor>assembly-bin.xml</descriptor>
+                  <finalName>XmlSchema-${project.version}</finalName>
+                  <outputDirectory>target/src-package</outputDirectory>
+                  <workDirectory>target/assembly/work</workDirectory>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
   <pluginRepositories>
     <pluginRepository>
       <id>snapshot</id>

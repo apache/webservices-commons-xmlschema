@@ -37,6 +37,11 @@ public class ImportTest extends TestCase {
         XmlSchema schema = schemaCol.read(doc,null);
         assertNotNull(schema);
 
+        // attempt with slash now
+        schemaCol = new XmlSchemaCollection();
+        schemaCol.setBaseUri("test-resources/");
+        schema = schemaCol.read(doc,null);
+        assertNotNull(schema);
     }
 
     /**
