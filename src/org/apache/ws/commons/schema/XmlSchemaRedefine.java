@@ -30,6 +30,9 @@ public class XmlSchemaRedefine extends XmlSchemaExternal {
      */
     public XmlSchemaRedefine() {
         items = new XmlSchemaObjectCollection();
+        schemaTypes = new XmlSchemaObjectTable();
+        groups = new XmlSchemaObjectTable();
+        attributeGroups = new XmlSchemaObjectTable();
     }
 
     XmlSchemaObjectTable attributeGroups, groups, schemaTypes;
