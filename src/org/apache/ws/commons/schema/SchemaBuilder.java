@@ -1,5 +1,6 @@
 /*
  * Copyright 2004,2005 The Apache Software Foundation.
+ * Portions Copyright 2006 International Business Machines Corp.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -150,7 +151,9 @@ public class SchemaBuilder {
                         el, schemaEl);
                 schema.includes.add(redefine);
             } else if (el.getLocalName().equals("notation")) {
-                //TODO: implement Notation
+                XmlSchemaNotation notation = handleNotation(schema, el, schemaEl);
+                schema.notations.collection.put(notation.name, notation);
+                schema.items.add(notation);
             } else if (el.getLocalName().equals("annotation")) {
                 // Vidyanand : added this part
                 XmlSchemaAnnotation annotation = handleAnnotation(schema, el, schemaEl);
@@ -178,6 +181,39 @@ public class SchemaBuilder {
         return annotation;
     }
 
+    private XmlSchemaNotation handleNotation(XmlSchema schema,
+                                             Element notationEl,
+                                             Element schemaEl) {
+
+        XmlSchemaNotation notation = new XmlSchemaNotation();
+
+        if (notationEl.hasAttribute("id")) {
+            notation.id = notationEl.getAttribute("id");
+        }
+
+        if (notationEl.hasAttribute("name")) {
+            notation.name = notationEl.getAttribute("name");
+        }
+
+        if (notationEl.hasAttribute("public")) {                     
+            notation.publicNotation = notationEl.getAttribute("public");
+        }
+
+        if (notationEl.hasAttribute("system")) {                     
+            notation.system = notationEl.getAttribute("system");
+        }
+
+        Element annotationEl =
+            XDOMUtil.getFirstChildElementNS(notationEl,
+                XmlSchema.SCHEMA_NS, "annotation");
+
+        if (annotationEl != null) {
+            XmlSchemaAnnotation annotation = handleAnnotation(annotationEl);
+            notation.setAnnotation(annotation);
+        }
+
+        return notation;
+    }
 
     private XmlSchemaRedefine handleRedefine(XmlSchema schema,
                                              Element redefineEl, Element schemaEl) {
@@ -1522,13 +1558,17 @@ public class SchemaBuilder {
                     handleComplexType(schema, complexTypeEl, schemaEl);
 
             element.schemaType = complexType;
-        } else if ((keyEl =
+        } 
+        
+        if ((keyEl =
                 XDOMUtil.getFirstChildElementNS(el, XmlSchema.SCHEMA_NS, "key")) != null) {
 
             XmlSchemaIdentityConstraint key =
                     handleConstraint(schema, keyEl, schemaEl, "Key");
             element.constraints.add(key);
-        } else if ((keyrefEl = XDOMUtil.getFirstChildElementNS(el, XmlSchema.SCHEMA_NS, "keyref")) != null) {
+        } 
+        
+        if ((keyrefEl = XDOMUtil.getFirstChildElementNS(el, XmlSchema.SCHEMA_NS, "keyref")) != null) {
 
             XmlSchemaKeyref keyRef =
                     (XmlSchemaKeyref) handleConstraint(schema, keyrefEl,
@@ -1551,7 +1591,9 @@ public class SchemaBuilder {
 
             element.constraints.add(keyRef);
 
-        } else if ((uniqueEl =
+        } 
+        
+        if ((uniqueEl =
                 XDOMUtil.getFirstChildElementNS(el,
                         XmlSchema.SCHEMA_NS, "unique")) != null) {
 
@@ -1647,7 +1689,6 @@ public class SchemaBuilder {
                     namespace = schema.targetNamespace;
 
                 name = Tokenizer.lastToken(name, ":")[1];
-                constraint.name = name; // need to confirm as it is not name but refer
                 ((XmlSchemaKeyref) constraint).refer =
                         new QName(namespace, name);
 
