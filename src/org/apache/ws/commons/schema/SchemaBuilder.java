@@ -1583,7 +1583,24 @@ public class SchemaBuilder {
         if (el.hasAttribute("nillable"))
             element.isNillable =
                     new Boolean(el.getAttribute("nillable")).booleanValue();
-
+        
+        if (el.hasAttribute("substitutionGroup")) {
+            String substitutionGroup = el.getAttribute("substitutionGroup");
+            String[] args = Tokenizer.tokenize(substitutionGroup, ":");
+            String namespace = null;
+            if (args.length > 1) {
+                Object result = schema.namespaces.get(args[0]);
+                if (result == null) {
+                    throw new XmlSchemaException("No namespace found in"
+                                                 + "given substitionGroup");
+                }
+                namespace = result.toString();
+            } else {
+                namespace = schema.targetNamespace;
+            }
+            substitutionGroup = Tokenizer.lastToken(substitutionGroup, ":")[1];
+            element.setSubstitutionGroup(new QName(namespace, substitutionGroup));
+        }
 
         element.minOccurs = getMinOccurs(el);
         element.maxOccurs = getMaxOccurs(el);

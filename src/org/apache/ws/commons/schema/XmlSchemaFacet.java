@@ -1,5 +1,6 @@
 /*
  * Copyright 2004,2005 The Apache Software Foundation.
+ * Portions Copyright 2006 International Business Machines Corp.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +18,19 @@
 package org.apache.ws.commons.schema;
 
 import org.w3c.dom.Element;
+
+import org.apache.ws.commons.schema.XmlSchemaEnumerationFacet;
+import org.apache.ws.commons.schema.XmlSchemaFractionDigitsFacet;
+import org.apache.ws.commons.schema.XmlSchemaLengthFacet;
+import org.apache.ws.commons.schema.XmlSchemaMaxExclusiveFacet;
+import org.apache.ws.commons.schema.XmlSchemaMaxInclusiveFacet;
+import org.apache.ws.commons.schema.XmlSchemaMaxLengthFacet;
+import org.apache.ws.commons.schema.XmlSchemaMinLengthFacet;
+import org.apache.ws.commons.schema.XmlSchemaMinExclusiveFacet;
+import org.apache.ws.commons.schema.XmlSchemaMinInclusiveFacet;
+import org.apache.ws.commons.schema.XmlSchemaPatternFacet;
+import org.apache.ws.commons.schema.XmlSchemaTotalDigitsFacet;
+import org.apache.ws.commons.schema.XmlSchemaWhiteSpaceFacet;
 
 /**
  * Abstract class for all facets that are used when simple types are
@@ -64,23 +78,37 @@ public abstract class XmlSchemaFacet extends XmlSchemaAnnotated {
         if (el.getAttribute("fixed").equals("true")) {
             fixed = true;
         }
-        try {
-            // TODO : move this from reflection to a if condition and avoid cost 
-            // of reflection
-            Class facetClass = Class.forName("org.apache.ws.commons.schema.XmlSchema"
-                                             + Character.toUpperCase(name.charAt(0))
-                                             + name.substring(1) + "Facet");
-            XmlSchemaFacet facet = (XmlSchemaFacet) facetClass.newInstance();
-            facet.setFixed(fixed);
-            facet.setValue(el.getAttribute("value"));
-            return facet;
-        } catch (ClassNotFoundException e) {
-            throw new XmlSchemaException(e.getMessage());
-        } catch (InstantiationException e) {
-            throw new XmlSchemaException(e.getMessage());
-        } catch (IllegalAccessException e) {
-            throw new XmlSchemaException(e.getMessage());
+        XmlSchemaFacet facet = null;
+        if (name.equals("enumeration")) {
+            facet = new XmlSchemaEnumerationFacet();
+        } else if (name.equals("fractionDigits")) {
+            facet = new XmlSchemaFractionDigitsFacet();
+        } else if (name.equals("length")) {
+            facet = new XmlSchemaLengthFacet();
+        } else if (name.equals("maxExclusive")) {
+            facet = new XmlSchemaMaxExclusiveFacet();
+        } else if (name.equals("maxInclusive")) {
+            facet = new XmlSchemaMaxInclusiveFacet();
+        } else if (name.equals("maxLength")) {
+            facet = new XmlSchemaMaxLengthFacet();
+        } else if (name.equals("minLength")) {
+            facet = new XmlSchemaMinLengthFacet();
+        } else if (name.equals("minExclusive")) {
+            facet = new XmlSchemaMinExclusiveFacet();
+        } else if (name.equals("minInclusive")) {
+            facet = new XmlSchemaMinInclusiveFacet();
+        } else if (name.equals("pattern")) {
+            facet = new XmlSchemaPatternFacet();
+        } else if (name.equals("totalDigits")) {
+            facet = new XmlSchemaTotalDigitsFacet();
+        } else if (name.equals("whiteSpace")) {
+            facet = new XmlSchemaWhiteSpaceFacet();
+        } else {
+            throw new XmlSchemaException("Incorrect facet with name \""
+                                         + name + "\" found.");
         }
-
+        facet.setFixed(fixed);
+        facet.setValue(el.getAttribute("value"));
+        return facet;
     }
 }
