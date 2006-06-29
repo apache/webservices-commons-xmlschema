@@ -1836,7 +1836,9 @@ public class SchemaBuilder {
              appinfo = XDOMUtil.getNextSiblingElementNS(appinfo, XmlSchema.SCHEMA_NS, "appinfo")) {
 
             appInfoObj = handleAppInfo(appinfo);
-            content.add(appInfoObj);
+            if (appInfoObj != null) {
+                content.add(appInfoObj);
+            }
         }
         for (Element documentation = XDOMUtil.getFirstChildElementNS(annotEl,
                 XmlSchema.SCHEMA_NS, "documentation");
@@ -1847,7 +1849,9 @@ public class SchemaBuilder {
                      XmlSchema.SCHEMA_NS, "documentation")) {
 
             docsObj = handleDocumentation(documentation);
-            content.add(docsObj);
+            if (docsObj != null) {
+            	content.add(docsObj);
+            }
         }
 
         XmlSchemaAnnotation annotation = new XmlSchemaAnnotation();
@@ -1861,8 +1865,10 @@ public class SchemaBuilder {
         XmlSchemaAppInfo appInfo = new XmlSchemaAppInfo();
         NodeList markup = getChild(content);
 
-        if (!content.hasAttribute("source") && markup.getLength() <= 0)
+        if (!content.hasAttribute("source") &&
+                (markup == null || markup.getLength() <= 0)) {
             return null;
+        }
         appInfo.setSource(getAttribute(content, "source"));
         appInfo.setMarkup(markup);
         return appInfo;
