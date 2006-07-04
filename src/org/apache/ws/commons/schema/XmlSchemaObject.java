@@ -16,10 +16,45 @@
 
 package org.apache.ws.commons.schema;
 
+import java.util.Map;
+import java.util.LinkedHashMap;
+
 public abstract class XmlSchemaObject {
     int lineNumber;
     int linePosition;
     String sourceURI;
+
+    /**
+     * a map for holding meta information
+     * Initially set to null to gain some improvement
+     * in memory. will be initialized only if a
+     * user attempts
+     */
+    private Map metaInfoMap = null;
+
+    /**
+     * returns the metainfo map. may be null
+     * if not utilized
+     */
+    public Map getMetaInfoMap() {
+        return metaInfoMap;
+    }
+
+    /**
+     * Add a value to the meta info map
+     * will be initialized if not used
+     * previously
+     * @param key
+     * @param value
+     */
+    public void addMetaInfo(Object key,Object value){
+      if (metaInfoMap==null){
+          metaInfoMap =  new LinkedHashMap();
+      }
+
+      metaInfoMap.put(key,value);
+    }
+
 
     /**
      * Creates new XmlSchemaObject
@@ -55,22 +90,22 @@ public abstract class XmlSchemaObject {
         if (what == this) {
             return true;
         }
-        
+
         // note: instanceof returns false if its first operand is null 
         if (!(what instanceof XmlSchemaObject)) {
             return false;
         }
-        
+
         XmlSchemaObject xso = (XmlSchemaObject) what;
-        
+
         if (this.lineNumber != xso.lineNumber) {
             return false;
         }
-        
+
         if (this.linePosition != xso.linePosition) {
             return false;
         }
-        
+
         if (this.sourceURI != null) {
             if (!this.sourceURI.equals(xso.sourceURI)) {
                 return false;
@@ -80,7 +115,7 @@ public abstract class XmlSchemaObject {
                 return false;
             }
         }
-        
+
         return true;
     }
 
