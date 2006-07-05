@@ -53,8 +53,7 @@
 		<echo>Downloading 6MB XML Schema test suite. This make take a few minutes...</echo>
 		<get dest="${build.dir}/xsts-2002-01-16.tar.gz" 
 			src="http://www.w3.org/XML/2004/xml-schema-test-suite/xmlschema2002-01-16/xsts-2002-01-16.tar.gz"/>
-    	<gunzip src="${build.dir}/xsts-2002-01-16.tar.gz"/>
-		<untar src="${build.dir}/xsts-2002-01-16.tar" dest="${build.dir}"/>
+		<untar src="${build.dir}/xsts-2002-01-16.tar.gz" compression="gzip" dest="${build.dir}"/>
     </target>
 
     <target name="compile" depends="prepare" description="compiles the src and puts it in build/classes">
