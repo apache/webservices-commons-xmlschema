@@ -120,7 +120,7 @@
         </javadoc>
     </target>
 
-    <target name="clean" depends="prepare" description="Clean all build products.">
+    <target name="clean" description="Clean all build products.">
         <delete dir="${build.dir}"/>
     </target>
 
