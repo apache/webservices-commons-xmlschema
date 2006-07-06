@@ -60,9 +60,9 @@ public class SchemaBuilder {
 
         if (uri != null)
             collection.systemId2Schemas.put(uri, schema);
-        
+
         collection.schemas.add(schema);
-        
+
         // only populate it if it isn't already in there
         if(!collection.namespaces.containsKey(schema.targetNamespace)){
             collection.namespaces.put(schema.targetNamespace, schema);
@@ -195,11 +195,11 @@ public class SchemaBuilder {
             notation.name = notationEl.getAttribute("name");
         }
 
-        if (notationEl.hasAttribute("public")) {                     
+        if (notationEl.hasAttribute("public")) {
             notation.publicNotation = notationEl.getAttribute("public");
         }
 
-        if (notationEl.hasAttribute("system")) {                     
+        if (notationEl.hasAttribute("system")) {
             notation.system = notationEl.getAttribute("system");
         }
 
@@ -266,7 +266,7 @@ public class SchemaBuilder {
     }
 
     void setNamespaceAttributes(XmlSchema schema, Element schemaEl) {
-        // If this schema is embedded in a WSDL, we need to get the 
+        // If this schema is embedded in a WSDL, we need to get the
         // namespaces from the all the parent nodes first.
         Node parent = schemaEl.getParentNode();
         if (parent instanceof Element) setNamespaceAttributes(schema, (Element) parent);
@@ -435,8 +435,9 @@ public class SchemaBuilder {
                 String namespace;
 
                 if (namespaceFromEl.length > 1) {
-                    Object result =
-                            schema.namespaces.get(namespaceFromEl[0]);
+                    Object result = findNamespaceForPrefix(namespaceFromEl[0],
+                            schema);
+
                     if (result == null)
                         throw new XmlSchemaException("No namespace "
                                 + "found in given itemType");
@@ -502,7 +503,7 @@ public class SchemaBuilder {
                         prefix = member.substring(0, pos);
                         localName = member.substring(pos + 1);
                     }
-                    v.add(new QName((String) schema.namespaces.get(prefix),
+                    v.add(new QName((String) findNamespaceForPrefix(prefix,schema),
                             localName));
                 }
                 union.memberTypesQNames = new QName[v.size()];
@@ -747,7 +748,9 @@ public class SchemaBuilder {
 
         if (restrictionEl.hasAttribute("base")) {
             String name = restrictionEl.getAttribute("base");
-            Object result = schema.namespaces.get(Tokenizer.tokenize(name, ":")[0]);
+
+            Object result =findNamespaceForPrefix(Tokenizer.tokenize(name, ":")[0],
+                    schema);
 
             if (result == null)
                 throw new XmlSchemaException("No namespace found in "
@@ -1300,7 +1303,7 @@ public class SchemaBuilder {
             String namespace;
 
             if (type.length > 1) {
-                Object result = schema.namespaces.get(type[0]);
+                Object result = findNamespaceForPrefix(type[0],schema);
                 if (result == null)
                     throw new XmlSchemaException("No namespace found"
                             + " in given attribute type for " + type[0]);
@@ -1343,7 +1346,8 @@ public class SchemaBuilder {
 
             if (namespaceFromEl.length > 1) {
                 Object result =
-                        schema.namespaces.get(namespaceFromEl[0]);
+                        findNamespaceForPrefix(namespaceFromEl[0],schema);
+
                 if (result == null && namespaceFromEl[0].equals(Constants.XMLNS_PREFIX)) {
                     result = Constants.XMLNS_URI;
                 }
@@ -1399,7 +1403,7 @@ public class SchemaBuilder {
                     // there is a possiblily of some namespace mapping
                     String prefix = value.substring(0, value.indexOf(":"));
                     //String value = ( String) value.substring( value.indexOf( ":" ) + 1);
-                    String namespace = (String) schema.namespaces.get(prefix);
+                    String namespace = (String) findNamespaceForPrefix(prefix,schema);
                     if (namespace != null) {
                         Attr nsAttr = attrEl.getOwnerDocument().createAttribute("xmlns:" + prefix);
                         nsAttr.setValue(namespace);
@@ -1528,7 +1532,7 @@ public class SchemaBuilder {
             String[] args = Tokenizer.tokenize(refName, ":");
             String namespace;
             if (args.length > 1) {
-                Object result = schema.namespaces.get(args[0]);
+                Object result = findNamespaceForPrefix(args[0],schema);
                 if (result == null)
                     throw new XmlSchemaException("No namespace found in"
                             + "given ref");
@@ -1558,16 +1562,16 @@ public class SchemaBuilder {
                     handleComplexType(schema, complexTypeEl, schemaEl);
 
             element.schemaType = complexType;
-        } 
-        
+        }
+
         if ((keyEl =
                 XDOMUtil.getFirstChildElementNS(el, XmlSchema.SCHEMA_NS, "key")) != null) {
 
             XmlSchemaIdentityConstraint key =
                     handleConstraint(schema, keyEl, schemaEl, "Key");
             element.constraints.add(key);
-        } 
-        
+        }
+
         if ((keyrefEl = XDOMUtil.getFirstChildElementNS(el, XmlSchema.SCHEMA_NS, "keyref")) != null) {
 
             XmlSchemaKeyref keyRef =
@@ -1581,7 +1585,7 @@ public class SchemaBuilder {
                 String namespace;
 
                 if (qName.length > 1) {
-                    Object result = schema.namespaces.get(qName[0]);
+                    Object result = findNamespaceForPrefix(qName[0],schema);
                     namespace = result.toString();
                 } else
                     namespace = schema.targetNamespace;
@@ -1591,8 +1595,8 @@ public class SchemaBuilder {
 
             element.constraints.add(keyRef);
 
-        } 
-        
+        }
+
         if ((uniqueEl =
                 XDOMUtil.getFirstChildElementNS(el,
                         XmlSchema.SCHEMA_NS, "unique")) != null) {
@@ -1625,13 +1629,13 @@ public class SchemaBuilder {
         if (el.hasAttribute("nillable"))
             element.isNillable =
                     new Boolean(el.getAttribute("nillable")).booleanValue();
-        
+
         if (el.hasAttribute("substitutionGroup")) {
             String substitutionGroup = el.getAttribute("substitutionGroup");
             String[] args = Tokenizer.tokenize(substitutionGroup, ":");
             String namespace = null;
             if (args.length > 1) {
-                Object result = schema.namespaces.get(args[0]);
+                Object result = findNamespaceForPrefix(args[0],schema);
                 if (result == null) {
                     throw new XmlSchemaException("No namespace found in"
                                                  + "given substitionGroup");
@@ -1679,7 +1683,8 @@ public class SchemaBuilder {
 
                 if (namespaceFromEl.length > 1) {
                     Object result =
-                            schema.namespaces.get(namespaceFromEl[0]);
+                            findNamespaceForPrefix(namespaceFromEl[0],
+                            schema);
                     if (result == null)
                         throw new XmlSchemaException("No namespace found in "
                                 + "given base simple content type");
@@ -2006,5 +2011,22 @@ public class SchemaBuilder {
                 collection.baseUri);
 
     }
+
+    /**
+     * Finds the namespace URI for a given prefix
+     * @param prefix
+     * @param schema
+     * @return
+     */
+    private String findNamespaceForPrefix(String prefix,XmlSchema schema){
+        String returnPrefix = (String)schema.namespaces.get(prefix);
+        if (returnPrefix==null){
+            returnPrefix = (String)collection.inScopeNamespaces.get(prefix);
+        }
+
+        return returnPrefix;
+    }
+
+
 
 }
