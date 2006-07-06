@@ -101,7 +101,7 @@ public class AnnotationTest extends TestCase {
                 for (int j = 0; j < nl.getLength(); j++) {
                     Node n = nl.item(j);
                     if (n.getNodeType() == Node.TEXT_NODE) {
-                        assertEquals("testing987", n.getTextContent());
+                        assertEquals("testing987", n.getNodeValue());
                     }
                 }
             }
@@ -161,7 +161,7 @@ public class AnnotationTest extends TestCase {
                 for (int j = 0; j < nl.getLength(); j++) {
                     Node n = nl.item(j);
                     if (n.getNodeType() == Node.TEXT_NODE) {
-                        assertEquals("testing123", n.getTextContent());
+                        assertEquals("testing123", n.getNodeValue());
                     }
                 }
             } else if (o instanceof XmlSchemaDocumentation) {
@@ -264,7 +264,7 @@ public class AnnotationTest extends TestCase {
                 for (int j = 0; j < nl.getLength(); j++) {
                     Node n = nl.item(j);
                     if (n.getNodeType() == Node.TEXT_NODE) {
-                        assertEquals("testing123", n.getTextContent());
+                        assertEquals("testing123", n.getNodeValue());
                     }
                 }
             } else if (o instanceof XmlSchemaDocumentation) {
@@ -276,7 +276,7 @@ public class AnnotationTest extends TestCase {
                 for (int j = 0; j < nl.getLength(); j++) {
                     Node n = nl.item(j);
                     if (n.getNodeType() == Node.TEXT_NODE) {
-                        assertEquals("testing987", n.getTextContent());
+                        assertEquals("testing987", n.getNodeValue());
                     }
                 }
             }

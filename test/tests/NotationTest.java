@@ -178,7 +178,7 @@ public class NotationTest extends TestCase {
                     Node n = nl.item(j);
                     if (n.getNodeType() == Node.TEXT_NODE) {
                         assertEquals("Location of the corporate mascot.",
-                                     n.getTextContent());
+                                     n.getNodeValue());
                     }
                 }
             } else if (name.equals("teamLogo")) {
@@ -193,7 +193,7 @@ public class NotationTest extends TestCase {
                     Node n = nl.item(j);
                     if (n.getNodeType() == Node.TEXT_NODE) {
                         assertEquals("Location of the corporate logo.",
-                                     n.getTextContent());
+                                     n.getNodeValue());
                     }
                 }
             } else {
