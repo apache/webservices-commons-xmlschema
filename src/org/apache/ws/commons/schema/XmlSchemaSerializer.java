@@ -612,6 +612,9 @@ public class XmlSchemaSerializer {
                 serializedEl.appendChild(constraint);
             }
         }
+        if (elementObj.isNillable) {
+        	serializedEl.setAttribute("nillable", "true");
+        }
 
         return serializedEl;
     }

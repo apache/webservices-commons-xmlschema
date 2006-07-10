@@ -239,6 +239,9 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver 
 
         if (maxOccurs != 1)
             xml += "maxOccurs=\"" + maxOccurs + "\" ";
+        
+        if (isNillable)
+          xml += "nillable=\"" + isNillable + "\" ";
 
         xml += ">\n";
 
