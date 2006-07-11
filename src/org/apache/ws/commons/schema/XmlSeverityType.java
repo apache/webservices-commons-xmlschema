@@ -17,7 +17,7 @@
 package org.apache.ws.commons.schema;
 
 import org.apache.ws.commons.schema.constants.Enum;
-import org.apache.ws.commons.schema.constants.BlockConstants;
+import org.apache.ws.commons.schema.constants.Constants;
 
 /**
  * Represents the severity of the validation event.
@@ -26,8 +26,8 @@ import org.apache.ws.commons.schema.constants.BlockConstants;
 public class XmlSeverityType extends Enum {
 
     static String[] members = new String[]{
-            BlockConstants.ERROR,
-            BlockConstants.WARNING
+            Constants.BlockConstants.ERROR,
+            Constants.BlockConstants.WARNING
     };
 
     /**

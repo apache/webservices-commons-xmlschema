@@ -23,7 +23,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
-import org.apache.ws.commons.schema.constants.BlockConstants;
+import org.apache.ws.commons.schema.constants.Constants;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -136,14 +136,14 @@ public class XmlSchemaSerializer {
         }
         if (schemaObj.blockDefault != null) {
             String blockDefault = schemaObj.blockDefault.getValue();
-            if (!blockDefault.equals(BlockConstants.NONE)) {
+            if (!blockDefault.equals(Constants.BlockConstants.NONE)) {
                 blockDefault = convertString(blockDefault);
                 serializedSchema.setAttribute("blockDefault", blockDefault);
             }
         }
         if (schemaObj.finalDefault != null) {
             String finalDefault = schemaObj.finalDefault.getValue();
-            if (!finalDefault.equals(BlockConstants.NONE)) {
+            if (!finalDefault.equals(Constants.BlockConstants.NONE)) {
                 finalDefault = convertString(finalDefault);
                 serializedSchema.setAttribute("finalDefault", finalDefault);
             }
@@ -519,7 +519,7 @@ public class XmlSchemaSerializer {
             serializedEl.setAttribute("abstract", "true");
 
         String block = elementObj.block.getValue();
-        if (!block.equals(BlockConstants.NONE)) {
+        if (!block.equals(Constants.BlockConstants.NONE)) {
             block = convertString(block);
             serializedEl.setAttribute("block", block);
         }
@@ -528,7 +528,7 @@ public class XmlSchemaSerializer {
                     elementObj.defaultValue);
 
         String finalDerivation = elementObj.finalDerivation.getValue();
-        if (!finalDerivation.equals(BlockConstants.NONE)) {
+        if (!finalDerivation.equals(Constants.BlockConstants.NONE)) {
             finalDerivation = convertString(finalDerivation);
             serializedEl.setAttribute("final",
                     finalDerivation);
@@ -647,7 +647,7 @@ public class XmlSchemaSerializer {
 
         String tmp;
         tmp = simpleTypeObj.finalDerivation.getValue();
-        if (!tmp.equals(BlockConstants.NONE)) {
+        if (!tmp.equals(Constants.BlockConstants.NONE)) {
 
             tmp = convertString(tmp);
             serializedSimpleType.setAttribute("final", tmp);
@@ -919,13 +919,13 @@ public class XmlSchemaSerializer {
         }
 
         String block = complexTypeObj.block.getValue();
-        if (!block.equals(BlockConstants.NONE)) {
+        if (!block.equals(Constants.BlockConstants.NONE)) {
             block = convertString(block);
             serializedComplexType.setAttribute(
                     "block", block);
         }
         String finalDerivation = complexTypeObj.finalDerivation.getValue();
-        if (!finalDerivation.equals(BlockConstants.NONE)) {
+        if (!finalDerivation.equals(Constants.BlockConstants.NONE)) {
             finalDerivation = convertString(finalDerivation);
             serializedComplexType.setAttribute("final",
                     finalDerivation);
@@ -1061,7 +1061,7 @@ public class XmlSchemaSerializer {
             attribute.setAttribute("id", attributeObj.id);
 
         String useType = attributeObj.use.getValue();
-        if (!useType.equals(BlockConstants.NONE)) {
+        if (!useType.equals(Constants.BlockConstants.NONE)) {
             useType = convertString(useType);
             attribute.setAttribute("use", useType);
         }
@@ -1424,7 +1424,7 @@ public class XmlSchemaSerializer {
 
         if (anyObj.processContent != null) {
             String value = anyObj.processContent.getValue();
-            if (!value.equals(BlockConstants.NONE)) {
+            if (!value.equals(Constants.BlockConstants.NONE)) {
                 String processContent = convertString(value);
                 anyEl.setAttribute("processContents",
                         processContent);
@@ -2501,7 +2501,7 @@ public class XmlSchemaSerializer {
     //Convert given string to lower case or w3c standard
     private String convertString(String convert) {
         String input = convert.trim();
-        if (input.equals(BlockConstants.ALL)) {
+        if (input.equals(Constants.BlockConstants.ALL)) {
             return "#all";
         } else
             return input.toLowerCase();

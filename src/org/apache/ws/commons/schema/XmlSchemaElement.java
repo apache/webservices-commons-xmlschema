@@ -16,7 +16,7 @@
 
 package org.apache.ws.commons.schema;
 
-import org.apache.ws.commons.schema.constants.BlockConstants;
+import org.apache.ws.commons.schema.constants.Constants;
 
 import javax.xml.namespace.QName;
 
@@ -91,8 +91,8 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver 
         isAbstract = false;
         isNillable = false;
         form = new XmlSchemaForm(XmlSchemaForm.NONE);
-        finalDerivation = new XmlSchemaDerivationMethod(BlockConstants.NONE);
-        block = new XmlSchemaDerivationMethod(BlockConstants.NONE);
+        finalDerivation = new XmlSchemaDerivationMethod(Constants.BlockConstants.NONE);
+        block = new XmlSchemaDerivationMethod(Constants.BlockConstants.NONE);
     }
 
     /**

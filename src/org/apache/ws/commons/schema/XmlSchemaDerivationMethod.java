@@ -16,21 +16,21 @@
 
 package org.apache.ws.commons.schema;
 
-import org.apache.ws.commons.schema.constants.BlockConstants;
+import org.apache.ws.commons.schema.constants.Constants;
 
 /**
  * Provides different methods for preventing derivation.
  */
 public class XmlSchemaDerivationMethod extends org.apache.ws.commons.schema.constants.Enum {
     static String[] members = new String[]{
-            BlockConstants.ALL,
-            BlockConstants.EMPTY,
-            BlockConstants.EXTENSION,
-            BlockConstants.LIST,
-            BlockConstants.NONE,
-            BlockConstants.RESTRICTION,
-            BlockConstants.SUBSITUTION,
-            BlockConstants.UNION};
+            Constants.BlockConstants.ALL,
+            Constants.BlockConstants.EMPTY,
+            Constants.BlockConstants.EXTENSION,
+            Constants.BlockConstants.LIST,
+            Constants.BlockConstants.NONE,
+            Constants.BlockConstants.RESTRICTION,
+            Constants.BlockConstants.SUBSITUTION,
+            Constants.BlockConstants.UNION};
 
     /**
      * Creates new XmlSeverityType

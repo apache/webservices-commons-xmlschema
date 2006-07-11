@@ -27,7 +27,6 @@ import org.xml.sax.InputSource;
 import org.apache.ws.commons.schema.utils.XDOMUtil;
 import org.apache.ws.commons.schema.utils.Tokenizer;
 import org.apache.ws.commons.schema.constants.Constants;
-import org.apache.ws.commons.schema.constants.BlockConstants;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.namespace.QName;
@@ -42,17 +41,35 @@ public class SchemaBuilder {
     XmlSchemaCollection collection;
 
     DocumentBuilderFactory docFac;
+    public static final String XMLNS_PREFIX = "xmlns";
 
+    /**
+     * Schema builder constructor
+     * @param collection
+     */
     SchemaBuilder(XmlSchemaCollection collection) {
         this.collection = collection;
         schema = new XmlSchema(collection);
     }
 
+    /**
+     * build method taking in a document and a validation handler
+     * @param doc
+     * @param uri
+     * @param veh
+     * @return
+     */
     XmlSchema build(Document doc, String uri, ValidationEventHandler veh) {
         Element schemaEl = doc.getDocumentElement();
         return handleXmlSchemaElement(schemaEl, uri);
     }
 
+    /**
+     * handles the schema element
+     * @param schemaEl
+     * @param uri
+     * @return
+     */
     XmlSchema handleXmlSchemaElement(Element schemaEl, String uri) {
         // get all the attributes along with the namespace declns
 
@@ -75,6 +92,9 @@ public class SchemaBuilder {
         schema.setBlockDefault(this.getDerivation(schemaEl, "blockDefault"));
         schema.setFinalDefault(this.getDerivation(schemaEl, "finalDefault"));
         schema.setSourceURI(uri);
+
+        //add the extesibility components
+        processExtensibilityComponents(schema,schemaEl);
 
         /***********
          * for ( each childElement)
@@ -127,6 +147,7 @@ public class SchemaBuilder {
                         el, schemaEl);
                 schema.includes.add(include);
                 schema.items.add(include);
+
             } else if (el.getLocalName().equals("import")) {
                 XmlSchemaImport schemaImport = handleImport(schema,
                         el, schemaEl);
@@ -204,8 +225,8 @@ public class SchemaBuilder {
         }
 
         Element annotationEl =
-            XDOMUtil.getFirstChildElementNS(notationEl,
-                XmlSchema.SCHEMA_NS, "annotation");
+                XDOMUtil.getFirstChildElementNS(notationEl,
+                        XmlSchema.SCHEMA_NS, "annotation");
 
         if (annotationEl != null) {
             XmlSchemaAnnotation annotation = handleAnnotation(annotationEl);
@@ -279,7 +300,7 @@ public class SchemaBuilder {
 
                 if (map.item(i).getNodeValue().equals(XmlSchema.SCHEMA_NS))
                     schema.schema_ns_prefix = map.item(i).getLocalName();
-            } else if (map.item(i).getNodeName().startsWith("xmlns")) {
+            } else if (map.item(i).getNodeName().startsWith(XMLNS_PREFIX)) {
                 schema.namespaces.put("", map.item(i).getNodeValue());
             }
         }
@@ -294,19 +315,26 @@ public class SchemaBuilder {
             if (!contain.equals(""))
                 schema.targetNamespace = contain;
         } else {
-           //do nothing here
+            //do nothing here
         }
     }
 
     private void putNamespace(String prefix, String namespace) {
         while(schema.namespaces.containsKey(prefix)){
-           prefix = "gen" +
+            prefix = "gen" +
                     new java.util.Random().nextInt(999);
         }
         schema.namespaces.put(prefix, namespace);
 
     }
 
+    /**
+     * Handles simple types
+     * @param schema
+     * @param simpleEl
+     * @param schemaEl
+     * @return
+     */
     XmlSchemaSimpleType handleSimpleType(XmlSchema schema,
                                          Element simpleEl, Element schemaEl) {
 
@@ -321,7 +349,7 @@ public class SchemaBuilder {
             if (finalstr.equalsIgnoreCase("all") |
                     finalstr.equalsIgnoreCase("#all"))
 
-                simpleType.setFinal(new XmlSchemaDerivationMethod(BlockConstants.ALL));
+                simpleType.setFinal(new XmlSchemaDerivationMethod(Constants.BlockConstants.ALL));
             else
                 simpleType.setFinal(new XmlSchemaDerivationMethod(finalstr));
         }
@@ -543,9 +571,20 @@ public class SchemaBuilder {
             }
             simpleType.content = union;
         }
+
+        //process extra attributes and elements
+        processExtensibilityComponents(simpleType,schemaEl);
+
         return simpleType;
     }
 
+    /**
+     * Handle complex types
+     * @param schema
+     * @param complexEl
+     * @param schemaEl
+     * @return
+     */
     XmlSchemaComplexType handleComplexType(XmlSchema schema,
                                            Element complexEl, Element schemaEl) {
 
@@ -649,7 +688,7 @@ public class SchemaBuilder {
             if (blockStr.equalsIgnoreCase("all") |
                     blockStr.equalsIgnoreCase("#all")) {
 
-                ct.setBlock(new XmlSchemaDerivationMethod(BlockConstants.ALL));
+                ct.setBlock(new XmlSchemaDerivationMethod(Constants.BlockConstants.ALL));
             } else
                 ct.setBlock(new XmlSchemaDerivationMethod(blockStr));
             //ct.setBlock(new XmlSchemaDerivationMethod(block));
@@ -659,7 +698,7 @@ public class SchemaBuilder {
             if (finalstr.equalsIgnoreCase("all") |
                     finalstr.equalsIgnoreCase("#all")) {
 
-                ct.setFinal(new XmlSchemaDerivationMethod(BlockConstants.ALL));
+                ct.setFinal(new XmlSchemaDerivationMethod(Constants.BlockConstants.ALL));
             } else
                 ct.setFinal(new XmlSchemaDerivationMethod(finalstr));
         }
@@ -677,6 +716,10 @@ public class SchemaBuilder {
             else
                 ct.setMixed(false);
         }
+
+        //process extra attributes and elements
+        processExtensibilityComponents(ct,schemaEl);
+
         return ct;
     }
 
@@ -1418,7 +1461,7 @@ public class SchemaBuilder {
         return attr;
     }
 
-    /********
+    /*
      * handle_simple_content_restriction
      *
      * if( restriction has base attribute )
@@ -1428,7 +1471,7 @@ public class SchemaBuilder {
      * add facets if any to the restriction
      */
 
-    /*********
+    /*
      * handle_simple_content_extension
      *
      * extension should have a base name and cannot have any inline defn
@@ -1441,9 +1484,17 @@ public class SchemaBuilder {
      *			handleAnyAttribute
      */
 
-    /**
+    /*
      * ********
      * handle_complex_content_restriction
+     */
+    /**
+     * handle elements
+     * @param schema
+     * @param el
+     * @param schemaEl
+     * @param isGlobal
+     * @return
      */
     XmlSchemaElement handleElement(XmlSchema schema,
                                    Element el,
@@ -1638,7 +1689,7 @@ public class SchemaBuilder {
                 Object result = findNamespaceForPrefix(args[0],schema);
                 if (result == null) {
                     throw new XmlSchemaException("No namespace found in"
-                                                 + "given substitionGroup");
+                            + "given substitionGroup");
                 }
                 namespace = result.toString();
             } else {
@@ -1650,6 +1701,10 @@ public class SchemaBuilder {
 
         element.minOccurs = getMinOccurs(el);
         element.maxOccurs = getMaxOccurs(el);
+
+        //process extra attributes and elements
+        processExtensibilityComponents(element,schemaEl);
+
         return element;
     }
 
@@ -1684,7 +1739,7 @@ public class SchemaBuilder {
                 if (namespaceFromEl.length > 1) {
                     Object result =
                             findNamespaceForPrefix(namespaceFromEl[0],
-                            schema);
+                                    schema);
                     if (result == null)
                         throw new XmlSchemaException("No namespace found in "
                                 + "given base simple content type");
@@ -1787,6 +1842,13 @@ public class SchemaBuilder {
         return schemaImport;
     }
 
+    /**
+     * Handles the include
+     * @param schema
+     * @param includeEl
+     * @param schemaEl
+     * @return
+     */
     XmlSchemaInclude handleInclude(XmlSchema schema,
                                    Element includeEl, Element schemaEl) {
 
@@ -1822,13 +1884,16 @@ public class SchemaBuilder {
                             include.schemaLocation);
         }
         XmlSchemaObjectCollection coll = include.schema.getItems();
-
+        //process extra attributes and elements
+        processExtensibilityComponents(include,schemaEl);
         return include;
     }
 
     /**
+     * Handles the annotation
      * Traversing if encounter appinfo or documentation
      * add it to annotation collection
+     *
      */
     XmlSchemaAnnotation handleAnnotation(Element annotEl) {
         XmlSchemaObjectCollection content = new XmlSchemaObjectCollection();
@@ -1855,17 +1920,26 @@ public class SchemaBuilder {
 
             docsObj = handleDocumentation(documentation);
             if (docsObj != null) {
-            	content.add(docsObj);
+                content.add(docsObj);
             }
         }
 
         XmlSchemaAnnotation annotation = new XmlSchemaAnnotation();
         annotation.items = content;
+
+        //process extra attributes and elements
+        processExtensibilityComponents(annotation,annotEl);
         return annotation;
     }
 
-    //create new XmlSchemaAppinfo and add value goten from element
-    //to this obj
+
+
+    /**
+     * create new XmlSchemaAppinfo and add value goten from element
+     * to this obj
+     * @param content
+     * @return
+     */
     XmlSchemaAppInfo handleAppInfo(Element content) {
         XmlSchemaAppInfo appInfo = new XmlSchemaAppInfo();
         NodeList markup = getChild(content);
@@ -1916,7 +1990,7 @@ public class SchemaBuilder {
                 if (value.equals("unbounded"))
                     return Long.MAX_VALUE;
                 else
-                    return new Long(value).longValue();
+                    return Long.parseLong(value);
             }
             return 1;
         } catch (java.lang.NumberFormatException e) {
@@ -1931,7 +2005,7 @@ public class SchemaBuilder {
                 if (value.equals("unbounded"))
                     return Long.MAX_VALUE;
                 else
-                    return new Long(value).longValue();
+                    return Long.parseLong(value);
             }
             return 1;
         } catch (java.lang.NumberFormatException e) {
@@ -1955,11 +2029,11 @@ public class SchemaBuilder {
             //#all | List of (extension | restriction | substitution
             String derivationMethod = el.getAttribute(attrName).trim();
             if (derivationMethod.equals("#all"))
-                return new XmlSchemaDerivationMethod(BlockConstants.ALL);
+                return new XmlSchemaDerivationMethod(Constants.BlockConstants.ALL);
             else
                 return new XmlSchemaDerivationMethod(derivationMethod);
         }
-        return new XmlSchemaDerivationMethod(BlockConstants.NONE);
+        return new XmlSchemaDerivationMethod(Constants.BlockConstants.NONE);
     }
 
     //Check value entered by user and change according to .net spec, user
@@ -1967,7 +2041,7 @@ public class SchemaBuilder {
         if (el.hasAttribute(attrName)) {
             return el.getAttribute(attrName).trim();
         }
-        return BlockConstants.NONE;
+        return Constants.BlockConstants.NONE;
     }
 
     /**
@@ -1982,12 +2056,12 @@ public class SchemaBuilder {
         //use the entity resolver provided
         XmlSchema schema = null;
         InputSource source = collection.schemaResolver.
-            resolveEntity(targetNamespace,schemaLocation,baseUri);
-        
+                resolveEntity(targetNamespace,schemaLocation,baseUri);
+
         if (source.getSystemId() != null) {
             schema = collection.getXmlSchema(source.getSystemId());
         }
-        
+
         if (schema == null) {
             try {
                 return collection.read(source, null);
@@ -1995,7 +2069,7 @@ public class SchemaBuilder {
                 throw new RuntimeException(e);
             }
         }
-        
+
         return schema;
     }
 
@@ -2028,5 +2102,41 @@ public class SchemaBuilder {
     }
 
 
+    /**
+     * A generic method to process the extra attributes and the the extra
+     * elements present within the schema.
+     * What it does right now is to attach extra attributes to a map
+     * having QName/value pairs and store the map in the metadata section
+     * of the schema object
+     * @param schemaObject
+     * @param elt
+     */
+    private void processExtensibilityComponents(XmlSchemaObject schemaObject,Element elt){
+        Map attribMap = new HashMap();
+        NamedNodeMap attributes = elt.getAttributes();
+        for (int i=0 ;i < attributes.getLength();i++){
+            Attr attribute = (Attr)attributes.item(i);
+
+            String namespaceURI = attribute.getNamespaceURI();
+            String name = attribute.getName();
+
+            if (namespaceURI!= null &&
+                    !"".equals(namespaceURI) &&  //ignore unqualified attributes
+                    !name.startsWith(XMLNS_PREFIX) && //ignore namespaces
+                    !Constants.URI_2001_SCHEMA_XSD.equals(namespaceURI)){
+                attribMap.put(new QName(namespaceURI,name),
+                        attribute.getValue());
+            }
+        }
+
+        if (!attribMap.isEmpty()){
+            schemaObject.addMetaInfo(
+                    Constants.MetaDataConstants.EXTERNAL_ATTRIBUTES,
+                    attribMap
+            );
+
+        }
+
+    }
 
 }

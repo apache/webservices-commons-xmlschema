@@ -16,7 +16,7 @@
 
 package org.apache.ws.commons.schema;
 
-import org.apache.ws.commons.schema.constants.BlockConstants;
+import org.apache.ws.commons.schema.constants.Constants;
 
 /**
  * Class for complex types. Defines a complex type that determines the
@@ -40,7 +40,7 @@ public class XmlSchemaComplexType extends XmlSchemaType {
     public XmlSchemaComplexType(XmlSchema schema) {
         super(schema);
         attributes = new XmlSchemaObjectCollection();
-        block = new XmlSchemaDerivationMethod(BlockConstants.NONE);
+        block = new XmlSchemaDerivationMethod(Constants.BlockConstants.NONE);
         isAbstract = false;
         isMixed = false;
     }

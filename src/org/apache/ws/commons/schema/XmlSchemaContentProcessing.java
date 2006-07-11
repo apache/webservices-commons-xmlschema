@@ -16,7 +16,7 @@
 
 package org.apache.ws.commons.schema;
 
-import org.apache.ws.commons.schema.constants.BlockConstants;
+import org.apache.ws.commons.schema.constants.Constants;
 
 /**
  * Provides information about the validation mode of any
@@ -26,10 +26,10 @@ import org.apache.ws.commons.schema.constants.BlockConstants;
 public class XmlSchemaContentProcessing extends org.apache.ws.commons.schema.constants.Enum {
 
     static String[] members = new String[]{
-            BlockConstants.LAX,
-            BlockConstants.NONE,
-            BlockConstants.SKIP,
-            BlockConstants.STRICT
+            Constants.BlockConstants.LAX,
+            Constants.BlockConstants.NONE,
+            Constants.BlockConstants.SKIP,
+            Constants.BlockConstants.STRICT
     };
 
     /**

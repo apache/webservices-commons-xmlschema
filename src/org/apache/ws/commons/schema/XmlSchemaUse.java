@@ -16,7 +16,7 @@
 
 package org.apache.ws.commons.schema;
 
-import org.apache.ws.commons.schema.constants.BlockConstants;
+import org.apache.ws.commons.schema.constants.Constants;
 
 /**
  * Indicator of how the attribute is used.
@@ -24,10 +24,10 @@ import org.apache.ws.commons.schema.constants.BlockConstants;
 public class XmlSchemaUse extends org.apache.ws.commons.schema.constants.Enum {
 
     static String[] members = new String[]{
-            BlockConstants.NONE,
-            BlockConstants.OPTIONAL,
-            BlockConstants.PROHIBITED,
-            BlockConstants.REQUIRED
+            Constants.BlockConstants.NONE,
+            Constants.BlockConstants.OPTIONAL,
+            Constants.BlockConstants.PROHIBITED,
+            Constants.BlockConstants.REQUIRED
     };
     /**
      * Creates new XmlSchemaUse

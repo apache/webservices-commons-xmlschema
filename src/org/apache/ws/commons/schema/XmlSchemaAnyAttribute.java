@@ -16,7 +16,7 @@
 
 package org.apache.ws.commons.schema;
 
-import org.apache.ws.commons.schema.constants.BlockConstants;
+import org.apache.ws.commons.schema.constants.Constants;
 
 /**
  * Enables any attribute from the specified namespace or namespaces
@@ -30,7 +30,7 @@ public class XmlSchemaAnyAttribute extends XmlSchemaAnnotated {
      */
     public XmlSchemaAnyAttribute() {
         processContent = new XmlSchemaContentProcessing(
-                BlockConstants.NONE);
+                Constants.BlockConstants.NONE);
     }
 
     String namespace;

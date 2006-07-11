@@ -16,7 +16,7 @@
 
 package org.apache.ws.commons.schema;
 
-import org.apache.ws.commons.schema.constants.BlockConstants;
+import org.apache.ws.commons.schema.constants.Constants;
 
 /**
  * Enables any element from the specified namespace or namespaces
@@ -30,7 +30,7 @@ public class XmlSchemaAny extends XmlSchemaParticle {
      * Creates new XmlSchemaAny
      */
     public XmlSchemaAny() {
-        processContent = new XmlSchemaContentProcessing(BlockConstants.NONE);
+        processContent = new XmlSchemaContentProcessing(Constants.BlockConstants.NONE);
     }
 
     /**
