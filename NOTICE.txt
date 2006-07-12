@@ -9,3 +9,5 @@
 
    Please read the different LICENSE files present in the licenses directory of
    this distribution.
+
+   Portions Copyright 2006 International Business Machines Corp.

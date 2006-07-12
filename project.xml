@@ -198,12 +198,12 @@
         <unitTestSourceDirectory>test</unitTestSourceDirectory>
 
         <unitTest>
-            <excludes>
-                <exclude>**/NISTSchemaTest.java</exclude>
-            </excludes>
             <includes>
                 <include>**/*Test*.java</include>
             </includes>
+            <excludes>
+                <exclude>**/w3c/*.java</exclude>
+            </excludes>
 
             <resources>
                 <resource>

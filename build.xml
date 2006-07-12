@@ -89,7 +89,8 @@
             <formatter type="plain"/>
             <batchtest todir="${test_reports.dir}">
                 <fileset dir="${test.dir}">
-                    <include name="**/*Test*.java"/>
+                    <include name="tests/*Test*.java"/>
+                    <include name="tests/w3c/TestW3CSchemaBucket.java"/>
                 </fileset>
             </batchtest>
 
