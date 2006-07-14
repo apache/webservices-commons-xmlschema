@@ -93,12 +93,16 @@ public class TestRoundTripXSD extends XMLTestCase {
 
     
     public void testRoundTrip() throws Exception {
+        
+        XmlSchema schema = null;
+        DetailedDiff detaileddiffs = null;
+        
         try {
             if (debug) {
                 System.out.println("fileToTest=" + this.fileToTest);
                 System.out.println("valid=" + this.valid);
             }
-            XmlSchema schema = loadSchema(fileToTest);
+            schema = loadSchema(fileToTest);
 
             // TODO: if we get here and the input was meant to be invalid perhaps
             // should fail. Depends on whether XmlSchema is doing validation. For
@@ -106,32 +110,22 @@ public class TestRoundTripXSD extends XMLTestCase {
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             schema.write(baos);
-            if (debug) {
-                schema.write(System.err);
-            }
-
             Diff diff = new Diff(new FileReader(fileToTest),
                     new InputStreamReader(new ByteArrayInputStream(baos
                             .toByteArray())));
 
-            DetailedDiff detaileddiffs = new DetailedDiff(diff);
+            detaileddiffs = new DetailedDiff(diff);
             detaileddiffs.overrideDifferenceListener(new SchemaAttrDiff());
             boolean result = detaileddiffs.similar();
-            if (!result && debug) {
-                System.err.println(super.getName() + " failure detail");
-                System.err.println("-----");
-                schema.write(System.err);
-                ListIterator li = detaileddiffs.getAllDifferences().listIterator();
-                while (li.hasNext()) {
-                    System.err.println(li.next());
-                }
-            }
+            if (!result && debug) printFailureDetail(schema, detaileddiffs); 
             assertTrue("Serialized out schema not similar to original", result);
         } catch (Exception e) {
             if (this.valid) {
+                if (debug) printFailureDetail(schema, detaileddiffs);
                 throw new Exception(this.fileToTest.getPath(), e);
             }
         }
+        
 
     }
 
@@ -181,4 +175,16 @@ public class TestRoundTripXSD extends XMLTestCase {
         }
     }
 
+
+    private void printFailureDetail(XmlSchema schema, DetailedDiff detaileddiffs) {
+        System.err.println(super.getName() + " failure detail");
+        System.err.println("-----");
+        schema.write(System.err);
+        ListIterator li = detaileddiffs.getAllDifferences().listIterator();
+        while (li.hasNext()) {
+            System.err.println(li.next());
+        }
+    }
+
+    
 }
