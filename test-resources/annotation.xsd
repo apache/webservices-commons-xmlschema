@@ -61,4 +61,9 @@
     </restriction>
   </simpleType>
 
+  <annotation id="schemaAnnotation">
+    <documentation source="http://test101/source/doc" xml:lang="en">testing101</documentation>
+    <appinfo source="http://test101/source/appinfo">testing101</appinfo>
+  </annotation>
+
 </schema>

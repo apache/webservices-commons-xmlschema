@@ -118,6 +118,8 @@ public class SchemaBuilder {
          *			handleRedefine
          *		else if(notation)
          *			handleNotation
+         *      else if (annotation)
+         *          handleAnnotation
          */
 
         for (Element el = XDOMUtil.getFirstChildElementNS(schemaEl, XmlSchema.SCHEMA_NS); el != null;
@@ -176,30 +178,11 @@ public class SchemaBuilder {
                 schema.notations.collection.put(notation.name, notation);
                 schema.items.add(notation);
             } else if (el.getLocalName().equals("annotation")) {
-                // Vidyanand : added this part
-                XmlSchemaAnnotation annotation = handleAnnotation(schema, el, schemaEl);
+            	XmlSchemaAnnotation annotation = handleAnnotation(el);
                 schema.setAnnotation(annotation);
             }
-            //}
         }
         return schema;
-    }
-
-    private XmlSchemaAnnotation handleAnnotation(XmlSchema schema,
-                                                 Element annotEl,
-                                                 Element schemaEl) {
-        XmlSchemaAnnotation annotation = new XmlSchemaAnnotation();
-        XmlSchemaObjectCollection collection = annotation.getItems();
-        for (Element el = XDOMUtil.getFirstChildElement(annotEl);
-             el != null; el = XDOMUtil.getFirstChildElement(el)) {
-
-            if (el.getLocalName().equals("documentation")) {
-                XmlSchemaDocumentation doc = new XmlSchemaDocumentation();
-                doc.setMarkup(el.getChildNodes());
-                collection.add(doc);
-            }
-        }
-        return annotation;
     }
 
     private XmlSchemaNotation handleNotation(XmlSchema schema,

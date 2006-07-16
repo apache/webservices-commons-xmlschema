@@ -287,4 +287,63 @@ public class AnnotationTest extends TestCase {
                    s.isEmpty());
     }
 
+    /**
+     * This method will test for when an annotation is added
+     * to the Xml Schema Element.
+     *
+     * @throws Exception Any exception encountered
+     */
+    public void testXmlSchemaElementAnnotation() throws Exception {
+
+        /*
+        <annotation id="schemaAnnotation">
+          <documentation source="http://test101/source/doc" xml:lang="en">testing101</documentation>
+          <appinfo source="http://test101/source/appinfo">testing101</appinfo>
+        </annotation>
+        */
+
+        InputStream is = new FileInputStream("test-resources/annotation.xsd");
+        XmlSchemaCollection schemaCol = new XmlSchemaCollection();
+        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+        
+        XmlSchemaAnnotation xsa = schema.getAnnotation();
+        XmlSchemaObjectCollection col = xsa.getItems();
+        assertEquals(2, col.getCount());
+
+        Set s = new HashSet();
+        s.add(XmlSchemaAppInfo.class.getName());
+        s.add(XmlSchemaDocumentation.class.getName());
+        for (int i = 0; i < col.getCount(); i++) {
+            XmlSchemaObject o = col.getItem(i);
+            if (o instanceof XmlSchemaAppInfo) {
+                assertEquals("http://test101/source/appinfo",
+                             ((XmlSchemaAppInfo)o).getSource());
+                NodeList nl = ((XmlSchemaAppInfo)o).getMarkup();
+                for (int j = 0; j < nl.getLength(); j++) {
+                    Node n = nl.item(j);
+                    if (n.getNodeType() == Node.TEXT_NODE) {
+                        assertEquals("testing101", n.getNodeValue());
+                    }
+                }
+            } else if (o instanceof XmlSchemaDocumentation) {
+                assertEquals("en",
+                             ((XmlSchemaDocumentation)o).getLanguage());
+                assertEquals("http://test101/source/doc",
+                             ((XmlSchemaDocumentation)o).getSource());
+                NodeList nl = ((XmlSchemaDocumentation)o).getMarkup();
+                for (int j = 0; j < nl.getLength(); j++) {
+                    Node n = nl.item(j);
+                    if (n.getNodeType() == Node.TEXT_NODE) {
+                        assertEquals("testing101", n.getNodeValue());
+                    }
+                }
+            }
+            assertTrue(s.remove(o.getClass().getName()));
+        }
+        assertTrue("The set should have been empty, but instead contained: "
+                   + s + ".",
+                   s.isEmpty());
+
+    }
+
 }
