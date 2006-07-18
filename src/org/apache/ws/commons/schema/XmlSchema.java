@@ -61,7 +61,7 @@ public class XmlSchema extends XmlSchemaAnnotated {
     XmlSchemaDerivationMethod blockDefault, finalDefault;
     XmlSchemaObjectCollection includes, items;
     boolean isCompiled;
-    String targetNamespace = "DEFAULT", version;
+    String targetNamespace, version;
     Hashtable namespaces;
     String schema_ns_prefix = "";
     XmlSchemaCollection parent;
