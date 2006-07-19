@@ -175,14 +175,16 @@ public class TestRoundTripXSD extends XMLTestCase {
         }
     }
 
-
     private void printFailureDetail(XmlSchema schema, DetailedDiff detaileddiffs) {
         System.err.println(super.getName() + " failure detail");
         System.err.println("-----");
         schema.write(System.err);
-        ListIterator li = detaileddiffs.getAllDifferences().listIterator();
-        while (li.hasNext()) {
-            System.err.println(li.next());
+        if (detaileddiffs != null) {
+            ListIterator li = detaileddiffs.getAllDifferences().listIterator();
+
+            while (li.hasNext()) {
+                System.err.println(li.next());
+            }
         }
     }
 
