@@ -2529,7 +2529,8 @@ public class XmlSchemaSerializer {
         String typeName = (type.length > 1) ? type[1] : type[0];
         String prefixStr;
 
-        Object prefix = schema_ns.get(namespace);
+        // If the namespace is "" then the prefix is also ""
+        Object prefix = ("".equals(namespace)) ? "" : schema_ns.get(namespace);
 
         if (prefix == null) {
             int magicNumber = new java.util.Random().nextInt(999);
