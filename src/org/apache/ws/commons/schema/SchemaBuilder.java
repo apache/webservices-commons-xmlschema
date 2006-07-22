@@ -1686,7 +1686,7 @@ public class SchemaBuilder {
         element.maxOccurs = getMaxOccurs(el);
 
         //process extra attributes and elements
-        processExtensibilityComponents(element,schemaEl);
+        processExtensibilityComponents(element,el);
 
         return element;
     }
