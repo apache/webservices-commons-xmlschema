@@ -1110,6 +1110,9 @@ public class SchemaBuilder {
         if (choiceEl.hasAttribute("id"))
             choice.id = choiceEl.getAttribute("id");
 
+        choice.minOccurs = getMinOccurs(choiceEl);
+        choice.maxOccurs = getMaxOccurs(choiceEl);
+        
         for (Element el = XDOMUtil.getFirstChildElementNS(choiceEl,
                 XmlSchema.SCHEMA_NS)
                 ; el != null;
