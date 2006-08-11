@@ -29,7 +29,8 @@
     	<antcall target="get-deps"/>
 	</target>
 
-	<target name="get-deps" if="downloadLibs">	
+	<target name="get-deps" if="downloadLibs">
+		<setproxy proxyhost="${http.proxyHost}" proxyport="${http.proxyPort}"/>
     	<get src="http://www.ibiblio.org/maven2/xmlunit/xmlunit/1.0/xmlunit-1.0.jar"
     		dest="${build_lib.dir}/xmlunit-1.0.jar"/>
     </target>
