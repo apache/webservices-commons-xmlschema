@@ -1,10 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.apache.ws.commons</groupId>
   <artifactId>XmlSchema</artifactId>
   <name>XmlSchema</name>
   <version>SNAPSHOT</version>
-  <description>XmlSchema API</description>
+  <description>Commons XMLSchema is a light weight schema object model that can be used to manipualte or
+          generate a schema. It has a clean, easy to use API and can easily be integrated into an existing project
+          since it has almost no dependancies on third party libraries.</description>
   <url>http://ws.apache.org/commons/XmlSchema</url>
   <issueManagement>
     <url>http://issues.apache.org/jira/browse/WSCOMMONS</url>
@@ -144,9 +150,9 @@
     </developer>
   </developers>
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/webservices/commons/modules/XmlSchema/tags/XmlSchema-1.0.1</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/webservices/commons/modules/XmlSchema/tags/XmlSchema-1.0.1</developerConnection>
-    <url>http://svn.apache.org/viewcvs.cgi/webservices/commons/modules/XmlSchema/tags/XmlSchema-1.0.1</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/webservices/commons/trunk/modules/XmlSchema</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/webservices/commons/trunk/modules/XmlSchema</developerConnection>
+    <url>http://svn.apache.org/viewvc/webservices/commons/trunk/modules/XmlSchema</url>
   </scm>
   <organization>
     <name>Apache Software Foundation</name>
@@ -170,6 +176,7 @@
         <directory>${basedir}</directory>
         <includes>
           <include>LICENSE*</include>
+          <include>NOTICE.txt</include>
         </includes>
       </resource>
     </resources>
@@ -230,6 +237,24 @@
           <tagBase>https://svn.apache.org/repos/asf/webservices/commons/tags/XmlSchema</tagBase>
         </configuration>
       </plugin>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.3</source>
+          <target>1.3</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <includes>
+            <include>**/*Test.java</include>
+          </includes>
+          <excludes>
+            <exclude>tests/w3c/SchemaTest.java</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
   <profiles>
@@ -274,6 +299,32 @@
               </execution>
             </executions>
           </plugin>
+          <plugin>
+            <artifactId>maven-source-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <attach>true</attach>
+            </configuration>
+          </plugin>
+          <plugin>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <attach>true</attach>
+            </configuration>
+          </plugin>
         </plugins>
       </build>
     </profile>
@@ -283,13 +334,30 @@
       <id>snapshot</id>
       <name>Snapshot repository</name>
       <url>http://snapshots.maven.codehaus.org/maven2/</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </pluginRepository>
+    <pluginRepository>
+      <id>snapshot-apache</id>
+      <name>Apache Snapshot repository</name>
+      <url>http://people.apache.org/repo/m2-snapshot-repository</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
     </pluginRepository>
   </pluginRepositories>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>3.8.1</version>
+      <version>3.8.2</version>
       <scope>test</scope>
     </dependency>
     <dependency>
