@@ -21,16 +21,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import org.apache.xerces.parsers.DOMParser;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import tests.w3c.SchemaTest;
+import tests.w3c.TestRoundTripXSD;
+
 
 /**
  * Class to represent a set of schema tests as described by a .testSet file
@@ -143,16 +149,11 @@ public class TestW3CSchemaTestSet extends TestSuite {
      * @throws Exception can be IOException or SAXException
      */
     private static Document getDocument(InputSource inputSource)
-            throws SAXException,  IOException  {
-        DOMParser parser = new DOMParser();
+            throws ParserConfigurationException, SAXException,  IOException  {
+    	DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    	dbf.setNamespaceAware(true);
+    	dbf.setValidating(false);
 
-        parser.setFeature("http://xml.org/sax/features/namespaces", true);
-
-        Document doc = null;
-
-        parser.parse(inputSource);
-        doc = parser.getDocument();
-
-        return doc;
+    	return dbf.newDocumentBuilder().parse(inputSource);
     }
 }
