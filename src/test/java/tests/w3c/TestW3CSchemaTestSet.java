@@ -53,7 +53,7 @@ public class TestW3CSchemaTestSet extends TestSuite {
     private File testSetFile = null;
     
     // If junit called from cmd line without any args, use the NIST test bucket
-    private static String testSetLocation = "./build/xmlschema2002-01-16/NISTXMLSchema1-0-20020116.testSet";
+    private static String testSetLocation = "./target/xmlschema2002-01-16/NISTXMLSchema1-0-20020116.testSet";
 
     private TestW3CSchemaTestSet(String name, File testSetFile) {
         super(name);

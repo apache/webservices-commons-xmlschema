@@ -86,8 +86,6 @@ public class FacetsTest extends TestCase {
 
         XmlSchemaSimpleType simpleType = (XmlSchemaSimpleType)elem.getSchemaType();
         
-        System.out.println("*** " + simpleType.toString("xsd", 4) + " ***");
-
         XmlSchemaSimpleTypeRestriction r =
             (XmlSchemaSimpleTypeRestriction)simpleType.getContent();
         assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "string"),
@@ -154,8 +152,6 @@ public class FacetsTest extends TestCase {
 
         XmlSchemaSimpleType simpleType = (XmlSchemaSimpleType)elem.getSchemaType();
         
-        System.out.println("*** " + simpleType.toString("xsd", 4) + " ***");
-
         XmlSchemaSimpleTypeRestriction r =
             (XmlSchemaSimpleTypeRestriction)simpleType.getContent();
         assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "integer"),
@@ -218,8 +214,6 @@ public class FacetsTest extends TestCase {
 
         XmlSchemaSimpleType simpleType = (XmlSchemaSimpleType)elem.getSchemaType();
         
-        System.out.println("*** " + simpleType.toString("xsd", 4) + " ***");
-
         XmlSchemaSimpleTypeRestriction r =
             (XmlSchemaSimpleTypeRestriction)simpleType.getContent();
         assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "decimal"),
@@ -283,8 +277,6 @@ public class FacetsTest extends TestCase {
 
         XmlSchemaSimpleType simpleType = (XmlSchemaSimpleType)elem.getSchemaType();
         
-        System.out.println("*** " + simpleType.toString("xsd", 4) + " ***");
-
         XmlSchemaSimpleTypeRestriction r =
             (XmlSchemaSimpleTypeRestriction)simpleType.getContent();
         assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "integer"),
@@ -352,8 +344,6 @@ public class FacetsTest extends TestCase {
 
         XmlSchemaSimpleType simpleType = (XmlSchemaSimpleType)elem.getSchemaType();
         
-        System.out.println("*** " + simpleType.toString("xsd", 4) + " ***");
-
         XmlSchemaSimpleTypeRestriction r =
             (XmlSchemaSimpleTypeRestriction)simpleType.getContent();
         assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "integer"),
@@ -420,8 +410,6 @@ public class FacetsTest extends TestCase {
 
         XmlSchemaSimpleType simpleType = (XmlSchemaSimpleType)elem.getSchemaType();
         
-        System.out.println("*** " + simpleType.toString("xsd", 4) + " ***");
-
         XmlSchemaSimpleTypeRestriction r =
             (XmlSchemaSimpleTypeRestriction)simpleType.getContent();
         assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "normalizedString"),
@@ -485,8 +473,6 @@ public class FacetsTest extends TestCase {
 
         XmlSchemaSimpleType simpleType = (XmlSchemaSimpleType)elem.getSchemaType();
         
-        System.out.println("*** " + simpleType.toString("xsd", 4) + " ***");
-
         XmlSchemaSimpleTypeRestriction r =
             (XmlSchemaSimpleTypeRestriction)simpleType.getContent();
         assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "decimal"),
@@ -554,8 +540,6 @@ public class FacetsTest extends TestCase {
 
         XmlSchemaSimpleType simpleType = (XmlSchemaSimpleType)elem.getSchemaType();
         
-        System.out.println("*** " + simpleType.toString("xsd", 4) + " ***");
-
         XmlSchemaSimpleTypeRestriction r =
             (XmlSchemaSimpleTypeRestriction)simpleType.getContent();
         assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "nonNegativeInteger"),
@@ -623,8 +607,6 @@ public class FacetsTest extends TestCase {
 
         XmlSchemaSimpleType simpleType = (XmlSchemaSimpleType)elem.getSchemaType();
         
-        System.out.println("*** " + simpleType.toString("xsd", 4) + " ***");
-
         XmlSchemaSimpleTypeRestriction r =
             (XmlSchemaSimpleTypeRestriction)simpleType.getContent();
         assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "string"),

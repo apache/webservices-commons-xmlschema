@@ -26,6 +26,15 @@
       </notifier>
     </notifiers>
   </ciManagement>
+  <mailingLists>
+    <mailingList>
+      <name>WS Commons Developers</name>
+      <subscribe>commons-dev-subscribe@ws.apache.org</subscribe>
+      <unsubscribe>commons-dev-unsubscribe@ws.apache.org</unsubscribe>
+      <post>commons-dev@ws.apache.org</post>
+      <archive>http://mail-archives.apache.org/mod_mbox/ws-commons-dev/</archive>
+    </mailingList>
+  </mailingLists>
   <inceptionYear>2004</inceptionYear>
   <developers>
     <developer>
@@ -149,6 +158,13 @@
       <organization>Envoi Solutions</organization>
     </developer>
   </developers>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
   <scm>
     <connection>scm:svn:http://svn.apache.org/repos/asf/webservices/commons/trunk/modules/XmlSchema</connection>
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/webservices/commons/trunk/modules/XmlSchema</developerConnection>
@@ -159,8 +175,6 @@
     <url>http://www.apache.org/</url>
   </organization>
   <build>
-    <sourceDirectory>src</sourceDirectory>
-    <testSourceDirectory>test</testSourceDirectory>
     <resources>
       <resource>
         <directory>src</directory>
@@ -246,9 +260,11 @@
       </plugin>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.3-SNAPSHOT</version>
         <configuration>
           <includes>
             <include>**/*Test.java</include>
+            <include>tests/w3c/TestW3CSchemaBucket.java</include>
           </includes>
           <excludes>
             <exclude>tests/w3c/SchemaTest.java</exclude>

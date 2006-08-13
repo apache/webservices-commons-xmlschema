@@ -120,7 +120,6 @@ public class NotationTest extends TestCase {
             XmlSchemaEnumerationFacet xsef =
                 (XmlSchemaEnumerationFacet)xsoc.getItem(i);
             String value = (String)xsef.getValue();
-            System.out.println("*** value = " + value + " ***");
             if (!(value.equals("tns:teamLogo")
                    || value.equals("tns:teamMascot"))) {
                 fail("An unexpected value of \"" + value
@@ -131,8 +130,6 @@ public class NotationTest extends TestCase {
         assertTrue("The set should have been empty, but instead contained: "
                    + s + ".",
                    s.isEmpty());
-
-        System.out.println("*** " + elem.toString("xsd", 4) + " ***");
 
         XmlSchemaObjectTable xsot = schema.getNotations();
         assertEquals(2, xsot.getCount());

@@ -133,8 +133,6 @@ public class ConstraintsTest extends TestCase {
         assertEquals(new QName("http://soapinterop.org/types", "constraintTest"),
                      elem.getQName());
 
-        System.out.println("*** " + elem.toString("xsd", 4) + " ***");
-
         XmlSchemaObjectCollection c = elem.getConstraints();
         assertEquals(3, c.getCount());
                              

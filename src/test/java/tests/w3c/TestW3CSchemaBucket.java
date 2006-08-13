@@ -38,7 +38,7 @@ public class TestW3CSchemaBucket extends TestSuite {
     private static List allTestSetFiles;
     
     // If tests run from cmd line without any args, run the full suite
-    private static String testSetsLocation = "./build/xmlschema2002-01-16";
+    private static String testSetsLocation = "./target/xmlschema2002-01-16";
 
     public TestW3CSchemaBucket(String name) {
         super(name);

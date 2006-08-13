@@ -194,8 +194,8 @@
     
     <build>
         <nagEmailAddress>commons-dev@ws.apache.org</nagEmailAddress>
-        <sourceDirectory>src</sourceDirectory>
-        <unitTestSourceDirectory>test</unitTestSourceDirectory>
+        <sourceDirectory>src/main/java</sourceDirectory>
+        <unitTestSourceDirectory>test/main/java</unitTestSourceDirectory>
 
         <unitTest>
             <includes>
