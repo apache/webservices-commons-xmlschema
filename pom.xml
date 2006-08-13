@@ -175,39 +175,12 @@
     <url>http://www.apache.org/</url>
   </organization>
   <build>
-    <resources>
-      <resource>
-        <directory>src</directory>
-        <includes>
-          <include>**/*.xml</include>
-        </includes>
-        <excludes>
-          <exclude>**/package.html</exclude>
-        </excludes>
-      </resource>
-      <resource>
-        <targetPath>META-INF</targetPath>
-        <directory>${basedir}</directory>
-        <includes>
-          <include>LICENSE*</include>
-          <include>NOTICE.txt</include>
-        </includes>
-      </resource>
-    </resources>
-    <testResources>
-      <testResource>
-        <directory>test-resources</directory>
-        <includes>
-          <include>**/*.xml</include>
-          <include>**/*.xsd</include>
-        </includes>
-      </testResource>
-    </testResources>
     <plugins>
       <plugin>
         <artifactId>maven-antrun-plugin</artifactId>
         <executions>
           <execution>
+            <id>prepareNistTest</id>
             <phase>generate-test-resources</phase>
             <goals>
               <goal>run</goal>
@@ -221,14 +194,24 @@
               </tasks>
             </configuration>
           </execution>
+          <execution>
+            <id>prepareLicenseFiles</id>
+            <phase>generate-resources</phase>
+            <configuration>
+              <tasks>
+                <copy todir="${project.build.outputDirectory}/META-INF">
+                  <fileset dir="${basedir}">
+                    <include name="LICENSE.txt"/>
+                    <include name="NOTICE.txt"/>
+                  </fileset>
+                </copy>
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
         </executions>
-      </plugin>
-      <plugin>
-        <artifactId>maven-site-plugin</artifactId>
-        <configuration>
-          <siteDirectory>${basedir}/site</siteDirectory>
-          <resourcesDirectory>${basedir}/site/resources</resourcesDirectory>
-        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-one-plugin</artifactId>
@@ -276,6 +259,29 @@
           </excludes>
         </configuration>
       </plugin>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptors>
+            <descriptor>src/main/assembly/bin.xml</descriptor>
+            <descriptor>src/main/assembly/src.xml</descriptor>
+          </descriptors>
+          <tarLongFileMode>gnu</tarLongFileMode>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <attach>true</attach>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
   <profiles>
@@ -289,50 +295,6 @@
       </activation>
       <build>
         <plugins>
-          <plugin>
-            <artifactId>maven-assembly-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>src-assembly</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>assembly</goal>
-                </goals>
-                <configuration>
-                  <descriptor>assembly-src.xml</descriptor>
-                  <finalName>XmlSchema-${project.version}</finalName>
-                  <outputDirectory>target/src-package</outputDirectory>
-                  <workDirectory>target/assembly/work</workDirectory>
-                </configuration>
-              </execution>
-              <execution>
-                <id>bin-assembly</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>assembly</goal>
-                </goals>
-                <configuration>
-                  <descriptor>assembly-bin.xml</descriptor>
-                  <finalName>XmlSchema-${project.version}</finalName>
-                  <outputDirectory>target/src-package</outputDirectory>
-                  <workDirectory>target/assembly/work</workDirectory>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <artifactId>maven-source-plugin</artifactId>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>jar</goal>
-                </goals>
-              </execution>
-            </executions>
-            <configuration>
-              <attach>true</attach>
-            </configuration>
-          </plugin>
           <plugin>
             <artifactId>maven-javadoc-plugin</artifactId>
             <executions>

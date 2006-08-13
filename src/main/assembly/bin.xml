@@ -2,14 +2,12 @@
   <id>bin</id>
   <formats>
     <format>tar.gz</format>
-    <format>zip</format>
   </formats>
+  <includeSiteDirectory>true</includeSiteDirectory>
   <fileSets>
     <fileSet>
       <includes>
-        <include>README*</include>
-        <include>LICENSE*</include>
-        <include>NOTICE*</include>
+        <include>*.txt</include>
       </includes>
     </fileSet>
     <fileSet>
@@ -18,10 +16,6 @@
       <includes>
         <include>*.jar</include>
       </includes>
-    </fileSet>
-     <fileSet>
-      <directory>target/site</directory>
-      <outputDirectory>docs</outputDirectory>
     </fileSet>
   </fileSets>
 </assembly>
