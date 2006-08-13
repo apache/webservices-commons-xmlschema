@@ -36,7 +36,7 @@ public class TwoSchemasRefTest extends TestCase {
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         documentBuilderFactory.setNamespaceAware(true);
         Document doc = documentBuilderFactory.newDocumentBuilder().
-                parse("test-resources/twoSchemas-ref.wsdl");
+                parse(Resources.asURI("twoSchemas-ref.wsdl"));
 
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
 		NodeList schemaNodes = doc.getElementsByTagNameNS("http://www.w3.org/2001/XMLSchema","schema");

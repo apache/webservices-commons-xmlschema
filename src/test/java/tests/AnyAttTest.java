@@ -41,7 +41,7 @@ public class AnyAttTest extends TestCase {
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         documentBuilderFactory.setNamespaceAware(true);
         Document doc = documentBuilderFactory.newDocumentBuilder().
-                parse("test-resources/anyAttTest.xsd");
+                parse(Resources.asURI("anyAttTest.xsd"));
 
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema s = schemaCol.read(doc.getDocumentElement());

@@ -72,7 +72,7 @@ public class SimpleContentExtensionTest extends TestCase {
 
         QName ELEMENT_QNAME = new QName("http://soapinterop.org/types",
                                         "height");
-        InputStream is = new FileInputStream("test-resources/simplecontentextension.xsd");
+        InputStream is = new FileInputStream(Resources.asURI("simplecontentextension.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
 

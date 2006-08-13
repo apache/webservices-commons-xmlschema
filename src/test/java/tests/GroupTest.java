@@ -86,7 +86,7 @@ public class GroupTest extends TestCase {
 
         QName ELEMENT_QNAME = new QName("http://soapinterop.org/types",
                                         "price");
-        InputStream is = new FileInputStream("test-resources/group.xsd");
+        InputStream is = new FileInputStream(Resources.asURI("group.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
 

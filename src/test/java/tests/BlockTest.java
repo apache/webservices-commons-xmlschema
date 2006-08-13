@@ -33,7 +33,7 @@ public class BlockTest extends TestCase {
                                         "complexElt");
 
 
-        InputStream is = new FileInputStream("test-resources/block.xsd");
+        InputStream is = new FileInputStream(Resources.asURI("block.xsd"));
         XmlSchemaCollection schema = new XmlSchemaCollection();
         XmlSchema s = schema.read(new StreamSource(is), null);
 

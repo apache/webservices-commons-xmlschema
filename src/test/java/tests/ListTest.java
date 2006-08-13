@@ -72,7 +72,7 @@ public class ListTest extends TestCase {
 
         QName ELEMENT_QNAME = new QName("http://soapinterop.org/types",
                 "workDays");
-        InputStream is = new FileInputStream("test-resources/list.xsd");
+        InputStream is = new FileInputStream(Resources.asURI("list.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
 

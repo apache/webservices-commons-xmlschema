@@ -14,7 +14,7 @@ public class CircularSchemaTest extends TestCase
 {
     public void testCircular() throws Exception {
         XmlSchemaCollection schemas = new XmlSchemaCollection();
-        File file = new File("test-resources/circular/a.xsd");
+        File file = new File(Resources.asURI("circular/a.xsd"));
         InputSource source = new InputSource(new FileInputStream(file));
         source.setSystemId(file.toURL().toString());
         

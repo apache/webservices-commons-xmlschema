@@ -40,7 +40,7 @@ public class ExternalAttTest extends TestCase {
            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
            documentBuilderFactory.setNamespaceAware(true);
            Document doc = documentBuilderFactory.newDocumentBuilder().
-                   parse("test-resources/externalAttributes.xsd");
+                   parse(Resources.asURI("externalAttributes.xsd"));
 
            XmlSchemaCollection schemaCol = new XmlSchemaCollection();
            XmlSchema s = schemaCol.read(doc.getDocumentElement());

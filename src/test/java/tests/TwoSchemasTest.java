@@ -32,7 +32,7 @@ public class TwoSchemasTest extends TestCase {
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         documentBuilderFactory.setNamespaceAware(true);
         Document doc = documentBuilderFactory.newDocumentBuilder().
-                parse("test-resources/twoSchemas.wsdl");
+                parse(Resources.asURI("twoSchemas.wsdl"));
 
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
 		NodeList schemaNodes = doc.getElementsByTagNameNS("http://www.w3.org/2001/XMLSchema","schema");

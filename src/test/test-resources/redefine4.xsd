@@ -22,11 +22,15 @@
         xmlns:tns="http://soapinterop.org/types"
         targetNamespace="http://soapinterop.org/types">
 
-  <redefine schemaLocation="test-resources/redefine7.xsd">
-    <attributeGroup name="AttribGroup">
-      <attribute name="type" type="string"/>
-      <attribute name="units" type="string"/>
-    </attributeGroup>
+  <redefine schemaLocation="src/test/test-resources/redefine3.xsd">
+    <simpleType name="drinksize">
+      <restriction base="tns:drinksize">
+        <minInclusive value="1"/>
+        <maxInclusive value="3"/>
+      </restriction>
+    </simpleType>
   </redefine>
+          
+  <element name="childsizedrink" type="tns:drinksize"/>
 
 </schema>

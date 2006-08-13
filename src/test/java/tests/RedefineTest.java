@@ -90,7 +90,7 @@ public class RedefineTest extends TestCase {
                 xmlns:tns="http://soapinterop.org/types"
                 targetNamespace="http://soapinterop.org/types">
 
-          <redefine schemaLocation="test-resources/redefine1.xsd">
+          <redefine schemaLocation="src/test/test-resources/redefine1.xsd">
             <complexType name="person">
               <complexContent>
                 <extension base="tns:person">
@@ -107,7 +107,7 @@ public class RedefineTest extends TestCase {
         </schema>
         */
 
-        InputStream is = new FileInputStream("test-resources/redefine2.xsd");
+        InputStream is = new FileInputStream(Resources.asURI("redefine2.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
 
@@ -215,7 +215,7 @@ public class RedefineTest extends TestCase {
         </schema>
         */
 
-        InputStream is = new FileInputStream("test-resources/redefine4.xsd");
+        InputStream is = new FileInputStream(Resources.asURI("redefine4.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
 
@@ -327,7 +327,7 @@ public class RedefineTest extends TestCase {
         </schema>
         */
 
-        InputStream is = new FileInputStream("test-resources/redefine6.xsd");
+        InputStream is = new FileInputStream(Resources.asURI("redefine6.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
 
@@ -419,7 +419,7 @@ public class RedefineTest extends TestCase {
         </schema>
         */
 
-        InputStream is = new FileInputStream("test-resources/redefine8.xsd");
+        InputStream is = new FileInputStream(Resources.asURI("redefine8.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
 

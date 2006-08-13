@@ -72,7 +72,7 @@ public class FacetsTest extends TestCase {
 
         QName ELEMENT_QNAME = new QName("http://soapinterop.org/types",
                                         "myZipCode");
-        InputStream is = new FileInputStream("test-resources/facets.xsd");
+        InputStream is = new FileInputStream(Resources.asURI("facets.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
 
@@ -138,7 +138,7 @@ public class FacetsTest extends TestCase {
 
         QName ELEMENT_QNAME = new QName("http://soapinterop.org/types",
                                         "myCreditCardNumber");
-        InputStream is = new FileInputStream("test-resources/facets.xsd");
+        InputStream is = new FileInputStream(Resources.asURI("facets.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
 
@@ -200,7 +200,7 @@ public class FacetsTest extends TestCase {
 
         QName ELEMENT_QNAME = new QName("http://soapinterop.org/types",
                                         "myAge");
-        InputStream is = new FileInputStream("test-resources/facets.xsd");
+        InputStream is = new FileInputStream(Resources.asURI("facets.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
 
@@ -263,7 +263,7 @@ public class FacetsTest extends TestCase {
 
         QName ELEMENT_QNAME = new QName("http://soapinterop.org/types",
                                         "myDistance");
-        InputStream is = new FileInputStream("test-resources/facets.xsd");
+        InputStream is = new FileInputStream(Resources.asURI("facets.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
 
@@ -330,7 +330,7 @@ public class FacetsTest extends TestCase {
 
         QName ELEMENT_QNAME = new QName("http://soapinterop.org/types",
                                         "myWeight");
-        InputStream is = new FileInputStream("test-resources/facets.xsd");
+        InputStream is = new FileInputStream(Resources.asURI("facets.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
 
@@ -396,7 +396,7 @@ public class FacetsTest extends TestCase {
 
         QName ELEMENT_QNAME = new QName("http://soapinterop.org/types",
                                         "myWhiteSpace");
-        InputStream is = new FileInputStream("test-resources/facets.xsd");
+        InputStream is = new FileInputStream(Resources.asURI("facets.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
 
@@ -459,7 +459,7 @@ public class FacetsTest extends TestCase {
 
         QName ELEMENT_QNAME = new QName("http://soapinterop.org/types",
                                         "myHeight");
-        InputStream is = new FileInputStream("test-resources/facets.xsd");
+        InputStream is = new FileInputStream(Resources.asURI("facets.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
 
@@ -526,7 +526,7 @@ public class FacetsTest extends TestCase {
 
         QName ELEMENT_QNAME = new QName("http://soapinterop.org/types",
                                         "myYardLength");
-        InputStream is = new FileInputStream("test-resources/facets.xsd");
+        InputStream is = new FileInputStream(Resources.asURI("facets.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
 
@@ -593,7 +593,7 @@ public class FacetsTest extends TestCase {
 
         QName ELEMENT_QNAME = new QName("http://soapinterop.org/types",
                                         "layoutComponent");
-        InputStream is = new FileInputStream("test-resources/facets.xsd");
+        InputStream is = new FileInputStream(Resources.asURI("facets.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
 

@@ -78,7 +78,7 @@ public class IncludeTest extends TestCase {
 
         QName ELEMENT_QNAME = new QName("http://soapinterop.org/types",
                                         "test1include");
-        InputStream is = new FileInputStream("test-resources/include.xsd");
+        InputStream is = new FileInputStream(Resources.asURI("include.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
 
@@ -86,22 +86,22 @@ public class IncludeTest extends TestCase {
         assertEquals(2, c.getCount());
 
         Set set = new HashSet();
-        set.add("test-resources/include2.xsd");
-        set.add("test-resources/include3.xsd");
+        set.add(Resources.asURI("include2.xsd"));
+        set.add(Resources.asURI("include3.xsd"));
         for (int i = 0; i < c.getCount(); i++) {
             XmlSchemaInclude include = (XmlSchemaInclude)c.getItem(i);
             assertNotNull(include);
             XmlSchema s = include.getSchema();
             assertNotNull(s);
             String schemaLocation = include.getSchemaLocation();
-            if (schemaLocation.equals("test-resources/include2.xsd")) {
+            if (schemaLocation.equals(Resources.asURI("include2.xsd"))) {
                 XmlSchemaElement xse =
                     s.getElementByName(new
                         QName("http://soapinterop.org/types", "test1include"));
                 assertEquals("test1include", xse.getName());
                 assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "string"),
                              xse.getSchemaTypeName());
-            } else if (schemaLocation.equals("test-resources/include3.xsd")) {
+            } else if (schemaLocation.equals(Resources.asURI("include3.xsd"))) {
                 XmlSchemaElement xse =
                     s.getElementByName(new 
                         QName("http://soapinterop.org/types", "test2include"));

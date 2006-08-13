@@ -70,7 +70,7 @@ public class AnnotationTest extends TestCase {
 
         QName TYPE_QNAME = new QName("http://soapinterop.org/types",
                                      "emptyAppinfo");
-        InputStream is = new FileInputStream("test-resources/annotation.xsd");
+        InputStream is = new FileInputStream(Resources.asURI("annotation.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
 
@@ -136,7 +136,7 @@ public class AnnotationTest extends TestCase {
 
         QName TYPE_QNAME = new QName("http://soapinterop.org/types",
                                      "emptyDocumentation");
-        InputStream is = new FileInputStream("test-resources/annotation.xsd");
+        InputStream is = new FileInputStream(Resources.asURI("annotation.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
 
@@ -200,7 +200,7 @@ public class AnnotationTest extends TestCase {
 
         QName TYPE_QNAME = new QName("http://soapinterop.org/types",
                                      "emptyAppinfoDocumentation");
-        InputStream is = new FileInputStream("test-resources/annotation.xsd");
+        InputStream is = new FileInputStream(Resources.asURI("annotation.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
 
@@ -238,7 +238,7 @@ public class AnnotationTest extends TestCase {
 
         QName TYPE_QNAME = new QName("http://soapinterop.org/types",
                                      "annotationTest");
-        InputStream is = new FileInputStream("test-resources/annotation.xsd");
+        InputStream is = new FileInputStream(Resources.asURI("annotation.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
 
@@ -302,7 +302,7 @@ public class AnnotationTest extends TestCase {
         </annotation>
         */
 
-        InputStream is = new FileInputStream("test-resources/annotation.xsd");
+        InputStream is = new FileInputStream(Resources.asURI("annotation.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
         

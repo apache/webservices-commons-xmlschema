@@ -19,8 +19,5 @@
     <fileSet>
       <directory>src</directory>
     </fileSet>
-    <fileSet>
-      <directory>test-resources</directory>
-    </fileSet>
   </fileSets>
 </assembly>

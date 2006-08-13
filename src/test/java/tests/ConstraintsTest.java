@@ -123,7 +123,7 @@ public class ConstraintsTest extends TestCase {
 
         QName ELEMENT_QNAME = new QName("http://soapinterop.org/types",
                                         "constraintTest");
-        InputStream is = new FileInputStream("test-resources/constraints.xsd");
+        InputStream is = new FileInputStream(Resources.asURI("constraints.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
 

@@ -80,7 +80,7 @@ public class ComplexContentRestrictionTest extends TestCase {
 
         QName TYPE_QNAME = new QName("http://soapinterop.org/types",
                                      "NoAssemblyRequiredProduct");
-        InputStream is = new FileInputStream("test-resources/deriverestriction.xsd");
+        InputStream is = new FileInputStream(Resources.asURI("deriverestriction.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
 

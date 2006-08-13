@@ -33,7 +33,7 @@ public class MixedContentTest extends TestCase {
                                         "complexElt");
 
 
-        InputStream is = new FileInputStream("test-resources/mixedContent.xsd");
+        InputStream is = new FileInputStream(Resources.asURI("mixedContent.xsd"));
         XmlSchemaCollection schema = new XmlSchemaCollection();
         XmlSchema s = schema.read(new StreamSource(is), null);
 

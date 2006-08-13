@@ -37,7 +37,7 @@ public class TestUnqualifiedSchema extends TestCase {
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         documentBuilderFactory.setNamespaceAware(true);
         Document doc = documentBuilderFactory.newDocumentBuilder().
-                parse("test-resources/unqualifiedTypes.xsd");
+                parse(Resources.asURI("unqualifiedTypes.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema s = schemaCol.read(doc.getDocumentElement());
 

@@ -77,7 +77,7 @@ public class AnyTest extends TestCase {
 
         QName ELEMENT_QNAME = new QName("http://soapinterop.org/types",
                                         "department");
-        InputStream is = new FileInputStream("test-resources/any.xsd");
+        InputStream is = new FileInputStream(Resources.asURI("any.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
 

@@ -1,6 +1,7 @@
-<!--
+package tests;
+
+/*
  * Copyright 2004,2005 The Apache Software Foundation.
- * Copyright 2006 International Business Machines Corp.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,22 +14,18 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
- * @author Brent Ulbricht 
--->
+ */
 
-<schema xmlns="http://www.w3.org/2001/XMLSchema"
-        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-        xmlns:tns="http://soapinterop.org/types"
-        targetNamespace="http://soapinterop.org/types">
+public class Resources {
+    /**
+     * Location of the test resources.
+     */
+    public static final String TEST_RESOURCES = "src/test/test-resources";
 
-  <redefine schemaLocation="test-resources/redefine5.xsd">
-    <group name="PrologGroup">
-      <sequence>
-        <group ref="tns:PrologGroup"/>
-        <element name="description" type="string"/>
-      </sequence>
-    </group>
-  </redefine>
-
-</schema>
+    /**
+     * Returns a files location as a string.
+     */
+    public static String asURI(String pURI) {
+        return TEST_RESOURCES + "/" + pURI;
+    }
+}

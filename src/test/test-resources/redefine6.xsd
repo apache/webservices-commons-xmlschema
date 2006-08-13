@@ -22,18 +22,13 @@
         xmlns:tns="http://soapinterop.org/types"
         targetNamespace="http://soapinterop.org/types">
 
-  <redefine schemaLocation="test-resources/redefine1.xsd">
-    <complexType name="person">
-      <complexContent>
-        <extension base="tns:person">
-          <sequence>
-            <element name="id" type="string"/>
-          </sequence>
-        </extension>
-      </complexContent>
-    </complexType>
+  <redefine schemaLocation="src/test/test-resources/redefine5.xsd">
+    <group name="PrologGroup">
+      <sequence>
+        <group ref="tns:PrologGroup"/>
+        <element name="description" type="string"/>
+      </sequence>
+    </group>
   </redefine>
-
-  <element name="vip" type="tns:person"/>
 
 </schema>

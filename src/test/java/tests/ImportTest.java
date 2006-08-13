@@ -30,16 +30,16 @@ public class ImportTest extends TestCase {
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         documentBuilderFactory.setNamespaceAware(true);
         Document doc = documentBuilderFactory.newDocumentBuilder().
-                parse("test-resources/importBase.xsd");
+                parse(Resources.asURI("importBase.xsd"));
 
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        schemaCol.setBaseUri("test-resources");
+        schemaCol.setBaseUri(Resources.TEST_RESOURCES);
         XmlSchema schema = schemaCol.read(doc,null);
         assertNotNull(schema);
 
         // attempt with slash now
         schemaCol = new XmlSchemaCollection();
-        schemaCol.setBaseUri("test-resources/");
+        schemaCol.setBaseUri(Resources.TEST_RESOURCES + "/");
         schema = schemaCol.read(doc,null);
         assertNotNull(schema);
     }
@@ -49,7 +49,7 @@ public class ImportTest extends TestCase {
      * @throws Exception
      */
     public void testSchemaImport2() throws Exception{
-        File file = new File("test-resources/importBase.xsd");
+        File file = new File(Resources.asURI("importBase.xsd"));
         //create a DOM document
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         documentBuilderFactory.setNamespaceAware(true);

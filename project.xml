@@ -207,9 +207,6 @@
 
             <resources>
                 <resource>
-                    <directory>${basedir}/test-resources</directory>
-                </resource>
-                <resource>
                     <directory>conf</directory>
                     <includes>
                         <include>**/*.properties</include>

@@ -34,7 +34,7 @@ public class AllSimpleTypeTest extends TestCase {
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         documentBuilderFactory.setNamespaceAware(true);
         Document doc = documentBuilderFactory.newDocumentBuilder().
-                parse("test-resources/allSimpleTypes.xsd");
+                parse(Resources.asURI("allSimpleTypes.xsd"));
 
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(doc,null);

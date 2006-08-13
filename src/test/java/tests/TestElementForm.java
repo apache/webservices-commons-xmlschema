@@ -38,7 +38,7 @@ public class TestElementForm extends TestCase {
     private XmlSchemaCollection schema;
 
     protected void setUp() throws Exception {
-        InputStream is = new FileInputStream("test-resources/elementForm.xsd");
+        InputStream is = new FileInputStream(Resources.asURI("elementForm.xsd"));
         schema = new XmlSchemaCollection();
         schema.read(new StreamSource(is), null);
     }

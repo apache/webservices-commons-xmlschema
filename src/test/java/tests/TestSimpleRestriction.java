@@ -35,7 +35,7 @@ public class TestSimpleRestriction extends TestCase {
         QName ELEMENT_QNAME = new QName("http://soapinterop.org/types",
                 "foo");
 
-        InputStream is = new FileInputStream("test-resources/SimpleContentRestriction.xsd");
+        InputStream is = new FileInputStream(Resources.asURI("SimpleContentRestriction.xsd"));
         XmlSchemaCollection schema = new XmlSchemaCollection();
         XmlSchema s = schema.read(new StreamSource(is), null);
 
