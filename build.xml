@@ -43,7 +43,7 @@
     	<antcall target="prepareNistTest"/>
     </target>
     	
-    <target name="prepareNistTest">
+    <target name="prepareNistTest" unless="maven.test.skip">
     	<condition property="needsTestsDownload">
 	      <not>
 	      	<available file="${build.dir}/xmlschema2002-01-16"/>

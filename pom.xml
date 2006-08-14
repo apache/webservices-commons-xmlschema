@@ -189,6 +189,7 @@
               <tasks>
                 <ant inheritRefs="true" antfile="${basedir}/build.xml">
                   <property value="${basedir}/target" name="build.dir"></property>
+                  <property value="${maven.test.skip}" name="maven.test.skip"></property>
                   <target name="prepareNistTest"></target>
                 </ant>
               </tasks>
