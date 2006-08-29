@@ -122,7 +122,12 @@ public class SchemaBuilder {
          *          handleAnnotation
          */
 
-        for (Element el = XDOMUtil.getFirstChildElementNS(schemaEl, XmlSchema.SCHEMA_NS); el != null;
+        Element el = XDOMUtil.getFirstChildElementNS(schemaEl, XmlSchema.SCHEMA_NS);
+        if (el == null && XDOMUtil.getFirstChildElementNS(schemaEl, "http://www.w3.org/1999/XMLSchema") != null) {
+            throw new XmlSchemaException("Schema defined using \"http://www.w3.org/1999/XMLSchema\" is not supported. " +
+                    "Please update the schema to the \"" + XmlSchema.SCHEMA_NS + "\" namespace");
+        }
+        for (; el != null;
              el = XDOMUtil.getNextSiblingElementNS(el, XmlSchema.SCHEMA_NS)) {
 
             // String elPrefix = el.getPrefix() == null ? "" : el.getPrefix();
