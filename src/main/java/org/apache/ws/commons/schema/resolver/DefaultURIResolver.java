@@ -38,7 +38,6 @@ public class DefaultURIResolver implements URIResolver {
      * schema and the schemaLocation is the value of the schema location
      * @param publicId
      * @param schemaLocation
-     * @return
      * @throws SAXException
      * @throws IOException
      */
@@ -86,7 +85,6 @@ public class DefaultURIResolver implements URIResolver {
      *
      * @param contextURL
      * @param spec
-     * @return
      * @throws java.io.IOException
      */
     protected URL getURL(URL contextURL, String spec) throws IOException {
@@ -127,7 +125,6 @@ public class DefaultURIResolver implements URIResolver {
      *
      * @param contextURL
      * @param path
-     * @return
      * @throws IOException
      */
     protected URL getFileURL(URL contextURL, String path)

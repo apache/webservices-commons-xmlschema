@@ -80,7 +80,6 @@ public class TestW3CSchemaTestSet extends TestSuite {
      * Returns a suite of TestRoundTripXSD test case instances. One for each of the tests
      * described in the testSetFile
      * @param testSetFile the File object of the .testSet file 
-     * @return
      * @throws Exception
      */
     public static Test suite(File testSetFile) throws Exception {

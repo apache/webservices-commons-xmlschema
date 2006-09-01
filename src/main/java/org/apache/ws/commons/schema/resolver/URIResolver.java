@@ -24,7 +24,6 @@ public interface URIResolver {
      * @param targetNamespace
      * @param schemaLocation
      * @param baseUri
-     * @return
      */
      InputSource resolveEntity(String targetNamespace,
                                      String schemaLocation,

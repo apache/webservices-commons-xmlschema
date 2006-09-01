@@ -101,9 +101,9 @@ public final class XmlSchemaCollection {
     }
 
     /**
-     * This section should comply to the XMLSchema specification
-     * @see http://www.w3.org/TR/2004/PER-xmlschema-2-20040318/datatypes.html#built-in-datatypes
-     *
+     * This section should comply to the XMLSchema specification; see
+     * <a href="http://www.w3.org/TR/2004/PER-xmlschema-2-20040318/datatypes.html#built-in-datatypes">
+     *  http://www.w3.org/TR/2004/PER-xmlschema-2-20040318/datatypes.html#built-in-datatypes</a>.
      * This needs to be inspected by another pair of eyes
      */
     public void init() {
@@ -283,7 +283,6 @@ public final class XmlSchemaCollection {
     /**
      * Retreive an XmlSchema from the collection by its system ID.
      * @param systemId
-     * @return
      */
     public XmlSchema getXmlSchema(String systemId) {
         return (XmlSchema) systemId2Schemas.get(systemId);
@@ -291,7 +290,6 @@ public final class XmlSchemaCollection {
     
     /**
      * Return a Set of all the XmlSchemas in this collection.
-     * @return
      */
     public Set getXmlSchemas() {
         return Collections.unmodifiableSet(schemas);
