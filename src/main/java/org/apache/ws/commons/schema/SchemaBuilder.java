@@ -57,7 +57,6 @@ public class SchemaBuilder {
      * @param doc
      * @param uri
      * @param veh
-     * @return
      */
     XmlSchema build(Document doc, String uri, ValidationEventHandler veh) {
         Element schemaEl = doc.getDocumentElement();
@@ -68,7 +67,6 @@ public class SchemaBuilder {
      * handles the schema element
      * @param schemaEl
      * @param uri
-     * @return
      */
     XmlSchema handleXmlSchemaElement(Element schemaEl, String uri) {
         // get all the attributes along with the namespace declns
@@ -321,7 +319,6 @@ public class SchemaBuilder {
      * @param schema
      * @param simpleEl
      * @param schemaEl
-     * @return
      */
     XmlSchemaSimpleType handleSimpleType(XmlSchema schema,
                                          Element simpleEl, Element schemaEl) {
@@ -571,7 +568,6 @@ public class SchemaBuilder {
      * @param schema
      * @param complexEl
      * @param schemaEl
-     * @return
      */
     XmlSchemaComplexType handleComplexType(XmlSchema schema,
                                            Element complexEl, Element schemaEl) {
@@ -1485,7 +1481,6 @@ public class SchemaBuilder {
      * @param el
      * @param schemaEl
      * @param isGlobal
-     * @return
      */
     XmlSchemaElement handleElement(XmlSchema schema,
                                    Element el,
@@ -1838,7 +1833,6 @@ public class SchemaBuilder {
      * @param schema
      * @param includeEl
      * @param schemaEl
-     * @return
      */
     XmlSchemaInclude handleInclude(XmlSchema schema,
                                    Element includeEl, Element schemaEl) {
@@ -1929,7 +1923,6 @@ public class SchemaBuilder {
      * create new XmlSchemaAppinfo and add value goten from element
      * to this obj
      * @param content
-     * @return
      */
     XmlSchemaAppInfo handleAppInfo(Element content) {
         XmlSchemaAppInfo appInfo = new XmlSchemaAppInfo();
@@ -2039,7 +2032,6 @@ public class SchemaBuilder {
      * Resolve the schemas
      * @param targetNamespace
      * @param schemaLocation
-     * @return
      */
     XmlSchema resolveXmlSchema(String targetNamespace,
                                String schemaLocation,
@@ -2068,7 +2060,6 @@ public class SchemaBuilder {
      * Resolve the schemas
      * @param targetNamespace
      * @param schemaLocation
-     * @return
      */
     XmlSchema resolveXmlSchema(String targetNamespace,
                                String schemaLocation) {
@@ -2081,7 +2072,6 @@ public class SchemaBuilder {
      * Finds the namespace URI for a given prefix
      * @param prefix
      * @param schema
-     * @return
      */
     private String findNamespaceForPrefix(String prefix,XmlSchema schema){
         String returnPrefix = (String)schema.namespaces.get(prefix);
