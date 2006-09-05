@@ -18,7 +18,10 @@ package org.apache.ws.commons.schema;
 
 import org.w3c.dom.Document;
 import org.apache.ws.commons.schema.constants.Constants;
+import org.apache.ws.commons.schema.utils.NamespaceContextOwner;
+import org.apache.ws.commons.schema.utils.NamespacePrefixList;
 
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
@@ -32,7 +35,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.util.Hashtable;
 
 
 /**
@@ -51,7 +53,7 @@ import java.util.Hashtable;
 //            variable to name s.
 // Feb 21th - Joni - Port to XMLDomUtil and Tranformation.  
 
-public class XmlSchema extends XmlSchemaAnnotated {
+public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwner {
     static final String SCHEMA_NS = "http://www.w3.org/2001/XMLSchema";
     XmlSchemaForm attributeFormDefault, elementFormDefault;
 
@@ -62,9 +64,9 @@ public class XmlSchema extends XmlSchemaAnnotated {
     XmlSchemaObjectCollection includes, items;
     boolean isCompiled;
     String targetNamespace, version;
-    Hashtable namespaces;
     String schema_ns_prefix = "";
     XmlSchemaCollection parent;
+    private NamespacePrefixList namespaceContext;
 
     /**
      * Creates new XmlSchema
@@ -77,7 +79,6 @@ public class XmlSchema extends XmlSchemaAnnotated {
         finalDefault = new XmlSchemaDerivationMethod(Constants.BlockConstants.NONE);
         items = new XmlSchemaObjectCollection();
         includes = new XmlSchemaObjectCollection();
-        namespaces = new Hashtable();
         elements = new XmlSchemaObjectTable();
         attributeGroups = new XmlSchemaObjectTable();
         attributes = new XmlSchemaObjectTable();
@@ -89,14 +90,6 @@ public class XmlSchema extends XmlSchemaAnnotated {
     public XmlSchema(String namespace, XmlSchemaCollection parent) {
         this(parent);
         targetNamespace = namespace;
-    }
-
-    protected String getNamespace(String prefix) {
-        String ns = (String)namespaces.get(prefix);
-        if (ns == null) {
-            return parent.getNamespaceForPrefix(prefix);
-        }
-        return ns;
     }
 
     public XmlSchemaForm getAttributeFormDefault() {
@@ -230,14 +223,6 @@ public class XmlSchema extends XmlSchemaAnnotated {
         }
     }
 
-    public Hashtable getPrefixToNamespaceMap() {
-        return namespaces;
-    }
-
-    public void setPrefixToNamespaceMap(Hashtable map) {
-        this.namespaces = map;
-    }
-
     public void addType(XmlSchemaType type) {
         QName qname = type.getQName();
         if (schemaTypes.contains(qname)) {
@@ -246,5 +231,17 @@ public class XmlSchema extends XmlSchemaAnnotated {
                                        qname.getLocalPart());
         }
         schemaTypes.add(qname, type);
+    }
+
+    public NamespacePrefixList getNamespaceContext() {
+        return namespaceContext;
+    }
+
+    /**
+     * Sets the schema elements namespace context. This may be used for schema
+     * serialization, until a better mechanism was found.
+     */
+    public void setNamespaceContext(NamespacePrefixList namespaceContext) {
+        this.namespaceContext = namespaceContext;
     }
 }

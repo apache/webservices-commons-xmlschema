@@ -23,11 +23,15 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
+import org.xml.sax.helpers.NamespaceSupport;
 import org.apache.ws.commons.schema.constants.Constants;
+import org.apache.ws.commons.schema.utils.NamespacePrefixList;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -154,21 +158,19 @@ public class XmlSchemaSerializer {
         }
 
         //add the extra namespace decalarations if any are available
-        Hashtable prefixToNamespaceMap = schemaObj.getPrefixToNamespaceMap();
-        if (null!=prefixToNamespaceMap && !prefixToNamespaceMap.isEmpty()){
-            Iterator iterator = prefixToNamespaceMap.keySet().iterator();
-            while (iterator.hasNext()) {
-                String key =  (String)iterator.next();
-                if (!"".equals(key)){
-                    serializedSchema.setAttributeNS(XMLNS_NAMESPACE_URI,
-                            "xmlns:"+key,
-                            (String)prefixToNamespaceMap.get(key));
-                }
-
+        NamespacePrefixList ctx = schemaObj.getNamespaceContext();
+        String[] prefixes = ctx.getDeclaredPrefixes();
+        for (int i = 0;  i < prefixes.length;  i++) {
+            String prefix = prefixes[i];
+            String uri = ctx.getNamespaceURI(prefix);
+            if (XMLConstants.DEFAULT_NS_PREFIX.equals(prefix)) {
+//                serializedSchema.setAttributeNS(XMLConstants.NULL_NS_URI,
+//                        XMLConstants.XMLNS_ATTRIBUTE, uri);
+            } else {
+                serializedSchema.setAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI,
+                        XMLConstants.XMLNS_ATTRIBUTE + ":" + prefix, uri);
             }
-
         }
-
 
         //after serialize the schema add into documentation
         //and add to document collection array  which at the end 
@@ -259,29 +261,16 @@ public class XmlSchemaSerializer {
      * into specified element
      */
     private Element setupNamespaces(Document schemaDocs, XmlSchema schemaObj) {
-        Enumeration prefixs = schemaObj.namespaces.keys();
-        Enumeration values = schemaObj.namespaces.elements();
-
-        /**
-         * check all namespace added and register all namespace in 
-         * hashtable.  When finish then set namespace to schema 
-         * element appropriatelly.
-         */
-        for (; prefixs.hasMoreElements() && values.hasMoreElements();) {
-            String namespace = values.nextElement().toString();
-            String prefix = prefixs.nextElement().toString();
-            /*
-             * if the prefix is there 
-             * check whether it is an xsd schema namespace
-             * set prefix and namespace to the default attribute
-             * then register the prefix on hashtable
-             */
-            if (/*prefix.trim().length()<1 &&*/ namespace.equals(xsdNamespace)) {
-                xsdPrefix = prefix;
-                schemaObj.schema_ns_prefix = xsdPrefix;
-            }
-
-            schema_ns.put(namespace, prefix);
+        NamespacePrefixList ctx = schemaObj.getNamespaceContext();
+        schemaObj.schema_ns_prefix = xsdPrefix = ctx.getPrefix(xsdNamespace);
+        if(xsdPrefix == null) {
+            schemaObj.schema_ns_prefix = xsdPrefix = "";    
+        }
+        String[] prefixes = ctx.getDeclaredPrefixes();
+        for (int i = 0;  i < prefixes.length;  i++) {
+            String prefix = prefixes[i];
+            String uri = ctx.getNamespaceURI(prefix);
+            schema_ns.put(uri, prefix);
         }
         //for schema that not set the xmlns attrib member
         if (schema_ns.get(xsdNamespace) == null) {
@@ -1115,13 +1104,14 @@ public class XmlSchemaSerializer {
                     String oldNamespace = null;
                     if ((oldNamespace = (String) namespaces.get(prefix)) != null) {
                         value = value.substring(value.indexOf(":") + 1);
-                        Hashtable realNamespaces = schema.getPrefixToNamespaceMap();
-                        java.util.Iterator iter = realNamespaces.keySet().iterator();
-                        while (iter.hasNext()) {
-                            prefix = (String) iter.next();
-                            String namespace = (String) realNamespaces.get(prefix);
-                            if (namespace.equals(oldNamespace))
+                        NamespacePrefixList ctx = schema.getNamespaceContext();
+                        String[] prefixes = ctx.getDeclaredPrefixes();
+                        for (int j = 0;  j < prefixes.length;  j++) {
+                            String pref = prefixes[j];
+                            String uri = ctx.getNamespaceURI(pref);
+                            if (uri.equals(oldNamespace)) {
                                 value = prefix + ":" + value;
+                            }
                         }
                     }
 

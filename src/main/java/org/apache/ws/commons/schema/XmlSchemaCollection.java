@@ -332,12 +332,4 @@ public final class XmlSchemaCollection {
         }
         unresolvedTypes.remove(typeName);
     }
-
-    public String getNamespaceForPrefix(String prefix) {
-        return (String)inScopeNamespaces.get(prefix);
-    }
-
-    public void mapNamespace(String prefix, String namespaceURI) {
-        inScopeNamespaces.put(prefix, namespaceURI);
-    }
 }

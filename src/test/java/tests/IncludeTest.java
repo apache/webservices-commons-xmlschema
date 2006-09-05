@@ -121,4 +121,15 @@ public class IncludeTest extends TestCase {
 
     }
 
+
+	/**
+	 * Test importing a schema without namespace into a schema
+	 * with namespace.
+	 */
+	public void testImportSchemaWithoutNamespace() throws Exception {
+        InputStream is = new FileInputStream(Resources.asURI("includingWithNamespace.xsd"));
+        XmlSchemaCollection schemaCol = new XmlSchemaCollection();
+        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+	}
+
 }

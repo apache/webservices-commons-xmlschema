@@ -47,8 +47,16 @@ public class TestSimpleRestriction extends TestCase {
 
         XmlSchemaType type = elem.getSchemaType();
         assertNotNull(type);
+    }
 
-     
-
+    public void testSimpleTypeRestrictionWithoutNamespace() throws Exception {
+    	InputStream is = new FileInputStream(Resources.asURI("includedWithoutNamespace.xsd"));
+    	XmlSchemaCollection schema = new XmlSchemaCollection();
+    	XmlSchema s = schema.read(new StreamSource(is), null);
+    	XmlSchemaType principalId = schema.getTypeByQName(new QName("", "XdwsPrincipalId"));
+    	assertNotNull(principalId);
+    	XmlSchemaType groupId = schema.getTypeByQName(new QName("", "XdwsGroupId"));
+    	assertNotNull(groupId);
+    	assertEquals(groupId.getBaseSchemaType(), principalId);
     }
 }
