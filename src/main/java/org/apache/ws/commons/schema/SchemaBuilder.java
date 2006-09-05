@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -1204,7 +1203,7 @@ public class SchemaBuilder {
     private QName newLocalQName(String pLocalName) {
         String uri = schema.logicalTargetNamespace;
         if (uri == null) {
-            uri = XMLConstants.NULL_NS_URI;
+            uri = Constants.NULL_NS_URI;
         }
         return new QName(uri, pLocalName);
     }
@@ -1370,7 +1369,7 @@ public class SchemaBuilder {
 
         if (element.name != null) {
             final String name = element.name;
-            element.qualifiedName = (isQualified || isGlobal) ? newLocalQName(name) : new QName(XMLConstants.NULL_NS_URI, name);
+            element.qualifiedName = (isQualified || isGlobal) ? newLocalQName(name) : new QName(Constants.NULL_NS_URI, name);
         }
 
         Element annotationEl =
@@ -1577,7 +1576,7 @@ public class SchemaBuilder {
 
         TargetNamespaceValidator validator = new TargetNamespaceValidator(){
             private boolean isEmpty(String pValue) {
-                return pValue == null  ||  XMLConstants.NULL_NS_URI.equals(pValue);
+                return pValue == null  ||  Constants.NULL_NS_URI.equals(pValue);
             }
             public void validate(XmlSchema pSchema) {
                 final boolean valid;
@@ -1663,7 +1662,7 @@ public class SchemaBuilder {
     private TargetNamespaceValidator newIncludeValidator(final XmlSchema schema) {
         return new TargetNamespaceValidator(){
             private boolean isEmpty(String pValue) {
-                return pValue == null  ||  XMLConstants.NULL_NS_URI.equals(pValue);
+                return pValue == null  ||  Constants.NULL_NS_URI.equals(pValue);
             }
             public void validate(XmlSchema pSchema) {
                 if (isEmpty(pSchema.syntacticalTargetNamespace)) {
@@ -1895,7 +1894,7 @@ public class SchemaBuilder {
 
             if (namespaceURI!= null &&
                     !"".equals(namespaceURI) &&  //ignore unqualified attributes
-                    !name.startsWith(XMLConstants.XMLNS_ATTRIBUTE) && //ignore namespaces
+                    !name.startsWith(Constants.XMLNS_ATTRIBUTE) && //ignore namespaces
                     !Constants.URI_2001_SCHEMA_XSD.equals(namespaceURI)){
                 attribMap.put(new QName(namespaceURI,name),
                         attribute.getValue());

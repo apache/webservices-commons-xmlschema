@@ -25,7 +25,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -53,7 +52,7 @@ public final class XmlSchemaCollection {
         private final String namespace;
         private final String systemId;
         SchemaKey(String pNamespace, String pSystemId) {
-            namespace = pNamespace == null ? XMLConstants.NULL_NS_URI : pNamespace;
+            namespace = pNamespace == null ? Constants.NULL_NS_URI : pNamespace;
             systemId = pSystemId == null ? "" : pSystemId;
         }
         String getNamespace() { return namespace; }
@@ -73,7 +72,7 @@ public final class XmlSchemaCollection {
             return namespace.equals(other.namespace)  &&  systemId.equals(other.systemId);
         }
         public String toString() {
-            return XMLConstants.NULL_NS_URI.equals(namespace) ?
+            return Constants.NULL_NS_URI.equals(namespace) ?
                     systemId : ("{" + namespace + "}" + systemId);
         }
     }
