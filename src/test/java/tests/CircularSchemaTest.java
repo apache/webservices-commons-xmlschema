@@ -2,7 +2,6 @@ package tests;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.Set;
 
 import junit.framework.TestCase;
 
@@ -18,10 +17,10 @@ public class CircularSchemaTest extends TestCase
         InputSource source = new InputSource(new FileInputStream(file));
         source.setSystemId(file.toURL().toString());
         
-        XmlSchema schema = schemas.read(source, null);
+        schemas.read(source, null);
         
-        Set xmlSchemas = schemas.getXmlSchemas();
+        XmlSchema[] xmlSchemas = schemas.getXmlSchemas();
         assertNotNull(xmlSchemas);
-        assertEquals(2, xmlSchemas.size());
+        assertEquals(3, xmlSchemas.length);
     }
 }

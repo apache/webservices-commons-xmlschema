@@ -89,6 +89,6 @@ public class XmlSchemaType extends XmlSchemaAnnotated {
         if(name == null) {
             return null;
         }
-        return new QName(schema.targetNamespace, name);
+        return new QName(schema.logicalTargetNamespace, name);
     }
 }

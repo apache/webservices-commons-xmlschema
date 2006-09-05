@@ -93,18 +93,18 @@ public class XmlSchemaSerializer {
         serializedSchema = setupNamespaces(serializedSchemaDocs, schemaObj);
         schemaElement = serializedSchema;
 
-        if (schemaObj.targetNamespace != null) {
-            serializedSchema.setAttribute("targetNamespace", schemaObj.targetNamespace);
+        if (schemaObj.syntacticalTargetNamespace != null) {
+            serializedSchema.setAttribute("targetNamespace", schemaObj.syntacticalTargetNamespace);
 
             Object targetNS =
-                    schema_ns.get(schemaObj.targetNamespace);
+                    schema_ns.get(schemaObj.syntacticalTargetNamespace);
 
             //if the namespace is not entered then add 
             //the targetNamespace as its
             if (targetNS == null) {
                 serializedSchema.setAttributeNS(XMLNS_NAMESPACE_URI,
-                        "xmlns", schemaObj.targetNamespace);
-                schema_ns.put(schemaObj.targetNamespace, "");
+                        "xmlns", schemaObj.syntacticalTargetNamespace);
+                schema_ns.put(schemaObj.syntacticalTargetNamespace, "");
             }
         }
 
@@ -753,7 +753,6 @@ public class XmlSchemaSerializer {
                            XmlSchema schema) throws XmlSchemaSerializerException {
 
         Element serializedFacet;
-        String facetName = facetObj.getClass().getName();
 
         if (facetObj instanceof XmlSchemaMinExclusiveFacet)
             serializedFacet = constructFacet(facetObj, doc, schema,

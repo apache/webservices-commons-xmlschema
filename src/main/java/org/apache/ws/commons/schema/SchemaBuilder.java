@@ -22,12 +22,15 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.ws.commons.schema.XmlSchemaCollection.SchemaKey;
 import org.apache.ws.commons.schema.constants.Constants;
 import org.apache.ws.commons.schema.utils.NodeNamespaceContext;
+import org.apache.ws.commons.schema.utils.TargetNamespaceValidator;
 import org.apache.ws.commons.schema.utils.XDOMUtil;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -41,16 +44,16 @@ public class SchemaBuilder {
     Document doc;
     XmlSchema schema;
     XmlSchemaCollection collection;
-
+    private final TargetNamespaceValidator validator;
     DocumentBuilderFactory docFac;
-    public static final String XMLNS_PREFIX = "xmlns";
 
     /**
      * Schema builder constructor
      * @param collection
      */
-    SchemaBuilder(XmlSchemaCollection collection) {
+    SchemaBuilder(XmlSchemaCollection collection, TargetNamespaceValidator validator) {
         this.collection = collection;
+        this.validator = validator;
         schema = new XmlSchema(collection);
     }
 
@@ -75,14 +78,9 @@ public class SchemaBuilder {
         schema.setNamespaceContext(new NodeNamespaceContext(schemaEl));
         setNamespaceAttributes(schema, schemaEl);
 
-        if (uri != null)
-            collection.systemId2Schemas.put(uri, schema);
-
-        collection.schemas.add(schema);
-
-        // only populate it if it isn't already in there
-        if(!collection.namespaces.containsKey(schema.targetNamespace)){
-            collection.namespaces.put(schema.targetNamespace, schema);
+        XmlSchemaCollection.SchemaKey schemaKey = new XmlSchemaCollection.SchemaKey(schema.logicalTargetNamespace, uri);
+        if (!collection.containsSchema(schemaKey)) {
+            collection.addSchema(schemaKey, schema);
         }
 
         schema.setElementFormDefault(this.getFormDefault(schemaEl,
@@ -230,9 +228,9 @@ public class SchemaBuilder {
         XmlSchemaRedefine redefine = new XmlSchemaRedefine();
         redefine.schemaLocation =
                 redefineEl.getAttribute("schemaLocation");
-        //redefine has no such thing called a namespace!
+        final TargetNamespaceValidator validator = newIncludeValidator(schema);
         redefine.schema =
-                resolveXmlSchema(null,redefine.schemaLocation);
+                resolveXmlSchema(schema.logicalTargetNamespace, redefine.schemaLocation, validator);
 
         for (Element el = XDOMUtil.getFirstChildElementNS(redefineEl,
                 XmlSchema.SCHEMA_NS)
@@ -278,11 +276,12 @@ public class SchemaBuilder {
         //no targetnamespace found !
         if (schemaEl.getAttributeNode("targetNamespace") != null) {
             String contain = schemaEl.getAttribute("targetNamespace");
-
-            if (!contain.equals(""))
-                schema.targetNamespace = contain;
+            schema.setTargetNamespace(contain);
         } else {
             //do nothing here
+        }
+        if (validator != null) {
+            validator.validate(schema);
         }
     }
 
@@ -504,7 +503,7 @@ public class SchemaBuilder {
     	if (offset == -1) {
     		uri = pContext.getNamespaceURI(Constants.DEFAULT_NS_PREFIX);
     		if (Constants.NULL_NS_URI.equals(uri)) {
-    			return new QName(schema.targetNamespace, pName);
+    			return new QName(schema.logicalTargetNamespace, pName);
     		}
     		localName = pName;
     		prefix = Constants.DEFAULT_NS_PREFIX;
@@ -1202,6 +1201,14 @@ public class SchemaBuilder {
         return group;
     }
 
+    private QName newLocalQName(String pLocalName) {
+        String uri = schema.logicalTargetNamespace;
+        if (uri == null) {
+            uri = XMLConstants.NULL_NS_URI;
+        }
+        return new QName(uri, pLocalName);
+    }
+
     private XmlSchemaAttribute handleAttribute(XmlSchema schema,
                                                Element attrEl, Element schemaEl) {
         //todo: need to implement different rule of attribute such as
@@ -1215,7 +1222,7 @@ public class SchemaBuilder {
             //                  "" :schema.targetNamespace;
 
             attr.name = name;
-            attr.qualifiedName = new QName(schema.targetNamespace, name);
+            attr.qualifiedName = newLocalQName(name);
         }
 
         if (attrEl.hasAttribute("type")) {
@@ -1361,11 +1368,9 @@ public class SchemaBuilder {
             isQualified = formDef.equals(XmlSchemaForm.QUALIFIED);
         }
 
-        String ns = (isQualified || isGlobal) ? schema.targetNamespace :
-                null;
-
-        if(element.name != null) {
-            element.qualifiedName = new QName(ns, element.name);
+        if (element.name != null) {
+            final String name = element.name;
+            element.qualifiedName = (isQualified || isGlobal) ? newLocalQName(name) : new QName(XMLConstants.NULL_NS_URI, name);
         }
 
         Element annotationEl =
@@ -1566,22 +1571,42 @@ public class SchemaBuilder {
             schemaImport.setAnnotation(importAnnotation);
         }
 
-        schemaImport.namespace = importEl.getAttribute("namespace");
+        final String uri = schemaImport.namespace = importEl.getAttribute("namespace");
         schemaImport.schemaLocation =
                 importEl.getAttribute("schemaLocation");
 
+        TargetNamespaceValidator validator = new TargetNamespaceValidator(){
+            private boolean isEmpty(String pValue) {
+                return pValue == null  ||  XMLConstants.NULL_NS_URI.equals(pValue);
+            }
+            public void validate(XmlSchema pSchema) {
+                final boolean valid;
+                if (isEmpty(uri)) {
+                    valid = isEmpty(pSchema.syntacticalTargetNamespace);
+                } else {
+                    valid = pSchema.syntacticalTargetNamespace.equals(uri);
+                }
+                if (!valid) {
+                    throw new XmlSchemaException("An imported schema was announced to have the namespace "
+                            + uri + ", but has the namespace " +
+                            pSchema.syntacticalTargetNamespace);
+                }
+            }
+        };
         if ((schemaImport.schemaLocation != null) && (!schemaImport.schemaLocation.equals(""))) {
             if(schema.getSourceURI()!=null) {
                 schemaImport.schema =
                         resolveXmlSchema(
-                                schemaImport.namespace,
+                                uri,
                                 schemaImport.schemaLocation,
-                                schema.getSourceURI());
+                                schema.getSourceURI(),
+                                validator);
             } else {
                 schemaImport.schema =
                         resolveXmlSchema(
                                 schemaImport.namespace,
-                                schemaImport.schemaLocation);
+                                schemaImport.schemaLocation,
+                                validator);
             }
         }
         return schemaImport;
@@ -1593,7 +1618,7 @@ public class SchemaBuilder {
      * @param includeEl
      * @param schemaEl
      */
-    XmlSchemaInclude handleInclude(XmlSchema schema,
+    XmlSchemaInclude handleInclude(final XmlSchema schema,
                                    Element includeEl, Element schemaEl) {
 
         XmlSchemaInclude include = new XmlSchemaInclude();
@@ -1615,21 +1640,46 @@ public class SchemaBuilder {
         // we should be passing in a null in place of the target
         //namespace
 
+        final TargetNamespaceValidator validator = newIncludeValidator(schema);
         if(schema.getSourceURI()!=null) {
             include.schema =
                     resolveXmlSchema(
-                            null,
+                            schema.logicalTargetNamespace,
                             include.schemaLocation,
-                            schema.getSourceURI());
+                            schema.getSourceURI(),
+                            validator);
         } else {
             include.schema =
                     resolveXmlSchema(
-                            null,
-                            include.schemaLocation);
+                            schema.logicalTargetNamespace,
+                            include.schemaLocation,
+                            validator);
         }
         //process extra attributes and elements
         processExtensibilityComponents(include,schemaEl);
         return include;
+    }
+
+    private TargetNamespaceValidator newIncludeValidator(final XmlSchema schema) {
+        return new TargetNamespaceValidator(){
+            private boolean isEmpty(String pValue) {
+                return pValue == null  ||  XMLConstants.NULL_NS_URI.equals(pValue);
+            }
+            public void validate(XmlSchema pSchema) {
+                if (isEmpty(pSchema.syntacticalTargetNamespace)) {
+                    pSchema.logicalTargetNamespace = schema.logicalTargetNamespace;
+                } else {
+                    if (!pSchema.syntacticalTargetNamespace.equals(schema.logicalTargetNamespace)) {
+                        String msg = "An included schema was announced to have the default target namespace";
+                        if (!isEmpty(schema.logicalTargetNamespace)) {
+                            msg += " or the target namespace " + schema.logicalTargetNamespace;
+                        }
+                        throw new XmlSchemaException(msg + ", but has the target namespace "
+                                + pSchema.logicalTargetNamespace);
+                    }
+                }
+            }
+        };
     }
 
     /**
@@ -1793,26 +1843,24 @@ public class SchemaBuilder {
      */
     XmlSchema resolveXmlSchema(String targetNamespace,
                                String schemaLocation,
-                               String baseUri) {
+                               String baseUri,
+                               TargetNamespaceValidator validator) {
         //use the entity resolver provided
-        XmlSchema schema = null;
         InputSource source = collection.schemaResolver.
                 resolveEntity(targetNamespace,schemaLocation,baseUri);
 
-        if (source.getSystemId() != null) {
-            schema = collection.getXmlSchema(source.getSystemId());
+        final String systemId = source.getSystemId() == null ? schemaLocation : source.getSystemId();
+        final SchemaKey key = new XmlSchemaCollection.SchemaKey(targetNamespace, systemId);
+        XmlSchema schema = collection.getSchema(key);
+        if (schema != null) {
+            return schema;
         }
-
-        if (schema == null) {
             try {
-                return collection.read(source, null);
+            return collection.read(source, null, validator);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
-
-        return schema;
-    }
 
     /**
      * Resolve the schemas
@@ -1820,9 +1868,10 @@ public class SchemaBuilder {
      * @param schemaLocation
      */
     XmlSchema resolveXmlSchema(String targetNamespace,
-                               String schemaLocation) {
-        return resolveXmlSchema(targetNamespace,schemaLocation,
-                collection.baseUri);
+                               String schemaLocation,
+                               TargetNamespaceValidator validator) {
+        return resolveXmlSchema(targetNamespace, schemaLocation,
+                collection.baseUri, validator);
 
     }
 
@@ -1846,7 +1895,7 @@ public class SchemaBuilder {
 
             if (namespaceURI!= null &&
                     !"".equals(namespaceURI) &&  //ignore unqualified attributes
-                    !name.startsWith(XMLNS_PREFIX) && //ignore namespaces
+                    !name.startsWith(XMLConstants.XMLNS_ATTRIBUTE) && //ignore namespaces
                     !Constants.URI_2001_SCHEMA_XSD.equals(namespaceURI)){
                 attribMap.put(new QName(namespaceURI,name),
                         attribute.getValue());

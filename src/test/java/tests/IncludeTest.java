@@ -3,7 +3,6 @@ package tests;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
-import java.util.Iterator;
 import java.util.Set;
 import java.util.HashSet;
 
@@ -121,7 +120,6 @@ public class IncludeTest extends TestCase {
 
     }
 
-
 	/**
 	 * Test importing a schema without namespace into a schema
 	 * with namespace.
@@ -129,7 +127,9 @@ public class IncludeTest extends TestCase {
 	public void testImportSchemaWithoutNamespace() throws Exception {
         InputStream is = new FileInputStream(Resources.asURI("includingWithNamespace.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is), null);
+
+        assertNotNull(schemaCol.getTypeByQName(new QName("http://tns.demo.org", "XdwsGroupId")));
 	}
 
 }

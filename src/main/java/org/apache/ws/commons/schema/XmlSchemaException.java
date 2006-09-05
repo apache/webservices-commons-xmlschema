@@ -33,6 +33,10 @@ public class XmlSchemaException extends RuntimeException {
         super(message);
     }
 
+    public XmlSchemaException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
     // TODO :implement
     public int getLineNumer() {
         return 1;

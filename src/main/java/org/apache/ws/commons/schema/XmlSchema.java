@@ -21,7 +21,6 @@ import org.apache.ws.commons.schema.constants.Constants;
 import org.apache.ws.commons.schema.utils.NamespaceContextOwner;
 import org.apache.ws.commons.schema.utils.NamespacePrefixList;
 
-import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
@@ -63,7 +62,7 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
     XmlSchemaDerivationMethod blockDefault, finalDefault;
     XmlSchemaObjectCollection includes, items;
     boolean isCompiled;
-    String targetNamespace, version;
+    String syntacticalTargetNamespace, logicalTargetNamespace, version;
     String schema_ns_prefix = "";
     XmlSchemaCollection parent;
     private NamespacePrefixList namespaceContext;
@@ -89,7 +88,7 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
 
     public XmlSchema(String namespace, XmlSchemaCollection parent) {
         this(parent);
-        targetNamespace = namespace;
+        syntacticalTargetNamespace = logicalTargetNamespace = namespace;
     }
 
     public XmlSchemaForm getAttributeFormDefault() {
@@ -169,12 +168,13 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
     }
 
     public String getTargetNamespace() {
-        return targetNamespace;
+        return syntacticalTargetNamespace;
     }
 
     public void setTargetNamespace(String targetNamespace) {
-        if (!targetNamespace.equals(""))
-            this.targetNamespace = targetNamespace;
+        if (!targetNamespace.equals("")) {
+            syntacticalTargetNamespace = logicalTargetNamespace = targetNamespace;
+        }
     }
 
     public String getVersion() {
@@ -227,7 +227,7 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
         QName qname = type.getQName();
         if (schemaTypes.contains(qname)) {
             throw new RuntimeException("Schema for namespace '" +
-                                       targetNamespace + "' already contains type '" +
+                                       syntacticalTargetNamespace + "' already contains type '" +
                                        qname.getLocalPart());
         }
         schemaTypes.add(qname, type);

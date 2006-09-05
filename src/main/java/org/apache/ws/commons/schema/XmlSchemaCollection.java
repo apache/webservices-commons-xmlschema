@@ -16,31 +16,29 @@
 
 package org.apache.ws.commons.schema;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
+import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.dom.DOMResult;
 
 import org.apache.ws.commons.schema.constants.Constants;
 import org.apache.ws.commons.schema.resolver.DefaultURIResolver;
 import org.apache.ws.commons.schema.resolver.URIResolver;
+import org.apache.ws.commons.schema.utils.TargetNamespaceValidator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
@@ -51,10 +49,41 @@ import org.xml.sax.SAXException;
  *
  */
 public final class XmlSchemaCollection {
+    static class SchemaKey {
+        private final String namespace;
+        private final String systemId;
+        SchemaKey(String pNamespace, String pSystemId) {
+            namespace = pNamespace == null ? XMLConstants.NULL_NS_URI : pNamespace;
+            systemId = pSystemId == null ? "" : pSystemId;
+        }
+        String getNamespace() { return namespace; }
+        String getSystemId() { return systemId; }
+        public int hashCode() {
+            final int PRIME = 31;
+            return (PRIME + namespace.hashCode()) * PRIME + systemId.hashCode();
+        }
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            final SchemaKey other = (SchemaKey) obj;
+            return namespace.equals(other.namespace)  &&  systemId.equals(other.systemId);
+        }
+        public String toString() {
+            return XMLConstants.NULL_NS_URI.equals(namespace) ?
+                    systemId : ("{" + namespace + "}" + systemId);
+        }
+    }
+
     /**
-     * Namespaces we know about.  Each one has an equivalent XmlSchema.
+     * Map of included schemas.
      */
-    Map namespaces = new HashMap();
+    private Map schemas = new HashMap();
+
+    
     /**
      * base URI is used as the base for loading the
      * imports
@@ -66,11 +95,6 @@ public final class XmlSchemaCollection {
     Map inScopeNamespaces = new HashMap();
 
     /**
-     * Schemas in this colelction sorted by system id.
-     */
-    Map systemId2Schemas = new HashMap();
-    
-    /**
      * An org.xml.sax.EntityResolver that is used to
      * resolve the imports/includes
      */
@@ -79,11 +103,6 @@ public final class XmlSchemaCollection {
     XmlSchema xsd = new XmlSchema(XmlSchema.SCHEMA_NS, this);
 
     /** 
-     * A Set of all the scehmas in this collection.
-     */
-    Set schemas = new HashSet();
-    
-    /**
      * Set the base URI. This is used when schemas need to be
      * loaded from relative locations
      * @param baseUri
@@ -208,7 +227,25 @@ public final class XmlSchemaCollection {
         addSimpleType(xsd, Constants.XSD_LANGUAGE.getLocalPart());
         addSimpleType(xsd, Constants.XSD_TOKEN.getLocalPart());
 
-        namespaces.put(XmlSchema.SCHEMA_NS, xsd);
+        SchemaKey key = new SchemaKey(XmlSchema.SCHEMA_NS, null);
+        addSchema(key, xsd);
+    }
+
+    boolean containsSchema(SchemaKey pKey) {
+        return schemas.containsKey(pKey);
+    }
+
+    XmlSchema getSchema(SchemaKey pKey) {
+        return (XmlSchema) schemas.get(pKey);
+    }
+
+    void addSchema(SchemaKey pKey, XmlSchema pSchema) {
+        if (schemas.containsKey(pKey)) {
+            throw new IllegalStateException("A schema with target namespace "
+                    + pKey.getNamespace() + " and system ID " + pKey.getSystemId()
+                    + " is already present.");
+        }
+        schemas.put(pKey, pSchema);
     }
 
     private void addSimpleType(XmlSchema schema,String typeName){
@@ -221,13 +258,14 @@ public final class XmlSchemaCollection {
         return read(new InputSource(r), veh);
     }
 
-    public XmlSchema read(InputSource inputSource, ValidationEventHandler veh) {
+    XmlSchema read(InputSource inputSource, ValidationEventHandler veh,
+            TargetNamespaceValidator namespaceValidator) {
         try {
             DocumentBuilderFactory docFac = DocumentBuilderFactory.newInstance();
             docFac.setNamespaceAware(true);
             DocumentBuilder builder = docFac.newDocumentBuilder();
             Document doc = builder.parse(inputSource);
-            return read(doc, inputSource.getSystemId(), veh);
+            return read(doc, inputSource.getSystemId(), veh, namespaceValidator);
         } catch (ParserConfigurationException e) {
             throw new XmlSchemaException(e.getMessage());
         } catch (IOException e) {
@@ -237,39 +275,43 @@ public final class XmlSchemaCollection {
         }
     }
 
+    public XmlSchema read(InputSource inputSource, ValidationEventHandler veh) {
+        return read(inputSource, veh, null);
+    }
+
     public XmlSchema read(Source source, ValidationEventHandler veh) {
         try {
             TransformerFactory trFac = TransformerFactory.newInstance();
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            StreamResult result = new StreamResult(out);
-            javax.xml.transform.Transformer tr = trFac.newTransformer();
-            tr.setOutputProperty(OutputKeys.METHOD, "xml");
-            tr.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-            tr.transform(source, result);
-            ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
-            return read(new InputSource(in), veh);
+            DOMResult result = new DOMResult();
+            trFac.newTransformer().transform(source, result);
+            return read((Document) result.getNode(), veh);
         } catch (TransformerException e) {
-            throw new XmlSchemaException(e.getMessage());
+            throw new XmlSchemaException(e.getMessage(), e);
         }
     }
 
     public XmlSchema read(Document doc, ValidationEventHandler veh) {
-        SchemaBuilder builder = new SchemaBuilder(this);
+        SchemaBuilder builder = new SchemaBuilder(this, null);
         return builder.build(doc, null, veh);
     }
 
     public XmlSchema read(Element elem) {
-        SchemaBuilder builder = new SchemaBuilder(this);
+        SchemaBuilder builder = new SchemaBuilder(this, null);
         return builder.handleXmlSchemaElement(elem, null);
     }
     
     public XmlSchema read(Document doc, String uri, ValidationEventHandler veh) {
-        SchemaBuilder builder = new SchemaBuilder(this);
+        return read(doc, uri, veh, null);
+    }
+
+    public XmlSchema read(Document doc, String uri, ValidationEventHandler veh,
+            TargetNamespaceValidator validator) {
+        SchemaBuilder builder = new SchemaBuilder(this, validator);
         return builder.build(doc, uri, veh);
     }
 
     public XmlSchema read(Element elem, String uri) {
-        SchemaBuilder builder = new SchemaBuilder(this);
+        SchemaBuilder builder = new SchemaBuilder(this, null);
         return builder.handleXmlSchemaElement(elem, uri);
     }
 
@@ -281,34 +323,62 @@ public final class XmlSchemaCollection {
     }
 
     /**
-     * Retreive an XmlSchema from the collection by its system ID.
+     * Retrieve a set of XmlSchema instances with the given its system ID.
+     * In general, this will return a single instance, or none. However,
+     * if the schema has no targetNamespace attribute and was included
+     * from schemata with different target namespaces, then it may
+     * occur, that multiple schema instances with different logical
+     * target namespaces may be returned.
      * @param systemId
      */
-    public XmlSchema getXmlSchema(String systemId) {
-        return (XmlSchema) systemId2Schemas.get(systemId);
+    public XmlSchema[] getXmlSchema(String systemId) {
+        if (systemId == null) {
+            systemId = "";
+        }
+        final List result = new ArrayList();
+        for (Iterator iter = schemas.entrySet().iterator();  iter.hasNext();  ) {
+            Map.Entry entry = (Map.Entry) iter.next();
+            if (((SchemaKey) entry.getKey()).getSystemId().equals(systemId)) {
+                result.add(entry.getValue());
+            }
+        }
+        return (XmlSchema[]) result.toArray(new XmlSchema[result.size()]);
     }
     
     /**
-     * Return a Set of all the XmlSchemas in this collection.
+     * Returns an array of all the XmlSchemas in this collection.
      */
-    public Set getXmlSchemas() {
-        return Collections.unmodifiableSet(schemas);
+    public XmlSchema[] getXmlSchemas() {
+        Collection c = schemas.values();
+        return (XmlSchema[]) c.toArray(new XmlSchema[c.size()]);
     }
     
     public XmlSchemaElement getElementByQName(QName qname) {
-        XmlSchema schema = (XmlSchema)namespaces.get(qname.getNamespaceURI());
-        if (schema == null) {
-            return null;
+        String uri = qname.getNamespaceURI();
+        for (Iterator iter = schemas.entrySet().iterator();  iter.hasNext();  ) {
+            Map.Entry entry = (Map.Entry) iter.next();
+            if (((SchemaKey) entry.getKey()).getNamespace().equals(uri)) {
+                XmlSchemaElement element = ((XmlSchema) entry.getValue()).getElementByName(qname);
+                if (element != null) {
+                    return element;
+                }
         }
-        return schema.getElementByName(qname);
+        }
+        return null;
     }
 
     public XmlSchemaType getTypeByQName(QName schemaTypeName) {
-        XmlSchema schema = (XmlSchema)namespaces.get(schemaTypeName.getNamespaceURI());
-        if (schema == null) {
-            return null;
+        String uri = schemaTypeName.getNamespaceURI();
+        for (Iterator iter = schemas.entrySet().iterator();  iter.hasNext();  ) {
+            Map.Entry entry = (Map.Entry) iter.next();
+            if (((SchemaKey) entry.getKey()).getNamespace().equals(uri)) {
+                XmlSchemaType type = ((XmlSchema) entry.getValue()).getTypeByName(schemaTypeName);
+                if (type != null) {
+                    return type;
+                }
         }
-        return schema.getTypeByName(schemaTypeName);
+        }
+        return null;
     }
 
     Map unresolvedTypes = new HashMap();
