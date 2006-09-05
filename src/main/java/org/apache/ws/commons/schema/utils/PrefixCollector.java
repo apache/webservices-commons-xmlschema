@@ -16,11 +16,9 @@
 
 package org.apache.ws.commons.schema.utils;
 
-import javax.xml.XMLConstants;
-
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-
+import org.apache.ws.commons.schema.constants.Constants;
 
 /**
  * Searches for namespace prefix declarations.
@@ -43,9 +41,9 @@ public abstract class PrefixCollector {
             for (int i = 0; i < map.getLength(); i++) {
                 Node attr = map.item(i);
                 final String uri = attr.getNamespaceURI();
-                if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(uri)) {
+                if (Constants.XMLNS_ATTRIBUTE_NS_URI.equals(uri)) {
                     String localName = attr.getLocalName();
-                    String prefix = XMLConstants.XMLNS_ATTRIBUTE.equals(localName) ? XMLConstants.DEFAULT_NS_PREFIX : localName;
+                    String prefix = Constants.XMLNS_ATTRIBUTE.equals(localName) ? Constants.DEFAULT_NS_PREFIX : localName;
                     declare(prefix, attr.getNodeValue());
                 }
             }

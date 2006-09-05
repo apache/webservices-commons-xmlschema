@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -503,16 +502,16 @@ public class SchemaBuilder {
     	final String localName;
     	final String prefix;
     	if (offset == -1) {
-    		uri = pContext.getNamespaceURI(XMLConstants.DEFAULT_NS_PREFIX);
-    		if (XMLConstants.NULL_NS_URI.equals(uri)) {
+    		uri = pContext.getNamespaceURI(Constants.DEFAULT_NS_PREFIX);
+    		if (Constants.NULL_NS_URI.equals(uri)) {
     			return new QName(schema.targetNamespace, pName);
     		}
     		localName = pName;
-    		prefix = XMLConstants.DEFAULT_NS_PREFIX;
+    		prefix = Constants.DEFAULT_NS_PREFIX;
     	} else {
     		prefix = pName.substring(0, offset);
     		uri = pContext.getNamespaceURI(prefix);
-    		if (uri == null  ||  XMLConstants.NULL_NS_URI.equals(uri)) {
+    		if (uri == null  ||  Constants.NULL_NS_URI.equals(uri)) {
     			throw new IllegalStateException("The prefix " + prefix + " is not bound.");
     		}
     		localName = pName.substring(offset+1);
@@ -1294,7 +1293,7 @@ public class SchemaBuilder {
                         ctx = new NodeNamespaceContext(attrEl);
                     }
                     String namespace = ctx.getNamespaceURI(prefix);
-                    if (!XMLConstants.NULL_NS_URI.equals(namespace)) {
+                    if (!Constants.NULL_NS_URI.equals(namespace)) {
                         Attr nsAttr = attrEl.getOwnerDocument().createAttribute("xmlns:" + prefix);
                         nsAttr.setValue(namespace);
                         attrs.add(nsAttr);

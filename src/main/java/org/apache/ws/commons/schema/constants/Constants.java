@@ -123,4 +123,18 @@ public class Constants {
     public static class MetaDataConstants{
         public static final String EXTERNAL_ATTRIBUTES = "EXTERNAL_ATTRIBUTES";
     }
+
+    public static final String XMLNS_ATTRIBUTE_NS_URI =
+        "http://www.w3.org/2000/xmlns/";
+
+    public static final String XMLNS_ATTRIBUTE = "xmlns";
+
+    public static final String DEFAULT_NS_PREFIX = "";
+
+    public static final String XML_NS_URI =
+        "http://www.w3.org/XML/1998/namespace";
+
+    public static final String XML_NS_PREFIX = "xml";
+
+    public static final String NULL_NS_URI = "";
 }
