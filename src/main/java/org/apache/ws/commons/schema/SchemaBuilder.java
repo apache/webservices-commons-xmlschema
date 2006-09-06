@@ -461,7 +461,9 @@ public class SchemaBuilder {
 
                 union.baseTypes.add(unionSimpleType);
 
-                union.memberTypesSource += " " + unionSimpleType.name;
+                if(unionSimpleType.name != null) {
+                    union.memberTypesSource += " " + unionSimpleType.name;
+                }
 
                 inlineUnionType =
                         XDOMUtil.getNextSiblingElementNS(inlineUnionType,

@@ -1340,7 +1340,7 @@ public class XmlSchemaSerializer {
         if (unionObj.memberTypesSource != null)
             union.setAttribute("memberTypes",
                     unionObj.memberTypesSource);
-        else if (unionObj.baseTypes.getCount() > 0) {
+        if (unionObj.baseTypes.getCount() > 0) {
             int baseTypesLength = unionObj.baseTypes.getCount();
             Element baseType;
             for (int i = 0; i < baseTypesLength; i++) {
