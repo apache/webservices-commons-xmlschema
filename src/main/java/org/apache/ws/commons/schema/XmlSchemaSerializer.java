@@ -1146,7 +1146,7 @@ public class XmlSchemaSerializer {
                 choice.setAttribute("id", choiceObj.id);
 
 
-        if (choiceObj.maxOccurs < Long.MAX_VALUE && choiceObj.maxOccurs > 1)
+        if (choiceObj.maxOccurs < Long.MAX_VALUE && choiceObj.maxOccurs != 1)
             choice.setAttribute("maxOccurs",
                     choiceObj.maxOccurs + "");
         else if (choiceObj.maxOccurs == Long.MAX_VALUE)
@@ -1154,7 +1154,7 @@ public class XmlSchemaSerializer {
                     "unbounded");
         //else not serialized
 
-        if (choiceObj.minOccurs > 1)
+        if (choiceObj.minOccurs != 1)
             choice.setAttribute("minOccurs",
                     choiceObj.minOccurs + "");
 

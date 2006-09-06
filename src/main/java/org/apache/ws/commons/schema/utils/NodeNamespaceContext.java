@@ -49,7 +49,8 @@ public class NodeNamespaceContext implements NamespacePrefixList {
     private Map getDeclarations() {
         if (declarations == null) {
             declarations = new HashMap();
-            declarations.put(Constants.DEFAULT_NS_PREFIX, Constants.NULL_NS_URI);
+            //FIXME: Do we really need to add this mapping? shows up in the serialized schema as xmlns="" 
+            //declarations.put(Constants.DEFAULT_NS_PREFIX, Constants.NULL_NS_URI);
             new PrefixCollector(){
                 protected void declare(String pPrefix, String pNamespaceURI) {
                     declarations.put(pPrefix, pNamespaceURI);
