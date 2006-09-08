@@ -16,6 +16,7 @@ import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
 import org.apache.ws.commons.schema.XmlSchemaInclude;
+import org.xml.sax.InputSource;
 
 /*
  * Copyright 2004,2005 The Apache Software Foundation.
@@ -132,4 +133,29 @@ public class IncludeTest extends TestCase {
         assertNotNull(schemaCol.getTypeByQName(new QName("http://tns.demo.org", "XdwsGroupId")));
 	}
 
+    /**
+     * Schema included defined xmlns="http://www.w3.org/2001/XMLSchema"
+     * @throws Exception
+     */
+    public void testSchemaInclude() throws Exception{
+        String uri = Resources.asURI("WSCOMMONS-87/includeBase.xsd");
+        InputSource isource = new InputSource(new FileInputStream(uri));
+        isource.setSystemId(uri);
+        XmlSchemaCollection schemaCol = new XmlSchemaCollection();
+        XmlSchema schema = schemaCol.read(isource, null);
+        assertNotNull(schema);
+    }
+    
+    /**
+     * Schema included does not define xmlns="http://www.w3.org/2001/XMLSchema"
+     * @throws Exception
+     */
+    public void testSchemaIncludeNoDefaultNS() throws Exception{
+        String uri = Resources.asURI("WSCOMMONS-87/includeBaseNoDefaultNS.xsd");
+        InputSource isource = new InputSource(new FileInputStream(uri));
+        isource.setSystemId(uri);
+        XmlSchemaCollection schemaCol = new XmlSchemaCollection();
+        XmlSchema schema = schemaCol.read(isource, null);
+        assertNotNull(schema);
+    }
 }
