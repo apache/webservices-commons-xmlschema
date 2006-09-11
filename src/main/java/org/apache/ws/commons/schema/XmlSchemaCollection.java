@@ -38,6 +38,7 @@ import org.apache.ws.commons.schema.constants.Constants;
 import org.apache.ws.commons.schema.resolver.DefaultURIResolver;
 import org.apache.ws.commons.schema.resolver.URIResolver;
 import org.apache.ws.commons.schema.utils.TargetNamespaceValidator;
+import org.apache.ws.commons.schema.utils.NamespacePrefixList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
@@ -91,7 +92,7 @@ public final class XmlSchemaCollection {
     /**
      * In-scope namespaces for XML processing
      */
-    Map inScopeNamespaces = new HashMap();
+    private NamespacePrefixList namespaceContext;
 
     /**
      * An org.xml.sax.EntityResolver that is used to
@@ -400,5 +401,13 @@ public final class XmlSchemaCollection {
             receiver.setType(type);
         }
         unresolvedTypes.remove(typeName);
+    }
+
+    public NamespacePrefixList getNamespaceContext() {
+        return namespaceContext;
+    }
+
+    public void setNamespaceContext(NamespacePrefixList namespaceContext) {
+        this.namespaceContext = namespaceContext;
     }
 }

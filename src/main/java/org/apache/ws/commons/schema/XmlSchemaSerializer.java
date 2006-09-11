@@ -104,7 +104,17 @@ public class XmlSchemaSerializer {
             if (targetNS == null) {
                 serializedSchema.setAttributeNS(XMLNS_NAMESPACE_URI,
                         "xmlns", schemaObj.syntacticalTargetNamespace);
-                schema_ns.put(schemaObj.syntacticalTargetNamespace, "");
+                String prefix = null;
+                if(schemaObj.getNamespaceContext() != null) {
+                    prefix = schemaObj.getNamespaceContext().getPrefix(schemaObj.syntacticalTargetNamespace);    
+                }
+                if(prefix == null && schemaObj.parent != null && schemaObj.parent.getNamespaceContext() != null) {
+                    prefix = schemaObj.parent.getNamespaceContext().getPrefix(schemaObj.syntacticalTargetNamespace);    
+                }
+                if(prefix == null) {
+                    prefix = "";
+                }
+                schema_ns.put(schemaObj.syntacticalTargetNamespace, prefix);
             }
         }
 

@@ -498,7 +498,7 @@ public class SchemaBuilder {
 
     private QName getRefQName(String pName, NamespaceContext pContext) {
     	final int offset = pName.indexOf(':');
-    	final String uri;
+    	String uri;
     	final String localName;
     	final String prefix;
     	if (offset == -1) {
@@ -511,8 +511,14 @@ public class SchemaBuilder {
     	} else {
     		prefix = pName.substring(0, offset);
     		uri = pContext.getNamespaceURI(prefix);
+            if (uri == null  ||  Constants.NULL_NS_URI.equals(uri)) {
+                if(schema.parent != null) {
+                    uri = schema.parent.getNamespaceContext().getNamespaceURI(prefix);
+                }
+            }
+
     		if (uri == null  ||  Constants.NULL_NS_URI.equals(uri)) {
-    			throw new IllegalStateException("The prefix " + prefix + " is not bound.");
+                throw new IllegalStateException("The prefix " + prefix + " is not bound.");
     		}
     		localName = pName.substring(offset+1);
     	}

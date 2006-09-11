@@ -25,14 +25,14 @@ public class NamespaceMap extends HashMap implements NamespacePrefixList {
     }
 
     public String getNamespaceURI(String prefix) {
-        return (String) get(prefix);
+        return get(prefix).toString();
     }
 
     public String getPrefix(String namespaceURI) {
         Iterator iterator = entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry entry = (Map.Entry) iterator.next();
-            if (entry.getValue().equals(namespaceURI)) {
+            if (entry.getValue().toString().equals(namespaceURI)) {
                 return (String) entry.getKey();
             }
         }
@@ -44,7 +44,7 @@ public class NamespaceMap extends HashMap implements NamespacePrefixList {
         Iterator iterator = entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry entry = (Map.Entry) iterator.next();
-            if (entry.getValue().equals(namespaceURI)) {
+            if (entry.getValue().toString().equals(namespaceURI)) {
                 list.add(entry.getKey());
             }
         }
