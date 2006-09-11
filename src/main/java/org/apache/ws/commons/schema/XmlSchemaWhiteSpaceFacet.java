@@ -36,4 +36,16 @@ public class XmlSchemaWhiteSpaceFacet extends XmlSchemaFacet {
     public XmlSchemaWhiteSpaceFacet(Object value, boolean fixed) {
         super(value, fixed);
     }
+
+    public String toString(String prefix, int tab) {
+        StringBuffer xml = new StringBuffer();
+        for (int i = 0; i < tab; i++) {
+            xml.append("\t");
+        }
+        xml.append("<whiteSpace value=\""
+                   + (String)super.getValue() + "\" ");
+        xml.append("fixed=\"" + super.isFixed() + "\"/>\n");
+        return xml.toString();
+    }
+
 }

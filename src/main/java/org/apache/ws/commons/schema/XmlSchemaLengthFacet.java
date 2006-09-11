@@ -32,4 +32,16 @@ public class XmlSchemaLengthFacet extends XmlSchemaNumericFacet {
     public XmlSchemaLengthFacet(Object value, boolean fixed) {
         super(value, fixed);
     }
+    
+    public String toString(String prefix, int tab) {
+        StringBuffer xml = new StringBuffer();
+        for (int i = 0; i < tab; i++) {
+            xml.append("\t");
+        }
+        xml.append("<length value=\""
+                   + (String)super.getValue() + "\" ");
+        xml.append("fixed=\"" + super.isFixed() + "\"/>\n");
+        return xml.toString();
+    }
+
 }

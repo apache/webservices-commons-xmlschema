@@ -1,3 +1,20 @@
+/*
+ * Copyright 2004,2005 The Apache Software Foundation.
+ * Copyright 2006 International Business Machines Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
 package tests;
 
 import java.io.FileInputStream;
@@ -33,24 +50,6 @@ import org.apache.ws.commons.schema.XmlSchemaSimpleTypeRestriction;
 import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
 
-/*
- * Copyright 2004,2005 The Apache Software Foundation.
- * Copyright 2006 International Business Machines Corp.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * @author Brent Ulbricht
- */
 public class FacetsTest extends TestCase {
 
     /**
@@ -106,9 +105,17 @@ public class FacetsTest extends TestCase {
             if (o instanceof XmlSchemaLengthFacet) {
                 assertEquals("5", ((XmlSchemaLengthFacet)o).getValue());
                 assertEquals(false, ((XmlSchemaLengthFacet)o).isFixed());
+                String toStr = ((XmlSchemaLengthFacet)o).toString("xsd", 1);
+                assertTrue("The toString(String, int) method did not contain "
+                           + "\"length\", but did contain: " + toStr,
+                           toStr.indexOf("length value=\"5\"") != -1);
             } else if (o instanceof XmlSchemaPatternFacet) {
                 assertEquals("\\d{5}", ((XmlSchemaPatternFacet)o).getValue());
                 assertEquals(false, ((XmlSchemaPatternFacet)o).isFixed());
+                String toStr = ((XmlSchemaPatternFacet)o).toString("xsd", 1);
+                assertTrue("The toString(String, int) method did not contain "
+                           + "\"pattern\", but did contain: " + toStr,
+                           toStr.indexOf("pattern value=\"\\d{5}\"") != -1);
             } else {
                 fail("Unexpected object encountered: " + o.getClass().getName());
             }
@@ -171,6 +178,10 @@ public class FacetsTest extends TestCase {
             if (o instanceof XmlSchemaPatternFacet) {
                 assertEquals("\\d{15}", ((XmlSchemaPatternFacet)o).getValue());
                 assertEquals(false, ((XmlSchemaPatternFacet)o).isFixed());
+                String toStr = ((XmlSchemaPatternFacet)o).toString("xsd", 1);
+                assertTrue("The toString(String, int) method did not contain "
+                           + "\"pattern\", but did contain: " + toStr,
+                           toStr.indexOf("pattern value=\"\\d{15}\"") != -1);
             } else {
                 fail("Unexpected object encountered: " + o.getClass().getName());
             }
@@ -233,6 +244,10 @@ public class FacetsTest extends TestCase {
             if (o instanceof XmlSchemaTotalDigitsFacet) {
                 assertEquals("3", ((XmlSchemaTotalDigitsFacet)o).getValue());
                 assertEquals(false, ((XmlSchemaTotalDigitsFacet)o).isFixed());
+                String toStr = ((XmlSchemaTotalDigitsFacet)o).toString("xsd", 1);
+                assertTrue("The toString(String, int) method did not contain "
+                           + "\"totalDigits\", but did contain: " + toStr,
+                           toStr.indexOf("totalDigits value=\"3\"") != -1);
             } else {
                 fail("Unexpected object encountered: " + o.getClass().getName());
             }
@@ -297,9 +312,17 @@ public class FacetsTest extends TestCase {
             if (o instanceof XmlSchemaMaxInclusiveFacet) {
                 assertEquals("100", ((XmlSchemaMaxInclusiveFacet)o).getValue());
                 assertEquals(true, ((XmlSchemaMaxInclusiveFacet)o).isFixed());
+                String toStr = ((XmlSchemaMaxInclusiveFacet)o).toString("xsd", 1);
+                assertTrue("The toString(String, int) method did not contain "
+                           + "\"maxInclusive\", but did contain: " + toStr,
+                           toStr.indexOf("maxInclusive value=\"100\"") != -1);
             } else if (o instanceof XmlSchemaMinInclusiveFacet) {
                 assertEquals("0", ((XmlSchemaMinInclusiveFacet)o).getValue());
                 assertEquals(false, ((XmlSchemaMinInclusiveFacet)o).isFixed());
+                String toStr = ((XmlSchemaMinInclusiveFacet)o).toString("xsd", 1);
+                assertTrue("The toString(String, int) method did not contain "
+                           + "\"minInclusive\", but did contain: " + toStr,
+                           toStr.indexOf("minInclusive value=\"0\"") != -1);
             } else {
                 fail("Unexpected object encountered: " + o.getClass().getName());
             }
@@ -364,9 +387,17 @@ public class FacetsTest extends TestCase {
             if (o instanceof XmlSchemaMaxExclusiveFacet) {
                 assertEquals("200", ((XmlSchemaMaxExclusiveFacet)o).getValue());
                 assertEquals(false, ((XmlSchemaMaxExclusiveFacet)o).isFixed());
+                String toStr = ((XmlSchemaMaxExclusiveFacet)o).toString("xsd", 1);
+                assertTrue("The toString(String, int) method did not contain "
+                           + "\"maxExclusive\", but did contain: " + toStr,
+                           toStr.indexOf("maxExclusive value=\"200\"") != -1);
             } else if (o instanceof XmlSchemaMinExclusiveFacet) {
                 assertEquals("1", ((XmlSchemaMinExclusiveFacet)o).getValue());
                 assertEquals(false, ((XmlSchemaMinExclusiveFacet)o).isFixed());
+                String toStr = ((XmlSchemaMinExclusiveFacet)o).toString("xsd", 1);
+                assertTrue("The toString(String, int) method did not contain "
+                           + "\"minExclusive\", but did contain: " + toStr,
+                           toStr.indexOf("minExclusive value=\"1\"") != -1);
             } else {
                 fail("Unexpected object encountered: " + o.getClass().getName());
             }
@@ -429,6 +460,10 @@ public class FacetsTest extends TestCase {
             if (o instanceof XmlSchemaWhiteSpaceFacet) {
                 assertEquals("collapse", ((XmlSchemaWhiteSpaceFacet)o).getValue());
                 assertEquals(false, ((XmlSchemaWhiteSpaceFacet)o).isFixed());
+                String toStr = ((XmlSchemaWhiteSpaceFacet)o).toString("xsd", 1);
+                assertTrue("The toString(String, int) method did not contain "
+                           + "\"minExclusive\", but did contain: " + toStr,
+                           toStr.indexOf("whiteSpace value=\"collapse\"") != -1);
             } else {
                 fail("Unexpected object encountered: " + o.getClass().getName());
             }
@@ -493,9 +528,17 @@ public class FacetsTest extends TestCase {
             if (o instanceof XmlSchemaFractionDigitsFacet) {
                 assertEquals("2", ((XmlSchemaFractionDigitsFacet)o).getValue());
                 assertEquals(false, ((XmlSchemaFractionDigitsFacet)o).isFixed());
+                String toStr = ((XmlSchemaFractionDigitsFacet)o).toString("xsd", 1);
+                assertTrue("The toString(String, int) method did not contain "
+                           + "\"fractionDigits\", but did contain: " + toStr,
+                           toStr.indexOf("fractionDigits value=\"2\"") != -1);
             } else if (o instanceof XmlSchemaTotalDigitsFacet) {
                 assertEquals("3", ((XmlSchemaTotalDigitsFacet)o).getValue());
                 assertEquals(false, ((XmlSchemaTotalDigitsFacet)o).isFixed());
+                String toStr = ((XmlSchemaTotalDigitsFacet)o).toString("xsd", 1);
+                assertTrue("The toString(String, int) method did not contain "
+                           + "\"totalDigits\", but did contain: " + toStr,
+                           toStr.indexOf("totalDigits value=\"3\"") != -1);
             } else {
                 fail("Unexpected object encountered: " + o.getClass().getName());
             }
@@ -560,9 +603,17 @@ public class FacetsTest extends TestCase {
             if (o instanceof XmlSchemaMinLengthFacet) {
                 assertEquals("45", ((XmlSchemaMinLengthFacet)o).getValue());
                 assertEquals(false, ((XmlSchemaMinLengthFacet)o).isFixed());
+                String toStr = ((XmlSchemaMinLengthFacet)o).toString("xsd", 1);
+                assertTrue("The toString(String, int) method did not contain "
+                           + "\"minExclusive\", but did contain: " + toStr,
+                           toStr.indexOf("minLength value=\"45\"") != -1);
             } else if (o instanceof XmlSchemaMaxLengthFacet) {
                 assertEquals("205", ((XmlSchemaMaxLengthFacet)o).getValue());
                 assertEquals(false, ((XmlSchemaMaxLengthFacet)o).isFixed());
+                String toStr = ((XmlSchemaMaxLengthFacet)o).toString("xsd", 1);
+                assertTrue("The toString(String, int) method did not contain "
+                           + "\"maxLength\", but did contain: " + toStr,
+                           toStr.indexOf("maxLength value=\"205\"") != -1);
             } else {
                 fail("Unexpected object encountered: " + o.getClass().getName());
             }
@@ -627,6 +678,16 @@ public class FacetsTest extends TestCase {
             assertTrue("Atempted to remove an enumeration with the value of "
                        + "\"" + value + "\", but the value was not in the set.",
                        s.remove(value));
+            String toStr = xsef.toString("xsd", 1);
+            if (value.equals("Field")) {
+                assertTrue("The toString(String, int) method did not contain "
+                           + "\"enumeration\", but did contain: " + toStr,
+                           toStr.indexOf("enumeration value=\"Field\"") != -1);
+            } else if (value.equals("Separator")) {
+                assertTrue("The toString(String, int) method did not contain "
+                           + "\"enumeration\", but did contain: " + toStr,
+                           toStr.indexOf("enumeration value=\"Separator\"") != -1);
+            }
         }
 
         assertTrue("The set should have been empty, but instead contained: "
