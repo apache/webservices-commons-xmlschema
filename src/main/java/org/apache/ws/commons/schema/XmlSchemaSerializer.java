@@ -31,9 +31,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.Hashtable;
-
+import java.util.Iterator;
+import java.util.Map;
 
 public class XmlSchemaSerializer {
     private Hashtable schema_ns;
@@ -284,14 +284,15 @@ public class XmlSchemaSerializer {
         Element schemaEl = createNewElement(schemaDocs, "schema",
                 schemaObj.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
-        Enumeration keys = schema_ns.keys();
+        Iterator entries = schema_ns.entrySet().iterator();
 
-        while (keys.hasMoreElements()) {
+        while (entries.hasNext()) {
             //let it crash for null pointer because then either the schema
             //is wrong(namespace not set properly or bug in setting ns)
-            String key = keys.nextElement().toString();
-            String value = schema_ns.get(key).toString();
-            value = (value.length() > 1) ? "xmlns:" + value : "xmlns";
+            Map.Entry entry = (Map.Entry) entries.next();
+            String key = entry.getKey().toString();
+            String value = entry.getValue().toString();
+            value = (value.length() > 0) ? "xmlns:" + value : "xmlns";
             schemaEl.setAttributeNS(XMLNS_NAMESPACE_URI,
                     value, key);
         }
