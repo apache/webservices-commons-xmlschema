@@ -32,7 +32,10 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Source;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.dom.DOMResult;
+import javax.xml.transform.dom.DOMSource;
 
 import org.apache.ws.commons.schema.constants.Constants;
 import org.apache.ws.commons.schema.resolver.DefaultURIResolver;
@@ -41,6 +44,7 @@ import org.apache.ws.commons.schema.utils.TargetNamespaceValidator;
 import org.apache.ws.commons.schema.utils.NamespacePrefixList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -280,13 +284,24 @@ public final class XmlSchemaCollection {
     }
 
     public XmlSchema read(Source source, ValidationEventHandler veh) {
-        try {
-            TransformerFactory trFac = TransformerFactory.newInstance();
-            DOMResult result = new DOMResult();
-            trFac.newTransformer().transform(source, result);
-            return read((Document) result.getNode(), veh);
-        } catch (TransformerException e) {
-            throw new XmlSchemaException(e.getMessage(), e);
+        if (source instanceof SAXSource) {
+            return read(((SAXSource) source).getInputSource(), veh);
+        } else if (source instanceof DOMSource) {
+            Node node = ((DOMSource) source).getNode();
+            if (node instanceof Document) {
+                node = ((Document) node).getDocumentElement();
+            }
+            return read((Document) node, veh);
+        } else if (source instanceof StreamSource) {
+            StreamSource ss = (StreamSource) source;
+            InputSource isource = new InputSource(ss.getSystemId());
+            isource.setByteStream(ss.getInputStream());
+            isource.setCharacterStream(ss.getReader());
+            isource.setPublicId(ss.getPublicId());
+            return read(isource, veh);
+        } else {
+            InputSource isource = new InputSource(source.getSystemId());
+            return read(isource, veh);
         }
     }
 
