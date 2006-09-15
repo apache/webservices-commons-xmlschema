@@ -512,7 +512,7 @@ public class SchemaBuilder {
     		prefix = pName.substring(0, offset);
     		uri = pContext.getNamespaceURI(prefix);
             if (uri == null  ||  Constants.NULL_NS_URI.equals(uri)) {
-                if(schema.parent != null) {
+                if(schema.parent != null && schema.parent.getNamespaceContext() != null) {
                     uri = schema.parent.getNamespaceContext().getNamespaceURI(prefix);
                 }
             }
