@@ -38,8 +38,12 @@ public class XmlSchemaMaxExclusiveFacet extends XmlSchemaFacet {
         for (int i = 0; i < tab; i++) {
             xml.append("\t");
         }
-        xml.append("<maxExclusive value=\"").append(super.getValue()).append("\" ");
-        xml.append("fixed=\"" + super.isFixed() + "\"/>\n");
+        xml.append("<maxExclusive value=\"");
+        xml.append(super.getValue());
+        xml.append("\" ");
+        xml.append("fixed=\"");
+        xml.append(super.isFixed());
+        xml.append("\"/>\n");
         return xml.toString();
     }
 

@@ -1393,9 +1393,10 @@ public class SchemaBuilder {
             element.constraints.add(handleConstraint(uniqueEl, "Unique"));
         }
 
-        if (el.hasAttribute("abstract"))
+        if (el.hasAttribute("abstract")) {
             element.isAbstract =
-                    new Boolean(el.getAttribute("abstract")).booleanValue();
+                    Boolean.valueOf(el.getAttribute("abstract")).booleanValue();
+        }
 
         if (el.hasAttribute("block"))
             element.block = getDerivation(el, "block");
@@ -1414,7 +1415,7 @@ public class SchemaBuilder {
 
         if (el.hasAttribute("nillable"))
             element.isNillable =
-                    new Boolean(el.getAttribute("nillable")).booleanValue();
+                    Boolean.valueOf(el.getAttribute("nillable")).booleanValue();
 
         if (el.hasAttribute("substitutionGroup")) {
             String substitutionGroup = el.getAttribute("substitutionGroup");

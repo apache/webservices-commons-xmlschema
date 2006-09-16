@@ -38,8 +38,13 @@ public class XmlSchemaFractionDigitsFacet extends XmlSchemaNumericFacet {
         for (int i = 0; i < tab; i++) {
             xml.append("\t");
         }
-        xml.append("<fractionDigits value=\"").append(super.getValue()).append("\" ");
-        xml.append("fixed=\"" + super.isFixed() + "\"/>\n");
+        xml.append("<fractionDigits value=\"");
+        xml.append(super.getValue());
+        xml.append("\" ");
+        
+        xml.append("fixed=\"");
+        xml.append(super.isFixed());
+        xml.append("\"/>\n");
         return xml.toString();
     }
 
