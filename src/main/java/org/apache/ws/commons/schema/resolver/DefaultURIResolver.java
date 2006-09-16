@@ -95,7 +95,7 @@ public class DefaultURIResolver implements URIResolver {
         String path = spec.replace('\\', '/');
 
         // See if we have a good URL.
-        URL url = null;
+        URL url;
 
         try {
 

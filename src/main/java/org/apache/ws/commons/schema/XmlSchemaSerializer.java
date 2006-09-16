@@ -78,7 +78,7 @@ public class XmlSchemaSerializer {
                                       boolean serializeIncluded) throws XmlSchemaSerializerException {
 
         XmlSchemaObjectCollection items = schemaObj.getItems();
-        Document serializedSchemaDocs = null;
+        Document serializedSchemaDocs;
         try {
             DocumentBuilderFactory docFac = DocumentBuilderFactory.newInstance();
             docFac.setNamespaceAware(true);
@@ -1104,7 +1104,7 @@ public class XmlSchemaSerializer {
                 String nodeName = unhandled[i].getNodeName();
                 if (value.indexOf(":") > -1 && !nodeName.startsWith("xmlns")) {
                     String prefix = value.substring(0, value.indexOf(":"));
-                    String oldNamespace = null;
+                    String oldNamespace;
                     if ((oldNamespace = (String) namespaces.get(prefix)) != null) {
                         value = value.substring(value.indexOf(":") + 1);
                         NamespacePrefixList ctx = schema.getNamespaceContext();
@@ -1534,7 +1534,6 @@ public class XmlSchemaSerializer {
 
 
         if (groupRefObj.particle != null) {
-            Element particleEl;
             if (groupRefObj.particle instanceof XmlSchemaChoice)
                 serializeChoice(doc, (XmlSchemaChoice) groupRefObj.particle, schema);
             else if (groupRefObj.particle instanceof XmlSchemaSequence)

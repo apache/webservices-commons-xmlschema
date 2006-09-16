@@ -78,7 +78,7 @@ public abstract class XmlSchemaFacet extends XmlSchemaAnnotated {
         if (el.getAttribute("fixed").equals("true")) {
             fixed = true;
         }
-        XmlSchemaFacet facet = null;
+        XmlSchemaFacet facet;
         if (name.equals("enumeration")) {
             facet = new XmlSchemaEnumerationFacet();
         } else if (name.equals("fractionDigits")) {
