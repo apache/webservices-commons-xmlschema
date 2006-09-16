@@ -176,7 +176,7 @@ public class SchemaBuilder {
                         el, schemaEl);
                 schema.includes.add(redefine);
             } else if (el.getLocalName().equals("notation")) {
-                XmlSchemaNotation notation = handleNotation(schema, el, schemaEl);
+                XmlSchemaNotation notation = handleNotation(el);
                 schema.notations.collection.put(notation.name, notation);
                 schema.items.add(notation);
             } else if (el.getLocalName().equals("annotation")) {
@@ -187,9 +187,9 @@ public class SchemaBuilder {
         return schema;
     }
 
-    private XmlSchemaNotation handleNotation(XmlSchema schema,
-                                             Element notationEl,
-                                             Element schemaEl) {
+    private XmlSchemaNotation handleNotation(
+            Element notationEl
+    ) {
 
         XmlSchemaNotation notation = new XmlSchemaNotation();
 
@@ -593,7 +593,7 @@ public class SchemaBuilder {
                 ct.attributes.add(handleAttribute(schema,
                         el, schemaEl));
             } else if (el.getLocalName().equals("attributeGroup")) {
-                ct.attributes.add(handleAttributeGroupRef(schema, el, schemaEl));
+                ct.attributes.add(handleAttributeGroupRef(el));
             } else if (el.getLocalName().equals("group")) {
                 XmlSchemaGroupRef group =
                         handleGroupRef(schema, el, schemaEl);
@@ -726,7 +726,7 @@ public class SchemaBuilder {
                 restriction.attributes.add(attr);
             } else if (el.getLocalName().equals("attributeGroup")) {
                 XmlSchemaAttributeGroupRef attrGroup =
-                        handleAttributeGroupRef(schema, el, schemaEl);
+                        handleAttributeGroupRef(el);
                 restriction.attributes.add(attrGroup);
             } else if (el.getLocalName().equals("simpleType")) {
                 restriction.baseType = handleSimpleType(schema, el, schemaEl);
@@ -774,7 +774,7 @@ public class SchemaBuilder {
                 ext.attributes.add(attr);
             } else if (el.getLocalName().equals("attributeGroup")) {
                 XmlSchemaAttributeGroupRef attrGroup =
-                        handleAttributeGroupRef(schema, el, schemaEl);
+                        handleAttributeGroupRef(el);
                 ext.attributes.add(attrGroup);
             } else if (el.getLocalName().equals("anyAttribute")) {
                 ext.anyAttribute =
@@ -812,7 +812,7 @@ public class SchemaBuilder {
             } else if (el.getLocalName().equals("attribute")) {
                 restriction.attributes.add(handleAttribute(schema, el, schemaEl));
             } else if (el.getLocalName().equals("attributeGroup")) {
-                restriction.attributes.add(handleAttributeGroupRef(schema, el, schemaEl));
+                restriction.attributes.add(handleAttributeGroupRef(el));
             } else if (el.getLocalName().equals("group")) {
                 restriction.particle = handleGroupRef(schema, el, schemaEl);
             } else if (el.getLocalName().equals("anyAttribute")) {
@@ -850,7 +850,7 @@ public class SchemaBuilder {
             } else if (el.getLocalName().equals("attribute")) {
                 ext.attributes.add(handleAttribute(schema, el, schemaEl));
             } else if (el.getLocalName().equals("attributeGroup")) {
-                ext.attributes.add(handleAttributeGroupRef(schema, el, schemaEl));
+                ext.attributes.add(handleAttributeGroupRef(el));
             } else if (el.getLocalName().equals("group")) {
                 ext.particle = handleGroupRef(schema, el, schemaEl);
             } else if (el.getLocalName().equals("anyAttribute")) {
@@ -864,8 +864,8 @@ public class SchemaBuilder {
     }
 
     private XmlSchemaAttributeGroupRef
-            handleAttributeGroupRef(XmlSchema schema, Element attrGroupEl,
-                                    Element schemaEl) {
+            handleAttributeGroupRef(Element attrGroupEl
+    ) {
 
         XmlSchemaAttributeGroupRef attrGroup =
                 new XmlSchemaAttributeGroupRef();
@@ -925,6 +925,7 @@ public class SchemaBuilder {
         return sequence;
     }
 
+    /** @noinspection UnusedParameters*/
     private XmlSchemaAny handleAny(XmlSchema schema,
                                    Element anyEl,
                                    Element schemaEl) {
@@ -1065,7 +1066,7 @@ public class SchemaBuilder {
                 attrGroup.attributes.add(attr);
             } else if (el.getLocalName().equals("attributeGroup")) {
                 XmlSchemaAttributeGroupRef attrGroupRef =
-                        handleAttributeGroupRef(schema, el, schemaEl);
+                        handleAttributeGroupRef(el);
                 attrGroup.attributes.add(attrGroupRef);
             } else if (el.getLocalName().equals("anyAttribute")) {
                 attrGroup.anyAttribute = handleAnyAttribute(schema,
@@ -1078,6 +1079,7 @@ public class SchemaBuilder {
         return attrGroup;
     }
 
+    /** @noinspection UnusedParameters*/
     private XmlSchemaAnyAttribute handleAnyAttribute(XmlSchema schema,
                                                      Element anyAttrEl,
                                                      Element schemaEl) {
@@ -1366,14 +1368,14 @@ public class SchemaBuilder {
         if ((keyEl =
                 XDOMUtil.getFirstChildElementNS(el, XmlSchema.SCHEMA_NS, "key")) != null) {
 
-            element.constraints.add(handleConstraint(schema, keyEl, schemaEl, "Key"));
+            element.constraints.add(handleConstraint(keyEl, "Key"));
         }
 
         if ((keyrefEl = XDOMUtil.getFirstChildElementNS(el, XmlSchema.SCHEMA_NS, "keyref")) != null) {
 
             XmlSchemaKeyref keyRef =
-                    (XmlSchemaKeyref) handleConstraint(schema, keyrefEl,
-                            schemaEl, "Keyref");
+                    (XmlSchemaKeyref) handleConstraint(keyrefEl,
+                            "Keyref");
 
             if (el.hasAttribute("refer")) {
                 String name = el.getAttribute("refer");
@@ -1388,7 +1390,7 @@ public class SchemaBuilder {
                 XDOMUtil.getFirstChildElementNS(el,
                         XmlSchema.SCHEMA_NS, "unique")) != null) {
 
-            element.constraints.add(handleConstraint(schema, uniqueEl, schemaEl, "Unique"));
+            element.constraints.add(handleConstraint(uniqueEl, "Unique"));
         }
 
         if (el.hasAttribute("abstract"))
@@ -1428,8 +1430,8 @@ public class SchemaBuilder {
         return element;
     }
 
-    private XmlSchemaIdentityConstraint handleConstraint(XmlSchema schema,
-                                                         Element constraintEl, Element schemaEl, String type) {
+    private XmlSchemaIdentityConstraint handleConstraint(
+            Element constraintEl, String type) {
 
         try {
             XmlSchemaIdentityConstraint constraint =
