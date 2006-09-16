@@ -38,8 +38,7 @@ public class XmlSchemaMaxLengthFacet extends XmlSchemaNumericFacet {
         for (int i = 0; i < tab; i++) {
             xml.append("\t");
         }
-        xml.append("<maxLength value=\""
-                   + (String)super.getValue() + "\" ");
+        xml.append("<maxLength value=\"").append(super.getValue()).append("\" ");
         xml.append("fixed=\"" + super.isFixed() + "\"/>\n");
         return xml.toString();
     }

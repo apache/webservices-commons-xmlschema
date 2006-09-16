@@ -38,9 +38,8 @@ public class XmlSchemaMinLengthFacet extends XmlSchemaNumericFacet {
         for (int i = 0; i < tab; i++) {
             xml.append("\t");
         }
-        xml.append("<minLength value=\""
-                   + (String)super.getValue() + "\" ");
-        xml.append("fixed=\"" + super.isFixed() + "\"/>\n");
+        xml.append("<minLength value=\"").append(super.getValue()).append("\" ");
+        xml.append("fixed=\"").append(super.isFixed()).append("\"/>\n");
         return xml.toString();
     }
 

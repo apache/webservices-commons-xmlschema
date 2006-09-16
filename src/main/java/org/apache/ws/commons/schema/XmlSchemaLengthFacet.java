@@ -38,8 +38,7 @@ public class XmlSchemaLengthFacet extends XmlSchemaNumericFacet {
         for (int i = 0; i < tab; i++) {
             xml.append("\t");
         }
-        xml.append("<length value=\""
-                   + (String)super.getValue() + "\" ");
+        xml.append("<length value=\"").append(super.getValue()).append("\" ");
         xml.append("fixed=\"" + super.isFixed() + "\"/>\n");
         return xml.toString();
     }

@@ -2183,7 +2183,7 @@ public class XmlSchemaSerializer {
                 Element attr = serializeAttribute(doc,
                         (XmlSchemaAttribute) obj, schema);
                 restriction.appendChild(attr);
-            } else if (obj instanceof XmlSchemaAttribute) {
+            } else if (obj instanceof XmlSchemaAttributeGroupRef) {
                 Element attrGroup = serializeAttributeGroupRef(doc,
                         (XmlSchemaAttributeGroupRef) obj, schema);
                 restriction.appendChild(attrGroup);

@@ -38,8 +38,7 @@ public class XmlSchemaMinExclusiveFacet extends XmlSchemaFacet {
         for (int i = 0; i < tab; i++) {
             xml.append("\t");
         }
-        xml.append("<minExclusive value=\""
-                   + (String)super.getValue() + "\" ");
+        xml.append("<minExclusive value=\"").append((String) super.getValue()).append("\" ");
         xml.append("fixed=\"" + super.isFixed() + "\"/>\n");
         return xml.toString();
     }

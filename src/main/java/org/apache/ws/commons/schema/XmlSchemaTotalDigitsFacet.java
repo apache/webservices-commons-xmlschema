@@ -38,9 +38,8 @@ public class XmlSchemaTotalDigitsFacet extends XmlSchemaNumericFacet {
         for (int i = 0; i < tab; i++) {
             xml.append("\t");
         }
-        xml.append("<totalDigits value=\""
-                   + (String)super.getValue() + "\" ");
-        xml.append("fixed=\"" + super.isFixed() + "\"/>\n");
+        xml.append("<totalDigits value=\"").append(super.getValue()).append("\" ");
+        xml.append("fixed=\"").append(super.isFixed()).append("\"/>\n");
         return xml.toString();
     }
 

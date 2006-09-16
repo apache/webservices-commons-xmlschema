@@ -38,8 +38,7 @@ public class XmlSchemaMaxInclusiveFacet extends XmlSchemaFacet {
         for (int i = 0; i < tab; i++) {
             xml.append("\t");
         }
-        xml.append("<maxInclusive value=\""
-                   + (String)super.getValue() + "\" ");
+        xml.append("<maxInclusive value=\"").append(super.getValue()).append("\" ");
         xml.append("fixed=\"" + super.isFixed() + "\"/>\n");
         return xml.toString();
     }

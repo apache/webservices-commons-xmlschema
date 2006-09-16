@@ -38,8 +38,7 @@ public class XmlSchemaMinInclusiveFacet extends XmlSchemaFacet {
         for (int i = 0; i < tab; i++) {
             xml.append("\t");
         }
-        xml.append("<minInclusive value=\""
-                   + (String)super.getValue() + "\" ");
+        xml.append("<minInclusive value=\"").append(super.getValue()).append("\" ");
         xml.append("fixed=\"" + super.isFixed() + "\"/>\n");
         return xml.toString();
     }
