@@ -22,6 +22,14 @@
     <preGoal name="jar:jar">
         <delete dir="${basedir}/target/classes/main" />
         <delete dir="${basedir}/target/classes/site" />
+
+        <!--copy license and notice files in to the jar file-->
+        <ant:copy toDir="${basedir}/target/classes" >
+            <ant:fileset dir="${basedir}">
+                <ant:include name="LICENSE.txt"/>
+                <ant:include name="NOTICE.txt"/>
+            </ant:fileset>
+        </ant:copy>
     </preGoal>
     <!-- create javadocs as a post goal to the site and copy them to the
   target/docs folder -->
@@ -80,6 +88,11 @@
         <mkdir dir="${dist}/lib"/>
         <!--copy dependent jars-->
         <deploy:copy-deps todir="${dist}/lib"/>
+        <ant:copy toDir="${dist}/lib">
+            <ant:fileset dir="legal"/>
+        </ant:copy>
+
+
         <ant:delete file="${dist}/lib/xmlunit-${xmlunit.version}.jar"/>
         <!--copy api docs-->
         <ant:copy toDir="${dist}/apidocs">
@@ -129,6 +142,7 @@
         <ant:copy toDir="${dist}">
             <ant:fileset file="maven.xml"/>
             <ant:fileset file="project.xml"/>
+            <ant:fileset file="pom.xml"/>
             <ant:fileset file="project.properties"/>
             <ant:fileset file="RELEASE-NOTE.txt"/>
             <ant:fileset file="LICENSE.txt"/>
