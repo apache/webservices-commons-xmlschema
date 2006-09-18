@@ -43,7 +43,7 @@ of schema handling.</p>
 <section name="Reading a Schema">
 <a name="reading"></a>
 <p>The reader for the XML Schema model is called the SchemaCollection
-(org.apache.ws.commons.schema.XmlSchemaCollection). It has a static
+(org.apache.ws.commons.schema.XmlSchemaCollection). It has a
 <em>read</em> method that returns a XmlSchema object which represents the
 whole schema. The XmlSchema instance returned can be used to access types and
 elements of the relevant schema by their qualified name.</p>
@@ -54,10 +54,10 @@ validating procedures. However, this particular handler has no effect on the
 reading of the schema yet, and it is not a feature in this release of Commons
 XML Schema. The following code fragment shows how a file can be read through
 the SchemaCollection.</p>
-<pre> 
+<source><pre> 
 InputStream is = new FileInputStream(fileName);
 XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-XmlSchema schema = schemaCol.read(new StreamSource(is), null);</pre>
+XmlSchema schema = schemaCol.read(new StreamSource(is), null);</pre></source>
 
 <p>Note that null is passed for the validating handler since it has no effect
 yet.</p>
@@ -76,8 +76,8 @@ the qualified name of an element is known, then getElementByName method can
 be used to extract the XmlSchemaElement object directly from the schema
 object. The following code sample shows how such direct methods can be used
 to extract schema objects</p>
-<pre>   XmlSchemaType schemaType = schema.getTypeByQName(TYPE_QNAME);
-   XmlSchemaElement elem = schema.getElementByQName(ELEMENT_QNAME);</pre>
+<source><pre>XmlSchemaType schemaType = schema.getTypeByName(TYPE_QNAME);
+XmlSchemaElement elem = schema.getElementByName(ELEMENT_QNAME);</pre></source>
 
 <p>Note that the TYPE_QNAME and ELEMENT_QNAME represents QName objects.</p>
 <a name="printing"></a>
@@ -89,7 +89,7 @@ constructed in-memory, is also quite straightforward. Schema object has a
 
 <p>The following code fragment shows how to write the schema into the System
 output stream.</p>
-<pre>schema.write(System.out);</pre>
+<source><pre>schema.write(System.out);</pre></source>
 </section>
 
 <!--<h2>Advanced Topics</h2>-->
