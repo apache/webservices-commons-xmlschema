@@ -1,0 +1,23 @@
+Overview
+  
+   XMLSchema is a lightweight schema object model that can be used to manipulate and
+   generate XML schema representations. It has very few external dependancies and can
+   be easily integrated into an existing project.
+
+   For information on how to use the XmlSchema API, please
+   see the {{{apidocs/index.html}javadocs}} or the {{{schematutorial.html}tutorial}}.
+
+   You are welcome to kick the tires and get XMLSchema on the move. If you like to
+   help us shape XMLSchema any contribution in the form of coding, testing,
+   submitting improvements to the documentation, and reporting bugs are always
+   welcome.
+
+
+Downloads
+
+  The latest release is 1.0.1 and can be found 
+  {{{http://ws.apache.org/commons/axiom/download.cgi}here}}.
+
+
+  
+  -The XMLSchema Development Team
