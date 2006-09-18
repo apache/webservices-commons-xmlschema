@@ -18,6 +18,11 @@
             <!-- Run the tests!-->
         </j:if>
     </goal>
+
+    <preGoal name="jar:jar">
+        <delete dir="${basedir}/target/classes/main" />
+        <delete dir="${basedir}/target/classes/site" />
+    </preGoal>
     <!-- create javadocs as a post goal to the site and copy them to the
   target/docs folder -->
     <postGoal name="site">
