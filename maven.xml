@@ -30,13 +30,22 @@
 		<ant:echo>| Generating Java docs </ant:echo>
 		<ant:echo>+----------------------------------------------</ant:echo>
 		<mkdir dir="${javadoc.dir}"/>
-		<ant:javadoc packagenames="org.apache.ws.commons.*" defaultexcludes="yes" destdir="${javadoc.dir}" author="true" breakiterator="true" version="true" use="true" windowtitle="XMLSchema API">
-			<ant:arg line="-J-Dhttp.proxy.port=${maven.proxy.port} -J-Dhttp.proxy.host=${maven.proxy.host}"/>
-			<ant:sourcepath>
-				<ant:pathelement location="src"/>
-			</ant:sourcepath>
-		</ant:javadoc>
-	</goal>
+        <ant:javadoc packagenames="org.apache.ws.commons.schema.*"
+                     defaultexcludes="yes"
+                     destdir="${javadoc.dir}"
+                     author="true"
+                     breakiterator="true"
+                     version="true"
+                     use="true"
+                     windowtitle="Apache WS-Commons XMLSchema API">
+            <ant:arg
+                    line="-J-Dhttp.proxy.port=${maven.proxy.port} -J-Dhttp.proxy.host=${maven.proxy.host}"/>
+
+            <ant:sourcepath>
+                <ant:pathelement location="src/main/java"/>
+            </ant:sourcepath>
+        </ant:javadoc>
+    </goal>
 	<!-- create the binary distribution -->
 	<goal name="dist-bin" prereqs="jar,javadocs">
 		<ant:echo>+----------------------------------------------</ant:echo>
