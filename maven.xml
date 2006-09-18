@@ -143,9 +143,14 @@
             <ant:fileset file="maven.xml"/>
             <ant:fileset file="project.xml"/>
             <ant:fileset file="pom.xml"/>
+            <ant:fileset file="build.xml"/>
             <ant:fileset file="project.properties"/>
             <ant:fileset file="RELEASE-NOTE.txt"/>
             <ant:fileset file="LICENSE.txt"/>
+        </ant:copy>
+        
+        <ant:copy toDir="${dist}/legal">
+            <ant:fileset dir="legal"/>
         </ant:copy>
         <!-- Zip up -->
         <ant:zip file="target/dist/XmlSchema-${schema.version}-src.zip">
