@@ -16,7 +16,7 @@
             <h2>Releases</h2>
             <div align="left">
                 <p>XmlSchema is becoming more and more stable and the latest official version available for download is
-                    AXIOM 1.1. All the releases are available for download as source or binary. For more information,
+                    XmlSchema 1.1. All the releases are available for download as source or binary. For more information,
                     please see
                     <a href="http://www.apache.org/dev/release.html">Apache Release FAQ</a>
                 </p>
@@ -36,152 +36,145 @@
 
                         <tr class="b">
                             <td align="center" valign="middle">
-                                <a name="09"></a>
-                                1.1.1
+                                1.1
                             </td>
                             <td align="center">Release</td>
                             <td>Source Distribution
-                                <a href="[preferred]/ws/commons/axiom/1_1_1/axiom-1.1.1-src.zip"
-                                   title="[preferred]/ws/commons/axiom/1_1_1/axiom-1.1.1-src.zip">zip</a>
+                                <a href="[preferred]/ws/commons/XmlSchema/1_1/XmlSchema-1.1-src.zip"
+                                   title="[preferred]/ws/commons/XmlSchema/1_1/XmlSchema-1.1-src.zip">zip</a>
 
-                                <a href="http://www.apache.org/dist/ws/commons/axiom/1_1_1/axiom-1.1.1-src.zip.md5"
+                                <a href="http://www.apache.org/dist/ws/commons/XmlSchema/1_1/XmlSchema-1.1-src.zip.md5"
                                    class="externalLink"
-                                   title="http://www.apache.org/dist/ws/commons/axiom/1_1_1/axiom-1.1.1-src.zip.md5">MD5</a>
-                                <a href="http://www.apache.org/dist/ws/commons/axiom/1_1_1/axiom-1.1.1-src.zip.asc"
+                                   title="http://www.apache.org/dist/ws/commons/XmlSchema/1_1/XmlSchema-1.1-src.zip.md5">MD5</a>
+                                <a href="http://www.apache.org/dist/ws/commons/XmlSchema/1_1/XmlSchema-1.1-src.zip.asc"
                                    class="externalLink"
-                                   title="http://www.apache.org/dist/ws/commons/axiom/1_1_1/axiom-1.1.1-src.zip.asc">PGP</a>
+                                   title="http://www.apache.org/dist/ws/commons/XmlSchema/1_1/XmlSchema-1.1-src.zip.asc">PGP</a>
                                 <br/>
                                 Binary Distribution
-                                <a href="[preferred]/ws/commons/axiom/1_1_1/axiom-1.1.1-bin.zip"
-                                   title="[preferred]/ws/commons/axiom/1_1_1/axiom-1.1.1-bin.zip">zip</a>
-                                <a href="http://www.apache.org/dist/ws/commons/axiom/1_1_1/axiom-1.1.1-bin.zip.md5"
+                                <a href="[preferred]/ws/commons/XmlSchema/1_1/XmlSchema-1.1-bin.zip"
+                                   title="[preferred]/ws/commons/XmlSchema/1_1/XmlSchema-1.1-bin.zip">zip</a>
+                                <a href="http://www.apache.org/dist/ws/commons/XmlSchema/1_1/XmlSchema-1.1-bin.zip.md5"
                                    class="externalLink"
-                                   title="http://www.apache.org/dist/ws/commons/axiom/1_1_1/axiom-1.1.1-bin.zip.md5">MD5</a>
-                                <a href="http://www.apache.org/dist/ws/commons/axiom/1_1_1/axiom-1.1.1-bin.zip.asc"
+                                   title="http://www.apache.org/dist/ws/commons/XmlSchema/1_1/XmlSchema-1.1-bin.zip.md5">MD5</a>
+                                <a href="http://www.apache.org/dist/ws/commons/XmlSchema/1_1/XmlSchema-1.1-bin.zip.asc"
                                    class="externalLink"
-                                   title="http://www.apache.org/dist/ws/ws/commons/axiom/1_1_1/axiom-1.1.1-bin.zip.asc">
+                                   title="http://www.apache.org/dist/ws/ws/commons/XmlSchema/1_1/XmlSchema-1.1-bin.zip.asc">
                                     PGP</a>
 
                                 <br/>
                             </td>
                             <td>18 - 09 - 2006</td>
-                            <td>1.1.1 Release (Mirrored)</td>
+                            <td>1.1 Release (Mirrored)</td>
                         </tr>
 
                         <tr class="b">
                             <td align="center" valign="middle">
-                                <a name="09"></a>
-                                1.1
+                                1.0.3
                             </td>
                             <td align="center">Release</td>
                             <td>Source Distribution
-                                <a href="[preferred]/ws/commons/axiom/1_1/axiom-1.1-src.zip"
-                                   title="[preferred]/ws/commons/axiom/1_1/axiom-1.1-src.zip">zip</a>
+                                <a href="[preferred]/ws/commons/XmlSchema/1_0_3/XmlSchema-1.0.3-src.zip"
+                                   title="[preferred]/ws/commons/XmlSchema/1_0_3/XmlSchema-1.0.3-src.zip">zip</a>
 
-                                <a href="http://www.apache.org/dist/ws/commons/axiom/1_1/axiom-1.1-src.zip.md5"
+                                <a href="http://www.apache.org/dist/ws/commons/XmlSchema/1_0_3/XmlSchema-1.0.3-src.zip.md5"
                                    class="externalLink"
-                                   title="http://www.apache.org/dist/ws/commons/axiom/1_1/axiom-1.1-src.zip.md5">MD5</a>
-                                <a href="http://www.apache.org/dist/ws/commons/axiom/1_1/axiom-1.1-src.zip.asc"
+                                   title="http://www.apache.org/dist/ws/commons/XmlSchema/1_0_3/XmlSchema-1.0.3-src.zip.md5">MD5</a>
+                                <a href="http://www.apache.org/dist/ws/commons/XmlSchema/1_0_3/XmlSchema-1.0.3-src.zip.asc"
                                    class="externalLink"
-                                   title="http://www.apache.org/dist/ws/commons/axiom/1_1/axiom-1.1-src.zip.asc">PGP</a>
+                                   title="http://www.apache.org/dist/ws/commons/XmlSchema/1_0_3/XmlSchema-1.0.3-src.zip.asc">PGP</a>
                                 <br/>
                                 Binary Distribution
-                                <a href="[preferred]/ws/commons/axiom/1_1/axiom-1.1-bin.zip"
-                                   title="[preferred]/ws/commons/axiom/1_1/axiom-1.1-bin.zip">zip</a>
-                                <a href="http://www.apache.org/dist/ws/commons/axiom/1_1/axiom-1.1-bin.zip.md5"
+                                <a href="[preferred]/ws/commons/XmlSchema/1_0_3/XmlSchema-1.0.3-bin.zip"
+                                   title="[preferred]/ws/commons/XmlSchema/1_0_3/XmlSchema-1.0.3-bin.zip">zip</a>
+                                <a href="http://www.apache.org/dist/ws/commons/XmlSchema/1_0_3/XmlSchema-1.0.3-bin.zip.md5"
                                    class="externalLink"
-                                   title="http://www.apache.org/dist/ws/commons/axiom/1_1/axiom-1.1-bin.zip.md5">MD5</a>
-                                <a href="http://www.apache.org/dist/ws/commons/axiom/1_1/axiom-1.1-bin.zip.asc"
+                                   title="http://www.apache.org/dist/ws/commons/XmlSchema/1_0_3/XmlSchema-1.0.3-bin.zip.md5">MD5</a>
+                                <a href="http://www.apache.org/dist/ws/commons/XmlSchema/1_0_3/XmlSchema-1.0.3-bin.zip.asc"
                                    class="externalLink"
-                                   title="http://www.apache.org/dist/ws/ws/commons/axiom/1_1/axiom-1.1-bin.zip.asc">
+                                   title="http://www.apache.org/dist/ws/ws/commons/XmlSchema/1_0_3/XmlSchema-1.0.3-bin.zip.asc">
                                     PGP</a>
 
                                 <br/>
                             </td>
-                            <td>15 - 09 - 2006</td>
-                            <td>1.1 Release (Archived)
-                                <br/>
-                                Note : This released was compiled using JDK 1.5 and will not work with JDK 1.4. Please
-                                move to AXIOM 1.1.1.
+                            <td>13- 05 - 2006</td>
+                            <td>1.0.3 Release (Archived)
                             </td>
                         </tr>
 
 
                         <tr class="b">
                             <td align="center" valign="middle">
-                                <a name="09"></a>
-                                1.0
+                                1.0.2
                             </td>
                             <td align="center">Release</td>
                             <td>Source Distribution
-                                <a href="http://archive.apache.org/dist/ws/commons/axiom/1_0/axiom-1.0-src.zip"
-                                   title="http://archive.apache.org/dist/ws/commons/axiom/1_0/axiom-1.0-src.zip">zip</a>
+                                <a href="http://archive.apache.org/dist/ws/commons/XmlSchema/1_0_2/XmlSchema-1.0.2-src.zip"
+                                   title="http://archive.apache.org/dist/ws/commons/XmlSchema/1_0_2/XmlSchema-1.0.2-src.zip">zip</a>
 
-                                <a href="http://archive.apache.org/dist/ws/commons/axiom/1_0/axiom-1.0-src.zip.md5"
+                                <a href="http://archive.apache.org/dist/ws/commons/XmlSchema/1_0_2/XmlSchema-1.0.2-src.zip.md5"
                                    class="externalLink"
-                                   title="http://archive.apache.org/dist/ws/commons/axiom/1_0/axiom-1.0-src.zip.md5">
+                                   title="http://archive.apache.org/dist/ws/commons/XmlSchema/1_0_2/XmlSchema-1.0.2-src.zip.md5">
                                     MD5</a>
-                                <a href="http://www.apache.org/dist/ws/commons/axiom/1_0/axiom-1.0-src.zip.asc"
+                                <a href="http://www.apache.org/dist/ws/commons/XmlSchema/1_0_2/XmlSchema-1.0.2-src.zip.asc"
                                    class="externalLink"
-                                   title="http://archive.apache.org/dist/ws/commons/axiom/1_0/axiom-1.0-src.zip.asc">
+                                   title="http://archive.apache.org/dist/ws/commons/XmlSchema/1_0_2/XmlSchema-1.0.2-src.zip.asc">
                                     PGP</a>
                                 <br/>
                                 Binary Distribution
-                                <a href="http://archive.apache.org/dist/ws/commons/axiom/1_0/axiom-1.0-bin.zip"
-                                   title="http://archive.apache.org/dist/ws/commons/axiom/1_0/axiom-0.95-bin.zip">
+                                <a href="http://archive.apache.org/dist/ws/commons/XmlSchema/1_0_2/XmlSchema-1.0.2-bin.zip"
+                                   title="http://archive.apache.org/dist/ws/commons/XmlSchema/1_0_2/XmlSchema-0.95-bin.zip">
                                     zip</a>
-                                <a href="http://archive.apache.org/dist/ws/commons/axiom/1_0/axiom-1.0-bin.zip.md5"
+                                <a href="http://archive.apache.org/dist/ws/commons/XmlSchema/1_0_2/XmlSchema-1.0.2-bin.zip.md5"
                                    class="externalLink"
-                                   title="http://archive.apache.org/dist/ws/commons/axiom/1_0/axiom-1.0-bin.zip.md5">
+                                   title="http://archive.apache.org/dist/ws/commons/XmlSchema/1_0_2/XmlSchema-1.0.2-bin.zip.md5">
                                     MD5</a>
-                                <a href="http://archive.apache.org/dist/ws/commons/axiom/1_0/axiom-1.0-bin.zip.asc"
+                                <a href="http://archive.apache.org/dist/ws/commons/XmlSchema/1_0_2/XmlSchema-1.0.2-bin.zip.asc"
                                    class="externalLink"
-                                   title="http://archive.apache.org/dist/ws/ws/commons/axiom/1_0/axiom-1.0-bin.zip.asc">
+                                   title="http://archive.apache.org/dist/ws/ws/commons/XmlSchema/1_0_2/XmlSchema-1.0.2-bin.zip.asc">
                                     PGP</a>
 
                                 <br/>
                             </td>
-                            <td>02 - 05 - 2006</td>
-                            <td>1.0 Release (Archived)</td>
+                            <td>30 - 04 - 2006</td>
+                            <td>1.0.2 Release (Archived)</td>
                         </tr>
 
 
                         <tr class="b">
                             <td align="center" valign="middle">
-                                <a name="09"></a>
-                                0.95
+                                1.0.1
                             </td>
                             <td align="center">Release</td>
                             <td>Source Distribution
-                                <a href="http://archive.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-src.zip"
-                                   title="http://archive.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-src.zip">
+                                <a href="http://archive.apache.org/dist/ws/XmlSchema/XmlSchema/1_0_1/XmlSchema-1.0.1-src.zip"
+                                   title="http://archive.apache.org/dist/ws/commons/XmlSchema/1_0_1/XmlSchema-1.0.1-src.zip">
                                     zip</a>
 
-                                <a href="http://archive.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-src.zip.md5"
+                                <a href="http://archive.apache.org/dist/ws/commons/XmlSchema/1_0_1/XmlSchema-1.0.1-src.zip.md5"
                                    class="externalLink"
-                                   title="http://archive.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-src.zip.md5">
+                                   title="http://archive.apache.org/dist/ws/commons/XmlSchema/1_0_1/XmlSchema-1.0.1-src.zip.md5">
                                     MD5</a>
-                                <a href="http://archive.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-src.zip.asc"
+                                <a href="http://archive.apache.org/dist/ws/commons/XmlSchema/1_0_1/XmlSchema-1.0.1-src.zip.asc"
                                    class="externalLink"
-                                   title="http://archive.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-src.zip.asc">
+                                   title="http://archive.apache.org/dist/ws/commons/XmlSchema/1_0_1/XmlSchema-1.0.1-src.zip.asc">
                                     PGP</a>
                                 <br/>
                                 Binary Distribution
-                                <a href="[preferred]/ws/commons/axiom/0_95/axiom-0.95-bin.zip"
-                                   title="[preferred]/ws/commons/axiom/0_95/axiom-0.95-bin.zip">zip</a>
-                                <a href="http://archive.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-bin.zip.md5"
+                                <a href="[preferred]/ws/commons/XmlSchema/1_0_1/XmlSchema-1.0.1-bin.zip"
+                                   title="[preferred]/ws/commons/XmlSchema/1_0_1/XmlSchema-1.0.1-bin.zip">zip</a>
+                                <a href="http://archive.apache.org/dist/ws/commons/XmlSchema/1_0_1/XmlSchema-1.0.1-bin.zip.md5"
                                    class="externalLink"
-                                   title="http://archive.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-bin.zip.md5">
+                                   title="http://archive.apache.org/dist/ws/commons/XmlSchema/1_0_1/XmlSchema-1.0.1-bin.zip.md5">
                                     MD5</a>
-                                <a href="http://archive.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-bin.zip.asc"
+                                <a href="http://archive.apache.org/dist/ws/commons/XmlSchema/1_0_1/XmlSchema-1.0.1-bin.zip.asc"
                                    class="externalLink"
-                                   title="http://archive.apache.org/dist/ws/ws/commons/axiom/0_95/axiom-0.95-bin.zip.asc">
+                                   title="http://archive.apache.org/dist/ws/ws/commons/XmlSchema/1_0_1/XmlSchema-1.0.1-bin.zip.asc">
                                     PGP</a>
 
                                 <br/>
                             </td>
-                            <td>23 - 03 - 2006</td>
-                            <td>0.95 Release (Archived)</td>
+                            <td>13 - 04 - 2006</td>
+                            <td>1.0.1 Release (Archived)</td>
                         </tr>
 
                     </tbody>
@@ -235,7 +228,7 @@
                     compatible signature from the main Apache site. These can be downloaded by
                     following the links above. This
                     <a
-                            href="http://www.apache.org/dist/ws/commons/axiom/KEYS">KEYS</a>
+                            href="http://www.apache.org/dist/ws/commons/XmlSchema/KEYS">KEYS</a>
                     file contains the
                     public keys used for signing release. It is recommended that (when possible)
                     a
