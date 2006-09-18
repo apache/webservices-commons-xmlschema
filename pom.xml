@@ -130,8 +130,9 @@
     <developer>
       <id>thilina</id>
       <name>Thilina Gunarathne</name>
-      <email>thilina AT opensource.lk</email>
-      <organization>Lanka Software Foundation</organization>
+      <email>thilina AT wso2.com</email>
+      <url>http://www.apache.org/~thilina</url>
+      <organization>WSO2</organization>
     </developer>
     <developer>
       <id>ruchith</id>
@@ -360,9 +361,9 @@
   </dependencies>
   <reporting>
     <plugins>
-      <plugin>
+      <!--plugin>
         <artifactId>maven-javadoc-plugin</artifactId>
-      </plugin>
+      </plugin-->
       <plugin>
         <artifactId>maven-project-info-reports-plugin</artifactId>
       </plugin>
@@ -371,11 +372,11 @@
         <artifactId>jdepend-maven-plugin</artifactId>
         <version>2.0-beta-1-SNAPSHOT</version>
       </plugin>
-      <plugin>
+      <!--plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>jxr-maven-plugin</artifactId>
         <version>2.0-beta-2-SNAPSHOT</version>
-      </plugin>
+      </plugin-->
     </plugins>
   </reporting>
   <distributionManagement>
