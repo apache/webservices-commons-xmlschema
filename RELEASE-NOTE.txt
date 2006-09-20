@@ -2,8 +2,8 @@
        XMLSchema 1.1 Release Notes
  ====================================
 
-This is XMLSchema 1.1 release of the Apache WS-Commons. This release includes
-numerous bug fixes since our last release.
+This is the release of XMLSchema 1.1 of Apache WS-Commons. This release includes
+numerous bug fixes.
 
 XMLSchema is a lightweight schema object model that can be used to manipulate 
 and generate XML schema representations. It has no external dependancies
