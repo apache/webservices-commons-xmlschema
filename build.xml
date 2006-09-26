@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <project name="XmlSchema" basedir="." default="jar">
 
-	<property name="src.dir" value="${basedir}/src"/>
+	<property name="src.dir" value="${basedir}/src/main/java"/>
 	<property name="project.name" value="XmlSchema"/>
 	<property name="output.jar" value="${project.name}.jar"/>
 	<property name="build.dir" value="${basedir}/build"/>
@@ -11,12 +11,16 @@
 	<property name="dist.dir" value="${build.dir}/dist"/>
 	<property name="dist.zip" value="${project.name}.zip"/>
 	<property name="srcdist.zip" value="${project.name}-src.zip"/>
-    <property name="test.dir" value="${basedir}/test"/>
+    <property name="test.dir" value="${basedir}/src/test/java"/>
 	<property name="test_classes.dir" value="${build.dir}/test-classes"/>
     <property name="test_reports.dir" value="${build.dir}/test-reports"/>
     <property name="test_reports_w3c.dir" value="${build.dir}/test-reports-w3c"/>
 
-    <target name="prepare">
+    <target name="setproxy" if="http.proxyhost">
+        <setproxy proxyhost="${http.proxyHost}" proxyport="${http.proxyPort}"/>
+    </target>
+
+    <target name="prepare" depends="setproxy">
 		<mkdir dir="${build_classes.dir}"/>
 		<mkdir dir="${build_lib.dir}"/>
     	
@@ -30,7 +34,6 @@
 	</target>
 
 	<target name="get-deps" if="downloadLibs">
-		<setproxy proxyhost="${http.proxyHost}" proxyport="${http.proxyPort}"/>
     	<get src="http://www.ibiblio.org/maven2/xmlunit/xmlunit/1.0/xmlunit-1.0.jar"
     		dest="${build_lib.dir}/xmlunit-1.0.jar"/>
     </target>
