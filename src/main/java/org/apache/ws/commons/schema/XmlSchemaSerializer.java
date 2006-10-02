@@ -31,10 +31,10 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
-
 public class XmlSchemaSerializer {
     private Hashtable schema_ns;
 
@@ -102,8 +102,10 @@ public class XmlSchemaSerializer {
             //if the namespace is not entered then add 
             //the targetNamespace as its
             if (targetNS == null) {
-                serializedSchema.setAttributeNS(XMLNS_NAMESPACE_URI,
-                        "xmlns", schemaObj.syntacticalTargetNamespace);
+                if(!Constants.XMLNS_URI.equals(schemaObj.syntacticalTargetNamespace)){
+                    serializedSchema.setAttributeNS(XMLNS_NAMESPACE_URI,
+                            "xmlns", schemaObj.syntacticalTargetNamespace);
+                }
                 String prefix = null;
                 if(schemaObj.getNamespaceContext() != null) {
                     prefix = schemaObj.getNamespaceContext().getPrefix(schemaObj.syntacticalTargetNamespace);    
@@ -2525,14 +2527,21 @@ public class XmlSchemaSerializer {
         Object prefix = ("".equals(namespace)) ? "" : schema_ns.get(namespace);
 
         if (prefix == null) {
-            int magicNumber = new java.util.Random().nextInt(999);
-            prefix = "gen" + magicNumber;
-            schema_ns.put(namespace, prefix);
+            if (Constants.XMLNS_URI.equals(namespace)) {
+                prefix = Constants.XMLNS_PREFIX;
+            } else {
+                int magicNumber = 0;
+                Collection prefixes = schema_ns.values();
+                while(prefixes.contains("ns" + magicNumber)){
+                    magicNumber++;
+                }
+                prefix = "ns" + magicNumber;
+                schema_ns.put(namespace, prefix);
 
-
-            //setting xmlns in schema
-            schemaElement.setAttributeNS(XMLNS_NAMESPACE_URI,
-                    "xmlns:" + prefix.toString(), namespace);
+                //setting xmlns in schema
+                schemaElement.setAttributeNS(XMLNS_NAMESPACE_URI,
+                        "xmlns:" + prefix.toString(), namespace);
+            }
         }
 
         prefixStr = prefix.toString();
