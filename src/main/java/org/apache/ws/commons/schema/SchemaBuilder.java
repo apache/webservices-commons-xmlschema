@@ -1171,7 +1171,12 @@ public class SchemaBuilder {
             //                  "" :schema.targetNamespace;
 
             attr.name = name;
-            attr.qualifiedName = newLocalQName(name);
+        }
+        
+        boolean isQualified = schema.getElementFormDefault().getValue().equals(XmlSchemaForm.QUALIFIED);
+        if (attr.name != null) {
+            final String name = attr.name;
+            attr.qualifiedName = (isQualified) ? newLocalQName(name) : new QName(name);
         }
 
         if (attrEl.hasAttribute("type")) {
