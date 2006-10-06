@@ -52,7 +52,8 @@ public class SimpleContentRestrictionTest extends TestCase {
          <schema xmlns="http://www.w3.org/2001/XMLSchema"
                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
                  xmlns:tns="http://soapinterop.org/types"
-                 targetNamespace="http://soapinterop.org/types">
+                 targetNamespace="http://soapinterop.org/types"
+                 attributeFormDefault="qualified">
   
            <simpleType name="drinksize">
              <restriction base="string">
