@@ -22,7 +22,7 @@
 	<!-- a unique name for this project -->
 	<name>Apache XmlSchema</name>
 	<id>XmlSchema</id>
-	<groupId>org.apache.ws.commons</groupId>
+	<groupId>org.apache.ws.commons.schema</groupId>
 	<package>org.apache.commons</package>
 	<currentVersion>${schema.version}</currentVersion>
 	<!-- details about the organization that 'owns' the project -->
