@@ -483,7 +483,7 @@ public class SchemaBuilder {
         }
 
         //process extra attributes and elements
-        processExtensibilityComponents(simpleType,schemaEl);
+        processExtensibilityComponents(simpleType,simpleEl);
 
         return simpleType;
     }
@@ -645,7 +645,7 @@ public class SchemaBuilder {
         }
 
         //process extra attributes and elements
-        processExtensibilityComponents(ct,schemaEl);
+        processExtensibilityComponents(ct,complexEl);
 
         return ct;
     }
@@ -1603,7 +1603,7 @@ public class SchemaBuilder {
                             validator);
         }
         //process extra attributes and elements
-        processExtensibilityComponents(include,schemaEl);
+        processExtensibilityComponents(include,includeEl);
         return include;
     }
 
