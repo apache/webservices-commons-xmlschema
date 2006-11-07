@@ -244,4 +244,56 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
     public void setNamespaceContext(NamespacePrefixList namespaceContext) {
         this.namespaceContext = namespaceContext;
     }
+    
+    /**
+     * Override the equals(Object) method with equivalence checking
+     * that is specific to this class.
+     */
+    public boolean equals(Object what) {
+        
+        //Note: this method may no longer be required when line number/position are used correctly in XmlSchemaObject.
+        //Currently they are simply initialized to zero, but they are used in XmlSchemaObject.equals 
+        //which can result in a false positive (e.g. if a WSDL contains 2 inlined schemas).
+        
+        if (what == this) {
+            return true;
+        }
+        
+        //If the inherited behaviour determines that the objects are NOT equal, return false. 
+        //Otherwise, do some further equivalence checking.
+        
+        if(!super.equals(what)) {
+            return false;
+        }
+        
+        if (!(what instanceof XmlSchema)) {
+            return false;
+        }
+
+        XmlSchema xs = (XmlSchema) what;
+        
+        if (this.id != null) {
+            if (!this.id.equals(xs.id)) {
+                return false;
+            }
+        } else {
+            if (xs.id != null) {
+                return false;
+            }
+        }
+        
+        if (this.syntacticalTargetNamespace != null) {
+            if (!this.syntacticalTargetNamespace.equals(xs.syntacticalTargetNamespace)) {
+                return false;
+            }
+        } else {
+            if (xs.syntacticalTargetNamespace != null) {
+                return false;
+            }
+        }
+        
+        //TODO decide if further schema content should be checked for equivalence.
+        
+        return true;
+    }
 }
