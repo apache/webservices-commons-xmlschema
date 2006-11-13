@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="Apache XmlSchema">
+    <bannerLeft>
+        <name>Apache XmlSchema</name>
+        <src>http://www.apache.org/images/asf-logo.gif</src>
+        <href>http://ws.apache.org/</href>
+    </bannerLeft>
+    <body>
+        <links>
+            <item name="Apache" href="http://www.apache.org/"/>
+            <item name="WebServices" href="http://ws.apache.org/"/>
+            <item name="WS Commons" href="http://ws.apache.org/commons"/>
+            <item name="XmlSchema" href="http://ws.apache.org/commons/XmlSchema/"/>
+        </links>
+        <menu name="XML Schema">
+            <item name="Home" href="index.html"/>
+            <item name="Downloads">
+                <item name="Releases" href="download.cgi"/>
+                <item name="Source Code" href="source-repository.html"/>
+            </item>
+            <item name="Documentation">
+                <item name="Tutorial" href="schematutorial.html"/>
+                <item name="Javadocs" href="/apidocs/index.html"/>
+                <item name="View Source"
+                      href="http://svn.apache.org/viewvc/webservices/commons/trunk/modules/XmlSchema/?root=Apache-SVN"/>
+            </item>
+            <item name="Project Information">
+                <item name="Mailing Lists" href="/mail-lists.html"/>
+                <item name="Project Team" href="/team-list.html"/>
+                <item name="Issue Tracking" href="issue-tracking.html"/>
+            </item>
+            <item name="License" href="/license.html"/>
+        </menu>
+    </body>
+</project>
+
+
+
