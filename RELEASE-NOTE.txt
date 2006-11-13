@@ -1,5 +1,5 @@
  ====================================
-       XMLSchema 1.1 Release Notes
+       XMLSchema 1.2 Release Notes
  ====================================
 
 This is the release of XMLSchema 1.2 of Apache WS-Commons. This release includes
