@@ -1370,32 +1370,30 @@ public class SchemaBuilder {
             element.schemaType = handleComplexType(schema, complexTypeEl, schemaEl);
         }
 
-        if ((keyEl =
-                XDOMUtil.getFirstChildElementNS(el, XmlSchema.SCHEMA_NS, "key")) != null) {
-
-            element.constraints.add(handleConstraint(keyEl, "Key"));
+        if ((keyEl = XDOMUtil.getFirstChildElementNS(el, XmlSchema.SCHEMA_NS, "key")) != null) {
+        	while(keyEl != null) {
+        		element.constraints.add(handleConstraint(keyEl, "Key"));
+        		keyEl = XDOMUtil.getNextSiblingElement(keyEl, "key");
+        	}
         }
 
         if ((keyrefEl = XDOMUtil.getFirstChildElementNS(el, XmlSchema.SCHEMA_NS, "keyref")) != null) {
-
-            XmlSchemaKeyref keyRef =
-                    (XmlSchemaKeyref) handleConstraint(keyrefEl,
-                            "Keyref");
-
-            if (el.hasAttribute("refer")) {
-                String name = el.getAttribute("refer");
-                keyRef.refer = getRefQName(name, el);
-            }
-
-            element.constraints.add(keyRef);
-
+        	while(keyrefEl != null) {
+	            XmlSchemaKeyref keyRef = (XmlSchemaKeyref) handleConstraint(keyrefEl, "Keyref");
+	            if(keyrefEl.hasAttribute("refer")) {
+		            String name = keyrefEl.getAttribute("refer");
+		            keyRef.refer = getRefQName(name, el);
+	            }
+	            element.constraints.add(keyRef);
+	            keyrefEl = XDOMUtil.getNextSiblingElement(keyrefEl, "keyref");
+        	}
         }
 
-        if ((uniqueEl =
-                XDOMUtil.getFirstChildElementNS(el,
-                        XmlSchema.SCHEMA_NS, "unique")) != null) {
-
-            element.constraints.add(handleConstraint(uniqueEl, "Unique"));
+        if ((uniqueEl = XDOMUtil.getFirstChildElementNS(el, XmlSchema.SCHEMA_NS, "unique")) != null) {
+        	while(uniqueEl != null) {
+        		element.constraints.add(handleConstraint(uniqueEl, "Unique"));
+        		uniqueEl = XDOMUtil.getNextSiblingElement(uniqueEl, "unique");
+        	}
         }
 
         if (el.hasAttribute("abstract")) {
