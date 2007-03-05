@@ -41,6 +41,14 @@ public abstract class XmlSchemaObject {
     }
 
     /**
+     * Directly set the meta info map into the schema element
+     * @param metaInfoMap
+     */
+    public void setMetaInfoMap(Map metaInfoMap) {
+        this.metaInfoMap = metaInfoMap;
+    }
+
+    /**
      * Add a value to the meta info map
      * will be initialized if not used
      * previously

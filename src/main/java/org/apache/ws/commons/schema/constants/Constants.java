@@ -122,6 +122,7 @@ public class Constants {
      */
     public static class MetaDataConstants{
         public static final String EXTERNAL_ATTRIBUTES = "EXTERNAL_ATTRIBUTES";
+        public static final String EXTERNAL_ELEMENTS = "EXTERNAL_ELEMENTS";
     }
 
     public static final String XMLNS_ATTRIBUTE_NS_URI =

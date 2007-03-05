@@ -42,6 +42,7 @@ import org.apache.ws.commons.schema.resolver.DefaultURIResolver;
 import org.apache.ws.commons.schema.resolver.URIResolver;
 import org.apache.ws.commons.schema.utils.TargetNamespaceValidator;
 import org.apache.ws.commons.schema.utils.NamespacePrefixList;
+import org.apache.ws.commons.schema.extensions.ExtensionRegistry;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -53,6 +54,19 @@ import org.xml.sax.SAXException;
  *
  */
 public final class XmlSchemaCollection {
+
+    // the default extension registry
+    private ExtensionRegistry extReg = new ExtensionRegistry();
+
+    public ExtensionRegistry getExtReg() {
+        return extReg;
+    }
+
+    public void setExtReg(ExtensionRegistry extReg) {
+        this.extReg = extReg;
+    }
+
+
     static class SchemaKey {
         private final String namespace;
         private final String systemId;

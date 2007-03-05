@@ -18,6 +18,7 @@ package org.apache.ws.commons.schema;
 
 import org.apache.ws.commons.schema.constants.Constants;
 import org.apache.ws.commons.schema.utils.NamespacePrefixList;
+import org.apache.ws.commons.schema.extensions.ExtensionRegistry;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -36,6 +37,17 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 public class XmlSchemaSerializer {
+
+    private ExtensionRegistry extReg;
+
+    public ExtensionRegistry getExtReg() {
+        return extReg;
+    }
+
+    public void setExtReg(ExtensionRegistry extReg) {
+        this.extReg = extReg;
+    }
+
     private Hashtable schema_ns;
 
     static String xsdPrefix = "xs";
@@ -108,10 +120,10 @@ public class XmlSchemaSerializer {
                 }
                 String prefix = null;
                 if(schemaObj.getNamespaceContext() != null) {
-                    prefix = schemaObj.getNamespaceContext().getPrefix(schemaObj.syntacticalTargetNamespace);    
+                    prefix = schemaObj.getNamespaceContext().getPrefix(schemaObj.syntacticalTargetNamespace);
                 }
                 if(prefix == null && schemaObj.parent != null && schemaObj.parent.getNamespaceContext() != null) {
-                    prefix = schemaObj.parent.getNamespaceContext().getPrefix(schemaObj.syntacticalTargetNamespace);    
+                    prefix = schemaObj.parent.getNamespaceContext().getPrefix(schemaObj.syntacticalTargetNamespace);
                 }
                 if(prefix == null) {
                     prefix = "";
@@ -269,7 +281,7 @@ public class XmlSchemaSerializer {
         NamespacePrefixList ctx = schemaObj.getNamespaceContext();
         schemaObj.schema_ns_prefix = xsdPrefix = ctx.getPrefix(xsdNamespace);
         if(xsdPrefix == null) {
-            schemaObj.schema_ns_prefix = xsdPrefix = "";    
+            schemaObj.schema_ns_prefix = xsdPrefix = "";
         }
         String[] prefixes = ctx.getDeclaredPrefixes();
         for (int i = 0;  i < prefixes.length;  i++) {
@@ -608,7 +620,7 @@ public class XmlSchemaSerializer {
             }
         }
         if (elementObj.isNillable) {
-        	serializedEl.setAttribute("nillable", "true");
+            serializedEl.setAttribute("nillable", "true");
         }
 
         return serializedEl;
@@ -2575,4 +2587,23 @@ public class XmlSchemaSerializer {
             super(msg);
         }
     }
+
+
+    /**
+     * A generic method to process the extra attributes and the the extra
+     * elements present within the schema.
+     * What are considered extensions are  child elements with non schema namespace
+     * and child attributes with any namespace
+     * @param schemaObject
+     * @param parentElement
+     */
+    private void processExtensibilityComponents(XmlSchemaObject schemaObject,Element parentElement){
+
+        if (extReg!=null){
+           // need to call the extensions registry here
+
+        }
+
+    }
+
 }

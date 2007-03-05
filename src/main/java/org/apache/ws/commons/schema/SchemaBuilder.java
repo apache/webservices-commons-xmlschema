@@ -17,8 +17,6 @@
 
 package org.apache.ws.commons.schema;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -31,6 +29,7 @@ import org.apache.ws.commons.schema.constants.Constants;
 import org.apache.ws.commons.schema.utils.NodeNamespaceContext;
 import org.apache.ws.commons.schema.utils.TargetNamespaceValidator;
 import org.apache.ws.commons.schema.utils.XDOMUtil;
+import org.apache.ws.commons.schema.extensions.ExtensionRegistry;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -47,12 +46,31 @@ public class SchemaBuilder {
     DocumentBuilderFactory docFac;
 
     /**
+     * The extension registry to be used while building the
+     * schema model
+     */
+    private ExtensionRegistry extReg = null;
+
+    public ExtensionRegistry getExtReg() {
+        return extReg;
+    }
+
+    public void setExtReg(ExtensionRegistry extReg) {
+        this.extReg = extReg;
+    }
+
+    /**
      * Schema builder constructor
      * @param collection
      */
     SchemaBuilder(XmlSchemaCollection collection, TargetNamespaceValidator validator) {
         this.collection = collection;
         this.validator = validator;
+
+        if (collection.getExtReg()!=null){
+            this.extReg = collection.getExtReg();
+        }
+
         schema = new XmlSchema(collection);
     }
 
@@ -180,7 +198,7 @@ public class SchemaBuilder {
                 schema.notations.collection.put(notation.name, notation);
                 schema.items.add(notation);
             } else if (el.getLocalName().equals("annotation")) {
-            	XmlSchemaAnnotation annotation = handleAnnotation(el);
+                XmlSchemaAnnotation annotation = handleAnnotation(el);
                 schema.setAnnotation(annotation);
             }
         }
@@ -352,8 +370,8 @@ public class SchemaBuilder {
                             XmlSchema.SCHEMA_NS, "simpleType");
 
             if (restrictionEl.hasAttribute("base")) {
-            	NamespaceContext ctx = new NodeNamespaceContext(restrictionEl);
-            	restriction.baseTypeName = getRefQName(restrictionEl.getAttribute("base"), ctx);
+                NamespaceContext ctx = new NodeNamespaceContext(restrictionEl);
+                restriction.baseTypeName = getRefQName(restrictionEl.getAttribute("base"), ctx);
             } else if (inlineSimpleType != null) {
 
                 restriction.baseType = handleSimpleType(schema, inlineSimpleType, schemaEl);
@@ -493,32 +511,32 @@ public class SchemaBuilder {
     }
 
     private QName getRefQName(String pName, NamespaceContext pContext) {
-    	final int offset = pName.indexOf(':');
-    	String uri;
-    	final String localName;
-    	final String prefix;
-    	if (offset == -1) {
-    		uri = pContext.getNamespaceURI(Constants.DEFAULT_NS_PREFIX);
-    		if (Constants.NULL_NS_URI.equals(uri)) {
-    			return new QName(schema.logicalTargetNamespace, pName);
-    		}
-    		localName = pName;
-    		prefix = Constants.DEFAULT_NS_PREFIX;
-    	} else {
-    		prefix = pName.substring(0, offset);
-    		uri = pContext.getNamespaceURI(prefix);
+        final int offset = pName.indexOf(':');
+        String uri;
+        final String localName;
+        final String prefix;
+        if (offset == -1) {
+            uri = pContext.getNamespaceURI(Constants.DEFAULT_NS_PREFIX);
+            if (Constants.NULL_NS_URI.equals(uri)) {
+                return new QName(schema.logicalTargetNamespace, pName);
+            }
+            localName = pName;
+            prefix = Constants.DEFAULT_NS_PREFIX;
+        } else {
+            prefix = pName.substring(0, offset);
+            uri = pContext.getNamespaceURI(prefix);
             if (uri == null  ||  Constants.NULL_NS_URI.equals(uri)) {
                 if(schema.parent != null && schema.parent.getNamespaceContext() != null) {
                     uri = schema.parent.getNamespaceContext().getNamespaceURI(prefix);
                 }
             }
 
-    		if (uri == null  ||  Constants.NULL_NS_URI.equals(uri)) {
+            if (uri == null  ||  Constants.NULL_NS_URI.equals(uri)) {
                 throw new IllegalStateException("The prefix " + prefix + " is not bound.");
-    		}
-    		localName = pName.substring(offset+1);
-    	}
-    	return new QName(uri, localName, prefix);
+            }
+            localName = pName.substring(offset+1);
+        }
+        return new QName(uri, localName, prefix);
     }
 
     /**
@@ -687,10 +705,10 @@ public class SchemaBuilder {
 
             if (el.getLocalName().equals("restriction")) {
                 complexContent.content = handleComplexContentRestriction(schema, el,
-                                schemaEl);
+                        schemaEl);
             } else if (el.getLocalName().equals("extension")) {
                 complexContent.content = handleComplexContentExtension(schema, el,
-                                schemaEl);
+                        schemaEl);
             } else if (el.getLocalName().equals("annotation")) {
                 complexContent.setAnnotation(handleAnnotation(el));
             }
@@ -1158,6 +1176,7 @@ public class SchemaBuilder {
         return new QName(uri, pLocalName);
     }
 
+
     private XmlSchemaAttribute handleAttribute(XmlSchema schema,
                                                Element attrEl, Element schemaEl) {
         //todo: need to implement different rule of attribute such as
@@ -1172,7 +1191,7 @@ public class SchemaBuilder {
 
             attr.name = name;
         }
-        
+
         boolean isQualified = schema.getAttributeFormDefault().getValue().equals(XmlSchemaForm.QUALIFIED);
         if (attr.name != null) {
             final String name = attr.name;
@@ -1800,12 +1819,12 @@ public class SchemaBuilder {
         if (schema != null) {
             return schema;
         }
-            try {
+        try {
             return collection.read(source, null, validator);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
+    }
 
     /**
      * Resolve the schemas
@@ -1823,36 +1842,55 @@ public class SchemaBuilder {
     /**
      * A generic method to process the extra attributes and the the extra
      * elements present within the schema.
-     * What it does right now is to attach extra attributes to a map
-     * having QName/value pairs and store the map in the metadata section
-     * of the schema object
+     * What are considered extensions are  child elements with non schema namespace
+     * and child attributes with any namespace
      * @param schemaObject
-     * @param elt
+     * @param parentElement
      */
-    private void processExtensibilityComponents(XmlSchemaObject schemaObject,Element elt){
-        Map attribMap = new HashMap();
-        NamedNodeMap attributes = elt.getAttributes();
-        for (int i=0 ;i < attributes.getLength();i++){
-            Attr attribute = (Attr)attributes.item(i);
+    private void processExtensibilityComponents(XmlSchemaObject schemaObject,Element parentElement){
 
-            String namespaceURI = attribute.getNamespaceURI();
-            String name = attribute.getName();
+        if (extReg!=null){
+            //process attributes
+            NamedNodeMap attributes = parentElement.getAttributes();
+            for (int i=0 ;i < attributes.getLength();i++){
+                Attr attribute = (Attr)attributes.item(i);
 
-            if (namespaceURI!= null &&
-                    !"".equals(namespaceURI) &&  //ignore unqualified attributes
-                    !name.startsWith(Constants.XMLNS_ATTRIBUTE) && //ignore namespaces
-                    !Constants.URI_2001_SCHEMA_XSD.equals(namespaceURI)){
-                attribMap.put(new QName(namespaceURI,name),
-                        attribute.getValue());
+                String namespaceURI = attribute.getNamespaceURI();
+                String name = attribute.getName();
+
+                if (namespaceURI!= null &&
+                        !"".equals(namespaceURI) &&  //ignore unqualified attributes
+                        !name.startsWith(Constants.XMLNS_ATTRIBUTE) && //ignore namespaces
+                        !Constants.URI_2001_SCHEMA_XSD.equals(namespaceURI))
+                //does not belong to the schema namespace by any chance!
+                {
+                    QName qName = new QName(namespaceURI,name);
+                    extReg.deserializeExtension(schemaObject,qName,attribute);
+
+
+                }
             }
-        }
 
-        if (!attribMap.isEmpty()){
-            schemaObject.addMetaInfo(
-                    Constants.MetaDataConstants.EXTERNAL_ATTRIBUTES,
-                    attribMap
-            );
+            //process elements
+            NodeList allChildren = parentElement.getChildNodes();
+            for (int i=0 ;i < allChildren.getLength();i++){
+                if (allChildren.item(i).getNodeType()==Node.ELEMENT_NODE){
 
+                    Element extElement = (Element)allChildren.item(i);
+
+                    String namespaceURI = extElement.getNamespaceURI();
+                    String name = extElement.getLocalName();
+
+                    if (namespaceURI!= null &&
+                            !Constants.URI_2001_SCHEMA_XSD.equals(namespaceURI))
+                      //does not belong to the schema namespace
+                    {
+                        QName qName = new QName(namespaceURI,name);
+                        extReg.deserializeExtension(schemaObject,qName,extElement);
+
+                    }
+                }
+            }
         }
 
     }
