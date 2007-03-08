@@ -19,6 +19,7 @@ package org.apache.ws.commons.schema;
 
 import java.util.StringTokenizer;
 import java.util.Vector;
+import java.util.Stack;
 
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
@@ -1573,7 +1574,7 @@ public class SchemaBuilder {
                                 validator);
             }
         }
-        return schemaImport;
+        return (schemaImport.schema == null) ? null : schemaImport;
     }
 
     /**
@@ -1619,6 +1620,7 @@ public class SchemaBuilder {
                             include.schemaLocation,
                             validator);
         }
+
         //process extra attributes and elements
         processExtensibilityComponents(include,includeEl);
         return include;
@@ -1819,11 +1821,17 @@ public class SchemaBuilder {
         if (schema != null) {
             return schema;
         }
-        try {
-            return collection.read(source, null, validator);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        if (collection.check(key)) {
+            collection.push(key);
+            try {
+                return collection.read(source, null, validator);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            } finally {
+                collection.pop();
+            }
         }
+        return null;
     }
 
     /**

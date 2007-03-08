@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
@@ -120,7 +121,12 @@ public final class XmlSchemaCollection {
 
     XmlSchema xsd = new XmlSchema(XmlSchema.SCHEMA_NS, this);
 
-    /** 
+    /**
+     * stack to track imports (to prevent recursion)
+     */
+    Stack stack = new Stack();
+
+    /**
      * Set the base URI. This is used when schemas need to be
      * loaded from relative locations
      * @param baseUri
@@ -438,5 +444,17 @@ public final class XmlSchemaCollection {
 
     public void setNamespaceContext(NamespacePrefixList namespaceContext) {
         this.namespaceContext = namespaceContext;
+    }
+
+    public void push(SchemaKey pKey){
+        stack.push(pKey);
+    }
+
+    public void pop(){
+        stack.pop();
+    }
+
+    public boolean check(SchemaKey pKey){
+        return (stack.indexOf(pKey)==-1);
     }
 }
