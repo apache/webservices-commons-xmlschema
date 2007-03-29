@@ -31,11 +31,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Source;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.transform.sax.SAXSource;
-import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 
 import org.apache.ws.commons.schema.constants.Constants;
@@ -102,7 +99,7 @@ public final class XmlSchemaCollection {
      */
     private Map schemas = new HashMap();
 
-    
+
     /**
      * base URI is used as the base for loading the
      * imports
@@ -253,6 +250,24 @@ public final class XmlSchemaCollection {
 
         SchemaKey key = new SchemaKey(XmlSchema.SCHEMA_NS, null);
         addSchema(key, xsd);
+
+        // look for a system property to see whether we have a registered
+        // extension registry class. if so we'll instantiate a new one
+        // and set it as the extension registry
+        //if there is an error, we'll just print out a message and move on.
+        
+        if (System.getProperty(Constants.SystemConstants.EXTENSION_REGISTRY_KEY)!= null){
+            try {
+                Class clazz = Class.forName(System.getProperty(Constants.SystemConstants.EXTENSION_REGISTRY_KEY));
+                this.extReg = (ExtensionRegistry)clazz.newInstance();
+            } catch (ClassNotFoundException e) {
+                System.err.println("The specified extension registry class cannot be found!");
+            } catch (InstantiationException e) {
+                System.err.println("The specified extension registry class cannot be instantiated!");
+            } catch (IllegalAccessException e) {
+                System.err.println("The specified extension registry class cannot be accessed!");
+            }
+        }
     }
 
     boolean containsSchema(SchemaKey pKey) {
@@ -334,7 +349,7 @@ public final class XmlSchemaCollection {
         SchemaBuilder builder = new SchemaBuilder(this, null);
         return builder.handleXmlSchemaElement(elem, null);
     }
-    
+
     public XmlSchema read(Document doc, String uri, ValidationEventHandler veh) {
         return read(doc, uri, veh, null);
     }
@@ -379,7 +394,7 @@ public final class XmlSchemaCollection {
         }
         return (XmlSchema[]) result.toArray(new XmlSchema[result.size()]);
     }
-    
+
     /**
      * Returns an array of all the XmlSchemas in this collection.
      */
@@ -387,7 +402,7 @@ public final class XmlSchemaCollection {
         Collection c = schemas.values();
         return (XmlSchema[]) c.toArray(new XmlSchema[c.size()]);
     }
-    
+
     public XmlSchemaElement getElementByQName(QName qname) {
         String uri = qname.getNamespaceURI();
         for (Iterator iter = schemas.entrySet().iterator();  iter.hasNext();  ) {

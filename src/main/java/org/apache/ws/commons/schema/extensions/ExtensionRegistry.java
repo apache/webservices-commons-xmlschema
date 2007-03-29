@@ -67,15 +67,15 @@ public class ExtensionRegistry {
      * @param deserializer - an instance of the deserializer
      */
     public void registerDeserializer(QName name,ExtensionDeserializer deserializer){
-        extensionSerializers.put(name,deserializer);
+        extensionDeserializers.put(name,deserializer);
     }
     /**
      * Register a serializer with a Class
      * @param classOfType  - the class of the object that would be serialized
      * @param serializer - an instance of the deserializer
      */
-    public void registerserializer(Class classOfType,ExtensionSerializer serializer){
-        extensionDeserializers.put(classOfType,serializer);
+    public void registerSerializer(Class classOfType,ExtensionSerializer serializer){
+        extensionSerializers.put(classOfType,serializer);
     }
 
 

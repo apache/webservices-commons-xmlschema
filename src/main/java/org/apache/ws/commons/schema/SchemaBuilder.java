@@ -1864,7 +1864,7 @@ public class SchemaBuilder {
                 Attr attribute = (Attr)attributes.item(i);
 
                 String namespaceURI = attribute.getNamespaceURI();
-                String name = attribute.getName();
+                String name = attribute.getLocalName();
 
                 if (namespaceURI!= null &&
                         !"".equals(namespaceURI) &&  //ignore unqualified attributes

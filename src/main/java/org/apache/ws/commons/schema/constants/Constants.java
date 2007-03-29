@@ -23,18 +23,18 @@ import javax.xml.namespace.QName;
  */
 public class Constants {
     public static final String XMLNS_URI =
-        "http://www.w3.org/XML/1998/namespace";
+            "http://www.w3.org/XML/1998/namespace";
 
     public static final String XMLNS_PREFIX =
-        "xml";
+            "xml";
 
     //
     // Schema Namespaces
     //
     public static final String URI_2001_SCHEMA_XSD =
-                                          "http://www.w3.org/2001/XMLSchema";
+            "http://www.w3.org/2001/XMLSchema";
     public static final String URI_2001_SCHEMA_XSI =
-                                 "http://www.w3.org/2001/XMLSchema-instance";
+            "http://www.w3.org/2001/XMLSchema-instance";
 
     // Define qnames for the all of the XSD and SOAP-ENC encodings
     public static final QName XSD_STRING = new QName(URI_2001_SCHEMA_XSD, "string");
@@ -125,15 +125,22 @@ public class Constants {
         public static final String EXTERNAL_ELEMENTS = "EXTERNAL_ELEMENTS";
     }
 
+    /**
+     * class holding the the constants for meta data storage
+     */
+    public static class SystemConstants{
+        public static final String EXTENSION_REGISTRY_KEY = "org.apache.ws.commons.extensions.ExtensionRegistry";
+    }
+
     public static final String XMLNS_ATTRIBUTE_NS_URI =
-        "http://www.w3.org/2000/xmlns/";
+            "http://www.w3.org/2000/xmlns/";
 
     public static final String XMLNS_ATTRIBUTE = "xmlns";
 
     public static final String DEFAULT_NS_PREFIX = "";
 
     public static final String XML_NS_URI =
-        "http://www.w3.org/XML/1998/namespace";
+            "http://www.w3.org/XML/1998/namespace";
 
     public static final String XML_NS_PREFIX = "xml";
 

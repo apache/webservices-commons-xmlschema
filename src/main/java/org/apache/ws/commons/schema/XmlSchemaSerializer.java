@@ -38,6 +38,10 @@ import java.util.Iterator;
 import java.util.Map;
 public class XmlSchemaSerializer {
 
+    /**
+     * Extension registry for the serializer
+     *  */
+
     private ExtensionRegistry extReg;
 
     public ExtensionRegistry getExtReg() {
@@ -47,6 +51,7 @@ public class XmlSchemaSerializer {
     public void setExtReg(ExtensionRegistry extReg) {
         this.extReg = extReg;
     }
+
 
     private Hashtable schema_ns;
 
@@ -2522,11 +2527,17 @@ public class XmlSchemaSerializer {
         return docs.createElementNS(namespace, elementName);
     }
 
-    //will search whether the prefix is available in global hash table, if it
-    //is there than append the prefix to the element name.  If not then it will
-    //create new prefix corresponding to that namespace and store that in 
-    //hash table.  Finally add the new prefix and namespace to <schema> 
-    //element
+    /**
+     * will search whether the prefix is available in global hash table, if it
+     * is there than append the prefix to the element name.  If not then it will
+     * create new prefix corresponding to that namespace and store that in
+     * hash table.  Finally add the new prefix and namespace to <schema>
+     * element
+     * @param names
+     * @param schemaObj
+     * @return resolved QName of the string
+     */
+
     private String resolveQName(QName names,
                                 XmlSchema schemaObj) {
 
@@ -2600,7 +2611,12 @@ public class XmlSchemaSerializer {
     private void processExtensibilityComponents(XmlSchemaObject schemaObject,Element parentElement){
 
         if (extReg!=null){
-           // need to call the extensions registry here
+            Map metaInfoMap = schemaObject.getMetaInfoMap();
+            if (metaInfoMap!=null && !metaInfoMap.isEmpty()) {
+                //get the extra objects and call the respective deserializers
+
+
+            }
 
         }
 
