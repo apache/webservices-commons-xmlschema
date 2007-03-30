@@ -8,7 +8,7 @@ import org.w3c.dom.Node;
 import javax.xml.namespace.QName;
 
 /**
- * Custome attribute deserializer for our test custom attribute
+ * Custom attribute deserializer for our test custom attribute
  */
 public class CustomAttributeDeserializer implements ExtensionDeserializer {
 

@@ -13,9 +13,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * @author : Ajith Ranabahu
- *         Date: Mar 29, 2007
- *         Time: 9:33:17 PM
+ * Test class to run through the full cycle of build-check
  */
 public class CustomExtElementDeserializerTest extends TestCase {
 

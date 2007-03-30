@@ -1,6 +1,5 @@
-package tests.customext.attrib;
+package tests.customext.elt;
 
-import junit.framework.TestCase;
 import org.apache.ws.commons.schema.constants.Constants;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchema;
@@ -16,10 +15,13 @@ import java.util.Map;
 import java.io.ByteArrayOutputStream;
 import java.io.ByteArrayInputStream;
 
+import junit.framework.TestCase;
+
 /**
- * Test class to do a full parsing run with the extensions
+ *  Test class to run through the full cycle of build-serialize-build-check
  */
-public class CustomExtensionSerializerTest extends TestCase {
+public class CustomExtElementSerializerTest extends TestCase {
+
 
     public void testSerialization() throws Exception {
         //set the system property for the custom extension registry
@@ -29,19 +31,17 @@ public class CustomExtensionSerializerTest extends TestCase {
         //create a DOM document
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         documentBuilderFactory.setNamespaceAware(true);
-        Document doc1 = documentBuilderFactory.newDocumentBuilder().
-                parse(Resources.asURI("/external/externalAnnotations.xsd"));
+        Document doc = documentBuilderFactory.newDocumentBuilder().
+                parse(Resources.asURI("/external/externalElementAnnotations.xsd"));
 
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(doc1,null);
+        XmlSchema schema = schemaCol.read(doc,null);
         assertNotNull(schema);
 
         //now serialize it to a byte stream
         //and build a new document out of it
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         schema.write(baos);
-
-
         Document doc2 = documentBuilderFactory.newDocumentBuilder().
                 parse(new ByteArrayInputStream(baos.toByteArray()));
 
@@ -57,15 +57,13 @@ public class CustomExtensionSerializerTest extends TestCase {
             Map metaInfoMap = elt.getMetaInfoMap();
             assertNotNull(metaInfoMap);
 
-            CustomAttribute customAttrib = (CustomAttribute)metaInfoMap.get(CustomAttribute.CUSTOM_ATTRIBUTE_QNAME);
-            assertNotNull(customAttrib);
+            CustomElement customElt = (CustomElement)metaInfoMap.get(CustomElement.CUSTOM_ELT_QNAME);
+            assertNotNull(customElt);
 
         }
-
 
         //remove our system property
         System.getProperties().remove(Constants.SystemConstants.EXTENSION_REGISTRY_KEY);
 
     }
-
 }

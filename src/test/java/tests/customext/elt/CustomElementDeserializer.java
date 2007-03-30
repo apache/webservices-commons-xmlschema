@@ -8,9 +8,7 @@ import org.w3c.dom.Node;
 import javax.xml.namespace.QName;
 
 /**
- * @author : Ajith Ranabahu
- *         Date: Mar 29, 2007
- *         Time: 9:12:19 PM
+ * Custom element deserializer
  */
 public class CustomElementDeserializer implements ExtensionDeserializer {
     /**
