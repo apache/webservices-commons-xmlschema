@@ -102,9 +102,6 @@ public class SchemaBuilder {
         schema.setFinalDefault(this.getDerivation(schemaEl, "finalDefault"));
         schema.setSourceURI(uri);
 
-        //add the extesibility components
-        processExtensibilityComponents(schema,schemaEl);
-
         /***********
          * for ( each childElement)
          *		if( simpleTypeElement)
@@ -196,6 +193,10 @@ public class SchemaBuilder {
                 schema.setAnnotation(annotation);
             }
         }
+
+           //add the extesibility components
+        processExtensibilityComponents(schema,schemaEl);
+        
         return schema;
     }
 
