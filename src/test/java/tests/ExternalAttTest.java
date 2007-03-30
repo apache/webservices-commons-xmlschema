@@ -1,20 +1,12 @@
 package tests;
 
 import junit.framework.TestCase;
+import org.apache.ws.commons.schema.XmlSchema;
+import org.apache.ws.commons.schema.XmlSchemaCollection;
+import org.apache.ws.commons.schema.constants.Constants;
+import org.w3c.dom.Document;
 
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.namespace.QName;
-
-import org.w3c.dom.Document;
-import org.apache.ws.commons.schema.XmlSchemaCollection;
-import org.apache.ws.commons.schema.XmlSchema;
-import org.apache.ws.commons.schema.XmlSchemaElement;
-import org.apache.ws.commons.schema.XmlSchemaType;
-import org.apache.ws.commons.schema.XmlSchemaComplexType;
-import org.apache.ws.commons.schema.XmlSchemaParticle;
-import org.apache.ws.commons.schema.XmlSchemaAnyAttribute;
-import org.apache.ws.commons.schema.constants.Constants;
-
 import java.util.Map;
 /*
  * Copyright 2004,2005 The Apache Software Foundation.

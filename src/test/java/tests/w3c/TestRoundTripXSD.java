@@ -15,23 +15,14 @@
  */
 package tests.w3c;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileReader;
-import java.io.InputStreamReader;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ListIterator;
-
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
-import org.custommonkey.xmlunit.DetailedDiff;
-import org.custommonkey.xmlunit.Diff;
-import org.custommonkey.xmlunit.Difference;
-import org.custommonkey.xmlunit.DifferenceConstants;
-import org.custommonkey.xmlunit.IgnoreTextAndAttributeValuesDifferenceListener;
-import org.custommonkey.xmlunit.XMLTestCase;
+import org.custommonkey.xmlunit.*;
 import org.w3c.dom.Element;
+
+import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ListIterator;
 
 /**
  * Class to test a single schema by roundtripping it using XMLUnit 

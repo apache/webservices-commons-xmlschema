@@ -1,9 +1,9 @@
 package tests.customext.elt;
 
-import org.apache.ws.commons.schema.extensions.ExtensionDeserializer;
 import org.apache.ws.commons.schema.XmlSchemaObject;
-import org.w3c.dom.Node;
+import org.apache.ws.commons.schema.extensions.ExtensionDeserializer;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import javax.xml.namespace.QName;
 

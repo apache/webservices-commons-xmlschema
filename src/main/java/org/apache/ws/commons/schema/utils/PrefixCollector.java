@@ -16,9 +16,9 @@
 
 package org.apache.ws.commons.schema.utils;
 
+import org.apache.ws.commons.schema.constants.Constants;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-import org.apache.ws.commons.schema.constants.Constants;
 
 /**
  * Searches for namespace prefix declarations.

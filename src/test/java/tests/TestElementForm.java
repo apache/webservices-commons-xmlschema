@@ -16,18 +16,12 @@
 package tests;
 
 import junit.framework.TestCase;
+import org.apache.ws.commons.schema.*;
 
-import java.io.InputStream;
-import java.io.FileInputStream;
-
-import org.apache.ws.commons.schema.XmlSchemaCollection;
-import org.apache.ws.commons.schema.XmlSchemaElement;
-import org.apache.ws.commons.schema.XmlSchemaComplexType;
-import org.apache.ws.commons.schema.XmlSchemaSequence;
-import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
-
-import javax.xml.transform.stream.StreamSource;
 import javax.xml.namespace.QName;
+import javax.xml.transform.stream.StreamSource;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 /**
  * TestElementForm

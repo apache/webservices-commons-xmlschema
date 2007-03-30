@@ -16,8 +16,8 @@
 
 package org.apache.ws.commons.schema;
 
-import java.util.Map;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 public abstract class XmlSchemaObject {
     int lineNumber;

@@ -19,19 +19,6 @@ package org.apache.ws.commons.schema;
 
 import org.w3c.dom.Element;
 
-import org.apache.ws.commons.schema.XmlSchemaEnumerationFacet;
-import org.apache.ws.commons.schema.XmlSchemaFractionDigitsFacet;
-import org.apache.ws.commons.schema.XmlSchemaLengthFacet;
-import org.apache.ws.commons.schema.XmlSchemaMaxExclusiveFacet;
-import org.apache.ws.commons.schema.XmlSchemaMaxInclusiveFacet;
-import org.apache.ws.commons.schema.XmlSchemaMaxLengthFacet;
-import org.apache.ws.commons.schema.XmlSchemaMinLengthFacet;
-import org.apache.ws.commons.schema.XmlSchemaMinExclusiveFacet;
-import org.apache.ws.commons.schema.XmlSchemaMinInclusiveFacet;
-import org.apache.ws.commons.schema.XmlSchemaPatternFacet;
-import org.apache.ws.commons.schema.XmlSchemaTotalDigitsFacet;
-import org.apache.ws.commons.schema.XmlSchemaWhiteSpaceFacet;
-
 /**
  * Abstract class for all facets that are used when simple types are
  * derived by restriction.

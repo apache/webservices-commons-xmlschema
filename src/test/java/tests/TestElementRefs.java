@@ -1,21 +1,14 @@
 package tests;
 
+import junit.framework.TestCase;
+import org.apache.ws.commons.schema.*;
+
+import javax.xml.namespace.QName;
+import javax.xml.transform.stream.StreamSource;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Iterator;
-
-import javax.xml.namespace.QName;
-import javax.xml.transform.stream.StreamSource;
-
-import junit.framework.TestCase;
-
-import org.apache.ws.commons.schema.XmlSchema;
-import org.apache.ws.commons.schema.XmlSchemaCollection;
-import org.apache.ws.commons.schema.XmlSchemaComplexType;
-import org.apache.ws.commons.schema.XmlSchemaElement;
-import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
-import org.apache.ws.commons.schema.XmlSchemaSequence;
 /*
  * Copyright 2004,2005 The Apache Software Foundation.
  *

@@ -16,36 +16,29 @@
 
 package org.apache.ws.commons.schema;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
+import org.apache.ws.commons.schema.constants.Constants;
+import org.apache.ws.commons.schema.extensions.ExtensionRegistry;
+import org.apache.ws.commons.schema.resolver.DefaultURIResolver;
+import org.apache.ws.commons.schema.resolver.URIResolver;
+import org.apache.ws.commons.schema.utils.NamespacePrefixList;
+import org.apache.ws.commons.schema.utils.TargetNamespaceValidator;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Source;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.dom.DOMSource;
-
-import org.apache.ws.commons.schema.constants.Constants;
-import org.apache.ws.commons.schema.resolver.DefaultURIResolver;
-import org.apache.ws.commons.schema.resolver.URIResolver;
-import org.apache.ws.commons.schema.utils.TargetNamespaceValidator;
-import org.apache.ws.commons.schema.utils.NamespacePrefixList;
-import org.apache.ws.commons.schema.extensions.ExtensionRegistry;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
+import javax.xml.transform.sax.SAXSource;
+import javax.xml.transform.stream.StreamSource;
+import java.io.IOException;
+import java.io.Reader;
+import java.util.*;
 
 /**
  * Contains a cache of XML Schema definition language (XSD).
@@ -255,7 +248,7 @@ public final class XmlSchemaCollection {
         // extension registry class. if so we'll instantiate a new one
         // and set it as the extension registry
         //if there is an error, we'll just print out a message and move on.
-        
+
         if (System.getProperty(Constants.SystemConstants.EXTENSION_REGISTRY_KEY)!= null){
             try {
                 Class clazz = Class.forName(System.getProperty(Constants.SystemConstants.EXTENSION_REGISTRY_KEY));

@@ -1,26 +1,14 @@
 package tests;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
-
-import java.util.Iterator;
-import java.util.Set;
-import java.util.HashSet;
+import junit.framework.TestCase;
+import org.apache.ws.commons.schema.*;
 
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
-
-import junit.framework.TestCase;
-
-import org.apache.ws.commons.schema.XmlSchema;
-import org.apache.ws.commons.schema.XmlSchemaElement;
-import org.apache.ws.commons.schema.XmlSchemaKey;
-import org.apache.ws.commons.schema.XmlSchemaKeyref;
-import org.apache.ws.commons.schema.XmlSchemaUnique;
-import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
-import org.apache.ws.commons.schema.XmlSchemaCollection;
-import org.apache.ws.commons.schema.XmlSchemaXPath;
-import org.apache.ws.commons.schema.XmlSchemaUnique;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.HashSet;
+import java.util.Set;
 
 /*
  * Copyright 2004,2005 The Apache Software Foundation.

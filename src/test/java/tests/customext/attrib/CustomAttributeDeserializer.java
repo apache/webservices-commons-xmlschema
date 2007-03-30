@@ -1,13 +1,11 @@
 package tests.customext.attrib;
 
-import org.apache.ws.commons.schema.extensions.ExtensionDeserializer;
 import org.apache.ws.commons.schema.XmlSchemaObject;
-import org.w3c.dom.Node;
+import org.apache.ws.commons.schema.extensions.ExtensionDeserializer;
 import org.w3c.dom.Attr;
+import org.w3c.dom.Node;
 
 import javax.xml.namespace.QName;
-
-import tests.customext.attrib.CustomAttribute;
 
 /**
  * Custome attribute deserializer for our test custom attribute

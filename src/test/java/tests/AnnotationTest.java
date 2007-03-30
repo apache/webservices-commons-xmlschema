@@ -17,31 +17,17 @@
  */
 package tests;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
-
-import java.util.Iterator;
-import java.util.Set;
-import java.util.HashSet;
+import junit.framework.TestCase;
+import org.apache.ws.commons.schema.*;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
-
-import junit.framework.TestCase;
-
-import org.w3c.dom.Attr;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Node;
-
-import org.apache.ws.commons.schema.XmlSchema;
-import org.apache.ws.commons.schema.XmlSchemaCollection;
-import org.apache.ws.commons.schema.XmlSchemaSimpleType;
-import org.apache.ws.commons.schema.XmlSchemaAnnotation;
-import org.apache.ws.commons.schema.XmlSchemaObject;
-import org.apache.ws.commons.schema.XmlSchemaAppInfo;
-import org.apache.ws.commons.schema.XmlSchemaDocumentation;
-import org.apache.ws.commons.schema.XmlSchemaElement;
-import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class AnnotationTest extends TestCase {

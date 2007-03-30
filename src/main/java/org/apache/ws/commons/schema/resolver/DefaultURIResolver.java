@@ -3,12 +3,12 @@ package org.apache.ws.commons.schema.resolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import java.io.IOException;
 import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.MalformedURLException;
 /*
  * Copyright 2004,2005 The Apache Software Foundation.
  *

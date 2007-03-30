@@ -16,8 +16,8 @@
 
 package org.apache.ws.commons.schema;
 
-import org.apache.ws.commons.schema.constants.Enum;
 import org.apache.ws.commons.schema.constants.Constants;
+import org.apache.ws.commons.schema.constants.Enum;
 
 /**
  * Represents the severity of the validation event.

@@ -1,38 +1,15 @@
 package tests;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
-
-import java.util.Iterator;
-import java.util.Set;
-import java.util.HashSet;
+import junit.framework.TestCase;
+import org.apache.ws.commons.schema.*;
 
 import javax.xml.namespace.QName;
-
 import javax.xml.transform.stream.StreamSource;
-
-import junit.framework.TestCase;
-
-import org.apache.ws.commons.schema.XmlSchema;
-import org.apache.ws.commons.schema.XmlSchemaType;
-import org.apache.ws.commons.schema.XmlSchemaCollection;
-import org.apache.ws.commons.schema.XmlSchemaSimpleType;
-import org.apache.ws.commons.schema.XmlSchemaSimpleTypeRestriction;
-import org.apache.ws.commons.schema.XmlSchemaElement;
-import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
-import org.apache.ws.commons.schema.XmlSchemaSequence;
-import org.apache.ws.commons.schema.XmlSchemaObjectTable;
-import org.apache.ws.commons.schema.XmlSchemaRedefine;
-import org.apache.ws.commons.schema.XmlSchemaComplexType;
-import org.apache.ws.commons.schema.XmlSchemaParticle;
-import org.apache.ws.commons.schema.XmlSchemaContentModel;
-import org.apache.ws.commons.schema.XmlSchemaComplexContentExtension;
-import org.apache.ws.commons.schema.XmlSchemaMinInclusiveFacet;
-import org.apache.ws.commons.schema.XmlSchemaMaxInclusiveFacet;
-import org.apache.ws.commons.schema.XmlSchemaGroup;
-import org.apache.ws.commons.schema.XmlSchemaGroupRef;
-import org.apache.ws.commons.schema.XmlSchemaAttributeGroup;
-import org.apache.ws.commons.schema.XmlSchemaAttribute;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 /*
  * Copyright 2004,2005 The Apache Software Foundation.

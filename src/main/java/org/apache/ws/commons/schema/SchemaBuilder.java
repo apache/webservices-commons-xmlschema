@@ -17,27 +17,20 @@
 
 package org.apache.ws.commons.schema;
 
-import java.util.StringTokenizer;
-import java.util.Vector;
-import java.util.Stack;
+import org.apache.ws.commons.schema.XmlSchemaCollection.SchemaKey;
+import org.apache.ws.commons.schema.constants.Constants;
+import org.apache.ws.commons.schema.extensions.ExtensionRegistry;
+import org.apache.ws.commons.schema.utils.NodeNamespaceContext;
+import org.apache.ws.commons.schema.utils.TargetNamespaceValidator;
+import org.apache.ws.commons.schema.utils.XDOMUtil;
+import org.w3c.dom.*;
+import org.xml.sax.InputSource;
 
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.apache.ws.commons.schema.XmlSchemaCollection.SchemaKey;
-import org.apache.ws.commons.schema.constants.Constants;
-import org.apache.ws.commons.schema.utils.NodeNamespaceContext;
-import org.apache.ws.commons.schema.utils.TargetNamespaceValidator;
-import org.apache.ws.commons.schema.utils.XDOMUtil;
-import org.apache.ws.commons.schema.extensions.ExtensionRegistry;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
+import java.util.StringTokenizer;
+import java.util.Vector;
 
 public class SchemaBuilder {
     Document doc;

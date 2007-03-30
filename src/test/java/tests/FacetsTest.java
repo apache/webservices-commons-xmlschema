@@ -17,38 +17,16 @@
  */
 package tests;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
-
-import java.util.Iterator;
-import java.util.Set;
-import java.util.HashSet;
+import junit.framework.TestCase;
+import org.apache.ws.commons.schema.*;
 
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
-
-import junit.framework.TestCase;
-
-import org.apache.ws.commons.schema.XmlSchema;
-import org.apache.ws.commons.schema.XmlSchemaCollection;
-import org.apache.ws.commons.schema.XmlSchemaSimpleType;
-import org.apache.ws.commons.schema.XmlSchemaPatternFacet;
-import org.apache.ws.commons.schema.XmlSchemaLengthFacet;
-import org.apache.ws.commons.schema.XmlSchemaTotalDigitsFacet;
-import org.apache.ws.commons.schema.XmlSchemaFractionDigitsFacet;
-import org.apache.ws.commons.schema.XmlSchemaMaxInclusiveFacet;
-import org.apache.ws.commons.schema.XmlSchemaMinInclusiveFacet;
-import org.apache.ws.commons.schema.XmlSchemaMaxExclusiveFacet;
-import org.apache.ws.commons.schema.XmlSchemaMinExclusiveFacet;
-import org.apache.ws.commons.schema.XmlSchemaMinLengthFacet;
-import org.apache.ws.commons.schema.XmlSchemaMaxLengthFacet;
-import org.apache.ws.commons.schema.XmlSchemaWhiteSpaceFacet;
-import org.apache.ws.commons.schema.XmlSchemaEnumerationFacet;
-
-import org.apache.ws.commons.schema.XmlSchemaSimpleTypeRestriction;
-
-import org.apache.ws.commons.schema.XmlSchemaElement;
-import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 public class FacetsTest extends TestCase {
 

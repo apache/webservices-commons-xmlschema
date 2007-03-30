@@ -15,13 +15,13 @@
  */
 package tests.w3c;
 
+import junit.framework.Test;
+import junit.framework.TestSuite;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
-
-import junit.framework.Test;
-import junit.framework.TestSuite;
 
 /**
  * Class to represent a bucket of tests described by a set of .testSet files.

@@ -16,18 +16,11 @@
 
 package org.apache.ws.commons.schema.utils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import org.apache.ws.commons.schema.constants.Constants;
+import org.w3c.dom.Node;
 
 import javax.xml.namespace.NamespaceContext;
-
-import org.w3c.dom.Node;
-import org.apache.ws.commons.schema.constants.Constants;
+import java.util.*;
 
 /**
  * Implementation of {@link NamespaceContext}, which is based on a DOM node.

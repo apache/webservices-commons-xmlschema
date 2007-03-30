@@ -5,8 +5,8 @@ import org.apache.ws.commons.schema.constants.Constants;
 import org.w3c.dom.Node;
 
 import javax.xml.namespace.QName;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Default deserializer. The action taken when there is nothing specific

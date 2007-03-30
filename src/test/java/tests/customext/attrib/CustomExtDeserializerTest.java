@@ -1,17 +1,14 @@
 package tests.customext.attrib;
 
 import junit.framework.TestCase;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.Document;
-import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchema;
+import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.constants.Constants;
+import org.w3c.dom.Document;
 import tests.Resources;
-import tests.customext.attrib.CustomAttribute;
 
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.util.Iterator;
 import java.util.Map;
 

@@ -1,10 +1,6 @@
 package org.apache.ws.commons.schema.utils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class NamespaceMap extends HashMap implements NamespacePrefixList {
     

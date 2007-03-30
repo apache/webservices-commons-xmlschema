@@ -1,16 +1,14 @@
 package tests.customext.elt;
 
 import junit.framework.TestCase;
-import org.apache.ws.commons.schema.constants.Constants;
-import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchema;
+import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaElement;
+import org.apache.ws.commons.schema.constants.Constants;
 import org.w3c.dom.Document;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import tests.Resources;
 
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -45,7 +43,7 @@ public class CustomExtElementDeserializerTest extends TestCase {
                assertNotNull(elt);
                Map metaInfoMap = elt.getMetaInfoMap();
                assertNotNull(metaInfoMap);
-               
+
                CustomElement customElt = (CustomElement)metaInfoMap.get(CustomElement.CUSTOM_ELT_QNAME);
                assertNotNull(customElt);
 

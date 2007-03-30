@@ -1,7 +1,7 @@
 package tests.customext.attrib;
 
-import org.apache.ws.commons.schema.extensions.ExtensionSerializer;
 import org.apache.ws.commons.schema.XmlSchemaObject;
+import org.apache.ws.commons.schema.extensions.ExtensionSerializer;
 import org.w3c.dom.Node;
 
 /**

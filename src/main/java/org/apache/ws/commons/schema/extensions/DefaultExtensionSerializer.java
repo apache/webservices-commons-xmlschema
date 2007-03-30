@@ -2,11 +2,11 @@ package org.apache.ws.commons.schema.extensions;
 
 import org.apache.ws.commons.schema.XmlSchemaObject;
 import org.apache.ws.commons.schema.constants.Constants;
-import org.w3c.dom.Node;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
-import java.util.Map;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
 
