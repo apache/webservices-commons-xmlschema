@@ -20,7 +20,7 @@ import java.util.Map;
 public class CustomExtElementDeserializerTest extends TestCase {
 
 
-    public void testSimpleTypeSchemaGeneration() throws Exception {
+    public void testDeserialization() throws Exception {
             //set the system property for the custom extension registry
             System.setProperty(Constants.SystemConstants.EXTENSION_REGISTRY_KEY,
                     CustomExtensionRegistry.class.getName());

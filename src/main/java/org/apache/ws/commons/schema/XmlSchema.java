@@ -190,15 +190,21 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
 
     public Document[] getAllSchemas() {
         try {
-            return XmlSchemaSerializer.serializeSchema(this, true);
+            
+            XmlSchemaSerializer xser = new XmlSchemaSerializer();
+            xser.setExtReg(this.parent.getExtReg());
+            return xser.serializeSchema(this, true);
+
         } catch (XmlSchemaSerializer.XmlSchemaSerializerException e) {
             throw new XmlSchemaException(e.getMessage());
         }
     }
 
-    private static void serialize_internal(XmlSchema schema, Writer out) {
+    private  void serialize_internal(XmlSchema schema, Writer out) {
         try {
-            Document[] serializedSchemas = XmlSchemaSerializer.serializeSchema(schema, false);
+            XmlSchemaSerializer xser = new XmlSchemaSerializer();
+            xser.setExtReg(this.parent.getExtReg());
+            Document[] serializedSchemas = xser.serializeSchema(schema, false);
             TransformerFactory trFac = TransformerFactory.newInstance();
             Source source = new DOMSource(serializedSchemas[0]);
             Result result = new StreamResult(out);

@@ -52,7 +52,7 @@ public class XmlSchemaSerializer {
 
     private static final String XMLNS_NAMESPACE_URI = "http://www.w3.org/2000/xmlns/";
 
-    private XmlSchemaSerializer() {
+    XmlSchemaSerializer() {
         docs = new ArrayList();
         schema_ns = new Hashtable();
     }
@@ -75,10 +75,9 @@ public class XmlSchemaSerializer {
      * Array of Documents that include/imported.
      * **********************************************************************
      */
-    public static Document[] serializeSchema(XmlSchema schemaObj,
+    public Document[] serializeSchema(XmlSchema schemaObj,
                                              boolean serializeIncluded) throws XmlSchemaSerializerException {
-        return new XmlSchemaSerializer().serializeSchemaElement(schemaObj,
-                serializeIncluded);
+        return serializeSchemaElement(schemaObj, serializeIncluded);
     }
 
     Document[] serializeSchemaElement(XmlSchema schemaObj,
@@ -189,6 +188,10 @@ public class XmlSchemaSerializer {
         //returned
         serializeSchemaChild(items, serializedSchema, serializedSchemaDocs,
                 schemaObj, serializeIncluded);
+
+        //process extension elements/attributes
+        processExtensibilityComponents(schemaObj,serializedSchema);
+
 
         serializedSchemaDocs.appendChild(serializedSchema);
         docs.add(serializedSchemaDocs);
@@ -356,6 +359,9 @@ public class XmlSchemaSerializer {
             docs.addAll(includeSeri.docs);
         }
 
+        //process includes
+        processExtensibilityComponents(includeObj,includeEl);
+
         return includeEl;
     }
 
@@ -409,6 +415,9 @@ public class XmlSchemaSerializer {
             importSeri.serializeSchemaElement(importObj.schema, serializeIncluded);
             docs.addAll(importSeri.docs);
         }
+
+         //process extension
+        processExtensibilityComponents(importObj,importEl);
 
         return importEl;
     }
@@ -481,6 +490,10 @@ public class XmlSchemaSerializer {
                 redefine.appendChild(attributeGroupRef);
             }
         }
+
+            //process extension
+        processExtensibilityComponents(redefineObj,redefine);
+
         return redefine;
     }
 
@@ -618,6 +631,9 @@ public class XmlSchemaSerializer {
             serializedEl.setAttribute("nillable", "true");
         }
 
+            //process extension
+        processExtensibilityComponents(elementObj,serializedEl);
+
         return serializedEl;
     }
 
@@ -689,6 +705,9 @@ public class XmlSchemaSerializer {
 		   throw new XmlSchemaSerializerException("simple type must be set "
 		   + "with content, either union, restriction or list");*/
 
+            //process extension
+        processExtensibilityComponents(simpleTypeObj,serializedSimpleType);
+
         return serializedSimpleType;
     }
 
@@ -749,6 +768,10 @@ public class XmlSchemaSerializer {
                 serializedRestriction.appendChild(facetEl);
             }
         }
+
+            //process extension
+        processExtensibilityComponents(restrictionObj,serializedRestriction);
+
         return serializedRestriction;
     }
 
@@ -821,6 +844,9 @@ public class XmlSchemaSerializer {
 //                                                     schema);
 //            serializedFacet.appendChild(annotation);
 //        }
+
+            //process extension
+        processExtensibilityComponents(facetObj,serializedFacet);
 
         return serializedFacet;
     }
@@ -936,6 +962,9 @@ public class XmlSchemaSerializer {
         if (attrColl.getCount() > 0)
             setupAttr(doc, attrColl, schema, serializedComplexType);
 
+            //process extension
+        processExtensibilityComponents(complexTypeObj,serializedComplexType);
+
         return serializedComplexType;
     }
 
@@ -1006,6 +1035,10 @@ public class XmlSchemaSerializer {
                 sequence.appendChild(any);
             }
         }
+
+            //process extension
+        processExtensibilityComponents(sequenceObj,sequence);
+
         return sequence;
     }
 
@@ -1134,6 +1167,10 @@ public class XmlSchemaSerializer {
                     attribute.setAttribute(nodeName, value);
             }
         }
+
+            //process extension
+        processExtensibilityComponents(attributeObj,attribute);
+
         return attribute;
     }
 
@@ -1226,6 +1263,10 @@ public class XmlSchemaSerializer {
                 }
             }
         }
+
+            //process extension
+        processExtensibilityComponents(choiceObj,choice);
+
         return choice;
     }
 
@@ -1279,6 +1320,9 @@ public class XmlSchemaSerializer {
             }
         }
 
+            //process extension
+        processExtensibilityComponents(allObj,allEl);
+
         return allEl;
     }
 
@@ -1325,6 +1369,10 @@ public class XmlSchemaSerializer {
             Element annotation = serializeAnnotation(doc, listObj.annotation, schema);
             list.appendChild(annotation);
         }
+
+            //process extension
+        processExtensibilityComponents(listObj,list);
+
         return list;
     }
 
@@ -1380,6 +1428,10 @@ public class XmlSchemaSerializer {
                     schema);
             union.appendChild(annotation);
         }
+
+            //process extension
+        processExtensibilityComponents(unionObj,union);
+
         return union;
     }
 
@@ -1438,6 +1490,9 @@ public class XmlSchemaSerializer {
             anyEl.appendChild(annotation);
         }
 
+            //process extension
+        processExtensibilityComponents(anyObj,anyEl);
+
         return anyEl;
     }
 
@@ -1493,6 +1548,9 @@ public class XmlSchemaSerializer {
                     (XmlSchemaAll) groupObj.particle, schema);
             group.appendChild(all);
         }
+
+            //process extension
+        processExtensibilityComponents(groupObj,group);
 
         return group;
     }
@@ -1561,6 +1619,9 @@ public class XmlSchemaSerializer {
             groupRef.appendChild(annotation);
         }
 
+            //process extension
+        processExtensibilityComponents(groupRefObj,groupRef);
+
         return groupRef;
     }
 
@@ -1610,6 +1671,10 @@ public class XmlSchemaSerializer {
                     + "must be restriction or extension");
 
         simpleContent.appendChild(content);
+
+            //process extension
+        processExtensibilityComponents(simpleContentObj,simpleContent);
+
         return simpleContent;
     }
 
@@ -1669,6 +1734,9 @@ public class XmlSchemaSerializer {
                     + "must be restriction or extension");
 
         complexContent.appendChild(content);
+
+            //process extension
+        processExtensibilityComponents(complexContentObj,complexContent);
 
         return complexContent;
     }
@@ -1740,6 +1808,10 @@ public class XmlSchemaSerializer {
                 constraint.appendChild(field);
             }
         }
+
+            //process extension
+        processExtensibilityComponents(constraintObj,constraint);
+
         return constraint;
     }
 
@@ -1779,6 +1851,8 @@ public class XmlSchemaSerializer {
                     selectorObj.annotation, schema);
             selector.appendChild(annotation);
         }
+            //process extension
+        processExtensibilityComponents(selectorObj,selector);
         return selector;
     }
 
@@ -1816,6 +1890,9 @@ public class XmlSchemaSerializer {
                     fieldObj.annotation, schema);
             field.appendChild(annotation);
         }
+
+            //process extension
+        processExtensibilityComponents(fieldObj,field);
 
         return field;
     }
@@ -1868,6 +1945,9 @@ public class XmlSchemaSerializer {
             }
         }
 
+            //process extension
+        processExtensibilityComponents(annotationObj,annotation);
+
         return annotation;
     }
 
@@ -1916,6 +1996,9 @@ public class XmlSchemaSerializer {
                 }
             }
         }
+
+            //process extension
+        processExtensibilityComponents(appInfoObj,appInfoEl);
 
         return appInfoEl;
     }
@@ -1970,6 +2053,9 @@ public class XmlSchemaSerializer {
                 }
             }
         }
+            //process extension
+        processExtensibilityComponents(documentationObj,documentationEl);
+
         return documentationEl;
     }
 
@@ -2047,6 +2133,10 @@ public class XmlSchemaSerializer {
                     (XmlSchemaFacet) facets.getItem(i), schema);
             restriction.appendChild(facet);
         }
+
+            //process extension
+        processExtensibilityComponents(restrictionObj,restriction);
+
         return restriction;
     }
 
@@ -2118,6 +2208,9 @@ public class XmlSchemaSerializer {
                     extensionObj.anyAttribute, schema);
             extension.appendChild(anyAttribute);
         }
+
+            //process extension
+        processExtensibilityComponents(extensionObj,extension);
 
         return extension;
     }
@@ -2204,6 +2297,9 @@ public class XmlSchemaSerializer {
             restriction.appendChild(anyAttribute);
         }
 
+            //process extension
+        processExtensibilityComponents(restrictionObj,restriction);
+
         return restriction;
     }
 
@@ -2284,6 +2380,9 @@ public class XmlSchemaSerializer {
             extension.appendChild(anyAttribute);
         }
 
+            //process extension
+        processExtensibilityComponents(extensionObj,extension);
+
         return extension;
     }
 
@@ -2333,6 +2432,9 @@ public class XmlSchemaSerializer {
             anyAttribute.appendChild(annotation);
         }
 
+            //process extension
+        processExtensibilityComponents(anyAttributeObj,anyAttribute);
+
         return anyAttribute;
     }
 
@@ -2380,6 +2482,10 @@ public class XmlSchemaSerializer {
                     attributeGroupObj.annotation, schema);
             attributeGroupRef.appendChild(annotation);
         }
+
+            //process extension
+        processExtensibilityComponents(attributeGroupObj,attributeGroupRef);
+
         return attributeGroupRef;
     }
 
@@ -2445,6 +2551,9 @@ public class XmlSchemaSerializer {
                     attributeGroupObj.anyAttribute, schema);
             attributeGroup.appendChild(anyAttribute);
         }
+
+            //process extension
+        processExtensibilityComponents(attributeGroupObj,attributeGroup);
 
         return attributeGroup;
     }
@@ -2604,7 +2713,27 @@ public class XmlSchemaSerializer {
             Map metaInfoMap = schemaObject.getMetaInfoMap();
             if (metaInfoMap!=null && !metaInfoMap.isEmpty()) {
                 //get the extra objects and call the respective deserializers
+                Iterator keysIt = metaInfoMap.keySet().iterator();
+                while (keysIt.hasNext()) {
+                    Object key =  keysIt.next();
+                    if (!Constants.MetaDataConstants.EXTERNAL_ATTRIBUTES.equals(key)){  //skip external attributes
+                        extReg.serializeExtension(schemaObject,metaInfoMap.get(key).getClass(),parentElement);
+                    }else{
+                       Map externalAttribs = (Map)metaInfoMap.get(key);
+                       //external attribs are as DOM attrib objects
+                       Iterator domeAtts = externalAttribs.values().iterator();
+                        while (domeAtts.hasNext()) {
+                            Attr attr = (Attr) domeAtts.next();
+                            parentElement.setAttributeNode(
+                                   (Attr) parentElement.getOwnerDocument().importNode(attr,true)
+                            );
+                        }
 
+
+
+                    }
+
+                }
 
             }
 
