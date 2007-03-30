@@ -2,13 +2,10 @@ package tests.customext.elt;
 
 import org.apache.ws.commons.schema.XmlSchemaObject;
 import org.apache.ws.commons.schema.extensions.ExtensionSerializer;
-import org.w3c.dom.Node;
 import org.w3c.dom.Element;
-import org.w3c.dom.Attr;
+import org.w3c.dom.Node;
 
 import java.util.Map;
-
-import tests.customext.attrib.CustomAttribute;
 
 /**
  * Custom element serializer

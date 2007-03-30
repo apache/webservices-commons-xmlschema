@@ -1,20 +1,18 @@
 package tests.customext.attrib;
 
 import junit.framework.TestCase;
-import org.apache.ws.commons.schema.constants.Constants;
-import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchema;
+import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaElement;
+import org.apache.ws.commons.schema.constants.Constants;
 import org.w3c.dom.Document;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import tests.Resources;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.Iterator;
 import java.util.Map;
-import java.io.ByteArrayOutputStream;
-import java.io.ByteArrayInputStream;
 
 /**
  * Test class to do a full parsing run with the extensions
