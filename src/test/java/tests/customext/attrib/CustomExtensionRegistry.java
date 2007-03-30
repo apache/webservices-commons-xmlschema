@@ -1,6 +1,9 @@
-package tests.customext;
+package tests.customext.attrib;
 
 import org.apache.ws.commons.schema.extensions.ExtensionRegistry;
+import tests.customext.attrib.CustomAttribute;
+import tests.customext.attrib.CustomAttributeDeserializer;
+import tests.customext.attrib.CustomAttributeSerializer;
 
 /**
  * Custom extension registry to test the functionality

@@ -1,4 +1,4 @@
-package tests.customext;
+package tests.customext.attrib;
 
 import org.apache.ws.commons.schema.extensions.ExtensionDeserializer;
 import org.apache.ws.commons.schema.XmlSchemaObject;
@@ -7,10 +7,10 @@ import org.w3c.dom.Attr;
 
 import javax.xml.namespace.QName;
 
+import tests.customext.attrib.CustomAttribute;
+
 /**
- * @author : Ajith Ranabahu
- *         Date: Mar 29, 2007
- *         Time: 3:58:59 PM
+ * Custome attribute deserializer for our test custom attribute
  */
 public class CustomAttributeDeserializer implements ExtensionDeserializer {
 
@@ -37,10 +37,6 @@ public class CustomAttributeDeserializer implements ExtensionDeserializer {
 
              //put this in the schema object meta info map
              schemaObject.addMetaInfo(CustomAttribute.CUSTOM_ATTRIBUTE_QNAME,customAttrib);
-
-
-
-
          }
     }
 }

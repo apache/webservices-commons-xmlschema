@@ -1,4 +1,4 @@
-package tests.customext;
+package tests.customext.attrib;
 
 import junit.framework.TestCase;
 
@@ -8,9 +8,9 @@ import org.w3c.dom.Document;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaElement;
-import org.apache.ws.commons.schema.XmlSchemaType;
 import org.apache.ws.commons.schema.constants.Constants;
 import tests.Resources;
+import tests.customext.attrib.CustomAttribute;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -49,6 +49,9 @@ public class CustomExtDeserializerTest extends TestCase {
                assertNotNull(customAttrib);
 
            }
+
+                 //remove our system property
+            System.getProperties().remove(Constants.SystemConstants.EXTENSION_REGISTRY_KEY);;
 
     }
 }
