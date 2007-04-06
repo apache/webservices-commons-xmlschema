@@ -20,6 +20,7 @@
             </item>
             <item name="Documentation">
                 <item name="Tutorial" href="schematutorial.html"/>
+                <item name="Extensions" href="writingExtensions.html"/>
                 <item name="Javadocs" href="/apidocs/index.html"/>
                 <item name="View Source"
                       href="http://svn.apache.org/viewvc/webservices/commons/trunk/modules/XmlSchema/?root=Apache-SVN"/>
