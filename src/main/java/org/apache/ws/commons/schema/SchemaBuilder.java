@@ -1373,8 +1373,9 @@ public class SchemaBuilder {
             element.schemaType = type;
         } else if (el.getAttributeNode("ref") != null) {
             String refName = el.getAttribute("ref");
-            element.setRefName(getRefQName(refName, el));
-            element.name = refName;
+            QName refQName = getRefQName(refName, el);
+            element.setRefName(refQName);
+            element.name = refQName.getLocalPart();
         }
 
         Element simpleTypeEl, complexTypeEl, keyEl, keyrefEl, uniqueEl;
