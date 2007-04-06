@@ -169,12 +169,14 @@ public class SchemaBuilder {
 
             } else if (el.getLocalName().equals("group")) {
                 XmlSchemaGroup group = handleGroup(schema, el, schemaEl);
-                schema.groups.collection.put(group.name, group);
+                schema.groups.collection.put(
+                        new QName(schema.getTargetNamespace(), group.name), group);
                 schema.items.add(group);
             } else if (el.getLocalName().equals("attributeGroup")) {
                 XmlSchemaAttributeGroup group = handleAttributeGroup(schema,
                         el, schemaEl);
-                schema.attributeGroups.collection.put(group.name, group);
+                schema.attributeGroups.collection.put(
+                        new QName(schema.getTargetNamespace(), group.name), group);
                 schema.items.add(group);
             } else if (el.getLocalName().equals("attribute")) {
                 XmlSchemaAttribute attr = handleAttribute(schema,
@@ -187,7 +189,8 @@ public class SchemaBuilder {
                 schema.includes.add(redefine);
             } else if (el.getLocalName().equals("notation")) {
                 XmlSchemaNotation notation = handleNotation(el);
-                schema.notations.collection.put(notation.name, notation);
+                schema.notations.collection.put(
+                        new QName(schema.getTargetNamespace(), notation.name), notation);
                 schema.items.add(notation);
             } else if (el.getLocalName().equals("annotation")) {
                 XmlSchemaAnnotation annotation = handleAnnotation(el);
