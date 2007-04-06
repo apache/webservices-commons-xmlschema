@@ -166,6 +166,7 @@ public class SchemaBuilder {
                         el, schemaEl);
                 schema.includes.add(schemaImport);
                 schema.items.add(schemaImport);
+
             } else if (el.getLocalName().equals("group")) {
                 XmlSchemaGroup group = handleGroup(schema, el, schemaEl);
                 schema.groups.collection.put(group.name, group);
@@ -194,9 +195,9 @@ public class SchemaBuilder {
             }
         }
 
-           //add the extesibility components
+        //add the extesibility components
         processExtensibilityComponents(schema,schemaEl);
-        
+
         return schema;
     }
 
@@ -1385,29 +1386,29 @@ public class SchemaBuilder {
         }
 
         if ((keyEl = XDOMUtil.getFirstChildElementNS(el, XmlSchema.SCHEMA_NS, "key")) != null) {
-        	while(keyEl != null) {
-        		element.constraints.add(handleConstraint(keyEl, "Key"));
-        		keyEl = XDOMUtil.getNextSiblingElement(keyEl, "key");
-        	}
+            while(keyEl != null) {
+                element.constraints.add(handleConstraint(keyEl, "Key"));
+                keyEl = XDOMUtil.getNextSiblingElement(keyEl, "key");
+            }
         }
 
         if ((keyrefEl = XDOMUtil.getFirstChildElementNS(el, XmlSchema.SCHEMA_NS, "keyref")) != null) {
-        	while(keyrefEl != null) {
-	            XmlSchemaKeyref keyRef = (XmlSchemaKeyref) handleConstraint(keyrefEl, "Keyref");
-	            if(keyrefEl.hasAttribute("refer")) {
-		            String name = keyrefEl.getAttribute("refer");
-		            keyRef.refer = getRefQName(name, el);
-	            }
-	            element.constraints.add(keyRef);
-	            keyrefEl = XDOMUtil.getNextSiblingElement(keyrefEl, "keyref");
-        	}
+            while(keyrefEl != null) {
+                XmlSchemaKeyref keyRef = (XmlSchemaKeyref) handleConstraint(keyrefEl, "Keyref");
+                if(keyrefEl.hasAttribute("refer")) {
+                    String name = keyrefEl.getAttribute("refer");
+                    keyRef.refer = getRefQName(name, el);
+                }
+                element.constraints.add(keyRef);
+                keyrefEl = XDOMUtil.getNextSiblingElement(keyrefEl, "keyref");
+            }
         }
 
         if ((uniqueEl = XDOMUtil.getFirstChildElementNS(el, XmlSchema.SCHEMA_NS, "unique")) != null) {
-        	while(uniqueEl != null) {
-        		element.constraints.add(handleConstraint(uniqueEl, "Unique"));
-        		uniqueEl = XDOMUtil.getNextSiblingElement(uniqueEl, "unique");
-        	}
+            while(uniqueEl != null) {
+                element.constraints.add(handleConstraint(uniqueEl, "Unique"));
+                uniqueEl = XDOMUtil.getNextSiblingElement(uniqueEl, "unique");
+            }
         }
 
         if (el.hasAttribute("abstract")) {
@@ -1516,6 +1517,13 @@ public class SchemaBuilder {
         }
     }
 
+    /**
+     * Hanlde the import
+     * @param schema
+     * @param importEl
+     * @param schemaEl
+     * @return XmlSchemaObject
+     */
     XmlSchemaImport handleImport(XmlSchema schema, Element importEl,
                                  Element schemaEl) {
 
@@ -1568,7 +1576,7 @@ public class SchemaBuilder {
                                 validator);
             }
         }
-        return (schemaImport.schema == null) ? null : schemaImport;
+        return  schemaImport;
     }
 
     /**
@@ -1885,7 +1893,7 @@ public class SchemaBuilder {
 
                     if (namespaceURI!= null &&
                             !Constants.URI_2001_SCHEMA_XSD.equals(namespaceURI))
-                      //does not belong to the schema namespace
+                    //does not belong to the schema namespace
                     {
                         QName qName = new QName(namespaceURI,name);
                         extReg.deserializeExtension(schemaObject,qName,extElement);

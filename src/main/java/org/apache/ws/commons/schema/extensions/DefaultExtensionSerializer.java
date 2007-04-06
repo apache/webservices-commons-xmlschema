@@ -4,6 +4,8 @@ import org.apache.ws.commons.schema.XmlSchemaObject;
 import org.apache.ws.commons.schema.constants.Constants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.w3c.dom.Element;
+import org.w3c.dom.Attr;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -30,16 +32,11 @@ public class DefaultExtensionSerializer implements ExtensionSerializer{
         Document parentDoc = node.getOwnerDocument();
         if (metaInfoMap.containsKey(Constants.MetaDataConstants.EXTERNAL_ATTRIBUTES)){
             Map attribMap  = (Map)metaInfoMap.get(Constants.MetaDataConstants.EXTERNAL_ATTRIBUTES);
-            for(Iterator it = attribMap.keySet().iterator();it.hasNext();){
-                Object key = it.next();
-                Object value = attribMap.get(key);
-                // this comparison may not be the most ideal but lets keep it for now
-                if (value.getClass().equals(classOfType)){
-//                   Attr newAtt =
+           for(Iterator it = attribMap.values().iterator();it.hasNext();){
+                if (node.getNodeType()==Node.ELEMENT_NODE){
+                    ((Element)node).setAttributeNodeNS((Attr)parentDoc.importNode((Node)it.next(),true));
                 }
 
-                node.appendChild(
-                        parentDoc.importNode((Node)it.next(),true));
             }
         }
 

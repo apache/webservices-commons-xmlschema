@@ -2716,22 +2716,7 @@ public class XmlSchemaSerializer {
                 Iterator keysIt = metaInfoMap.keySet().iterator();
                 while (keysIt.hasNext()) {
                     Object key =  keysIt.next();
-                    if (!Constants.MetaDataConstants.EXTERNAL_ATTRIBUTES.equals(key)){  //skip external attributes
-                        extReg.serializeExtension(schemaObject,metaInfoMap.get(key).getClass(),parentElement);
-                    }else{
-                       Map externalAttribs = (Map)metaInfoMap.get(key);
-                       //external attribs are as DOM attrib objects
-                       Iterator domeAtts = externalAttribs.values().iterator();
-                        while (domeAtts.hasNext()) {
-                            Attr attr = (Attr) domeAtts.next();
-                            parentElement.setAttributeNode(
-                                   (Attr) parentElement.getOwnerDocument().importNode(attr,true)
-                            );
-                        }
-
-
-
-                    }
+                    extReg.serializeExtension(schemaObject,metaInfoMap.get(key).getClass(),parentElement);
 
                 }
 
