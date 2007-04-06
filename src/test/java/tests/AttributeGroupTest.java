@@ -83,7 +83,7 @@ public class AttributeGroupTest extends TestCase {
         assertEquals(1, attG.getCount());
         
         for (Iterator i = attG.getNames(); i.hasNext(); ) {
-            assertEquals("department", (String)i.next());
+            assertEquals("department", ((QName)i.next()).getLocalPart());
         }
 
         for (Iterator i = attG.getValues(); i.hasNext(); ) {

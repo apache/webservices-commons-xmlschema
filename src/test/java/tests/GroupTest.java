@@ -97,7 +97,7 @@ public class GroupTest extends TestCase {
         Set s = new HashSet();
         s.add("priceGroup");
         for (Iterator i = t.getNames(); i.hasNext(); ) {
-            String name = (String)i.next();
+            String name = ((QName)i.next()).getLocalPart();
             assertEquals("priceGroup", name);
             s.remove(name);
         }

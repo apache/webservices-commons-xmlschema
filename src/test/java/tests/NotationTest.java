@@ -78,9 +78,17 @@ public class NotationTest extends TestCase {
 
         QName ELEMENT_QNAME = new QName("http://soapinterop.org/types",
                                         "demoNotation");
+        QName notationName = new QName("http://soapinterop.org/types",
+                                                "teamLogo");
+
+
+
         InputStream is = new FileInputStream(Resources.asURI("notation.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+
+        XmlSchemaObjectTable notations = schema.getNotations();
+        assertNotNull(notations.getItem(notationName));
 
         XmlSchemaElement elem = schemaCol.getElementByQName(ELEMENT_QNAME);
         assertNotNull(elem);
@@ -124,7 +132,7 @@ public class NotationTest extends TestCase {
         s.add("teamMascot");
         s.add("teamLogo");
         for (Iterator i = xsot.getNames(); i.hasNext(); ) {
-            String name = (String)i.next();
+            String name = ((QName)i.next()).getLocalPart();
             if (!(name.equals("teamLogo")
                    || name.equals("teamMascot"))) {
                 fail("An unexpected name of \"" + name
