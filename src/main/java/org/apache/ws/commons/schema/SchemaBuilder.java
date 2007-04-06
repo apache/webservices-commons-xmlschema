@@ -100,6 +100,11 @@ public class SchemaBuilder {
                 "attributeFormDefault"));
         schema.setBlockDefault(this.getDerivation(schemaEl, "blockDefault"));
         schema.setFinalDefault(this.getDerivation(schemaEl, "finalDefault"));
+        /* set id attribute */
+        if (schemaEl.hasAttribute("id")) {
+            schema.id = schemaEl.getAttribute("id");
+        }
+
         schema.setSourceURI(uri);
 
         /***********
