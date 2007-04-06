@@ -94,6 +94,7 @@ public abstract class XmlSchemaFacet extends XmlSchemaAnnotated {
             throw new XmlSchemaException("Incorrect facet with name \""
                                          + name + "\" found.");
         }
+        if (el.hasAttribute("id"))facet.setId(el.getAttribute("id"));
         facet.setFixed(fixed);
         facet.setValue(el.getAttribute("value"));
         return facet;
