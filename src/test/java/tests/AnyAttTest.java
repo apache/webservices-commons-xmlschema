@@ -1,11 +1,3 @@
-package tests;
-
-import junit.framework.TestCase;
-import org.apache.ws.commons.schema.*;
-import org.w3c.dom.Document;
-
-import javax.xml.namespace.QName;
-import javax.xml.parsers.DocumentBuilderFactory;
 /*
  * Copyright 2004,2005 The Apache Software Foundation.
  *
@@ -21,6 +13,15 @@ import javax.xml.parsers.DocumentBuilderFactory;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package tests;
+
+import junit.framework.TestCase;
+import org.apache.ws.commons.schema.*;
+import org.w3c.dom.Document;
+
+import javax.xml.namespace.QName;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 
 public class AnyAttTest extends TestCase {
 

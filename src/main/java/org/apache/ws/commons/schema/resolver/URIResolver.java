@@ -1,7 +1,3 @@
-package org.apache.ws.commons.schema.resolver;
-
-import org.xml.sax.InputSource;
-
 /*
  * Copyright 2004,2005 The Apache Software Foundation.
  *
@@ -17,6 +13,10 @@ import org.xml.sax.InputSource;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.apache.ws.commons.schema.resolver;
+
+import org.xml.sax.InputSource;
+
 
 public interface URIResolver {
     /**

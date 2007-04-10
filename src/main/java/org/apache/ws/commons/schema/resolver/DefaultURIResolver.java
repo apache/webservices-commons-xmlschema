@@ -1,14 +1,3 @@
-package org.apache.ws.commons.schema.resolver;
-
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 /*
  * Copyright 2004,2005 The Apache Software Foundation.
  *
@@ -24,6 +13,18 @@ import java.net.URL;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.apache.ws.commons.schema.resolver;
+
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+
 
 /**
  * This resolver provides the means of resolving the imports and includes of a
@@ -36,10 +37,9 @@ public class DefaultURIResolver implements URIResolver {
     /**
      * As for the resolver the publid ID is the target namespace of the
      * schema and the schemaLocation is the value of the schema location
-     * @param publicId
+     * @param namespace
      * @param schemaLocation
-     * @throws SAXException
-     * @throws IOException
+     * @param baseUri
      */
     public InputSource resolveEntity(String namespace,
                                      String schemaLocation,
