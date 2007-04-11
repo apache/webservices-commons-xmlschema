@@ -10,7 +10,7 @@ import java.io.InputStream;
 import java.util.Iterator;
 
 /*
- * Copyright 2004,2005 The Apache Software Foundation.
+ * Copyright 2004,2007 The Apache Software Foundation.
  * Copyright 2006 International Business Machines Corp.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
