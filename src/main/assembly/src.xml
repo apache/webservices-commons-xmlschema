@@ -1,7 +1,7 @@
 <assembly>
   <id>src</id>
   <formats>
-    <format>tar.gz</format>
+    <format>zip</format>
   </formats>
   <fileSets>
     <fileSet>
@@ -9,13 +9,13 @@
         <include>*.txt</include>
         <include>*.xml</include>
         <include>*.properties</include>
-        <include>.classpath</include>
-        <include>.project</include>
+        <!--<include>.classpath</include>-->
+        <!--<include>.project</include>-->
       </includes>
     </fileSet>
-    <fileSet>
-      <directory>.settings</directory>
-    </fileSet>
+    <!--<fileSet>-->
+      <!--<directory>.settings</directory>-->
+    <!--</fileSet>-->
     <fileSet>
       <directory>src</directory>
     </fileSet>
