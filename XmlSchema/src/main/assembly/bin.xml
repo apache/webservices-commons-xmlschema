@@ -3,7 +3,7 @@
     <formats>
         <format>zip</format>
     </formats>
-    <includeSiteDirectory>true</includeSiteDirectory>
+    <includeSiteDirectory>false</includeSiteDirectory>
     <fileSets>
         <fileSet>
             <includes>
@@ -25,9 +25,7 @@
     <dependencySets>
         <dependencySet>
             <outputDirectory>/lib</outputDirectory>
-            <!--<includes>-->
-                <!--<include>org.apache.ws.commons:ws-commons-java5</include>-->
-            <!--</includes>-->
+            
         </dependencySet>
     </dependencySets>
 </assembly>

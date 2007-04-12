@@ -274,6 +274,7 @@
                     <descriptors>
                         <descriptor>src/main/assembly/bin.xml</descriptor>
                         <descriptor>src/main/assembly/src.xml</descriptor>
+				<descriptor>src/main/assembly/doc.xml</descriptor>
                     </descriptors>
                     <tarLongFileMode>gnu</tarLongFileMode>
                 </configuration>
@@ -359,10 +360,10 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-          <groupId>org.apache.ws.commons</groupId>
-          <artifactId>ws-commons-java5</artifactId>
-          <version>1.0.1</version>
-          <optional>true</optional>
+            <groupId>org.apache.ws.commons</groupId>
+            <artifactId>ws-commons-java5</artifactId>
+            <version>1.0.1</version>
+            <optional>true</optional>
         </dependency>
     </dependencies>
     <reporting>
@@ -378,11 +379,16 @@
                 <artifactId>jdepend-maven-plugin</artifactId>
                 <version>2.0-beta-1-SNAPSHOT</version>
             </plugin>
-            <!--plugin>
-              <groupId>org.codehaus.mojo</groupId>
-              <artifactId>jxr-maven-plugin</artifactId>
-              <version>2.0-beta-2-SNAPSHOT</version>
-            </plugin-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
         </plugins>
     </reporting>
     <distributionManagement>

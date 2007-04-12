@@ -61,7 +61,17 @@
                                                            class="externalLink"
                                                            title="http://www.apache.org/dist/ws/ws/commons/XmlSchema/1_3_1/XmlSchema-1.3.1-bin.zip.asc">
                                                             PGP</a>
-
+                                          <br/>
+                                          Documents Distribution
+                                          <a href="[preferred]/ws/commons/XmlSchema/1_3_1/XmlSchema-1.3.1-docs.zip"
+                                                           title="[preferred]/ws/commons/XmlSchema/1_3_1/XmlSchema-1.3.1-docs.zip">zip</a>
+                                         <a href="http://www.apache.org/dist/ws/commons/XmlSchema/1_3_1/XmlSchema-1.3.1-docs.zip.md5"
+                                                           class="externalLink"
+                                                           title="http://www.apache.org/dist/ws/commons/XmlSchema/1_3_1/XmlSchema-1.3.1-docs.zip.md5">MD5</a>
+                                         <a href="http://www.apache.org/dist/ws/commons/XmlSchema/1_3_1/XmlSchema-1.3.1-docs.zip.asc"
+                                                           class="externalLink"
+                                                           title="http://www.apache.org/dist/ws/ws/commons/XmlSchema/1_3_1/XmlSchema-1.3.1-docs.zip.asc">
+                                                            PGP</a>
                                           <br/>
                                           </td>
                                           <td>12 - 04 - 2007</td>

@@ -20,7 +20,7 @@ http://ws.apache.org/commons/XmlSchema/
    Documentation
 ===================
  
-Documentation can be found in the 'binary' distribution of this release and in
+Documentation can be found in the 'documents' distribution of this release and in
 the main site.
 
 ===================
