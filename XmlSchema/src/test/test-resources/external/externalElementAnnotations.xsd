@@ -1,0 +1,22 @@
+<schema
+        xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns:tns="http://soapinterop.org/types"
+        xmlns:ext="http://customattrib.org"
+        targetNamespace="http://soapinterop.org/types">
+
+    <complexType name="Struct">
+        <ext:customElt prefix="ext" suffix="type"/>
+        <sequence>
+            <element name="varString" type="xsd:string"/>
+            <element name="varInt" type="xsd:int" />
+            <element name="varFloat" type="xsd:float" />
+            <element name="varStruct" type="tns:Struct" />
+        </sequence>
+    </complexType>
+
+    <element name="attrTest" type="tns:Struct" >
+        <ext:customElt prefix="ext" suffix="elt"/>
+    </element>
+
+</schema>
