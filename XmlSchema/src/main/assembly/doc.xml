@@ -1,0 +1,7 @@
+<assembly>
+    <id>docs</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <includeSiteDirectory>true</includeSiteDirectory>
+</assembly>

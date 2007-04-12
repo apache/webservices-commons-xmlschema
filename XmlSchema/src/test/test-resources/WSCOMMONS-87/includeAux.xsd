@@ -1,0 +1,23 @@
+<schema 
+        xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:xsd1="http://soapinterop.org/xsd2"
+        elementFormDefault="qualified">
+        
+    <xs:simpleType name="PaymentCardCodeType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="UpperCaseAlphaLength1to2"/>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  
+  <xs:simpleType name="UpperCaseAlphaLength1to2">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[A-Z]{1,2}"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+</schema>
