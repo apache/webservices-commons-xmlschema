@@ -29,4 +29,13 @@
     </complexType>
   </element>
 
+    <element name="motherboard">
+    <complexType>
+      <choice minOccurs="1" maxOccurs="6">
+        <element name="PCI" type="string"/>
+        <element name="ISA" type="string"/>
+        <element name="USB" type="string"/>
+      </choice>
+    </complexType>
+  </element>
 </schema>

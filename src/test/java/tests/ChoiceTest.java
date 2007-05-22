@@ -55,8 +55,11 @@ public class ChoiceTest extends TestCase {
         </schema>
         */
 
-        QName ELEMENT_QNAME = new QName("http://soapinterop.org/types",
-                                        "computer");
+        QName computerElementQname = new QName("http://soapinterop.org/types",
+                                        "computer");      
+        QName mbElementQname = new QName("http://soapinterop.org/types",
+                                        "motherboard");
+        
         InputStream is = new FileInputStream(Resources.asURI("choice.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
@@ -65,7 +68,7 @@ public class ChoiceTest extends TestCase {
                                       "machine");
         XmlSchemaElement elem = schemaCol.getElementByQName(WRONG_QNAME);
         assertNull(elem);
-        elem = schemaCol.getElementByQName(ELEMENT_QNAME);
+        elem = schemaCol.getElementByQName(computerElementQname);
         assertEquals("computer", elem.getName());
         assertEquals(new QName("http://soapinterop.org/types", "computer"),
                      elem.getQName());
@@ -101,6 +104,23 @@ public class ChoiceTest extends TestCase {
         assertTrue("The set should have been empty, but instead contained: "
                    + s + ".",
                    s.isEmpty());
+
+        //test min and max occurs
+        elem = schemaCol.getElementByQName(mbElementQname);
+        assertEquals("motherboard", elem.getName());
+        assertEquals(new QName("http://soapinterop.org/types", "motherboard"),
+                     elem.getQName());
+
+        cType = (XmlSchemaComplexType)elem.getSchemaType();
+        assertNotNull(cType);
+
+        choice = (XmlSchemaChoice)cType.getParticle();
+        assertNotNull(choice);
+
+        //values from the XML file
+        assertEquals(choice.getMinOccurs(),1);
+        assertEquals(choice.getMaxOccurs(),6);
+
     }
 
 }

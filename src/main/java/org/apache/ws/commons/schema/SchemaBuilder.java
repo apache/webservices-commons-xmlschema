@@ -916,6 +916,11 @@ public class SchemaBuilder {
                                              Element schemaEl) {
 
         XmlSchemaSequence sequence = new XmlSchemaSequence();
+
+        //handle min and max occurences
+        sequence.minOccurs = getMinOccurs(sequenceEl);
+        sequence.maxOccurs = getMaxOccurs(sequenceEl);
+
         for (Element el = XDOMUtil.getFirstChildElementNS(sequenceEl, XmlSchema.SCHEMA_NS)
                 ; el != null;
                   el = XDOMUtil.getNextSiblingElementNS(el, XmlSchema.SCHEMA_NS)) {
@@ -1026,6 +1031,10 @@ public class SchemaBuilder {
 
         XmlSchemaAll all = new XmlSchemaAll();
 
+          //handle min and max occurences
+        all.minOccurs = getMinOccurs(allEl);
+        all.maxOccurs = getMaxOccurs(allEl);
+
         for (Element el = XDOMUtil.getFirstChildElementNS(allEl, XmlSchema.SCHEMA_NS);
              el != null; el = XDOMUtil.getNextSiblingElementNS(el, XmlSchema.SCHEMA_NS)) {
 
@@ -1045,6 +1054,7 @@ public class SchemaBuilder {
 
         XmlSchemaGroup group = new XmlSchemaGroup();
         group.name = new QName(schema.getTargetNamespace(),groupEl.getAttribute("name"));
+
 
         for (Element el = XDOMUtil.getFirstChildElementNS(groupEl,
                 XmlSchema.SCHEMA_NS);
@@ -1139,6 +1149,9 @@ public class SchemaBuilder {
                                              Element groupEl, Element schemaEl) {
 
         XmlSchemaGroupRef group = new XmlSchemaGroupRef();
+        
+        group.maxOccurs  = getMaxOccurs(groupEl);
+        group.minOccurs  = getMinOccurs(groupEl);
 
         Element annotationEl = XDOMUtil.getFirstChildElementNS(groupEl,
                 XmlSchema.SCHEMA_NS,
