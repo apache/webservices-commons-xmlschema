@@ -181,11 +181,11 @@ public class SchemaBuilder {
                 XmlSchemaAttributeGroup group = handleAttributeGroup(schema,
                         el, schemaEl);
                 schema.attributeGroups.collection.put(
-                         group.name, group);
+                        group.name, group);
                 schema.items.add(group);
             } else if (el.getLocalName().equals("attribute")) {
                 XmlSchemaAttribute attr = handleAttribute(schema,
-                        el, schemaEl);
+                        el, schemaEl,true); //pass true to indicate that it is a top level child
                 schema.attributes.collection.put(attr.qualifiedName, attr);
                 schema.items.add(attr);
             } else if (el.getLocalName().equals("redefine")) {
@@ -673,8 +673,8 @@ public class SchemaBuilder {
     }
 
     private XmlSchemaSimpleContent
-            handleSimpleContent(XmlSchema schema, Element simpleEl,
-                                Element schemaEl) {
+    handleSimpleContent(XmlSchema schema, Element simpleEl,
+                        Element schemaEl) {
 
         XmlSchemaSimpleContent simpleContent =
                 new XmlSchemaSimpleContent();
@@ -721,8 +721,8 @@ public class SchemaBuilder {
     }
 
     private XmlSchemaSimpleContentRestriction
-            handleSimpleContentRestriction(XmlSchema schema,
-                                           Element restrictionEl, Element schemaEl) {
+    handleSimpleContentRestriction(XmlSchema schema,
+                                   Element restrictionEl, Element schemaEl) {
 
         XmlSchemaSimpleContentRestriction restriction =
                 new XmlSchemaSimpleContentRestriction();
@@ -774,8 +774,8 @@ public class SchemaBuilder {
     }
 
     private XmlSchemaSimpleContentExtension
-            handleSimpleContentExtension(XmlSchema schema, Element extEl,
-                                         Element schemaEl) {
+    handleSimpleContentExtension(XmlSchema schema, Element extEl,
+                                 Element schemaEl) {
 
         XmlSchemaSimpleContentExtension ext =
                 new XmlSchemaSimpleContentExtension();
@@ -810,8 +810,8 @@ public class SchemaBuilder {
     }
 
     private XmlSchemaComplexContentRestriction
-            handleComplexContentRestriction(XmlSchema schema,
-                                            Element restrictionEl, Element schemaEl) {
+    handleComplexContentRestriction(XmlSchema schema,
+                                    Element restrictionEl, Element schemaEl) {
 
         XmlSchemaComplexContentRestriction restriction =
                 new XmlSchemaComplexContentRestriction();
@@ -848,8 +848,8 @@ public class SchemaBuilder {
     }
 
     private XmlSchemaComplexContentExtension
-            handleComplexContentExtension(XmlSchema schema,
-                                          Element extEl, Element schemaEl) {
+    handleComplexContentExtension(XmlSchema schema,
+                                  Element extEl, Element schemaEl) {
 
         XmlSchemaComplexContentExtension ext =
                 new XmlSchemaComplexContentExtension();
@@ -886,7 +886,7 @@ public class SchemaBuilder {
     }
 
     private XmlSchemaAttributeGroupRef
-            handleAttributeGroupRef(Element attrGroupEl
+    handleAttributeGroupRef(Element attrGroupEl
     ) {
 
         XmlSchemaAttributeGroupRef attrGroup =
@@ -1182,8 +1182,28 @@ public class SchemaBuilder {
     }
 
 
+    /**
+     * Process non-toplevel attributes
+     * @param schema
+     * @param attrEl
+     * @param schemaEl
+     * @return
+     */
     private XmlSchemaAttribute handleAttribute(XmlSchema schema,
                                                Element attrEl, Element schemaEl) {
+        return handleAttribute(schema,attrEl,schemaEl,false);
+    }
+
+    /**
+     * Process attributes
+     * @param schema
+     * @param attrEl
+     * @param schemaEl
+     * @param topLevel
+     * @return
+     */
+    private XmlSchemaAttribute handleAttribute(XmlSchema schema,
+                                               Element attrEl, Element schemaEl,boolean topLevel) {
         //todo: need to implement different rule of attribute such as
         //restriction between ref and name.  This can be implemented
         //in the compile function
@@ -1200,7 +1220,11 @@ public class SchemaBuilder {
         boolean isQualified = schema.getAttributeFormDefault().getValue().equals(XmlSchemaForm.QUALIFIED);
         if (attr.name != null) {
             final String name = attr.name;
-            attr.qualifiedName = (isQualified) ? newLocalQName(name) : new QName(name);
+            if (topLevel){
+                attr.qualifiedName = newLocalQName(name);
+            }else{
+                attr.qualifiedName = (isQualified) ? newLocalQName(name) : new QName(name);
+            }
         }
 
         if (attrEl.hasAttribute("type")) {
