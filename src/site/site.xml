@@ -22,6 +22,8 @@
                 <item name="Tutorial" href="schematutorial.html"/>
                 <item name="Extensions" href="writingExtensions.html"/>
                 <item name="Javadocs" href="/apidocs/index.html"/>
+                <item name="Jxr Reports" href="jxr.html"/>
+                <item name="JDepend Report" href="jdepend-report.html"/>
                 <item name="View Source"
                       href="http://svn.apache.org/viewvc/webservices/commons/trunk/modules/XmlSchema/?root=Apache-SVN"/>
             </item>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+    <properties>
+        <title>:: Apache XmlSchema JXR Reports ::</title>
+    </properties>
+
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=iso-8859-1"/>
+        <meta content="text/html; charset=iso-8859-1"/>
+    </head>
+
+    <body>
+        <section name="JXR Reports">
+            <p>JXR reports show how the source is cross referenced</p>
+           <ul>
+              <li><a href="xref/index.html">Main source JXR Report</a></li>
+              <li><a href="xref-test/index.html">Test source JXR Report</a></li>
+
+           </ul>
+        </section>
+    </body>
+</document>
