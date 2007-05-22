@@ -316,7 +316,7 @@ public class RedefineTest extends TestCase {
         assertEquals(1, xsot.getCount());
 
         for (Iterator i = xsot.getNames(); i.hasNext(); ) {
-            assertEquals("PrologGroup", (String)i.next());
+            assertEquals("PrologGroup", ((QName)i.next()).getLocalPart());
         }
 
         XmlSchemaGroup xsg = null;
@@ -408,14 +408,16 @@ public class RedefineTest extends TestCase {
         assertEquals(1, xsot.getCount());
 
         for (Iterator i = xsot.getNames(); i.hasNext(); ) {
-            assertEquals("AttribGroup", (String)i.next());
+            assertEquals("AttribGroup", ((QName)i.next()).getLocalPart());
         }
 
         XmlSchemaAttributeGroup xsag = null;
         for (Iterator i = xsot.getValues(); i.hasNext(); ) {
             xsag = (XmlSchemaAttributeGroup)i.next();
         }
-        assertEquals("AttribGroup", xsag.getName());
+
+        assertNotNull(xsag);
+        assertEquals("AttribGroup", (xsag.getName()).getLocalPart());
         xsoc = xsag.getAttributes();
 
         Set s = new HashSet();

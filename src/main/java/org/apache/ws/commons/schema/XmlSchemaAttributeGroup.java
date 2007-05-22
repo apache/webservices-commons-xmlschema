@@ -16,6 +16,8 @@
 
 package org.apache.ws.commons.schema;
 
+import javax.xml.namespace.QName;
+
 /**
  * Class for attribute groups. Groups a set of attribute declarations
  * so that they can be incorporated as a group into complex type
@@ -52,13 +54,13 @@ public class XmlSchemaAttributeGroup extends XmlSchemaAnnotated {
         this.attributes = attributes;
     }
 
-    String name;
+    QName name;
 
-    public String getName() {
+    public QName getName() {
         return this.name;
     }
 
-    public void setName(String name) {
+    public void setName(QName name) {
         this.name = name;
     }
 }

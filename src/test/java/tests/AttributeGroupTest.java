@@ -89,7 +89,7 @@ public class AttributeGroupTest extends TestCase {
         for (Iterator i = attG.getValues(); i.hasNext(); ) {
             Object obj1 = i.next();
             if (obj1 instanceof XmlSchemaAttributeGroup) {
-                assertEquals("department", ((XmlSchemaAttributeGroup)obj1).getName());
+                assertEquals("department", ((XmlSchemaAttributeGroup)obj1).getName().getLocalPart());
                 XmlSchemaObjectCollection attributes =
                     ((XmlSchemaAttributeGroup)obj1).getAttributes();
                 assertNotNull(attributes);

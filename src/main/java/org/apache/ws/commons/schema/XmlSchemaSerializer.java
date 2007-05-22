@@ -1521,8 +1521,9 @@ public class XmlSchemaSerializer {
                 schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
         if (groupObj.name != null) {
-            if (groupObj.name.length() > 0) {
-                group.setAttribute("name", groupObj.name);
+            String grpName = groupObj.name.getLocalPart();
+            if (grpName.length() > 0) {
+                group.setAttribute("name", grpName);
             }
         } else
             throw new XmlSchemaSerializerException("Group must have " +
@@ -2516,10 +2517,11 @@ public class XmlSchemaSerializer {
         Element attributeGroup = createNewElement(doc, "attributeGroup",
                 schema.schema_ns_prefix, XmlSchema.SCHEMA_NS);
 
-        if (attributeGroupObj.name != null)
+        if (attributeGroupObj.name != null) {
+            String attGroupName = attributeGroupObj.name.getLocalPart();
             attributeGroup.setAttribute("name",
-                    attributeGroupObj.name);
-        else
+                    attGroupName);
+        }else
             throw new XmlSchemaSerializerException("Attribute group must"
                     + "have name");
         if (attributeGroupObj.id != null)

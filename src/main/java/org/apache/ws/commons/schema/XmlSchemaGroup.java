@@ -16,6 +16,8 @@
 
 package org.apache.ws.commons.schema;
 
+import javax.xml.namespace.QName;
+
 /**
  * Class that defines groups at the schema level that are referenced
  * from the complex types. Groups a set of element declarations so that
@@ -31,14 +33,14 @@ public class XmlSchemaGroup extends XmlSchemaAnnotated {
     public XmlSchemaGroup() {
     }
 
-    String name;
+    QName name;
     XmlSchemaGroupBase particle;
 
-    public String getName() {
+    public QName getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(QName name) {
         this.name = name;
     }
 

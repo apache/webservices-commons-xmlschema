@@ -116,7 +116,8 @@ public class GroupTest extends TestCase {
                    + s + ".",
                    s.isEmpty());
         
-        assertEquals("priceGroup", xsg.getName());
+        assertNotNull(xsg);
+        assertEquals("priceGroup", xsg.getName().getLocalPart());
 
         XmlSchemaChoice xsc = (XmlSchemaChoice)xsg.getParticle();
         assertNotNull(xsc);

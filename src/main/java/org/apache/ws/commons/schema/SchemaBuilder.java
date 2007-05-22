@@ -175,13 +175,13 @@ public class SchemaBuilder {
             } else if (el.getLocalName().equals("group")) {
                 XmlSchemaGroup group = handleGroup(schema, el, schemaEl);
                 schema.groups.collection.put(
-                        new QName(schema.getTargetNamespace(), group.name), group);
+                        group.name, group);
                 schema.items.add(group);
             } else if (el.getLocalName().equals("attributeGroup")) {
                 XmlSchemaAttributeGroup group = handleAttributeGroup(schema,
                         el, schemaEl);
                 schema.attributeGroups.collection.put(
-                        new QName(schema.getTargetNamespace(), group.name), group);
+                         group.name, group);
                 schema.items.add(group);
             } else if (el.getLocalName().equals("attribute")) {
                 XmlSchemaAttribute attr = handleAttribute(schema,
@@ -1044,7 +1044,7 @@ public class SchemaBuilder {
                                        Element schemaEl) {
 
         XmlSchemaGroup group = new XmlSchemaGroup();
-        group.name = groupEl.getAttribute("name");
+        group.name = new QName(schema.getTargetNamespace(),groupEl.getAttribute("name"));
 
         for (Element el = XDOMUtil.getFirstChildElementNS(groupEl,
                 XmlSchema.SCHEMA_NS);
@@ -1073,7 +1073,8 @@ public class SchemaBuilder {
                 new XmlSchemaAttributeGroup();
 
         if (groupEl.hasAttribute("name"))
-            attrGroup.name = groupEl.getAttribute("name");
+            attrGroup.name = new QName(schema.getTargetNamespace(),
+                    groupEl.getAttribute("name"));
         if (groupEl.hasAttribute("id"))
             attrGroup.id = groupEl.getAttribute("id");
 
