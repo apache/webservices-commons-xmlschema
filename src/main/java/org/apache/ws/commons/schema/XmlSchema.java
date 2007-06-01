@@ -25,10 +25,12 @@ import javax.xml.namespace.QName;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.io.ByteArrayInputStream;
 
 
 /**
@@ -206,11 +208,24 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
             xser.setExtReg(this.parent.getExtReg());
             Document[] serializedSchemas = xser.serializeSchema(schema, false);
             TransformerFactory trFac = TransformerFactory.newInstance();
+            try {
+                trFac.setAttribute("indent-number", "4");
+            } catch (IllegalArgumentException e) {
+            }
             Source source = new DOMSource(serializedSchemas[0]);
             Result result = new StreamResult(out);
             javax.xml.transform.Transformer tr = trFac.newTransformer();
             tr.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+            tr.setOutputProperty(OutputKeys.METHOD, "xml");
             tr.setOutputProperty(OutputKeys.INDENT, "yes");
+            try {
+                tr.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+            } catch (IllegalArgumentException e) {
+            }
+            try {
+                tr.setOutputProperty("{http://xml.apache.org/xalan}indent-amount", "4");
+            } catch (IllegalArgumentException e) {
+            }
             tr.transform(source, result);
             out.flush();
         } catch (TransformerConfigurationException e) {
