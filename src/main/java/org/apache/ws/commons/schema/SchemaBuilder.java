@@ -76,7 +76,9 @@ public class SchemaBuilder {
      */
     XmlSchema build(Document doc, String uri, ValidationEventHandler veh) {
         Element schemaEl = doc.getDocumentElement();
-        return handleXmlSchemaElement(schemaEl, uri);
+        XmlSchema xmlSchema = handleXmlSchemaElement(schemaEl, uri);
+        xmlSchema.setInputEncoding(doc.getInputEncoding());
+        return xmlSchema;
     }
 
     /**

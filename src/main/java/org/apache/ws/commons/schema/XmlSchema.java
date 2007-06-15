@@ -31,6 +31,9 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.io.ByteArrayInputStream;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Iterator;
 
 
 /**
@@ -45,25 +48,31 @@ import java.io.ByteArrayInputStream;
 // Oct 19th - vidyanand - handle external
 // Dec 6th - Vidyanand - changed RuntimeExceptions thrown to XmlSchemaExceptions
 // Jan 15th - Vidyanand - made changes to SchemaBuilder.handleElement to look for an element ref.
-// Feb 20th - Joni - Change the getXmlSchemaFromLocation schema 
+// Feb 20th - Joni - Change the getXmlSchemaFromLocation schema
 //            variable to name s.
-// Feb 21th - Joni - Port to XMLDomUtil and Tranformation.  
+// Feb 21th - Joni - Port to XMLDomUtil and Tranformation.
 
 public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwner {
     static final String SCHEMA_NS = "http://www.w3.org/2001/XMLSchema";
     XmlSchemaForm attributeFormDefault, elementFormDefault;
 
     XmlSchemaObjectTable attributeGroups,
-    attributes, elements, groups,
-    notations, schemaTypes;
+            attributes, elements, groups,
+            notations, schemaTypes;
     XmlSchemaDerivationMethod blockDefault, finalDefault;
     XmlSchemaObjectCollection includes, items;
     boolean isCompiled;
     String syntacticalTargetNamespace, logicalTargetNamespace, version;
     String schema_ns_prefix = "";
     XmlSchemaCollection parent;
-    private NamespacePrefixList namespaceContext;
 
+    private NamespacePrefixList namespaceContext;
+    //keep the encoding of the input
+    private String inputEncoding;
+
+    public void setInputEncoding(String encoding){
+        this.inputEncoding = encoding;
+    }
     /**
      * Creates new XmlSchema
      */
@@ -182,17 +191,41 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
 
     }
 
+    /**
+     * Serialize the schema into the given output stream
+     * @param out - the output stream to write to
+     */
     public void write(OutputStream out) {
         write(new OutputStreamWriter(out));
     }
 
+    /**
+     * Serialize the schema into the given output stream
+     * @param out - the output stream to write to
+     * @param options -  a map of options
+     */
+    public void write(OutputStream out, Map options) {
+        write(new OutputStreamWriter(out),options);
+    }
+
+    /**
+     * Serialie the schema to a given writer
+     * @param writer - the writer to write this
+     */
+    public void write(Writer writer,Map options) {
+        serialize_internal(this, writer,options);
+    }
+    /**
+     * Serialie the schema to a given writer
+     * @param writer - the writer to write this
+     */
     public void write(Writer writer) {
-        serialize_internal(this, writer);
+        serialize_internal(this, writer,null);
     }
 
     public Document[] getAllSchemas() {
         try {
-            
+
             XmlSchemaSerializer xser = new XmlSchemaSerializer();
             xser.setExtReg(this.parent.getExtReg());
             return xser.serializeSchema(this, true);
@@ -202,30 +235,49 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
         }
     }
 
-    private  void serialize_internal(XmlSchema schema, Writer out) {
+    /**
+     * serialize the schema - this is the method tht does to work
+     * @param schema
+     * @param out
+     * @param options
+     */
+    private  void serialize_internal(XmlSchema schema, Writer out, Map options) {
+
         try {
             XmlSchemaSerializer xser = new XmlSchemaSerializer();
             xser.setExtReg(this.parent.getExtReg());
             Document[] serializedSchemas = xser.serializeSchema(schema, false);
             TransformerFactory trFac = TransformerFactory.newInstance();
+
             try {
                 trFac.setAttribute("indent-number", "4");
             } catch (IllegalArgumentException e) {
+
             }
+
             Source source = new DOMSource(serializedSchemas[0]);
             Result result = new StreamResult(out);
             javax.xml.transform.Transformer tr = trFac.newTransformer();
-            tr.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-            tr.setOutputProperty(OutputKeys.METHOD, "xml");
-            tr.setOutputProperty(OutputKeys.INDENT, "yes");
-            try {
-                tr.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
-            } catch (IllegalArgumentException e) {
+
+            //let these be configured from outside  if any is present
+            if (options==null){
+                options = new HashMap();
+                loadDefaultOptions(options);
             }
-            try {
-                tr.setOutputProperty("{http://xml.apache.org/xalan}indent-amount", "4");
-            } catch (IllegalArgumentException e) {
+            Iterator keys = options.keySet().iterator();
+            while (keys.hasNext()) {
+                Object key = keys.next();
+                tr.setOutputProperty((String)key, (String)options.get(key));
             }
+
+
+            //use the input encoding if there is one ava
+            if (schema.inputEncoding!= null &&
+                    "".equals(schema.inputEncoding)){
+                tr.setOutputProperty(OutputKeys.ENCODING,schema.inputEncoding);
+            }
+
+
             tr.transform(source, result);
             out.flush();
         } catch (TransformerConfigurationException e) {
@@ -239,12 +291,21 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
         }
     }
 
+    /**
+     * Load the default options
+     * @param options  - the map of
+     */
+    private void loadDefaultOptions(Map options) {
+        options.put(OutputKeys.OMIT_XML_DECLARATION, "yes");
+        options.put(OutputKeys.INDENT, "yes");
+    }
+
     public void addType(XmlSchemaType type) {
         QName qname = type.getQName();
         if (schemaTypes.contains(qname)) {
             throw new RuntimeException("Schema for namespace '" +
-                                       syntacticalTargetNamespace + "' already contains type '" +
-                                       qname.getLocalPart());
+                    syntacticalTargetNamespace + "' already contains type '" +
+                    qname.getLocalPart());
         }
         schemaTypes.add(qname, type);
     }
@@ -260,34 +321,34 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
     public void setNamespaceContext(NamespacePrefixList namespaceContext) {
         this.namespaceContext = namespaceContext;
     }
-    
+
     /**
      * Override the equals(Object) method with equivalence checking
      * that is specific to this class.
      */
     public boolean equals(Object what) {
-        
+
         //Note: this method may no longer be required when line number/position are used correctly in XmlSchemaObject.
         //Currently they are simply initialized to zero, but they are used in XmlSchemaObject.equals 
         //which can result in a false positive (e.g. if a WSDL contains 2 inlined schemas).
-        
+
         if (what == this) {
             return true;
         }
-        
+
         //If the inherited behaviour determines that the objects are NOT equal, return false. 
         //Otherwise, do some further equivalence checking.
-        
+
         if(!super.equals(what)) {
             return false;
         }
-        
+
         if (!(what instanceof XmlSchema)) {
             return false;
         }
 
         XmlSchema xs = (XmlSchema) what;
-        
+
         if (this.id != null) {
             if (!this.id.equals(xs.id)) {
                 return false;
@@ -297,7 +358,7 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
                 return false;
             }
         }
-        
+
         if (this.syntacticalTargetNamespace != null) {
             if (!this.syntacticalTargetNamespace.equals(xs.syntacticalTargetNamespace)) {
                 return false;
@@ -307,9 +368,9 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
                 return false;
             }
         }
-        
+
         //TODO decide if further schema content should be checked for equivalence.
-        
+
         return true;
     }
 }

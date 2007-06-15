@@ -73,7 +73,7 @@ public class NamespaceContextTest extends XMLTestCase {
         XmlSchema schemaDef = xsc.read(schemaInputSource, null);
         StringWriter sw = new StringWriter();
         schemaDef.write(sw);
-
+                
         assertXMLEqual(sw.toString(), schema);
     }
 }
