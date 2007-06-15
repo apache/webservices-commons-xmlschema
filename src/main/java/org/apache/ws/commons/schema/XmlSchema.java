@@ -252,14 +252,24 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
             try {
                 trFac.setAttribute("indent-number", "4");
             } catch (IllegalArgumentException e) {
-
+                //do nothing - we'll just silently let this pass if it
+                //was not compatible
             }
 
             Source source = new DOMSource(serializedSchemas[0]);
             Result result = new StreamResult(out);
             javax.xml.transform.Transformer tr = trFac.newTransformer();
 
+            //use the input encoding if there is one one
+            if (schema.inputEncoding!= null &&
+                    "".equals(schema.inputEncoding)){
+                tr.setOutputProperty(OutputKeys.ENCODING,schema.inputEncoding);
+            }
+
             //let these be configured from outside  if any is present
+            //Note that one can enforce the encoding by passing the necessary
+            //property in options
+            
             if (options==null){
                 options = new HashMap();
                 loadDefaultOptions(options);
@@ -269,14 +279,6 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
                 Object key = keys.next();
                 tr.setOutputProperty((String)key, (String)options.get(key));
             }
-
-
-            //use the input encoding if there is one ava
-            if (schema.inputEncoding!= null &&
-                    "".equals(schema.inputEncoding)){
-                tr.setOutputProperty(OutputKeys.ENCODING,schema.inputEncoding);
-            }
-
 
             tr.transform(source, result);
             out.flush();

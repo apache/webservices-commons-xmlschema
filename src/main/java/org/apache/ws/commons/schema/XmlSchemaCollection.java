@@ -119,7 +119,7 @@ public final class XmlSchemaCollection {
     /**
      * Set the base URI. This is used when schemas need to be
      * loaded from relative locations
-     * @param baseUri
+     * @param baseUri  baseUri for this
      */
     public void setBaseUri(String baseUri){
         this.baseUri = baseUri;
@@ -127,7 +127,7 @@ public final class XmlSchemaCollection {
 
     /**
      * Register a custom URI resolver
-     * @param schemaResolver
+     * @param schemaResolver   resolver
      */
     public void setSchemaResolver(URIResolver schemaResolver) {
         this.schemaResolver = schemaResolver;
@@ -340,7 +340,9 @@ public final class XmlSchemaCollection {
 
     public XmlSchema read(Element elem) {
         SchemaBuilder builder = new SchemaBuilder(this, null);
-        return builder.handleXmlSchemaElement(elem, null);
+        XmlSchema xmlSchema = builder.handleXmlSchemaElement(elem, null);
+        xmlSchema.setInputEncoding(elem.getOwnerDocument().getInputEncoding());
+        return xmlSchema;
     }
 
     public XmlSchema read(Document doc, String uri, ValidationEventHandler veh) {
@@ -355,7 +357,9 @@ public final class XmlSchemaCollection {
 
     public XmlSchema read(Element elem, String uri) {
         SchemaBuilder builder = new SchemaBuilder(this, null);
-        return builder.handleXmlSchemaElement(elem, uri);
+        XmlSchema xmlSchema = builder.handleXmlSchemaElement(elem, null);
+        xmlSchema.setInputEncoding(elem.getOwnerDocument().getInputEncoding());
+        return xmlSchema;
     }
 
     /**
@@ -372,7 +376,8 @@ public final class XmlSchemaCollection {
      * from schemata with different target namespaces, then it may
      * occur, that multiple schema instances with different logical
      * target namespaces may be returned.
-     * @param systemId
+     * @param systemId  the system id for this  schema
+     * @return array of XmlSchema objects
      */
     public XmlSchema[] getXmlSchema(String systemId) {
         if (systemId == null) {
@@ -390,6 +395,7 @@ public final class XmlSchemaCollection {
 
     /**
      * Returns an array of all the XmlSchemas in this collection.
+     * @return the list of XmlSchema objects
      */
     public XmlSchema[] getXmlSchemas() {
         Collection c = schemas.values();
