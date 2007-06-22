@@ -22,6 +22,7 @@ import org.apache.ws.commons.schema.resolver.DefaultURIResolver;
 import org.apache.ws.commons.schema.resolver.URIResolver;
 import org.apache.ws.commons.schema.utils.NamespacePrefixList;
 import org.apache.ws.commons.schema.utils.TargetNamespaceValidator;
+import org.apache.ws.commons.schema.utils.DOMUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -341,7 +342,7 @@ public final class XmlSchemaCollection {
     public XmlSchema read(Element elem) {
         SchemaBuilder builder = new SchemaBuilder(this, null);
         XmlSchema xmlSchema = builder.handleXmlSchemaElement(elem, null);
-        xmlSchema.setInputEncoding(elem.getOwnerDocument().getInputEncoding());
+        xmlSchema.setInputEncoding(DOMUtil.getInputEncoding(elem.getOwnerDocument()));
         return xmlSchema;
     }
 
@@ -358,7 +359,7 @@ public final class XmlSchemaCollection {
     public XmlSchema read(Element elem, String uri) {
         SchemaBuilder builder = new SchemaBuilder(this, null);
         XmlSchema xmlSchema = builder.handleXmlSchemaElement(elem, null);
-        xmlSchema.setInputEncoding(elem.getOwnerDocument().getInputEncoding());
+        xmlSchema.setInputEncoding(DOMUtil.getInputEncoding(elem.getOwnerDocument()));
         return xmlSchema;
     }
 

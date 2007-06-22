@@ -18,6 +18,9 @@ package org.apache.ws.commons.schema.utils;
 
 import org.w3c.dom.*;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * Some useful utility methods.
  * This class was modified in Xerces2 with a view to abstracting as
@@ -580,5 +583,14 @@ public class DOMUtil {
     // return the namespace URI
     public static String getNamespaceURI(Node node) {
         return node.getNamespaceURI();
+    }
+
+    public static String getInputEncoding(Document doc) {
+        try {
+            Method m = Document.class.getMethod("getInputEncoding", new Class[]{});
+            return (String) m.invoke(doc, new Object[]{});
+        } catch (Exception e) {
+            return "UTF-8";
+        }
     }
 } // class XUtil

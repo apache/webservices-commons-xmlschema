@@ -23,6 +23,7 @@ import org.apache.ws.commons.schema.extensions.ExtensionRegistry;
 import org.apache.ws.commons.schema.utils.NodeNamespaceContext;
 import org.apache.ws.commons.schema.utils.TargetNamespaceValidator;
 import org.apache.ws.commons.schema.utils.XDOMUtil;
+import org.apache.ws.commons.schema.utils.DOMUtil;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 
@@ -77,7 +78,7 @@ public class SchemaBuilder {
     XmlSchema build(Document doc, String uri, ValidationEventHandler veh) {
         Element schemaEl = doc.getDocumentElement();
         XmlSchema xmlSchema = handleXmlSchemaElement(schemaEl, uri);
-        xmlSchema.setInputEncoding(doc.getInputEncoding());
+        xmlSchema.setInputEncoding(DOMUtil.getInputEncoding(doc));
         return xmlSchema;
     }
 
