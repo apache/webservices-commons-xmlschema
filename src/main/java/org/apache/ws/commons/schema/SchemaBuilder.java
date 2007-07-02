@@ -1754,7 +1754,7 @@ public class SchemaBuilder {
      */
     XmlSchemaAppInfo handleAppInfo(Element content) {
         XmlSchemaAppInfo appInfo = new XmlSchemaAppInfo();
-        NodeList markup = getChild(content);
+        NodeList markup = getChildren(content);
 
         if (!content.hasAttribute("source") &&
                 (markup == null || markup.getLength() <= 0)) {
@@ -1768,7 +1768,7 @@ public class SchemaBuilder {
     //iterate each documentation element, create new XmlSchemaAppinfo and add to collection
     XmlSchemaDocumentation handleDocumentation(Element content) {
         XmlSchemaDocumentation documentation = new XmlSchemaDocumentation();
-        NodeList markup = getChild(content);
+        NodeList markup = getChildren(content);
 
         if (!content.hasAttribute("source") &&
                 !content.hasAttribute("xml:lang") &&
@@ -1777,7 +1777,7 @@ public class SchemaBuilder {
 
         documentation.setSource(getAttribute(content, "source"));
         documentation.setLanguage(getAttribute(content, "xml:lang"));
-        documentation.setMarkup(getChild(content));
+        documentation.setMarkup(getChildren(content));
 
         return documentation;
     }
@@ -1788,7 +1788,7 @@ public class SchemaBuilder {
         return null;
     }
 
-    private NodeList getChild(Element content) {
+    private NodeList getChildren(Element content) {
         NodeList childs = content.getChildNodes();
         if (childs.getLength() > 0)
             return childs;

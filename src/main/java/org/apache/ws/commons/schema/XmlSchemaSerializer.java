@@ -1987,17 +1987,7 @@ public class XmlSchemaSerializer {
             int markupLength = appInfoObj.markup.getLength();
             for (int j = 0; j < markupLength; j++) {
                 Node n = appInfoObj.markup.item(j);
-                switch (n.getNodeType()) {
-                    case Node.ELEMENT_NODE:
-                        appendElement(doc, appInfoEl, n, schema);
-                        break;
-                    case Node.TEXT_NODE:
-                        Text t = doc.createTextNode(n.getNodeValue());
-                        appInfoEl.appendChild(t);
-                        break;
-                    default:
-                        break;
-                }
+               appInfoEl.appendChild(doc.importNode(n,true));
             }
         }
 
