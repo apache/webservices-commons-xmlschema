@@ -1331,6 +1331,9 @@ public class SchemaBuilder {
 
         if (attrs.size() > 0)
             attr.setUnhandledAttributes((Attr[]) attrs.toArray(new Attr[0]));
+
+            //process extra attributes and elements
+        processExtensibilityComponents(attr,attrEl);
         return attr;
     }
 
