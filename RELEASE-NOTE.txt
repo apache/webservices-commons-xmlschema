@@ -1,8 +1,8 @@
  ====================================
-       XMLSchema 1.3 Release Notes
+       XMLSchema 1.3.2 Release Notes
  ====================================
 
-This is the release of XMLSchema 1.3.1 of Apache WS-Commons. This release includes
+This is the release of XMLSchema 1.3.2 of Apache WS-Commons. This release includes
 numerous bug fixes and a new feature addition that enables users to register
 extension types with the schema parser.
 
