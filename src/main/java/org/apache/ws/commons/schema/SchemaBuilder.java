@@ -527,7 +527,7 @@ public class SchemaBuilder {
         if (offset == -1) {
             uri = pContext.getNamespaceURI(Constants.DEFAULT_NS_PREFIX);
             if (Constants.NULL_NS_URI.equals(uri)) {
-                return new QName(schema.logicalTargetNamespace, pName);
+                return new QName(Constants.NULL_NS_URI, pName);
             }
             localName = pName;
             prefix = Constants.DEFAULT_NS_PREFIX;
