@@ -588,10 +588,20 @@ public class DOMUtil {
         return node.getNamespaceURI();
     }
 
+    //why do we need to use reflection here??
     public static String getInputEncoding(Document doc) {
         try {
             Method m = Document.class.getMethod("getInputEncoding", new Class[]{});
             return (String) m.invoke(doc, new Object[]{});
+        } catch (Exception e) {
+            return "UTF-8";
+        }
+    }
+    
+    //why do we need to use reflection here??
+    public static String getXmlEncoding(Document doc) {
+        try {
+            return doc.getXmlEncoding();
         } catch (Exception e) {
             return "UTF-8";
         }

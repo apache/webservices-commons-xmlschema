@@ -381,10 +381,11 @@ public final class XmlSchemaCollection {
         return builder.build(doc, null, veh);
     }
 
+   
     public XmlSchema read(Element elem) {
         SchemaBuilder builder = new SchemaBuilder(this, null);
         XmlSchema xmlSchema = builder.handleXmlSchemaElement(elem, null);
-        xmlSchema.setInputEncoding(DOMUtil.getInputEncoding(elem.getOwnerDocument()));
+        xmlSchema.setInputEncoding(DOMUtil.getXmlEncoding(elem.getOwnerDocument()));
         return xmlSchema;
     }
 
@@ -395,7 +396,9 @@ public final class XmlSchemaCollection {
     public XmlSchema read(Document doc, String uri, ValidationEventHandler veh,
             TargetNamespaceValidator validator) {
         SchemaBuilder builder = new SchemaBuilder(this, validator);
-        return builder.build(doc, uri, veh);
+        XmlSchema schema = builder.build(doc, uri, veh);
+        schema.setInputEncoding(doc.getInputEncoding());
+		return schema;
     }
 
     public XmlSchema read(Element elem, String uri) {

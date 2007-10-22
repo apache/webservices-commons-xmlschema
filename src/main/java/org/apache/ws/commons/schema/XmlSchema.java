@@ -397,4 +397,7 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
 
         return true;
     }
+	public String getInputEncoding() {
+		return inputEncoding;
+	}
 }
