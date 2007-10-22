@@ -46,8 +46,6 @@ public class EncodingTest extends TestCase {
 		   Document doc = newDocumentBuilder.
                    parse(Resources.asURI("other_encoding/japaneseElementForm.xsd"));
            
-           System.out.println(doc.getXmlEncoding());
-
            XmlSchemaCollection schemaCol = new XmlSchemaCollection();
            XmlSchema s1 = schemaCol.read(doc.getDocumentElement());
            assertNotNull(s1);
