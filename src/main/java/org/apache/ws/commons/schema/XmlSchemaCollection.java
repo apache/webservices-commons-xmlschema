@@ -61,7 +61,31 @@ public final class XmlSchemaCollection {
         this.extReg = extReg;
     }
 
+    /**
+     * This map contains a list of Schema objects keyed in by their namespaces
+     * When resolving schemas, this map will be checked for the presence of the schema
+     * first
+     */
+    private Map knownNamespaceMap = new HashMap();
 
+    /**
+     * get the namespace map
+     * @return a map of previously known XMLSchema objects keyed by their namespace (String)
+     */
+    public Map getKnownNamespaceMap() {
+		return knownNamespaceMap;
+	}
+
+    /**
+     * sets the known namespace map
+     * @param knownNamespaceMap a map of previously known XMLSchema objects keyed by their namespace (String)
+     */
+	public void setKnownNamespaceMap(Map knownNamespaceMap) {
+		this.knownNamespaceMap = knownNamespaceMap;
+	}
+	
+	
+	
     static class SchemaKey {
         private final String namespace;
         private final String systemId;
@@ -271,6 +295,21 @@ public final class XmlSchemaCollection {
         return schemas.containsKey(pKey);
     }
 
+    
+    /**
+     * gets a schema from the external namespace map
+     * @param namespace
+     * @return
+     */
+    XmlSchema getKnownSchema(String namespace) {
+        return (XmlSchema) knownNamespaceMap.get(namespace);
+    }
+    
+    /**
+     * Get a schema given a SchemaKey
+     * @param pKey
+     * @return
+     */
     XmlSchema getSchema(SchemaKey pKey) {
         return (XmlSchema) schemas.get(pKey);
     }
@@ -475,4 +514,6 @@ public final class XmlSchemaCollection {
     public boolean check(SchemaKey pKey){
         return (stack.indexOf(pKey)==-1);
     }
+
+	
 }
