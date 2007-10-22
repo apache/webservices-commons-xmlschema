@@ -48,8 +48,7 @@ public class ExternalAttTest extends TestCase {
            Map extenalAttributeMap = (Map)metaInfoMap.get(Constants.MetaDataConstants.EXTERNAL_ATTRIBUTES);
            assertNotNull(extenalAttributeMap);
            
-           System.out.println(extenalAttributeMap);
-           
+                    
            assertEquals(1,extenalAttributeMap.size());
 
 
