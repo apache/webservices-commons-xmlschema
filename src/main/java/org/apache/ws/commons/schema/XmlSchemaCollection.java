@@ -400,7 +400,7 @@ public final class XmlSchemaCollection {
 
     public XmlSchema read(Element elem, String uri) {
         SchemaBuilder builder = new SchemaBuilder(this, null);
-        XmlSchema xmlSchema = builder.handleXmlSchemaElement(elem, null);
+        XmlSchema xmlSchema = builder.handleXmlSchemaElement(elem, uri);
         xmlSchema.setInputEncoding(DOMUtil.getInputEncoding(elem.getOwnerDocument()));
         return xmlSchema;
     }
