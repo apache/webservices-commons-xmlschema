@@ -1780,6 +1780,17 @@ public class SchemaBuilder {
 			InputSource source = collection.schemaResolver.resolveEntity(
 					targetNamespace, schemaLocation, baseUri);
 
+			//the entity resolver was unable to resolve this!!
+			if (source == null) {
+				//try resolving it with the target namespace only with the 
+				//known namespace map
+				XmlSchema schema = collection.getKnownSchema(targetNamespace);
+				if (schema != null) {
+					return schema;
+				}else{
+					return null;
+				}
+			}
 			final String systemId = source.getSystemId() == null ? schemaLocation
 					: source.getSystemId();
 			final SchemaKey key = new XmlSchemaCollection.SchemaKey(
