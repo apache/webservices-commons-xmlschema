@@ -49,7 +49,11 @@ public class DefaultExtensionDeserializer implements ExtensionDeserializer {
 
         // we just attach the raw node either to the meta map of
         // elements or the attributes
-        Map metaInfoMap =  new HashMap();
+    	
+        Map metaInfoMap =  schemaObject.getMetaInfoMap();
+        if (metaInfoMap==null){
+        	metaInfoMap = new HashMap();
+        }
 
 
 

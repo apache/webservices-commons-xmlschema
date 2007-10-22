@@ -1925,7 +1925,7 @@ public class SchemaBuilder {
 
                 if (namespaceURI!= null &&
                         !"".equals(namespaceURI) &&  //ignore unqualified attributes
-                        !name.startsWith(Constants.XMLNS_ATTRIBUTE) && //ignore namespaces
+                        !namespaceURI.startsWith(Constants.XMLNS_ATTRIBUTE_NS_URI) && //ignore namespaces
                         !Constants.URI_2001_SCHEMA_XSD.equals(namespaceURI))
                 //does not belong to the schema namespace by any chance!
                 {
