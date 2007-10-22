@@ -29,11 +29,7 @@ import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.io.ByteArrayInputStream;
+import java.io.*;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -199,7 +195,19 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
      * @param out - the output stream to write to
      */
     public void write(OutputStream out) {
-        write(new OutputStreamWriter(out));
+        if (this.inputEncoding!= null &&
+                !"".equals(this.inputEncoding)){
+            try {
+                write(new OutputStreamWriter(out,this.inputEncoding));
+            } catch (UnsupportedEncodingException e) {
+                //log the error and just write it without the encoding
+                
+                write(new OutputStreamWriter(out));
+            }
+        }else{
+            write(new OutputStreamWriter(out));
+        }
+
     }
 
     /**
@@ -208,7 +216,18 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
      * @param options -  a map of options
      */
     public void write(OutputStream out, Map options) {
-        write(new OutputStreamWriter(out),options);
+        if (this.inputEncoding!= null &&
+                !"".equals(this.inputEncoding)){
+            try {
+                 write(new OutputStreamWriter(out,this.inputEncoding),options);
+            } catch (UnsupportedEncodingException e) {
+                //log the error and just write it without the encoding
+                write(new OutputStreamWriter(out));
+            }
+        }else{
+             write(new OutputStreamWriter(out),options);
+        }
+
     }
 
     /**
@@ -263,16 +282,16 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
             Result result = new StreamResult(out);
             javax.xml.transform.Transformer tr = trFac.newTransformer();
 
-            //use the input encoding if there is one one
+            //use the input encoding if there is one
             if (schema.inputEncoding!= null &&
-                    "".equals(schema.inputEncoding)){
+                    !"".equals(schema.inputEncoding)){
                 tr.setOutputProperty(OutputKeys.ENCODING,schema.inputEncoding);
             }
 
             //let these be configured from outside  if any is present
             //Note that one can enforce the encoding by passing the necessary
             //property in options
-            
+
             if (options==null){
                 options = new HashMap();
                 loadDefaultOptions(options);
