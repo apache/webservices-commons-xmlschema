@@ -30,4 +30,5 @@
             <element name="varString" type="xsd:string"/>
         </all>
     </complexType>
+    <element name="SOAPWrapper" type="xsd:string"/>
 </schema>

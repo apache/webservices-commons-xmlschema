@@ -133,11 +133,39 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
     }
 
     public XmlSchemaElement getElementByName(QName name) {
-        return (XmlSchemaElement)elements.getItem(name);
+        XmlSchemaElement element = (XmlSchemaElement) elements.getItem(name);
+        if (element == null){
+            //search the imports
+            for(Iterator includedItems = includes.getIterator();includedItems.hasNext();){
+                  XmlSchemaImport schemaImport = (XmlSchemaImport)includedItems.next();
+                 XmlSchema schema  =  schemaImport.getSchema();
+                 if (schema.getElementByName(name)!=null){
+                     return schema.getElementByName(name);
+                 }
+            }
+        }else{
+          return element;
+        }
+
+        return null;
     }
 
     public XmlSchemaType getTypeByName(QName name) {
-        return (XmlSchemaType)schemaTypes.getItem(name);
+        XmlSchemaType type = (XmlSchemaType) schemaTypes.getItem(name);
+        if (type == null){
+            //search the imports
+            for(Iterator includedItems = includes.getIterator();includedItems.hasNext();){
+                 XmlSchemaImport schemaImport = (XmlSchemaImport)includedItems.next();
+                 XmlSchema schema  =  schemaImport.getSchema();
+                 if (schema.getTypeByName(name)!=null){
+                     return schema.getTypeByName(name);
+                 }
+            }
+        }else{
+          return type;
+        }
+
+        return null;
     }
 
     public XmlSchemaDerivationMethod getFinalDefault() {

@@ -25,6 +25,7 @@ import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.w3c.dom.Document;
 
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.namespace.QName;
 import java.io.File;
 
 public class ImportTest extends TestCase {
@@ -64,5 +65,25 @@ public class ImportTest extends TestCase {
         XmlSchema schema = schemaCol.read(doc,file.toURL().toString(),null);
         assertNotNull(schema);
 
+    }
+
+    /**
+     * see whether we can reach the types of the imported schemas.
+     * @throws Exception
+     */
+    public void testSchemaImport3() throws Exception{
+        File file = new File(Resources.asURI("importBase.xsd"));
+        //create a DOM document
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        documentBuilderFactory.setNamespaceAware(true);
+        Document doc = documentBuilderFactory.newDocumentBuilder().
+                parse(file.toURL().toString());
+
+        XmlSchemaCollection schemaCol = new XmlSchemaCollection();
+        XmlSchema schema = schemaCol.read(doc,file.toURL().toString(),null);
+        assertNotNull(schema);
+
+        assertNotNull(schema.getTypeByName(new QName("http://soapinterop.org/xsd2","SOAPStruct")));
+        assertNotNull(schema.getElementByName(new QName("http://soapinterop.org/xsd2","SOAPWrapper")));
     }
 }
