@@ -6,6 +6,7 @@ import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
 import java.io.InputStream;
 import java.io.FileInputStream;
+import java.util.Iterator;
 
 import org.apache.ws.commons.schema.*;
 
@@ -46,6 +47,13 @@ public class AttributeRefTest extends TestCase {
 
         String namspace = qName.getNamespaceURI();
         assertEquals("http://tempuri.org/attribute",namspace);
+
+        for (Iterator toplevelAttributes = s.getAttributes().getValues();toplevelAttributes.hasNext();){
+            XmlSchemaAttribute attribute = (XmlSchemaAttribute) toplevelAttributes.next();
+            assertEquals("http://tempuri.org/attribute",attribute.getQName().getNamespaceURI());
+        }
+
+
     }
 
 
