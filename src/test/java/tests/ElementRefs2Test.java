@@ -49,7 +49,7 @@ public class ElementRefs2Test extends TestCase {
         Document document = documentBuilder.parse(new ByteArrayInputStream(bos.toByteArray()));
 
         //find the element with name="atttest" and test its type attribute
-        //to see whether it serialized a colon
+        //to see whether it includes a colon.
         NodeList elementList = document.getElementsByTagName("element");
         for(int i=0;i < elementList.getLength();i++){
             Node n = elementList.item(i);
