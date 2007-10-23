@@ -29,7 +29,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Iterator;
 
-public class TestElementRefs extends TestCase {
+public class ElementRefsTest extends TestCase {
     public void testElementRefs() throws Exception {
         QName ELEMENT_QNAME = new QName("http://soapinterop.org/types",
                 "attTests");
