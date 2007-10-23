@@ -137,14 +137,22 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
         if (element == null){
             //search the imports
             for(Iterator includedItems = includes.getIterator();includedItems.hasNext();){
-                  XmlSchemaImport schemaImport = (XmlSchemaImport)includedItems.next();
-                 XmlSchema schema  =  schemaImport.getSchema();
-                 if (schema.getElementByName(name)!=null){
-                     return schema.getElementByName(name);
-                 }
+               Object includeOrImport =  includedItems.next();
+                XmlSchema schema = null;
+                if (includeOrImport instanceof XmlSchemaImport){
+                    schema  =  ((XmlSchemaImport)includeOrImport).getSchema();
+                }else if (includeOrImport instanceof XmlSchemaInclude){
+                    schema  =  ((XmlSchemaInclude)includeOrImport).getSchema();
+                }else{
+                    //skip ?
+                    continue;
+                }
+                if (schema.getElementByName(name)!=null){
+                    return schema.getElementByName(name);
+                }
             }
         }else{
-          return element;
+            return element;
         }
 
         return null;
@@ -155,14 +163,23 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
         if (type == null){
             //search the imports
             for(Iterator includedItems = includes.getIterator();includedItems.hasNext();){
-                 XmlSchemaImport schemaImport = (XmlSchemaImport)includedItems.next();
-                 XmlSchema schema  =  schemaImport.getSchema();
-                 if (schema.getTypeByName(name)!=null){
-                     return schema.getTypeByName(name);
-                 }
+                Object includeOrImport =  includedItems.next();
+                XmlSchema schema = null;
+                if (includeOrImport instanceof XmlSchemaImport){
+                    schema  =  ((XmlSchemaImport)includeOrImport).getSchema();
+                }else if (includeOrImport instanceof XmlSchemaInclude){
+                    schema  =  ((XmlSchemaInclude)includeOrImport).getSchema();
+                }else{
+                    //skip ?
+                    continue;
+                }
+
+                if (schema.getTypeByName(name)!=null){
+                    return schema.getTypeByName(name);
+                }
             }
         }else{
-          return type;
+            return type;
         }
 
         return null;
@@ -229,7 +246,7 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
                 write(new OutputStreamWriter(out,this.inputEncoding));
             } catch (UnsupportedEncodingException e) {
                 //log the error and just write it without the encoding
-                
+
                 write(new OutputStreamWriter(out));
             }
         }else{
@@ -247,13 +264,13 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
         if (this.inputEncoding!= null &&
                 !"".equals(this.inputEncoding)){
             try {
-                 write(new OutputStreamWriter(out,this.inputEncoding),options);
+                write(new OutputStreamWriter(out,this.inputEncoding),options);
             } catch (UnsupportedEncodingException e) {
                 //log the error and just write it without the encoding
                 write(new OutputStreamWriter(out));
             }
         }else{
-             write(new OutputStreamWriter(out),options);
+            write(new OutputStreamWriter(out),options);
         }
 
     }
@@ -425,7 +442,7 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
 
         return true;
     }
-	public String getInputEncoding() {
-		return inputEncoding;
-	}
+    public String getInputEncoding() {
+        return inputEncoding;
+    }
 }
