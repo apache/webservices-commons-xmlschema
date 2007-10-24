@@ -285,6 +285,18 @@
                     <excludes>
                         <exclude>tests/w3c/SchemaTest.java</exclude>
                     </excludes>
+                    <systemProperties>
+                        <!--  The default xalan TransformerFactory on the ibm jdk is
+                              org.apache.xalan.processor.TransformerFactoryImpl which 
+                              has a known issue with implicit namespaces.  Set this 
+                              property to use the xsltc TransformerFactory (which 
+                              the sun jdk seems to default to).
+                        -->
+                        <property>
+                            <name>javax.xml.transform.TransformerFactory</name>
+                            <value>org.apache.xalan.xsltc.trax.TransformerFactoryImpl</value>
+                        </property>
+                    </systemProperties>
                 </configuration>
             </plugin>
             <plugin>
