@@ -200,6 +200,7 @@
         <name>Apache Software Foundation</name>
         <url>http://www.apache.org/</url>
     </organization>
+
     <build>
         <plugins>
             <plugin>
@@ -270,36 +271,6 @@
                 </configuration>
             </plugin>
             <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <!--
-                        Required to run the TestW3CSchemaBucket test
-                        <version>2.3-SNAPSHOT</version>
-                -->
-                <configuration>
-                    <includes>
-                        <include>**/*Test.java</include>
-                        <!--        Fails in about half of the tests
-                                    <include>tests/w3c/TestW3CSchemaBucket.java</include>
-                        -->
-                    </includes>
-                    <excludes>
-                        <exclude>tests/w3c/SchemaTest.java</exclude>
-                    </excludes>
-                    <systemProperties>
-                        <!--  The default xalan TransformerFactory on the ibm jdk is
-                              org.apache.xalan.processor.TransformerFactoryImpl which 
-                              has a known issue with implicit namespaces.  Set this 
-                              property to use the xsltc TransformerFactory (which 
-                              the sun jdk seems to default to).
-                        -->
-                        <property>
-                            <name>javax.xml.transform.TransformerFactory</name>
-                            <value>org.apache.xalan.xsltc.trax.TransformerFactoryImpl</value>
-                        </property>
-                    </systemProperties>
-                </configuration>
-            </plugin>
-            <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
                     <descriptors>
@@ -351,6 +322,101 @@
                     </plugin>
                 </plugins>
             </build>
+        </profile>
+        <profile>
+        	<id>DefaultTest</id>
+        	<activation>
+        		<activeByDefault>true</activeByDefault>
+        		<property>
+        			<name>isIBM</name>
+        			<value>false</value>
+        		</property>
+        	</activation>
+        	<build>
+        		<plugins>
+        			<plugin>
+        				<artifactId>maven-surefire-plugin</artifactId>
+        				<!--
+        					Required to run the TestW3CSchemaBucket test
+        					<version>2.3-SNAPSHOT</version>
+        				-->
+        				<configuration>
+        					<includes>
+        						<include>**/*Test.java</include>
+        						<!--        Fails in about half of the tests
+        							<include>tests/w3c/TestW3CSchemaBucket.java</include>
+        						-->
+        					</includes>
+        					<excludes>
+        						<exclude>
+        							tests/w3c/SchemaTest.java
+        						</exclude>
+        					</excludes>
+        					<systemProperties>
+        						<!--  The default xalan TransformerFactory on the ibm jdk is
+        							org.apache.xalan.processor.TransformerFactoryImpl which 
+        							has a known issue with implicit namespaces.  Set this 
+        							property to use the xsltc TransformerFactory (which 
+        							the sun jdk seems to default to).
+        						-->
+        						<!-- <property>
+        							<name>javax.xml.transform.TransformerFactory</name>
+        							<value>com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl</value>
+        							</property> -->
+        					</systemProperties>
+        				</configuration>
+        			</plugin>
+        		</plugins>
+        	</build>
+        </profile>
+        <profile>
+        	<id>IBMTest</id>
+        	<activation>
+        		<property>
+        			<name>isIBM</name>
+        			<value>true</value>
+        		</property>
+        	</activation>
+        	<build>
+        		<plugins>
+        			<plugin>
+        				<artifactId>maven-surefire-plugin</artifactId>
+        				<!--
+        					Required to run the TestW3CSchemaBucket test
+        					<version>2.3-SNAPSHOT</version>
+        				-->
+        				<configuration>
+        					<includes>
+        						<include>**/*Test.java</include>
+        						<!--        Fails in about half of the tests
+        							<include>tests/w3c/TestW3CSchemaBucket.java</include>
+        						-->
+        					</includes>
+        					<excludes>
+        						<exclude>
+        							tests/w3c/SchemaTest.java
+        						</exclude>
+        					</excludes>
+        					<systemProperties>
+        						<!--  The default xalan TransformerFactory on the ibm jdk is
+        							org.apache.xalan.processor.TransformerFactoryImpl which 
+        							has a known issue with implicit namespaces.  Set this 
+        							property to use the xsltc TransformerFactory (which 
+        							the sun jdk seems to default to).
+        						-->
+        						<property>
+        							<name>
+        								javax.xml.transform.TransformerFactory
+        							</name>
+        							<value>
+        								org.apache.xalan.xsltc.trax.TransformerFactoryImpl
+        							</value>
+        						</property>
+        					</systemProperties>
+        				</configuration>
+        			</plugin>
+        		</plugins>
+        	</build>
         </profile>
     </profiles>
     <pluginRepositories>
