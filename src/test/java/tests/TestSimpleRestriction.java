@@ -58,6 +58,6 @@ public class TestSimpleRestriction extends TestCase {
     	assertNotNull(principalId);
     	XmlSchemaType groupId = schema.getTypeByQName(new QName("", "XdwsGroupId"));
     	assertNotNull(groupId);
-    	assertEquals(groupId.getBaseSchemaType(), principalId);
+    	assertEquals(principalId, groupId.getBaseSchemaType());
     }
 }

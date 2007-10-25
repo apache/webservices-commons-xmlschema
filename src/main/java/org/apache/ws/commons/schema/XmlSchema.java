@@ -28,7 +28,6 @@ import javax.xml.namespace.QName;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
 import java.io.*;
 import java.util.Map;
 import java.util.HashMap;
@@ -72,8 +71,11 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
     public void setInputEncoding(String encoding){
         this.inputEncoding = encoding;
     }
+    
     /**
-     * Creates new XmlSchema
+     * Create a new XmlSchema within an XmlSchemaCollection
+     * 
+     * @param parent the parent XmlSchemaCollection
      */
     public XmlSchema(XmlSchemaCollection parent) {
         this.parent = parent;
@@ -134,24 +136,24 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
 
     public XmlSchemaElement getElementByName(QName name) {
         XmlSchemaElement element = (XmlSchemaElement) elements.getItem(name);
-        if (element == null){
+        if (element == null) {
             //search the imports
-            for(Iterator includedItems = includes.getIterator();includedItems.hasNext();){
-               Object includeOrImport =  includedItems.next();
-                XmlSchema schema = null;
-                if (includeOrImport instanceof XmlSchemaImport){
-                    schema  =  ((XmlSchemaImport)includeOrImport).getSchema();
-                }else if (includeOrImport instanceof XmlSchemaInclude){
-                    schema  =  ((XmlSchemaInclude)includeOrImport).getSchema();
-                }else{
+            for (Iterator includedItems = includes.getIterator(); includedItems.hasNext();) {
+                Object includeOrImport = includedItems.next();
+                XmlSchema schema;
+                if (includeOrImport instanceof XmlSchemaImport) {
+                    schema = ((XmlSchemaImport) includeOrImport).getSchema();
+                } else if (includeOrImport instanceof XmlSchemaInclude) {
+                    schema = ((XmlSchemaInclude) includeOrImport).getSchema();
+                } else {
                     //skip ?
                     continue;
                 }
-                if (schema.getElementByName(name)!=null){
+                if (schema.getElementByName(name) != null) {
                     return schema.getElementByName(name);
                 }
             }
-        }else{
+        } else {
             return element;
         }
 
@@ -160,25 +162,25 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
 
     public XmlSchemaType getTypeByName(QName name) {
         XmlSchemaType type = (XmlSchemaType) schemaTypes.getItem(name);
-        if (type == null){
+        if (type == null) {
             //search the imports
-            for(Iterator includedItems = includes.getIterator();includedItems.hasNext();){
-                Object includeOrImport =  includedItems.next();
-                XmlSchema schema = null;
-                if (includeOrImport instanceof XmlSchemaImport){
-                    schema  =  ((XmlSchemaImport)includeOrImport).getSchema();
-                }else if (includeOrImport instanceof XmlSchemaInclude){
-                    schema  =  ((XmlSchemaInclude)includeOrImport).getSchema();
-                }else{
+            for (Iterator includedItems = includes.getIterator(); includedItems.hasNext();) {
+                Object includeOrImport = includedItems.next();
+                XmlSchema schema;
+                if (includeOrImport instanceof XmlSchemaImport) {
+                    schema = ((XmlSchemaImport) includeOrImport).getSchema();
+                } else if (includeOrImport instanceof XmlSchemaInclude) {
+                    schema = ((XmlSchemaInclude) includeOrImport).getSchema();
+                } else {
                     //skip ?
                     continue;
                 }
 
-                if (schema.getTypeByName(name)!=null){
+                if (schema.getTypeByName(name) != null) {
                     return schema.getTypeByName(name);
                 }
             }
-        }else{
+        } else {
             return type;
         }
 
@@ -231,10 +233,6 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
         return version;
     }
 
-    public void compile(ValidationEventHandler eh) {
-
-    }
-
     /**
      * Serialize the schema into the given output stream
      * @param out - the output stream to write to
@@ -243,7 +241,7 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
         if (this.inputEncoding!= null &&
                 !"".equals(this.inputEncoding)){
             try {
-                write(new OutputStreamWriter(out,this.inputEncoding));
+                write(new OutputStreamWriter(out, this.inputEncoding));
             } catch (UnsupportedEncodingException e) {
                 //log the error and just write it without the encoding
 
@@ -264,7 +262,7 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
         if (this.inputEncoding!= null &&
                 !"".equals(this.inputEncoding)){
             try {
-                write(new OutputStreamWriter(out,this.inputEncoding),options);
+                write(new OutputStreamWriter(out, this.inputEncoding), options);
             } catch (UnsupportedEncodingException e) {
                 //log the error and just write it without the encoding
                 write(new OutputStreamWriter(out));
@@ -276,18 +274,22 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
     }
 
     /**
-     * Serialie the schema to a given writer
-     * @param writer - the writer to write this
+     * Serialize the schema
+     *
+     * @param writer a Writer to serialize to
+     * @param options a way to pass arbitrary options to the internal serializer
      */
-    public void write(Writer writer,Map options) {
-        serialize_internal(this, writer,options);
+    public void write(Writer writer, Map options) {
+        serialize_internal(this, writer, options);
     }
+
     /**
-     * Serialie the schema to a given writer
-     * @param writer - the writer to write this
+     * Serialize the schema
+     *
+     * @param writer a Writer to serialize to
      */
     public void write(Writer writer) {
-        serialize_internal(this, writer,null);
+        serialize_internal(this, writer, null);
     }
 
     public Document[] getAllSchemas() {
@@ -303,12 +305,12 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
     }
 
     /**
-     * serialize the schema - this is the method tht does to work
-     * @param schema
-     * @param out
-     * @param options
+     * serialize the schema - this is the method that does the work
+     * @param schema XmlSchema to serialize
+     * @param out the Writer we'll write to
+     * @param options options to customize the serialization
      */
-    private  void serialize_internal(XmlSchema schema, Writer out, Map options) {
+    private void serialize_internal(XmlSchema schema, Writer out, Map options) {
 
         try {
             XmlSchemaSerializer xser = new XmlSchemaSerializer();
@@ -328,19 +330,18 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
             javax.xml.transform.Transformer tr = trFac.newTransformer();
 
             //use the input encoding if there is one
-            if (schema.inputEncoding!= null &&
-                    !"".equals(schema.inputEncoding)){
-                tr.setOutputProperty(OutputKeys.ENCODING,schema.inputEncoding);
+            if (schema.inputEncoding!= null && !"".equals(schema.inputEncoding)) {
+                tr.setOutputProperty(OutputKeys.ENCODING, schema.inputEncoding);
             }
 
-            //let these be configured from outside  if any is present
-            //Note that one can enforce the encoding by passing the necessary
-            //property in options
+            // If options were passed, we'll use them to figure out encoding, etc.
+            // If not, we load the default ones.
 
-            if (options==null){
+            if (options == null) {
                 options = new HashMap();
                 loadDefaultOptions(options);
             }
+
             Iterator keys = options.keySet().iterator();
             while (keys.hasNext()) {
                 Object key = keys.next();
@@ -384,8 +385,10 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
     }
 
     /**
-     * Sets the schema elements namespace context. This may be used for schema
-     * serialization, until a better mechanism was found.
+     * Sets the schema element's namespace context. This may be used for schema
+     * serialization, until a better mechanism is found.
+     *
+     * @param namespaceContext representation of the currently defined namespace prefixes
      */
     public void setNamespaceContext(NamespacePrefixList namespaceContext) {
         this.namespaceContext = namespaceContext;
