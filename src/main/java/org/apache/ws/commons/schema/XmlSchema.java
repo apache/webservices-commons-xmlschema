@@ -149,7 +149,7 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
                     //skip ?
                     continue;
                 }
-                if (schema.getElementByName(name) != null) {
+                if (schema != null && schema.getElementByName(name) != null) {
                     return schema.getElementByName(name);
                 }
             }
@@ -176,7 +176,7 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
                     continue;
                 }
 
-                if (schema.getTypeByName(name) != null) {
+                if (schema != null && schema.getTypeByName(name) != null) {
                     return schema.getTypeByName(name);
                 }
             }
