@@ -53,7 +53,8 @@ import java.util.Stack;
 // Feb 21th - Joni - Port to XMLDomUtil and Tranformation.
 
 public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwner {
-    static final String SCHEMA_NS = "http://www.w3.org/2001/XMLSchema";
+    private static final String UTF_8_ENCODING = "UTF-8";
+	static final String SCHEMA_NS = "http://www.w3.org/2001/XMLSchema";
     XmlSchemaForm attributeFormDefault, elementFormDefault;
 
     XmlSchemaObjectTable attributeGroups,
@@ -337,18 +338,18 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
      * @param out - the output stream to write to
      */
     public void write(OutputStream out) {
+    try {
         if (this.inputEncoding!= null &&
                 !"".equals(this.inputEncoding)){
-            try {
                 write(new OutputStreamWriter(out,this.inputEncoding));
-            } catch (UnsupportedEncodingException e) {
-                //log the error and just write it without the encoding
-
-                write(new OutputStreamWriter(out));
-            }
         }else{
-            write(new OutputStreamWriter(out));
+        	//As per the XML spec the default is taken to be UTF 8
+            write(new OutputStreamWriter(out,UTF_8_ENCODING));
         }
+    } catch (UnsupportedEncodingException e) {
+        //log the error and just write it without the encoding
+        write(new OutputStreamWriter(out));
+    }
 
     }
 
@@ -358,16 +359,16 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
      * @param options -  a map of options
      */
     public void write(OutputStream out, Map options) {
-        if (this.inputEncoding!= null &&
-                !"".equals(this.inputEncoding)){
-            try {
-                write(new OutputStreamWriter(out,this.inputEncoding),options);
-            } catch (UnsupportedEncodingException e) {
-                //log the error and just write it without the encoding
-                write(new OutputStreamWriter(out));
-            }
-        }else{
-            write(new OutputStreamWriter(out),options);
+    	try {
+	        if (this.inputEncoding!= null &&
+	                !"".equals(this.inputEncoding)){
+	                write(new OutputStreamWriter(out,this.inputEncoding),options);
+	        }else{
+	            write(new OutputStreamWriter(out,UTF_8_ENCODING),options);
+	        }
+    	} catch (UnsupportedEncodingException e) {
+            //log the error and just write it without the encoding
+            write(new OutputStreamWriter(out));
         }
 
     }
