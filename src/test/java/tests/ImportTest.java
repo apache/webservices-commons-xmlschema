@@ -83,7 +83,7 @@ public class ImportTest extends TestCase {
         XmlSchema schema = schemaCol.read(doc,file.toURL().toString(),null);
         assertNotNull(schema);
 
-        assertNotNull(schema.getTypeByName(new QName("http://soapinterop.org/xsd2","SOAPStruct")));
-        assertNotNull(schema.getElementByName(new QName("http://soapinterop.org/xsd2","SOAPWrapper")));
+        assertNotNull(schema.getTypeByName(new QName("http://soapinterop.org/xsd2","SOAPStruct"),true));
+        assertNotNull(schema.getElementByName(new QName("http://soapinterop.org/xsd2","SOAPWrapper"),true));
     }
 }

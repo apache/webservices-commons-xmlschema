@@ -33,6 +33,7 @@ import java.io.*;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Stack;
 
 
 /**
@@ -132,58 +133,154 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
         return elements;
     }
 
-    public XmlSchemaElement getElementByName(QName name) {
-        XmlSchemaElement element = (XmlSchemaElement) elements.getItem(name);
-        if (element == null){
-            //search the imports
-            for(Iterator includedItems = includes.getIterator();includedItems.hasNext();){
-               Object includeOrImport =  includedItems.next();
-                XmlSchema schema = null;
-                if (includeOrImport instanceof XmlSchemaImport){
-                    schema  =  ((XmlSchemaImport)includeOrImport).getSchema();
-                }else if (includeOrImport instanceof XmlSchemaInclude){
-                    schema  =  ((XmlSchemaInclude)includeOrImport).getSchema();
-                }else{
-                    //skip ?
-                    continue;
-                }
-                if (schema.getElementByName(name)!=null){
-                    return schema.getElementByName(name);
-                }
-            }
-        }else{
-            return element;
-        }
+    
+    protected XmlSchemaElement getElementByName(QName name, boolean deep,
+			Stack schemaStack) {
+		if (schemaStack != null && schemaStack.contains(this)) {
+			// recursive schema - just return null
+			return null;
+		} else {
+			XmlSchemaElement element = (XmlSchemaElement) elements
+					.getItem(name);
+			if (deep) {
+				if (element == null) {
+					// search the imports
+					for (Iterator includedItems = includes.getIterator(); includedItems
+							.hasNext();) {
+						
+						XmlSchema schema = getSchema(includedItems.next());
+						
+						if (schema != null) {
+						// create an empty stack - push the current parent in
+						// and
+						// use the protected method to process the schema
+						if (schemaStack == null) {
+							schemaStack = new Stack();
+						}
+						schemaStack.push(this);
+						element = schema.getElementByName(name, deep,
+								schemaStack);
+						if (element != null) {
+							return element;
+						}
+						}
+					}
+				} else {
+					return element;
+				}
+			}
 
-        return null;
-    }
+			return element;
+		}
+	}
 
-    public XmlSchemaType getTypeByName(QName name) {
-        XmlSchemaType type = (XmlSchemaType) schemaTypes.getItem(name);
-        if (type == null){
-            //search the imports
-            for(Iterator includedItems = includes.getIterator();includedItems.hasNext();){
-                Object includeOrImport =  includedItems.next();
-                XmlSchema schema = null;
-                if (includeOrImport instanceof XmlSchemaImport){
-                    schema  =  ((XmlSchemaImport)includeOrImport).getSchema();
-                }else if (includeOrImport instanceof XmlSchemaInclude){
-                    schema  =  ((XmlSchemaInclude)includeOrImport).getSchema();
-                }else{
-                    //skip ?
-                    continue;
-                }
+	/**
+	 * get an element by the qname
+	 * 
+	 * @param name
+	 * @param deep
+	 * @return
+	 */
+	public XmlSchemaElement getElementByName(QName name, boolean deep) {
+		return this.getElementByName(name, deep, null);
+	}
 
-                if (schema.getTypeByName(name)!=null){
-                    return schema.getTypeByName(name);
-                }
-            }
-        }else{
-            return type;
-        }
+	/**
+	 * @deprecated use the {@link #getElementByName(QName, boolean)} method
+	 * @param name
+	 * @return
+	 */
+	public XmlSchemaElement getElementByName(QName name) {
+		return this.getElementByName(name, false, null);
+	}
 
-        return null;
-    }
+	/**
+	 * protected method that allows safe (non-recursive schema loading)
+	 * 
+	 * @param name
+	 * @param deep
+	 * @param schemaStack
+	 * @return
+	 */
+	protected XmlSchemaType getTypeByName(QName name, boolean deep,
+			Stack schemaStack) {
+		if (schemaStack != null && schemaStack.contains(this)) {
+			// recursive schema - just return null
+			return null;
+		} else {
+			XmlSchemaType type = (XmlSchemaType) schemaTypes.getItem(name);
+
+			if (deep) {
+				if (type == null) {
+					// search the imports
+					for (Iterator includedItems = includes.getIterator(); includedItems
+							.hasNext();) {
+
+						XmlSchema schema = getSchema(includedItems.next());
+						
+						if (schema != null) {
+							// create an empty stack - push the current parent
+							// use the protected method to process the schema
+							if (schemaStack == null) {
+								schemaStack = new Stack();
+							}
+							schemaStack.push(this);
+							type = schema
+									.getTypeByName(name, deep, schemaStack);
+							if (type != null) {
+								return type;
+							}
+						}
+					}
+				} else {
+					return type;
+				}
+			}
+
+			return type;
+		}
+	}
+
+	/**
+	 * @deprecated use the {@link #getTypeByName(QName, boolean)}
+	 * @param name
+	 * @return
+	 */
+	public XmlSchemaType getTypeByName(QName name) {
+		return getTypeByName(name, false, null);
+	}
+
+	/**
+	 * 
+	 * @param name
+	 * @param deep
+	 * @return
+	 */
+	public XmlSchemaType getTypeByName(QName name, boolean deep) {
+		return getTypeByName(name, deep, null);
+	}
+
+	/**
+	 * Get a schema from an import
+	 * 
+	 * @param includeOrImport
+	 * @return
+	 */
+	private XmlSchema getSchema(Object includeOrImport) {
+		XmlSchema schema;
+		if (includeOrImport instanceof XmlSchemaImport) {
+			schema = ((XmlSchemaImport) includeOrImport).getSchema();
+		} else if (includeOrImport instanceof XmlSchemaInclude) {
+			schema = ((XmlSchemaInclude) includeOrImport).getSchema();
+		} else {
+			// skip ?
+			schema = null;
+		}
+
+		return schema;
+	}
+
+    
 
     public XmlSchemaDerivationMethod getFinalDefault() {
         return finalDefault;
