@@ -94,4 +94,15 @@ public class XmlSchemaType extends XmlSchemaAnnotated {
         }
         return new QName(schema.logicalTargetNamespace, name);
     }
+    
+    public String toString() {
+    	if(name == null) {
+    		return super.toString() + "[anonymous]";
+    	} else if (schema.logicalTargetNamespace == null) {
+    		return super.toString() + "[{}" + name + "]";
+    		
+    	} else {
+    		return super.toString() + "[{" + schema.logicalTargetNamespace + "}" + name + "]";
+    	}
+    }
 }

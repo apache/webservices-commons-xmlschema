@@ -67,6 +67,13 @@ public class XmlSchemaAnnotated extends XmlSchemaObject {
     public void setUnhandledAttributes(Attr[] unhandledAttributes) {
         this.unhandledAttributes = unhandledAttributes;
     }
+    
+    public String toString() {
+    	if (id == null)
+    		return super.toString();
+    	else
+    		return super.toString() + " [id:" + id + "]";
+    }
 
 }
 
