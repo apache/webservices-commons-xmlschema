@@ -69,7 +69,7 @@ public class SchemaBuilder {
 			this.extReg = collection.getExtReg();
 		}
 
-		schema = new XmlSchema(collection);
+		schema = new XmlSchema();
 	}
 
 	/**
@@ -99,6 +99,9 @@ public class SchemaBuilder {
 				schema.logicalTargetNamespace, uri);
 		if (!collection.containsSchema(schemaKey)) {
 			collection.addSchema(schemaKey, schema);
+			schema.parent = collection; // establish parentage now.
+		} else {
+			throw new XmlSchemaException("Schema name conflict in collection. Namespace: " + schema.logicalTargetNamespace);
 		}
 
 		schema.setElementFormDefault(this.getFormDefault(schemaEl,

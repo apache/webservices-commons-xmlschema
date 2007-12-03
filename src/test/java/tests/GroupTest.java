@@ -111,8 +111,6 @@ public class GroupTest extends TestCase {
         XmlSchemaObjectTable t = schema.getGroups();
         assertEquals(1, t.getCount());
 
-        XmlSchemaObject o = t.getItem(ref.getRefName());
-
         Set s = new HashSet();
         s.add("priceGroup");
         for (Iterator i = t.getNames(); i.hasNext(); ) {

@@ -22,7 +22,6 @@ package org.apache.ws.commons.schema.utils;
 import org.w3c.dom.*;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * Some useful utility methods.

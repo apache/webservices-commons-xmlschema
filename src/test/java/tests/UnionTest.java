@@ -74,7 +74,7 @@ public class UnionTest extends TestCase {
                                         "unionTest");
         InputStream is = new FileInputStream(Resources.asURI("union.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is), null);
 
 
         XmlSchemaElement elem = schemaCol.getElementByQName(ELEMENT_QNAME);

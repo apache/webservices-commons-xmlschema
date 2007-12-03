@@ -19,17 +19,18 @@
 
 package tests;
 
-import junit.framework.TestCase;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
-import java.io.InputStream;
-import java.io.FileInputStream;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Iterator;
 
-import org.apache.ws.commons.schema.*;
+import junit.framework.TestCase;
+
+import org.apache.ws.commons.schema.XmlSchemaCollection;
+import org.apache.ws.commons.schema.XmlSchemaComplexType;
+import org.apache.ws.commons.schema.XmlSchemaElement;
+import org.apache.ws.commons.schema.XmlSchemaSequence;
 
 /*
  * Copyright 2004,2007 The Apache Software Foundation.
@@ -81,7 +82,7 @@ public class SequenceTest extends TestCase {
 
         InputStream is = new FileInputStream(Resources.asURI("sequence.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is), null);
 
         QName WRONG_QNAME = new QName("http://soapinterop.org/types",
                                       "machine");

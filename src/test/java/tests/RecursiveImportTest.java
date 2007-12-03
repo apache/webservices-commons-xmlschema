@@ -45,8 +45,9 @@ public class RecursiveImportTest extends TestCase {
       
         
         //these qnames are *not* there in these schemas
-        assertNull(schema.getTypeByName(new QName("http://soapinterop.org/xsd2","SOAPStruct"),true));
-        assertNull(schema.getElementByName(new QName("http://soapinterop.org/xsd2","SOAPWrapper"),true));
+        assertNull(schema.getTypeByName(new QName("http://soapinterop.org/xsd2","SOAPStruct")));
+        assertNull(schema.getElementByName(new QName("http://soapinterop.org/xsd2","SOAPWrapper")));
+
     }
 
     

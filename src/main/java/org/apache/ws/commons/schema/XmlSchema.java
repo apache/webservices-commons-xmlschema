@@ -76,8 +76,35 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
     }
     /**
      * Creates new XmlSchema
+     * Create a new XmlSchema. The schema is <i>not</i> added to the parent collection,
+     * since it has no target namespace when created through this constructor.
+     * Call {@link XmlSchema#XmlSchema(String, XmlSchemaCollection)} instead.
+      *
+      * @param parent the parent XmlSchemaCollection
+     * @deprecated
+      */
+     public XmlSchema(XmlSchemaCollection parent) {
+    	this(null, null, parent);
+    }
+
+    /**
+     * Create a schema that is not a member of a collection.
      */
-    public XmlSchema(XmlSchemaCollection parent) {
+    public XmlSchema() {
+    	this(null, null, null);
+    }
+
+    /**
+     * Create a new schema and record it as a member of a schema collection.
+     * @param namespace the target namespace.
+     * @param systemId the system ID for the schema.
+     * @param parent the parent collection.
+     */
+    public XmlSchema(String namespace, String systemId, XmlSchemaCollection parent) {
+         this.parent = parent;
+       if (namespace == null) {
+        	namespace = "";
+        }
         this.parent = parent;
         attributeFormDefault = new XmlSchemaForm(XmlSchemaForm.UNQUALIFIED);
         elementFormDefault = new XmlSchemaForm(XmlSchemaForm.UNQUALIFIED);
@@ -91,11 +118,22 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
         groups = new XmlSchemaObjectTable();
         notations = new XmlSchemaObjectTable();
         schemaTypes = new XmlSchemaObjectTable();
+
+        syntacticalTargetNamespace = logicalTargetNamespace = namespace;
+        if(parent != null) {
+        	XmlSchemaCollection.SchemaKey schemaKey =
+        		new XmlSchemaCollection.SchemaKey(this.logicalTargetNamespace, systemId);
+        	if (parent.containsSchema(schemaKey)) {
+        		throw new XmlSchemaException("Schema name conflict in collection");
+        	} else {
+        		parent.addSchema(schemaKey, this);
+        	}
+        }
     }
 
     public XmlSchema(String namespace, XmlSchemaCollection parent) {
-        this(parent);
-        syntacticalTargetNamespace = logicalTargetNamespace = namespace;
+        this(namespace, namespace, parent);
+       
     }
 
     public XmlSchemaForm getAttributeFormDefault() {
@@ -176,23 +214,23 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
 	}
 
 	/**
-	 * get an element by the qname
+	 * get an element by the name in the local schema
 	 * 
 	 * @param name
-	 * @param deep
 	 * @return
 	 */
-	public XmlSchemaElement getElementByName(QName name, boolean deep) {
-		return this.getElementByName(name, deep, null);
+	public XmlSchemaElement getElementByName(String name) {
+        QName nameToSearchFor = new QName(this.getTargetNamespace(),name);
+        return this.getElementByName(nameToSearchFor, false, null);
 	}
 
 	/**
-	 * @deprecated use the {@link #getElementByName(QName, boolean)} method
+	 * Look for a element by its qname. Searches through all the schemas
 	 * @param name
 	 * @return
 	 */
 	public XmlSchemaElement getElementByName(QName name) {
-		return this.getElementByName(name, false, null);
+		return this.getElementByName(name, true, null);
 	}
 
 	/**
@@ -243,22 +281,23 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
 	}
 
 	/**
-	 * @deprecated use the {@link #getTypeByName(QName, boolean)}
+	 * Search this schema and all the imported/included ones
+     * for the given Qname
 	 * @param name
 	 * @return
 	 */
 	public XmlSchemaType getTypeByName(QName name) {
-		return getTypeByName(name, false, null);
+		return getTypeByName(name, true, null);
 	}
 
 	/**
 	 * 
 	 * @param name
-	 * @param deep
 	 * @return
 	 */
-	public XmlSchemaType getTypeByName(QName name, boolean deep) {
-		return getTypeByName(name, deep, null);
+	public XmlSchemaType getTypeByName(String name) {
+        QName nameToSearchFor = new QName(this.getTargetNamespace(),name);
+        return getTypeByName(nameToSearchFor, false, null);
 	}
 
 	/**

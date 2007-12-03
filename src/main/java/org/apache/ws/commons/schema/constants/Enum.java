@@ -39,15 +39,23 @@ public abstract class Enum {
         if (value.equals(Enum.NULL))
             this.value = Enum.NULL;
         else {
-            String values[] = getValues();
-            for (int i = 0; i < values.length; i++) {
-                if (values[i].equals(value)) {
-                    this.value = value;
-                    break;
+            //the value can be a list of space seperated items
+            String possibleValues[] = getValues();
+            String[] valuesToBeTested = value.split("\\s");
+            for (int i = 0; i < valuesToBeTested.length; i++) {
+                for (int j = 0; j < possibleValues.length; j++) {
+                    if (possibleValues[j].equals(valuesToBeTested[i])) {
+                        break;
+                    }
+                    if (i == possibleValues.length - 1)
+                        throw new EnumValueException("Bad Enumeration value '" + value + "'");
                 }
-                if (i == values.length - 1)
-                    throw new EnumValueException("Bad Enumeration value '" + value + "'");
             }
+
+            //when we reach here we have tested all the values to be correct (applicable)
+             this.value = value;
+
+
         }
     }
 
@@ -65,6 +73,11 @@ public abstract class Enum {
     }
 
     public static class EnumValueException extends RuntimeException {
+        /**
+         *
+         */
+        private static final long serialVersionUID = 1L;
+
         public EnumValueException(String mesg) {
             super(mesg);
         }
@@ -78,4 +91,5 @@ public abstract class Enum {
         return -1;
     }
 }
+
 
