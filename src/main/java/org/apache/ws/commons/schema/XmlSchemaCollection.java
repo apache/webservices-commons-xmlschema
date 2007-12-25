@@ -397,7 +397,7 @@ public final class XmlSchemaCollection {
             TargetNamespaceValidator validator) {
         SchemaBuilder builder = new SchemaBuilder(this, validator);
         XmlSchema schema = builder.build(doc, uri, veh);
-        schema.setInputEncoding(doc.getInputEncoding());
+        schema.setInputEncoding(DOMUtil.getInputEncoding(doc));
 		return schema;
     }
 

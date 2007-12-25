@@ -588,7 +588,11 @@ public class DOMUtil {
         return node.getNamespaceURI();
     }
 
-    //why do we need to use reflection here??
+    /**
+     * Use reflection to call the getInputEncoding method, since this API is NOT present in JDK1.4
+     * @param doc
+     * @return
+     */
     public static String getInputEncoding(Document doc) {
         try {
             Method m = Document.class.getMethod("getInputEncoding", new Class[]{});
@@ -597,11 +601,16 @@ public class DOMUtil {
             return "UTF-8";
         }
     }
-    
-    //why do we need to use reflection here??
+
+    /**
+     * Use reflection to call the getXmlEncoding method, since this API is NOT present in JDK1.4
+     * @param doc
+     * @return
+     */
     public static String getXmlEncoding(Document doc) {
         try {
-            return doc.getXmlEncoding();
+            Method m = Document.class.getMethod("getXmlEncoding", new Class[]{});
+            return (String) m.invoke(doc, new Object[]{});
         } catch (Exception e) {
             return "UTF-8";
         }
