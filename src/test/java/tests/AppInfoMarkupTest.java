@@ -35,8 +35,6 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import sun.management.counter.ByteArrayCounter;
-
 
 public class AppInfoMarkupTest extends XMLTestCase {
 
