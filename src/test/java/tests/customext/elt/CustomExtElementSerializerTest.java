@@ -46,6 +46,11 @@ public class CustomExtElementSerializerTest extends TestCase {
         //create a DOM document
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         documentBuilderFactory.setNamespaceAware(true);
+
+        // Skip test in JDK1.4 as it uses crimson parser and an old DOM implementation
+        if (documentBuilderFactory.getClass().toString().indexOf("crimson") != -1) {
+            return;
+        }
         Document doc = documentBuilderFactory.newDocumentBuilder().
                 parse(Resources.asURI("/external/externalElementAnnotations.xsd"));
 
