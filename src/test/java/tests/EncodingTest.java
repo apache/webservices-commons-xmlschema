@@ -44,7 +44,10 @@ public class EncodingTest extends TestCase {
            DocumentBuilder newDocumentBuilder = documentBuilderFactory.newDocumentBuilder();
 
            // Skip test in JDK1.4 as it uses crimson parser and an old DOM implementation
-           if (documentBuilderFactory.getClass().toString().indexOf("crimson") != -1) {
+           try {
+               Document.class.getMethod("getInputEncoding", new Class[]{});
+           } catch (NoSuchMethodException e) {
+               System.out.println(">>>> Ignoring test as it needs DOM3");
                return;
            }
 
