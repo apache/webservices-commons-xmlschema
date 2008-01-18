@@ -288,7 +288,9 @@ public class XmlSchemaSerializer {
         for (int i = 0;  i < prefixes.length;  i++) {
             String prefix = prefixes[i];
             String uri = ctx.getNamespaceURI(prefix);
-            schema_ns.put(uri, prefix);
+            if(uri != null && prefix != null) {
+                schema_ns.put(uri, prefix);
+            }
         }
         //for schema that not set the xmlns attrib member
         if (schema_ns.get(xsdNamespace) == null) {
