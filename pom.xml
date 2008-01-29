@@ -327,10 +327,6 @@
         	<id>DefaultTest</id>
         	<activation>
         		<activeByDefault>true</activeByDefault>
-        		<property>
-        			<name>isIBM</name>
-        			<value>false</value>
-        		</property>
         	</activation>
         	<build>
         		<plugins>
@@ -373,8 +369,8 @@
         	<id>IBMTest</id>
         	<activation>
         		<property>
-        			<name>isIBM</name>
-        			<value>true</value>
+        			<name>java.vendor</name>
+        			<value>IBM Corporation</value>
         		</property>
         	</activation>
         	<build>
