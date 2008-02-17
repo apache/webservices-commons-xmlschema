@@ -509,9 +509,9 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
     public void addType(XmlSchemaType type) {
         QName qname = type.getQName();
         if (schemaTypes.contains(qname)) {
-            throw new RuntimeException("Schema for namespace '" +
+            throw new XmlSchemaException(" Schema for namespace '" +
                     syntacticalTargetNamespace + "' already contains type '" +
-                    qname.getLocalPart());
+                    qname.getLocalPart() + "'");
         }
         schemaTypes.add(qname, type);
     }
