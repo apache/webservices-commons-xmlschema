@@ -932,6 +932,12 @@ public class XmlSchemaSerializer {
             serializedComplexType.appendChild(complexContent);
         }
 
+        if (complexTypeObj.annotation != null) {
+            Element annotationEl = serializeAnnotation(doc,
+                    complexTypeObj.annotation, schema);
+            serializedComplexType.appendChild(annotationEl);
+        }
+
         if (complexTypeObj.particle instanceof XmlSchemaSequence) {
             Element sequence = serializeSequence(doc,
                     (XmlSchemaSequence) complexTypeObj.particle, schema);
