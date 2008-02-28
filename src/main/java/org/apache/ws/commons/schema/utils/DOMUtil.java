@@ -36,7 +36,9 @@ import java.lang.reflect.Method;
  */
 public class DOMUtil {
 
-    //
+    private static final String DEFAULT_ENCODING = "UTF-8";
+
+	//
     // Constructors
     //
 
@@ -587,22 +589,36 @@ public class DOMUtil {
         return node.getNamespaceURI();
     }
 
-    //why do we need to use reflection here??
+    /**
+     * Get the input encoding of the document. This uses a DOM 3 API
+     * call getInputEncoding hence it returns the correct value
+     * only if a DOM3 API is used. Otherwise it returns the default encoding
+     * @param doc
+     * @return
+     */
     public static String getInputEncoding(Document doc) {
         try {
             Method m = Document.class.getMethod("getInputEncoding", new Class[]{});
             return (String) m.invoke(doc, new Object[]{});
         } catch (Exception e) {
-            return "UTF-8";
+            return DEFAULT_ENCODING;
         }
     }
     
-    //why do we need to use reflection here??
+    /**
+     * Get the xml encoding of the document. This uses a DOM 3 API
+     * call getXmlEncoding hence it returns the correct value
+     * only if a DOM3 API is used. Otherwise it returns the default encoding
+     * @see #getInputEncoding(Document)
+     * @param doc
+     * @return
+     */
     public static String getXmlEncoding(Document doc) {
         try {
-            return doc.getXmlEncoding();
+        	 Method m = Document.class.getMethod("getXmlEncoding", new Class[]{});
+             return (String) m.invoke(doc, new Object[]{});
         } catch (Exception e) {
-            return "UTF-8";
+            return DEFAULT_ENCODING;
         }
     }
 } // class XUtil
