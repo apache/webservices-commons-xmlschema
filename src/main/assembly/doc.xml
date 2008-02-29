@@ -23,4 +23,11 @@
         <format>zip</format>
     </formats>
     <includeSiteDirectory>true</includeSiteDirectory>
+    <fileSets>
+        <fileSet>
+            <includes>
+                <include>*.txt</include>
+            </includes>
+     </fileSet>
+    </fileSets>
 </assembly>

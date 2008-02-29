@@ -202,13 +202,23 @@
         <url>http://www.apache.org/</url>
     </organization>
     <build>
-		<!-- this entry here is for the assembly plugin- For some reason
+
+
+        <!-- this entry here is for the assembly plugin- For some reason
   		     the assembly plugin cannot override the filter properties (as explained
 			 in the docs) and also does not inherit the maven standard properties. This
 		     is the one that points to a seperare filter props file --> 
 		<filters>
         	<filter>src/main/assembly/filter.properties</filter>
         </filters>
+
+        <!-- adding relevant resources to the zip files -->
+       <resources>
+          <resource>
+             <directory>src/main/resources/META-INF</directory>
+       </resource>
+     </resources>
+
         <plugins>
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
@@ -329,6 +339,7 @@
                         <Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
                         <Export-Package>org.apache.ws.commons.schema*</Export-Package>
                         <Import-Package>*</Import-Package>
+                        <Include-Resource>src/main/resources</Include-Resource>   
                     </instructions>
                </configuration>
             </plugin>
