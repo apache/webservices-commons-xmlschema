@@ -919,6 +919,12 @@ public class XmlSchemaSerializer {
         if (complexTypeObj.id != null)
             serializedComplexType.setAttribute("id",
                     complexTypeObj.id);
+        
+        if (complexTypeObj.annotation != null) {
+            Element annotationEl = serializeAnnotation(doc,
+                    complexTypeObj.annotation, schema);
+            serializedComplexType.appendChild(annotationEl);
+        }
 
         if (complexTypeObj.contentModel instanceof XmlSchemaSimpleContent) {
             Element simpleContent = serializeSimpleContent(doc,
@@ -930,12 +936,6 @@ public class XmlSchemaSerializer {
             Element complexContent = serializeComplexContent(doc,
                     (XmlSchemaComplexContent) complexTypeObj.contentModel, schema);
             serializedComplexType.appendChild(complexContent);
-        }
-
-        if (complexTypeObj.annotation != null) {
-            Element annotationEl = serializeAnnotation(doc,
-                    complexTypeObj.annotation, schema);
-            serializedComplexType.appendChild(annotationEl);
         }
 
         if (complexTypeObj.particle instanceof XmlSchemaSequence) {
