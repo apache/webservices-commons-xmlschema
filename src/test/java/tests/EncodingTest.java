@@ -22,7 +22,6 @@ package tests;
 import junit.framework.TestCase;
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
-import org.apache.ws.commons.schema.constants.Constants;
 import org.w3c.dom.Document;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -67,8 +66,7 @@ public class EncodingTest extends TestCase {
            ByteArrayOutputStream baos = new ByteArrayOutputStream();
            s1.write(baos,options);
            
-          
-           
+           schemaCol = new XmlSchemaCollection();
            Document doc2 = newDocumentBuilder.parse(new ByteArrayInputStream(baos.toByteArray()));
            XmlSchema s2 = schemaCol.read(doc2.getDocumentElement());
            assertNotNull(s2);

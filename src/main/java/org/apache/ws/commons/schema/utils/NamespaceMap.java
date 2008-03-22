@@ -22,7 +22,12 @@ import java.util.*;
 
 public class NamespaceMap extends HashMap implements NamespacePrefixList {
     
-    public NamespaceMap() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public NamespaceMap() {
     }
     
     public NamespaceMap(Map map) {

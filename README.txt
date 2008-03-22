@@ -1,9 +1,9 @@
 ====================================
-      XMLSchema Release Notes
+      XMLSchema Release Notes - Version ${version}
 ====================================
 
 XMLSchema is a lightweight schema object model that can be used to manipulate and
-generate XML schema representations. It has very few external dependancies and can
+generate XML schema representations. It has very few external dependencies and can
 be easily integrated into an existing project.
 
 You are welcome to kick the tires and get XMLSchema on the move. If you like to 

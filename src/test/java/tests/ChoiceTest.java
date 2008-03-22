@@ -81,7 +81,7 @@ public class ChoiceTest extends TestCase {
         
         InputStream is = new FileInputStream(Resources.asURI("choice.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is), null);
 
         QName WRONG_QNAME = new QName("http://soapinterop.org/types",
                                       "machine");

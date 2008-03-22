@@ -18,7 +18,6 @@
  */
 
 package tests;
-
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.utils.NamespaceMap;
@@ -31,19 +30,15 @@ import java.io.StringWriter;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
-
 public class NamespaceContextTest extends XMLTestCase {
     protected boolean whitespace = true;
-
     protected void setUp() throws Exception {
         whitespace = XMLUnit.getIgnoreWhitespace();
         XMLUnit.setIgnoreWhitespace(true);
     }
-
     protected void tearDown() throws java.lang.Exception {
         XMLUnit.setIgnoreWhitespace(whitespace);
     }
-
     public void testNamespaceContext() throws Exception {
         Map namespaceMapFromWSDL = new HashMap();
         namespaceMapFromWSDL.put("tns", new URI("http://example.org/getBalance/"));

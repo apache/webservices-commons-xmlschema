@@ -84,8 +84,4 @@ public class XmlSchemaObjectCollection {
         return xml;
 
     }
-    
-    public String toString() {
-    	return super.toString() + "[" + objects.toString() + "]";
-    }
 }

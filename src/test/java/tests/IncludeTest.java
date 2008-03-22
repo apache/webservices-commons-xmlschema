@@ -88,8 +88,6 @@ public class IncludeTest extends TestCase {
         </schema>
         */
 
-        QName ELEMENT_QNAME = new QName("http://soapinterop.org/types",
-                                        "test1include");
         InputStream is = new FileInputStream(Resources.asURI("include.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);

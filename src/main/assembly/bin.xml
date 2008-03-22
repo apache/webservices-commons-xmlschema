@@ -28,6 +28,12 @@
             <includes>
                 <include>*.txt</include>
             </includes>
+			<!-- Note that we exclude these txt files and later copy them with
+				 filteres -->
+ 			<excludes>
+                <exclude>README.txt</exclude>
+			    <exclude>RELEASE-NOTE.txt</exclude>
+            </excludes>
         </fileSet>
         <fileSet>
             <directory>target</directory>
@@ -41,10 +47,21 @@
             </excludes>
         </fileSet>
     </fileSets>
+    <files>
+	<file>
+      <source>README.txt</source>
+      <outputDirectory>/</outputDirectory>
+      <filtered>true</filtered>
+    </file>
+     <file>
+      <source>RELEASE-NOTE.txt</source>
+      <outputDirectory>/</outputDirectory>
+      <filtered>true</filtered>
+    </file>
+ </files>
     <dependencySets>
         <dependencySet>
             <outputDirectory>/lib</outputDirectory>
-            
         </dependencySet>
     </dependencySets>
 </assembly>

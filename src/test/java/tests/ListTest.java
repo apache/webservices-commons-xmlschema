@@ -78,7 +78,7 @@ public class ListTest extends TestCase {
                 "workDays");
         InputStream is = new FileInputStream(Resources.asURI("list.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is), null);
 
         XmlSchemaElement elem = schemaCol.getElementByQName(ELEMENT_QNAME);
         assertNotNull(elem);

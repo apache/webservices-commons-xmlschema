@@ -65,6 +65,8 @@ public class CustomExtElementSerializerTest extends TestCase {
         Document doc2 = documentBuilderFactory.newDocumentBuilder().
                 parse(new ByteArrayInputStream(baos.toByteArray()));
 
+        // we can't have two copies in the same collection.
+        schemaCol = new XmlSchemaCollection();
         schema = schemaCol.read(doc2,null);
         assertNotNull(schema);
 

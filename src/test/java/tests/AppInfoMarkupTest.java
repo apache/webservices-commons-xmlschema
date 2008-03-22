@@ -18,22 +18,20 @@
  */
 package tests;
 
-import junit.framework.TestCase;
-
-import java.io.InputStream;
-import java.io.FileInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
-import org.apache.ws.commons.schema.XmlSchemaCollection;
-import org.apache.ws.commons.schema.XmlSchema;
-import org.custommonkey.xmlunit.XMLUnit;
-import org.custommonkey.xmlunit.XMLTestCase;
-import org.w3c.dom.Document;
-
-import javax.xml.transform.stream.StreamSource;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.stream.StreamSource;
+
+import org.apache.ws.commons.schema.XmlSchema;
+import org.apache.ws.commons.schema.XmlSchemaCollection;
+import org.custommonkey.xmlunit.XMLTestCase;
+import org.custommonkey.xmlunit.XMLUnit;
+import org.w3c.dom.Document;
 
 
 public class AppInfoMarkupTest extends XMLTestCase {

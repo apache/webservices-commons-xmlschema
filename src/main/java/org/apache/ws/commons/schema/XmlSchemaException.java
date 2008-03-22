@@ -27,6 +27,11 @@ package org.apache.ws.commons.schema;
 public class XmlSchemaException extends RuntimeException {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
      * Creates new XmlSchemaException
      */
     public XmlSchemaException() {

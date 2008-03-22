@@ -28,15 +28,28 @@
         <include>*.txt</include>
         <include>*.xml</include>
         <include>*.properties</include>
-        <!--<include>.classpath</include>-->
-        <!--<include>.project</include>-->
       </includes>
+	 <!-- Note that we exclude these txt files and later copy them with
+		 filteres -->
+ 	  <excludes>
+         <exclude>README.txt</exclude>
+		 <exclude>RELEASE-NOTE.txt</exclude>
+      </excludes>
     </fileSet>
-    <!--<fileSet>-->
-      <!--<directory>.settings</directory>-->
-    <!--</fileSet>-->
-    <fileSet>
+     <fileSet>
       <directory>src</directory>
     </fileSet>
   </fileSets>
+   <files>
+	<file>
+      <source>README.txt</source>
+      <outputDirectory>/</outputDirectory>
+      <filtered>true</filtered>
+    </file>
+     <file>
+      <source>RELEASE-NOTE.txt</source>
+      <outputDirectory>/</outputDirectory>
+      <filtered>true</filtered>
+    </file>
+ </files>
 </assembly>

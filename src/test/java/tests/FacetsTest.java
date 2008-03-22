@@ -52,7 +52,7 @@ public class FacetsTest extends TestCase {
                                         "myZipCode");
         InputStream is = new FileInputStream(Resources.asURI("facets.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is), null);
 
         XmlSchemaElement elem = schemaCol.getElementByQName(ELEMENT_QNAME);
         assertNotNull(elem);
@@ -126,7 +126,7 @@ public class FacetsTest extends TestCase {
                                         "myCreditCardNumber");
         InputStream is = new FileInputStream(Resources.asURI("facets.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is), null);
 
         XmlSchemaElement elem = schemaCol.getElementByQName(ELEMENT_QNAME);
         assertNotNull(elem);
@@ -192,7 +192,7 @@ public class FacetsTest extends TestCase {
                                         "myAge");
         InputStream is = new FileInputStream(Resources.asURI("facets.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is), null);
 
         XmlSchemaElement elem = schemaCol.getElementByQName(ELEMENT_QNAME);
         assertNotNull(elem);
@@ -259,7 +259,7 @@ public class FacetsTest extends TestCase {
                                         "myDistance");
         InputStream is = new FileInputStream(Resources.asURI("facets.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is), null);
 
         XmlSchemaElement elem = schemaCol.getElementByQName(ELEMENT_QNAME);
         assertNotNull(elem);
@@ -334,7 +334,7 @@ public class FacetsTest extends TestCase {
                                         "myWeight");
         InputStream is = new FileInputStream(Resources.asURI("facets.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is), null);
 
         XmlSchemaElement elem = schemaCol.getElementByQName(ELEMENT_QNAME);
         assertNotNull(elem);
@@ -408,7 +408,7 @@ public class FacetsTest extends TestCase {
                                         "myWhiteSpace");
         InputStream is = new FileInputStream(Resources.asURI("facets.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is), null);
 
         XmlSchemaElement elem = schemaCol.getElementByQName(ELEMENT_QNAME);
         assertNotNull(elem);
@@ -475,7 +475,7 @@ public class FacetsTest extends TestCase {
                                         "myHeight");
         InputStream is = new FileInputStream(Resources.asURI("facets.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is), null);
 
         XmlSchemaElement elem = schemaCol.getElementByQName(ELEMENT_QNAME);
         assertNotNull(elem);
@@ -550,7 +550,7 @@ public class FacetsTest extends TestCase {
                                         "myYardLength");
         InputStream is = new FileInputStream(Resources.asURI("facets.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is), null);
 
         XmlSchemaElement elem = schemaCol.getElementByQName(ELEMENT_QNAME);
         assertNotNull(elem);
@@ -625,7 +625,7 @@ public class FacetsTest extends TestCase {
                                         "layoutComponent");
         InputStream is = new FileInputStream(Resources.asURI("facets.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is), null);
 
         XmlSchemaElement elem = schemaCol.getElementByQName(ELEMENT_QNAME);
         assertNotNull(elem);

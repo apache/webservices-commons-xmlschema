@@ -1008,7 +1008,8 @@ public class XmlSchemaSerializer {
             sequence.setAttribute("id", sequenceObj.id);
 
 
-        if (sequenceObj.maxOccurs < Long.MAX_VALUE && sequenceObj.maxOccurs > 1)
+        if (sequenceObj.maxOccurs < Long.MAX_VALUE &&
+                (sequenceObj.maxOccurs > 1 || sequenceObj.maxOccurs == 0))
             sequence.setAttribute("maxOccurs",
                     sequenceObj.maxOccurs + "");
         else if (sequenceObj.maxOccurs == Long.MAX_VALUE)
@@ -1016,8 +1017,9 @@ public class XmlSchemaSerializer {
                     "unbounded");
         //else not serialized
 
-
-        if (sequenceObj.minOccurs > 1)
+        //1 is the default and hence not serialized
+        //there is no valid case where min occurs can be unbounded!
+        if (sequenceObj.minOccurs > 1 || sequenceObj.minOccurs == 0)
             sequence.setAttribute("minOccurs",
                     sequenceObj.minOccurs + "");
 
@@ -2696,7 +2698,12 @@ public class XmlSchemaSerializer {
 
     public static class XmlSchemaSerializerException extends Exception {
 
-        public XmlSchemaSerializerException(String msg) {
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		public XmlSchemaSerializerException(String msg) {
             super(msg);
         }
     }

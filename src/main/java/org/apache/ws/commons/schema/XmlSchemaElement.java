@@ -265,8 +265,4 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver 
     public void setType(XmlSchemaType type) {
         this.schemaType = type;
     }
-    
-    public String toString() {
-    	return super.toString() + "[" + qualifiedName.toString() + "]";
-    }
 }

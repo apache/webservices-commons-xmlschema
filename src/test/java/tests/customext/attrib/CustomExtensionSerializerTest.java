@@ -66,6 +66,7 @@ public class CustomExtensionSerializerTest extends TestCase {
         Document doc2 = documentBuilderFactory.newDocumentBuilder().
                 parse(new ByteArrayInputStream(baos.toByteArray()));
 
+        schemaCol = new XmlSchemaCollection();
         schema = schemaCol.read(doc2,null);
         assertNotNull(schema);
 

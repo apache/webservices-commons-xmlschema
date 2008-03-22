@@ -269,8 +269,8 @@ public final class XmlSchemaCollection {
         addSimpleType(xsd, Constants.XSD_LANGUAGE.getLocalPart());
         addSimpleType(xsd, Constants.XSD_TOKEN.getLocalPart());
 
-        SchemaKey key = new SchemaKey(XmlSchema.SCHEMA_NS, null);
-        addSchema(key, xsd);
+        //SchemaKey key = new SchemaKey(XmlSchema.SCHEMA_NS, null);
+        //addSchema(key, xsd);
 
         // look for a system property to see whether we have a registered
         // extension registry class. if so we'll instantiate a new one
@@ -517,9 +517,8 @@ public final class XmlSchemaCollection {
     public boolean check(SchemaKey pKey){
         return (stack.indexOf(pKey)==-1);
     }
-    
-    public String toString() {
+
+	public String toString() {
     	return super.toString() + "[" + schemas.toString() + "]";
     }
-	
 }

@@ -59,7 +59,6 @@ public abstract class Enum {
         }
     }
 
-
     public String getValue() {
         return value;
     }
@@ -74,6 +73,11 @@ public abstract class Enum {
     }
 
     public static class EnumValueException extends RuntimeException {
+        /**
+         *
+         */
+        private static final long serialVersionUID = 1L;
+
         public EnumValueException(String mesg) {
             super(mesg);
         }
@@ -87,4 +91,5 @@ public abstract class Enum {
         return -1;
     }
 }
+
 

@@ -18,19 +18,17 @@
  */
 package tests.ext;
 
-import junit.framework.TestCase;
+import java.io.ByteArrayOutputStream;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.w3c.dom.Document;
-import org.apache.ws.commons.schema.XmlSchemaCollection;
-import org.apache.ws.commons.schema.XmlSchema;
-import org.apache.ws.commons.schema.XmlSchemaElement;
-import tests.Resources;
+import junit.framework.TestCase;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.io.ByteArrayOutputStream;
+import org.apache.ws.commons.schema.XmlSchema;
+import org.apache.ws.commons.schema.XmlSchemaCollection;
+import org.w3c.dom.Document;
+
+import tests.Resources;
 
 /**
  * try writing the schemas after they are built
