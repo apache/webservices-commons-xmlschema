@@ -22,6 +22,8 @@ package tests;
 import junit.framework.TestCase;
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
+import org.apache.ws.commons.schema.XmlSchemaComplexContent;
+import org.apache.ws.commons.schema.XmlSchemaComplexType;
 import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.XmlSchemaType;
 
@@ -36,6 +38,9 @@ public class MixedContentTest extends TestCase {
                                         "complexElt");
 
 
+        QName TYPE_QNAME = new QName("http://soapinterop.org/xsd",
+        "NoAssemblyRequiredProduct");
+        
         InputStream is = new FileInputStream(Resources.asURI("mixedContent.xsd"));
         XmlSchemaCollection schema = new XmlSchemaCollection();
         XmlSchema s = schema.read(new StreamSource(is), null);
@@ -47,5 +52,13 @@ public class MixedContentTest extends TestCase {
         assertNotNull(schemaType);
 
         assertTrue(schemaType.isMixed());
+        
+        XmlSchemaComplexType typeByName = (XmlSchemaComplexType)s.getTypeByName(TYPE_QNAME);
+        assertNotNull(typeByName);
+        
+        assertTrue(((XmlSchemaComplexContent)typeByName.getContentModel()).isMixed());
+       
+        
+        
     }
 }
