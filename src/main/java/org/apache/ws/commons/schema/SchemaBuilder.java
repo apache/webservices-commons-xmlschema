@@ -260,8 +260,17 @@ public class SchemaBuilder {
 		XmlSchemaRedefine redefine = new XmlSchemaRedefine();
 		redefine.schemaLocation = redefineEl.getAttribute("schemaLocation");
 		final TargetNamespaceValidator validator = newIncludeValidator(schema);
-		redefine.schema = resolveXmlSchema(schema.logicalTargetNamespace,
-				redefine.schemaLocation, validator);
+		
+		if (schema.getSourceURI() != null) {
+			redefine.schema = resolveXmlSchema(schema.logicalTargetNamespace,
+					redefine.schemaLocation, schema.getSourceURI(), validator);
+		} else {
+			redefine.schema = resolveXmlSchema(schema.logicalTargetNamespace,
+					redefine.schemaLocation, validator);
+		}
+
+		
+		
 
 		for (Element el = XDOMUtil.getFirstChildElementNS(redefineEl,
 				XmlSchema.SCHEMA_NS); el != null; el = XDOMUtil
