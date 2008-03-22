@@ -702,6 +702,15 @@ public class SchemaBuilder {
 				complexContent.setAnnotation(handleAnnotation(el));
 			}
 		}
+		
+		if (complexEl.hasAttribute("mixed")) {
+			String mixed = complexEl.getAttribute("mixed");
+			if (mixed.equalsIgnoreCase("true"))
+				complexContent.setMixed(true);
+			else
+				complexContent.setMixed(false);
+		} 
+		
 		return complexContent;
 	}
 
