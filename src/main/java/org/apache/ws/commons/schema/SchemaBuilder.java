@@ -254,6 +254,13 @@ public class SchemaBuilder {
 		return notation;
 	}
 
+	/**
+	 * Handle redefine
+	 * @param schema
+	 * @param redefineEl
+	 * @param schemaEl
+	 * @return
+	 */
 	private XmlSchemaRedefine handleRedefine(XmlSchema schema,
 			Element redefineEl, Element schemaEl) {
 
@@ -269,8 +276,14 @@ public class SchemaBuilder {
 					redefine.schemaLocation, validator);
 		}
 
-		
-		
+		/*
+		 * FIXME - This seems not right. Since the redefine should take into account 
+		 * the attributes of the original element we cannot just build the type
+		 * defined in the redefine section - what we need to do is to get the original type
+		 * object and modify it. However one may argue (quite reasonably) that the purpose
+		 * of this object model is to provide just the representation and not the validation
+		 * (as it has been always the case)
+		 */
 
 		for (Element el = XDOMUtil.getFirstChildElementNS(redefineEl,
 				XmlSchema.SCHEMA_NS); el != null; el = XDOMUtil
