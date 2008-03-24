@@ -454,4 +454,149 @@ public class RedefineTest extends TestCase {
     }
 
 
+    /**
+     * This method will test a complex type redefine. Similar
+     * to the first test but now there are multiple layers of includes
+     *
+     * @throws Exception Any exception encountered
+     */
+    public void testComplexTypeRedefineWithRelativeImports() throws Exception {
+
+    	/*
+    	 * redefine-import2.xsd
+    	 * 
+		    	  <schema xmlns="http://www.w3.org/2001/XMLSchema"
+		        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+		        xmlns:tns="http://soapinterop.org/types"
+		        targetNamespace="http://soapinterop.org/types">
+		        
+		<complexType name="person">
+		    <sequence>
+		      <element name="firstname" type="string"/>
+		      <element name="lastname" type="string"/>
+		    </sequence>
+		  </complexType>
+		
+		  <element name="customer" type="tns:person"/>
+		 
+		 </schema>
+    	 * 
+    	 * 
+    	 */
+    	
+    	
+    	/*
+    	 * redefine-import1.xsd
+    	 * 
+    	 * 
+		 <schema xmlns="http://www.w3.org/2001/XMLSchema"
+		        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+		        xmlns:tns="http://soapinterop.org/types"
+		        targetNamespace="http://soapinterop.org/types">
+		 <!--  relative import to this location -->       
+		 <xsd:include schemaLocation="redefine-import2.xsd"></xsd:include>
+		 
+		 </schema>
+    	 * 
+    	 */
+        /*
+        redefine9.xsd
+        -----------------
+	        
+	        <schema xmlns="http://www.w3.org/2001/XMLSchema"
+	        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	        xmlns:tns="http://soapinterop.org/types"
+	        targetNamespace="http://soapinterop.org/types">
+	        
+	  <!-- Relative import -->
+	  <xsd:include schemaLocation="redefine-include/redefine-import1.xsd"></xsd:include>
+	
+	</schema>
+	        
+                         
+        redefine10.xsd
+        -----------------
+        
+	<schema xmlns="http://www.w3.org/2001/XMLSchema"
+	        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	        xmlns:tns="http://soapinterop.org/types"
+	        targetNamespace="http://soapinterop.org/types">
+	
+	  <redefine schemaLocation="src/test/test-resources/redefine9.xsd">
+	    <complexType name="person">
+	      <complexContent>
+	        <extension base="tns:person">
+	          <sequence>
+	            <element name="id" type="string"/>
+	          </sequence>
+	        </extension>
+	      </complexContent>
+	    </complexType>
+	  </redefine>
+	
+	  <element name="vip" type="tns:person"/>
+	
+	</schema>
+        */
+
+        InputStream is = new FileInputStream(Resources.asURI("redefine10.xsd"));
+        XmlSchemaCollection schemaCol = new XmlSchemaCollection();
+        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+
+        XmlSchemaObjectTable xsot = schema.getElements();
+        assertEquals(1, xsot.getCount());
+
+        XmlSchemaElement xse = null;
+        for (Iterator i = xsot.getValues(); i.hasNext(); ) {
+            xse = (XmlSchemaElement)i.next();
+        }
+        assertEquals("vip", xse.getName());
+        assertEquals(new QName("http://soapinterop.org/types",
+                               "person"),
+                     xse.getSchemaTypeName());
+
+        XmlSchemaObjectCollection xsoc = schema.getIncludes();
+        assertEquals(1, xsoc.getCount());
+        
+        XmlSchemaRedefine xsr = (XmlSchemaRedefine)xsoc.getItem(0);
+        xsot = xsr.getSchemaTypes();
+        assertEquals(1, xsot.getCount());
+
+        for (Iterator i = xsot.getNames(); i.hasNext(); ) {
+            QName qname = (QName)i.next();
+            assertEquals(new QName("http://soapinterop.org/types",
+                                   "person"), qname);
+        }
+
+        XmlSchemaComplexType xsct = null;
+        for (Iterator i = xsot.getValues(); i.hasNext(); ) {
+            xsct = (XmlSchemaComplexType)i.next();
+        }
+        assertNotNull(xsct);
+
+        XmlSchemaContentModel xscm = xsct.getContentModel();
+        assertNotNull(xscm);
+
+        XmlSchemaComplexContentExtension xscce =
+            (XmlSchemaComplexContentExtension)xscm.getContent();
+        assertEquals(new QName("http://soapinterop.org/types",
+                               "person"),
+                     xscce.getBaseTypeName());
+
+        XmlSchemaSequence xsp = (XmlSchemaSequence)xscce.getParticle();
+        assertNotNull(xsp);
+
+        XmlSchemaObjectCollection c = xsp.getItems();
+        assertEquals(1, c.getCount());
+
+        xse = null;
+        for (int i = 0; i < c.getCount(); i++) {
+            xse = (XmlSchemaElement)c.getItem(i);
+        }
+        assertEquals("id", xse.getName());
+        assertEquals(new QName("http://www.w3.org/2001/XMLSchema",
+                               "string"),
+                     xse.getSchemaTypeName());
+
+    }
 }
