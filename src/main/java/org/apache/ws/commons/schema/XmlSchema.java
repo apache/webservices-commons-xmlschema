@@ -582,4 +582,8 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
     public String getInputEncoding() {
         return inputEncoding;
     }
+    
+     public String toString() {
+        return super.toString() + "[" + logicalTargetNamespace + "]";
+    }
 }

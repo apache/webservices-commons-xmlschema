@@ -288,7 +288,9 @@ public class XmlSchemaSerializer {
         for (int i = 0;  i < prefixes.length;  i++) {
             String prefix = prefixes[i];
             String uri = ctx.getNamespaceURI(prefix);
-            schema_ns.put(uri, prefix);
+            if(uri != null && prefix != null) {
+                schema_ns.put(uri, prefix);
+            }
         }
         //for schema that not set the xmlns attrib member
         if (schema_ns.get(xsdNamespace) == null) {
@@ -563,39 +565,10 @@ public class XmlSchemaSerializer {
         if (elementObj.id != null)
             serializedEl.setAttribute("id", elementObj.id);
 
-        if (elementObj.maxOccurs < Long.MAX_VALUE && elementObj.maxOccurs > 1)
-            serializedEl.setAttribute("maxOccurs",
-                    elementObj.maxOccurs + "");
-        else if (elementObj.maxOccurs == Long.MAX_VALUE)
-            serializedEl.setAttribute("maxOccurs",
-                    "unbounded");
-        //else not serialized
-
-        /*if(elementObj.minOccurs >1)
-            serializedEl.setAttribute("minOccurs",
-            elementObj.minOccurs + "");*/
-
-        //Change - SK and Ragu cos it wasnt picking up
-        // minOccurs = 0
-        if (elementObj.minOccurs < Long.MAX_VALUE && elementObj.minOccurs != 1)
-            serializedEl.setAttribute("minOccurs",
-                    elementObj.minOccurs + "");
-        else if (elementObj.minOccurs == Long.MAX_VALUE)
-            serializedEl.setAttribute("minOccurs",
-                    "unbounded");
-
-        /*
-            if(elementObj.maxOccursString != null)
-            serializedEl.setAttribute("maxOccurs",
-            elementObj.maxOccursString);
-            else if(elementObj.maxOccurs > 1)
-            serializedEl.setAttribute("maxOccurs",
-            elementObj.maxOccurs + "");
-
-            if(elementObj.minOccurs > 1)
-            serializedEl.setAttribute("minOccurs",
-            elementObj.minOccurs + "");
-          */
+        
+        serializeMaxMinOccurs(elementObj, serializedEl);
+        
+        
         if (elementObj.substitutionGroup != null) {
             String resolvedQName = resolveQName(elementObj.substitutionGroup, schema);
             serializedEl.setAttribute("substitutionGroup",
@@ -917,6 +890,12 @@ public class XmlSchemaSerializer {
         if (complexTypeObj.id != null)
             serializedComplexType.setAttribute("id",
                     complexTypeObj.id);
+        
+        if (complexTypeObj.annotation != null) {
+            Element annotationEl = serializeAnnotation(doc,
+                    complexTypeObj.annotation, schema);
+            serializedComplexType.appendChild(annotationEl);
+        }
 
         if (complexTypeObj.contentModel instanceof XmlSchemaSimpleContent) {
             Element simpleContent = serializeSimpleContent(doc,
@@ -1000,20 +979,7 @@ public class XmlSchemaSerializer {
             sequence.setAttribute("id", sequenceObj.id);
 
 
-        if (sequenceObj.maxOccurs < Long.MAX_VALUE &&
-                (sequenceObj.maxOccurs > 1 || sequenceObj.maxOccurs == 0))
-            sequence.setAttribute("maxOccurs",
-                    sequenceObj.maxOccurs + "");
-        else if (sequenceObj.maxOccurs == Long.MAX_VALUE)
-            sequence.setAttribute("maxOccurs",
-                    "unbounded");
-        //else not serialized
-
-        //1 is the default and hence not serialized
-        //there is no valid case where min occurs can be unbounded!
-        if (sequenceObj.minOccurs > 1 || sequenceObj.minOccurs == 0)
-            sequence.setAttribute("minOccurs",
-                    sequenceObj.minOccurs + "");
+        serializeMaxMinOccurs(sequenceObj, sequence);
 
         XmlSchemaObjectCollection seqColl = sequenceObj.items;
         int containLength = seqColl.getCount();
@@ -1046,6 +1012,29 @@ public class XmlSchemaSerializer {
 
         return sequence;
     }
+
+    /**
+     * A common method to serialize the max/min occurs
+     * @param particle
+     * @param element
+     */
+	private void serializeMaxMinOccurs(XmlSchemaParticle particle,
+			Element element) {
+		if (particle.maxOccurs < Long.MAX_VALUE &&
+                (particle.maxOccurs > 1 || particle.maxOccurs == 0))
+            element.setAttribute("maxOccurs",
+                    particle.maxOccurs + "");
+        else if (particle.maxOccurs == Long.MAX_VALUE)
+            element.setAttribute("maxOccurs",
+                    "unbounded");
+        //else not serialized
+
+        //1 is the default and hence not serialized
+        //there is no valid case where min occurs can be unbounded!
+        if (particle.minOccurs > 1 || particle.minOccurs == 0)
+            element.setAttribute("minOccurs",
+                    particle.minOccurs + "");
+	}
 
     /**
      * *********************************************************************
@@ -1208,17 +1197,7 @@ public class XmlSchemaSerializer {
                 choice.setAttribute("id", choiceObj.id);
 
 
-        if (choiceObj.maxOccurs < Long.MAX_VALUE && choiceObj.maxOccurs != 1)
-            choice.setAttribute("maxOccurs",
-                    choiceObj.maxOccurs + "");
-        else if (choiceObj.maxOccurs == Long.MAX_VALUE)
-            choice.setAttribute("maxOccurs",
-                    "unbounded");
-        //else not serialized
-
-        if (choiceObj.minOccurs != 1)
-            choice.setAttribute("minOccurs",
-                    choiceObj.minOccurs + "");
+        serializeMaxMinOccurs(choiceObj, choice);
 
 
         /*
@@ -1298,9 +1277,7 @@ public class XmlSchemaSerializer {
         Element allEl = createNewElement(doc, "all", schema.schema_ns_prefix,
                 XmlSchema.SCHEMA_NS);
 
-        if (allObj.minOccurs == 0)
-            allEl.setAttribute("minOccurs", "0");
-
+        serializeMaxMinOccurs(allObj, allEl);
 
         if (allObj.annotation != null) {
             Element annotation = serializeAnnotation(doc, allObj.annotation,
@@ -1464,18 +1441,8 @@ public class XmlSchemaSerializer {
             if (anyObj.id.length() > 0)
                 anyEl.setAttribute("id", anyObj.id);
 
-
-        if (anyObj.maxOccurs < Long.MAX_VALUE && anyObj.maxOccurs > 1)
-            anyEl.setAttribute("maxOccurs",
-                    anyObj.maxOccurs + "");
-        else if (anyObj.maxOccurs == Long.MAX_VALUE)
-            anyEl.setAttribute("maxOccurs",
-                    "unbounded");
-        //else not serialized
-
-        if (anyObj.minOccurs > 1)
-            anyEl.setAttribute("minOccurs",
-                    anyObj.minOccurs + "");
+        serializeMaxMinOccurs(anyObj, anyEl);
+        
 
         if (anyObj.namespace != null)
             anyEl.setAttribute("namespace",
@@ -1592,17 +1559,8 @@ public class XmlSchemaSerializer {
         } else
             throw new XmlSchemaSerializerException("Group must have name or ref");
 
-        if (groupRefObj.maxOccurs < Long.MAX_VALUE && groupRefObj.maxOccurs > 1)
-            groupRef.setAttribute("maxOccurs",
-                    groupRefObj.maxOccurs + "");
-        else if (groupRefObj.maxOccurs == Long.MAX_VALUE)
-            groupRef.setAttribute("maxOccurs",
-                    "unbounded");
-        //else not serialized
-
-        if (groupRefObj.minOccurs > 1)
-            groupRef.setAttribute("minOccurs",
-                    groupRefObj.minOccurs + "");
+        
+        serializeMaxMinOccurs(groupRefObj, groupRef);
 
 
 

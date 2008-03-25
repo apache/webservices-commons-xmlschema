@@ -25,9 +25,8 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.apache.ws.commons.schema</groupId>
     <artifactId>XmlSchema</artifactId>
-    <packaging>bundle</packaging>
     <name>XmlSchema</name>
-    <version>1.4-RC2</version>
+    <version>1.4-RC3</version>
     <description>Commons XMLSchema is a light weight schema object model that can be used to manipualte or
         generate a schema. It has a clean, easy to use API and can easily be integrated into an existing project
         since it has almost no dependancies on third party libraries.</description>
@@ -212,14 +211,34 @@
         	<filter>src/main/assembly/filter.properties</filter>
         </filters>
 
-        <!-- adding relevant resources to the zip files -->
+        <!-- adding relevant resources to the jar files -->
        <resources>
           <resource>
-             <directory>src/main/resources/META-INF</directory>
+             <directory>src/main/resources</directory>
        </resource>
      </resources>
 
         <plugins>
+            <plugin>
+              <groupId>org.apache.felix</groupId>
+              <artifactId>maven-bundle-plugin</artifactId>
+              <version>${bundle.plugin.version}</version>
+              <configuration>
+                  <instructions>
+                      <Bundle-Version>${xmlschema.osgi.version}</Bundle-Version>
+                      <!--  The default maven resources will be automatically included ! -->   
+                  </instructions>
+              </configuration>
+              <executions>
+                <execution>
+                  <id>bundle-manifest</id>
+                  <phase>process-classes</phase>
+                  <goals>
+                    <goal>manifest</goal>
+                  </goals>
+                </execution>
+              </executions>
+            </plugin>
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <version>1.1</version>
@@ -240,41 +259,9 @@
                             </tasks>
                         </configuration>
                     </execution>
-                    <execution>
-                        <id>prepareLicenseFiles</id>
-                        <phase>generate-resources</phase>
-                        <configuration>
-                            <tasks>
-                                <copy todir="${project.build.outputDirectory}/META-INF">
-                                    <fileset dir="${basedir}">
-                                        <include name="LICENSE.txt"/>
-                                        <include name="NOTICE.txt"/>
-                                    </fileset>
-                                </copy>
-                            </tasks>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                  </executions>
             </plugin>
-            <plugin>
-                <artifactId>maven-one-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>install-maven-one-repository</goal>
-                            <goal>deploy-maven-one-repository</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <remoteRepositoryId>apache</remoteRepositoryId>
-                    <remoteRepositoryUrl>scpexe://people.apache.org/www/people.apache.org/repo/m1-snapshot-repository</remoteRepositoryUrl>
-                </configuration>
-            </plugin>
-            <plugin>
+           <plugin>
                 <artifactId>maven-release-plugin</artifactId>
                 <configuration>
                     <tagBase>https://svn.apache.org/repos/asf/webservices/commons/tags/XmlSchema</tagBase>
@@ -311,7 +298,7 @@
                     <descriptors>
                         <descriptor>src/main/assembly/bin.xml</descriptor>
                         <descriptor>src/main/assembly/src.xml</descriptor>
-				<descriptor>src/main/assembly/doc.xml</descriptor>
+						<descriptor>src/main/assembly/doc.xml</descriptor>
                     </descriptors>
                     <tarLongFileMode>gnu</tarLongFileMode>
                 </configuration>
@@ -329,20 +316,7 @@
                     <attach>true</attach>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
-               <version>1.0.0</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <instructions>
-                        <Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
-                        <Export-Package>org.apache.ws.commons.schema*</Export-Package>
-                        <Import-Package>*</Import-Package>
-                        <Include-Resource>src/main/resources</Include-Resource>   
-                    </instructions>
-               </configuration>
-            </plugin>
+            
         </plugins>
     </build>
     <profiles>
@@ -376,10 +350,6 @@
         	<id>DefaultTest</id>
         	<activation>
         		<activeByDefault>true</activeByDefault>
-        		<property>
-        			<name>isIBM</name>
-        			<value>false</value>
-        		</property>
         	</activation>
         	<build>
         		<plugins>
@@ -422,10 +392,22 @@
         	<id>IBMTest</id>
         	<activation>
         		<property>
-        			<name>isIBM</name>
-        			<value>true</value>
+        			<name>java.vendor</name>
+        			<value>IBM Corporation</value>
         		</property>
         	</activation>
+			<dependencies>
+				<dependency>
+					<groupId>org.apache.bcel</groupId>
+					<artifactId>bcel</artifactId>
+					<version>5.2</version>
+				</dependency>
+				<dependency>
+					<groupId>xalan</groupId>
+					<artifactId>xalan</artifactId>
+					<version>2.7.0</version>
+				</dependency>
+			</dependencies>
         	<build>
         		<plugins>
         			<plugin>
@@ -502,7 +484,7 @@
         <dependency>
             <groupId>xmlunit</groupId>
             <artifactId>xmlunit</artifactId>
-            <version>1.0</version>
+            <version>1.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -514,22 +496,18 @@
     </dependencies>
     <reporting>
         <plugins>
-            <!--plugin>
-              <artifactId>maven-javadoc-plugin</artifactId>
-            </plugin-->
-            <plugin>
+             <plugin>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jdepend-maven-plugin</artifactId>
-                <version>2.0-beta-1-SNAPSHOT</version>
+                <version>2.0-beta-1</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jxr-plugin</artifactId>
             </plugin>
-
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -553,4 +531,9 @@
             <url>scpexe://people.apache.org/www/ws.apache.org/commons/XmlSchema</url>
         </site>
     </distributionManagement>
+    <properties>
+    	<!--  should the osgi version be the same as the artifact id ?? -->
+        <xmlschema.osgi.version>1.4</xmlschema.osgi.version>
+        <bundle.plugin.version>1.4.0</bundle.plugin.version>
+    </properties>
 </project>

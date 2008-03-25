@@ -24,6 +24,9 @@ import org.apache.ws.commons.schema.*;
 
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashSet;
@@ -79,9 +82,55 @@ public class AnyTest extends TestCase {
                                         "department");
         InputStream is = new FileInputStream(Resources.asURI("any.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        schemaCol.read(new StreamSource(is), null);
+        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
 
-        XmlSchemaElement elem = schemaCol.getElementByQName(ELEMENT_QNAME);
+        verifyAccuracy(ELEMENT_QNAME, schemaCol,5L,10L);
+
+    }
+
+    
+    public void testAnyZeroOccurs() throws Exception {
+
+        /*
+         <schema xmlns="http://www.w3.org/2001/XMLSchema"
+                 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                 xmlns:tns="http://soapinterop.org/types"
+                 targetNamespace="http://soapinterop.org/types"
+                 elementFormDefault="qualified">
+
+           <element name="department">
+             <complexType>
+               <sequence>
+                 <element name="id" type="xsd:integer"/>
+                 <element name="name" type="xsd:string"/>
+                 <any minOccurs="5" maxOccurs="10"/>
+               </sequence>
+             </complexType>
+           </element>
+
+         </schema>
+        */
+
+        QName ELEMENT_QNAME = new QName("http://soapinterop.org/types",
+                                        "department");
+        InputStream is = new FileInputStream(Resources.asURI("anyZero.xsd"));
+        XmlSchemaCollection schemaCol = new XmlSchemaCollection();
+        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        schema.write(baos);
+        
+        XmlSchemaCollection schemaCol2 = new XmlSchemaCollection();
+        XmlSchema schema2 = schemaCol2.read(new StreamSource(new ByteArrayInputStream(baos.toByteArray())), null);
+        
+        verifyAccuracy(ELEMENT_QNAME, schemaCol2,0,0);
+       
+
+    }
+    
+	private void verifyAccuracy(QName ELEMENT_QNAME,
+			XmlSchemaCollection schemaCol,long minCount, long maxCount) {
+		XmlSchemaElement elem = schemaCol.getElementByQName(ELEMENT_QNAME);
         assertNotNull(elem);
         assertEquals("department", elem.getName());
         assertEquals(new QName("http://soapinterop.org/types", "department"),
@@ -119,15 +168,14 @@ public class AnyTest extends TestCase {
                 XmlSchemaContentProcessing xscp =
                     ((XmlSchemaAny)o).getProcessContent();
                 assertEquals("none", xscp.toString());
-                assertEquals(5L, ((XmlSchemaAny)o).getMinOccurs());
-                assertEquals(10L, ((XmlSchemaAny)o).getMaxOccurs());
+                assertEquals(minCount, ((XmlSchemaAny)o).getMinOccurs());
+                assertEquals(maxCount, ((XmlSchemaAny)o).getMaxOccurs());
             }
         }
         
         assertTrue("The set should have been empty, but instead contained: "
                    + s + ".",
                    s.isEmpty());
-
-    }
+	}
 
 }

@@ -41,7 +41,15 @@ public class EncodingTest extends TestCase {
            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
            documentBuilderFactory.setNamespaceAware(true);
            DocumentBuilder newDocumentBuilder = documentBuilderFactory.newDocumentBuilder();
-           
+
+           // Skip test in JDK1.4 as it uses crimson parser and an old DOM implementation
+           try {
+               Document.class.getMethod("getInputEncoding", new Class[]{});
+           } catch (NoSuchMethodException e) {
+               System.out.println(">>>> Ignoring test as it needs DOM3");
+               return;
+           }
+
 		   Document doc = newDocumentBuilder.
                    parse(Resources.asURI("other_encoding/japaneseElementForm.xsd"));
            

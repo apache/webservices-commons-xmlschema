@@ -518,5 +518,7 @@ public final class XmlSchemaCollection {
         return (stack.indexOf(pKey)==-1);
     }
 
-	
+	public String toString() {
+    	return super.toString() + "[" + schemas.toString() + "]";
+    }
 }

@@ -23,6 +23,7 @@
         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
         xmlns:xsd1="http://soapinterop.org/xsd"
         xmlns:xsd2="http://soapinterop.org/xsd2"
+        xmlns:tns="http://soapinterop.org/types"
         elementFormDefault="qualified">
      <element name="complexElt">
          <complexType mixed="true">
@@ -32,4 +33,24 @@
              </sequence>
          </complexType>
      </element>
+     
+       <complexType name="NoAssemblyRequiredProduct">
+    <complexContent mixed="true">
+      <restriction base="tns:AssemblyRequiredProduct">
+        <sequence>
+          <element name="Name" type="string"/>
+          <element name="Description" type="string" nillable="true"/>
+          <element name="Parts" type="string"/>
+        </sequence>
+      </restriction>
+    </complexContent>
+  </complexType>  
+  
+    <complexType name="AssemblyRequiredProduct">
+    <sequence>
+      <element name="Name" type="string"/>
+      <element name="Description" type="string" nillable="true"/>
+      <element name="Parts" type="string" maxOccurs="unbounded"/>
+    </sequence>
+  </complexType>
 </schema>
