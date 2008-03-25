@@ -43,6 +43,9 @@ import javax.xml.transform.stream.StreamSource;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.*;
+import java.security.PrivilegedAction;
+import java.security.PrivilegedExceptionAction;
+import java.security.PrivilegedActionException;
 
 /**
  * Contains a cache of XML Schema definition language (XSD).
@@ -333,13 +336,14 @@ public final class XmlSchemaCollection {
         return read(new InputSource(r), veh);
     }
 
-    XmlSchema read(InputSource inputSource, ValidationEventHandler veh,
+    XmlSchema read(final InputSource inputSource, ValidationEventHandler veh,
             TargetNamespaceValidator namespaceValidator) {
         try {
             DocumentBuilderFactory docFac = DocumentBuilderFactory.newInstance();
             docFac.setNamespaceAware(true);
-            DocumentBuilder builder = docFac.newDocumentBuilder();
-            Document doc = builder.parse(inputSource);
+            final DocumentBuilder builder = docFac.newDocumentBuilder();
+            Document doc = null;
+            doc = parse_doPriv(inputSource, builder, doc);
             return read(doc, inputSource.getSystemId(), veh, namespaceValidator);
         } catch (ParserConfigurationException e) {
             throw new XmlSchemaException(e.getMessage());
@@ -348,6 +352,27 @@ public final class XmlSchemaCollection {
         } catch (SAXException e) {
             throw new XmlSchemaException(e.getMessage());
         }
+    }
+
+    private Document parse_doPriv(final InputSource inputSource, final DocumentBuilder builder, Document doc) throws IOException, SAXException {
+        try {
+            doc = (Document) java.security.AccessController.doPrivileged(
+                    new PrivilegedExceptionAction() {
+                        public Object run() throws IOException, SAXException {
+                            return builder.parse(inputSource);
+                        }
+                    }
+            );
+        } catch (PrivilegedActionException e) {
+            Exception exception = e.getException();
+            if(exception instanceof IOException) {
+                throw (IOException) exception;
+            }
+            if(exception instanceof SAXException) {
+                throw (SAXException) exception;
+            }
+        }
+        return doc;
     }
 
     public XmlSchema read(InputSource inputSource, ValidationEventHandler veh) {
