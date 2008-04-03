@@ -26,7 +26,7 @@
     <groupId>org.apache.ws.commons.schema</groupId>
     <artifactId>XmlSchema</artifactId>
     <name>XmlSchema</name>
-    <version>1.4-RC3</version>
+    <version>1.4</version>
     <description>Commons XMLSchema is a light weight schema object model that can be used to manipualte or
         generate a schema. It has a clean, easy to use API and can easily be integrated into an existing project
         since it has almost no dependancies on third party libraries.</description>
@@ -64,8 +64,8 @@
         <developer>
             <id>dims</id>
             <name>Davanum Srinivas</name>
-            <email>dims AT wso2.com</email>
-            <organization>WSO2</organization>
+            <email>dims AT apache.org</email>
+            <organization>IBM</organization>
         </developer>
         <developer>
             <id>sanjiva</id>
@@ -77,47 +77,47 @@
             <id>gdaniels</id>
             <name>Glen Daniels</name>
             <email>gdaniels AT apache.org</email>
-            <organization>Sonic Software</organization>
+            <organization>WSO2</organization>
         </developer>
         <developer>
             <id>alek</id>
             <name>Aleksander Slominski</name>
             <email>aslom AT cs.indiana.edu</email>
-            <organization>Indiana University Extreme! Computing Lab</organization>
+            <organization>Indiana University,Bloomington</organization>
         </developer>
         <developer>
             <id>hemapani</id>
             <name>Srinath Perera</name>
             <email>hemapani AT apache.org</email>
             <url>http://www.apache.org/~hemapani</url>
-            <organization>Lanka Software Foundation</organization>
+            <organization>Indiana University,Bloomington</organization>
         </developer>
         <developer>
             <id>chinthaka</id>
             <name>Eran Chinthaka</name>
-            <email>chinthaka AT wso2.com</email>
+            <email>chinthaka AT apache.org</email>
             <url>http://www.apache.org/~chinthaka</url>
-            <organization>WSO2</organization>
+            <organization>Indiana University,Bloomington</organization>
         </developer>
         <developer>
             <id>dasarath</id>
             <name>Dasarath Weerathunga</name>
-            <email>dasarath AT opensource.lk</email>
-            <organization>Lanka Software Foundation</organization>
+            <email>dasarath AT apache.org</email>
+            <organization>Purdue University</organization>
         </developer>
         <developer>
             <id>jaliya</id>
             <name>Jaliya Ekanayake</name>
-            <email>jaliya AT opensource.lk</email>
+            <email>jaliya AT apache.org</email>
             <url>http://www.apache.org/~jaliya</url>
-            <organization>Virtusa / Lanka Software Foundation</organization>
+            <organization>Indiana University,Bloomington</organization>
         </developer>
         <developer>
             <id>chathura</id>
             <name>Chathura Herath</name>
-            <email>chathura AT opensource.lk</email>
-            <url>www.apache.org/~chathura</url>
-            <organization>LSF/MIT</organization>
+            <email>chathura AT apache.orgk</email>
+            <url>http://www.apache.org/~chathura</url>
+            <organization>Indiana University,Bloomington</organization>
         </developer>
         <developer>
             <id>deepal</id>
@@ -131,7 +131,7 @@
             <name>Ajith Ranabahu</name>
             <email>ajith AT apache.org</email>
             <url>http://www.apache.org/~ajith</url>
-            <organization>WSO2</organization>
+            <organization>Wright State University</organization>
         </developer>
         <developer>
             <id>venkat</id>
@@ -156,7 +156,7 @@
             <name>Thilina Gunarathne</name>
             <email>thilina AT wso2.com</email>
             <url>http://www.apache.org/~thilina</url>
-            <organization>WSO2</organization>
+            <organization>Indiana University,Bloomington</organization>
         </developer>
         <developer>
             <id>ruchith</id>

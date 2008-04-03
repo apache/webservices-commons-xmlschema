@@ -20,7 +20,7 @@ Major Changes since the last release
   * The behavior of the getElementByName(QName name) and getTypeByName(QName name) has
     changed. Now this method triggers a search in the complete schema tree (including imported and
     included schemas) for the specified type. 
-  * Two new methods have been added etElementByName(String name) and getTypeByName(String name) which
+  * Two new methods have been added getElementByName(String name) and getTypeByName(String name) which
     would perform the search only in the current schema.
     
 Thanks for your interest in XMLSchema!

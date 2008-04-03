@@ -1,5 +1,5 @@
 ====================================
-      XMLSchema Release Notes - Version ${version}
+      XMLSchema Readme - Version ${version}
 ====================================
 
 XMLSchema is a lightweight schema object model that can be used to manipulate and
