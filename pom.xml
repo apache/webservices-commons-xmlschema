@@ -220,24 +220,13 @@
 
         <plugins>
             <plugin>
-              <groupId>org.apache.felix</groupId>
-              <artifactId>maven-bundle-plugin</artifactId>
-              <version>${bundle.plugin.version}</version>
-              <configuration>
-                  <instructions>
-                      <Bundle-Version>${xmlschema.osgi.version}</Bundle-Version>
-                      <!--  The default maven resources will be automatically included ! -->   
-                  </instructions>
-              </configuration>
-              <executions>
-                <execution>
-                  <id>bundle-manifest</id>
-                  <phase>process-classes</phase>
-                  <goals>
-                    <goal>manifest</goal>
-                  </goals>
-                </execution>
-              </executions>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
+                    </archive>
+                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
