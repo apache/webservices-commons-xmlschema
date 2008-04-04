@@ -20,4 +20,4 @@ Bundle-Name: XmlSchema
 Bundle-DocURL: http://www.apache.org/
 Bundle-ManifestVersion: 2
 Bundle-Vendor: Apache Software Foundation
-Bundle-SymbolicName: org.apache.ws.commons.schema.XmlSchema
+Bundle-SymbolicName: org.apache.ws.commons.schema
