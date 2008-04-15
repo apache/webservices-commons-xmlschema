@@ -101,10 +101,6 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
      * @param parent the parent collection.
      */
     public XmlSchema(String namespace, String systemId, XmlSchemaCollection parent) {
-         this.parent = parent;
-       if (namespace == null) {
-        	namespace = "";
-        }
         this.parent = parent;
         attributeFormDefault = new XmlSchemaForm(XmlSchemaForm.UNQUALIFIED);
         elementFormDefault = new XmlSchemaForm(XmlSchemaForm.UNQUALIFIED);
@@ -120,6 +116,9 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
         schemaTypes = new XmlSchemaObjectTable();
 
         syntacticalTargetNamespace = logicalTargetNamespace = namespace;
+        if (logicalTargetNamespace == null) {
+             logicalTargetNamespace = "";
+         }
         if(parent != null) {
         	XmlSchemaCollection.SchemaKey schemaKey =
         		new XmlSchemaCollection.SchemaKey(this.logicalTargetNamespace, systemId);

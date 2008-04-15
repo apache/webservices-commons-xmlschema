@@ -143,6 +143,28 @@ public class IncludeTest extends TestCase {
         assertNotNull(schemaCol.getTypeByQName(new QName("http://tns.demo.org", "XdwsGroupId")));
 	}
 
+
+    /**
+     * Test importing a schema without namespace into a schema
+     * with namespace.
+     */
+    public void testIncludeSchemaWithoutNamespace() throws Exception {
+        String uri = Resources.asURI("woden.xsd");
+        InputSource is = new InputSource(new FileInputStream(uri));
+        is.setSystemId(uri);
+        XmlSchemaCollection schemaCol = new XmlSchemaCollection();
+        XmlSchema schema = schemaCol.read(is, null);
+
+        XmlSchemaObjectCollection c = schema.getIncludes();
+        assertEquals(1, c.getCount());
+        
+        XmlSchemaInclude schemaInclude = (XmlSchemaInclude)c.getItem(0);
+        assertNotNull(schemaInclude);
+
+        XmlSchema schema2 = schemaInclude.getSchema();
+        assertNull(schema2.getTargetNamespace());
+    }
+
     /**
      * Schema included defined xmlns="http://www.w3.org/2001/XMLSchema"
      * @throws Exception
