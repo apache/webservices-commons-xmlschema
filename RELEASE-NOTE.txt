@@ -15,13 +15,8 @@ to help us shape XMLSchema any contribution in the form of coding, testing,
 submitting improvements to the documentation, and reporting bugs are always
 welcome.
 
-Major Changes since the last release
-
-  * The behavior of the getElementByName(QName name) and getTypeByName(QName name) has
-    changed. Now this method triggers a search in the complete schema tree (including imported and
-    included schemas) for the specified type. 
-  * Two new methods have been added etElementByName(String name) and getTypeByName(String name) which
-    would perform the search only in the current schema.
+Contains the fix for :
+* Regression found by Woden project (http://svn.apache.org/viewvc?view=rev&revision=648283)
     
 Thanks for your interest in XMLSchema!
 

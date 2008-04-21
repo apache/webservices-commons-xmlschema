@@ -26,7 +26,7 @@
     <groupId>org.apache.ws.commons.schema</groupId>
     <artifactId>XmlSchema</artifactId>
     <name>XmlSchema</name>
-    <version>SNAPSHOT</version>
+    <version>1.4.2</version>
     <description>Commons XMLSchema is a light weight schema object model that can be used to manipualte or
         generate a schema. It has a clean, easy to use API and can easily be integrated into an existing project
         since it has almost no dependancies on third party libraries.</description>
@@ -522,7 +522,7 @@
     </distributionManagement>
     <properties>
     	<!--  should the osgi version be the same as the artifact id ?? -->
-        <xmlschema.osgi.version>1.4</xmlschema.osgi.version>
+        <xmlschema.osgi.version>1.4.2</xmlschema.osgi.version>
         <bundle.plugin.version>1.4.0</bundle.plugin.version>
     </properties>
 </project>
