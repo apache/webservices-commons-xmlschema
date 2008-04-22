@@ -197,7 +197,7 @@
         <url>http://svn.apache.org/viewvc/webservices/commons/trunk/modules/XmlSchema</url>
     </scm>
     <organization>
-        <name>Apache Software Foundation</name>
+        <name>The Apache Software Foundation</name>
         <url>http://www.apache.org/</url>
     </organization>
     <build>
