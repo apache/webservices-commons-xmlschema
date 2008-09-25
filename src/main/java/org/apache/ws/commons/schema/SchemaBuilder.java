@@ -32,6 +32,9 @@ import org.xml.sax.InputSource;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
+
+import java.lang.ref.SoftReference;
+import java.util.Hashtable;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -55,6 +58,26 @@ public class SchemaBuilder {
 	public void setExtReg(ExtensionRegistry extReg) {
 		this.extReg = extReg;
 	}
+    
+    /*
+     * cache of previously resolved schema documents.
+     * 
+     * This cache might be usefull when an application has multiple webservices that each have WSDL documents
+     * that import the same schema, for example.  On app startup, we may wish to cache XmlSchema objects so we
+     * don't build up the schema graph multiple times.
+     * 
+     * key - use a combination of thread id and all three parameters passed to resolveXmlSchema to give minimal thread safety*
+     * value - XmlSchema object wrapped in a SoftReference to encourage GC in low memory situations
+     * 
+     * *CAUTION:  XmlSchema objects are not likely to be thread-safe.  This cache should
+     * only be used, then cleared, by callers aware of its existence.  It is VERY important that users of this
+     * cache call clearCache() after they are done.
+     * 
+     * Usage of the cache is controlled by calling initCache() which will initialize resolvedSchemas to non-null
+     * Clearing of cache is done by calling clearCache() which will clear and nullify resolvedSchemas
+     *
+     */
+    private static Hashtable resolvedSchemas = null;
 
 	/**
 	 * Schema builder constructor
@@ -71,6 +94,15 @@ public class SchemaBuilder {
 
 		schema = new XmlSchema();
 	}
+    
+    public static void initCache() {
+        resolvedSchemas = new Hashtable();
+    }
+    
+    public static void clearCache() {
+        resolvedSchemas.clear();  // necessary?
+        resolvedSchemas = null;
+    }
 
 	/**
 	 * build method taking in a document and a validation handler
@@ -1809,6 +1841,22 @@ public class SchemaBuilder {
 	XmlSchema resolveXmlSchema(String targetNamespace, String schemaLocation,
 			String baseUri, TargetNamespaceValidator validator) {
 
+        String schemaKey = null;
+        if (resolvedSchemas != null) {  // cache is initialized, use it
+            // Not being very smart about this at the moment.  One could, for example,
+            // see that the schemaLocation or baseUri is the same as another, but differs
+            // only by a trailing slash.  As it is now, we assume a single character difference
+            // means it's a schema that has yet to be resolved.
+            schemaKey = Thread.currentThread().getId() + targetNamespace + schemaLocation + baseUri;
+            SoftReference softref = (SoftReference)resolvedSchemas.get(schemaKey);
+            if (softref != null) {
+                XmlSchema resolvedSchema = (XmlSchema)softref.get();
+                if (resolvedSchema != null) {
+                    return resolvedSchema;
+                }
+            }
+        }
+        
 		//use the entity resolver provided if the schema location is present null
 		if (schemaLocation != null && !"".equals(schemaLocation)) {
 			InputSource source = collection.schemaResolver.resolveEntity(
@@ -1836,7 +1884,11 @@ public class SchemaBuilder {
 			if (collection.check(key)) {
 				collection.push(key);
 				try {
-					return collection.read(source, null, validator);
+                    XmlSchema readSchema = collection.read(source, null, validator);
+                    if (resolvedSchemas != null) {
+                        resolvedSchemas.put(schemaKey, new SoftReference(readSchema));
+                    }
+					return readSchema;
 				} catch (Exception e) {
 					throw new RuntimeException(e);
 				} finally {
