@@ -95,20 +95,16 @@ public class SchemaBuilder {
 		schema = new XmlSchema();
 	}
     
-    public static void initCache() {
-        synchronized(resolvedSchemas) {
-            if (resolvedSchemas == null) {
-                resolvedSchemas = new Hashtable();
-            }
+    public static synchronized void initCache() {
+        if (resolvedSchemas == null) {
+            resolvedSchemas = new Hashtable();
         }
     }
     
-    public static void clearCache() {
-        synchronized(resolvedSchemas) {
-            if (resolvedSchemas != null) {
-                resolvedSchemas.clear();  // necessary?
-                resolvedSchemas = null;
-            }
+    public static synchronized void clearCache() {
+        if (resolvedSchemas != null) {
+            resolvedSchemas.clear();  // necessary?
+            resolvedSchemas = null;
         }
     }
 
