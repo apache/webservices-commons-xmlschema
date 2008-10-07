@@ -96,12 +96,20 @@ public class SchemaBuilder {
 	}
     
     public static void initCache() {
-        resolvedSchemas = new Hashtable();
+        synchronized(resolvedSchemas) {
+            if (resolvedSchemas == null) {
+                resolvedSchemas = new Hashtable();
+            }
+        }
     }
     
     public static void clearCache() {
-        resolvedSchemas.clear();  // necessary?
-        resolvedSchemas = null;
+        synchronized(resolvedSchemas) {
+            if (resolvedSchemas != null) {
+                resolvedSchemas.clear();  // necessary?
+                resolvedSchemas = null;
+            }
+        }
     }
 
 	/**
