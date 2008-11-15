@@ -21,6 +21,8 @@ package tests;
 import junit.framework.TestCase;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaElement;
+import org.apache.ws.commons.schema.XmlSchemaSimpleType;
+import org.apache.ws.commons.schema.XmlSchemaSimpleTypeRestriction;
 import org.apache.ws.commons.schema.XmlSchemaType;
 
 import javax.xml.namespace.QName;
@@ -55,8 +57,10 @@ public class TestSimpleRestriction extends TestCase {
     	schema.read(new StreamSource(is), null);
     	XmlSchemaType principalId = schema.getTypeByQName(new QName("", "XdwsPrincipalId"));
     	assertNotNull(principalId);
-    	XmlSchemaType groupId = schema.getTypeByQName(new QName("", "XdwsGroupId"));
+    	XmlSchemaSimpleType groupId = (XmlSchemaSimpleType)schema.getTypeByQName(new QName("", "XdwsGroupId"));
     	assertNotNull(groupId);
-    	assertEquals(groupId.getBaseSchemaType(), principalId);
+    	QName baseName = ((XmlSchemaSimpleTypeRestriction)groupId.getContent()).getBaseTypeName();
+
+    	assertEquals(principalId.getQName(), baseName);
     }
 }

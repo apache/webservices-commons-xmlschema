@@ -59,7 +59,7 @@ public class AnnotationTest extends TestCase {
                                      "emptyAppinfo");
         InputStream is = new FileInputStream(Resources.asURI("annotation.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is), null);
 
         XmlSchemaSimpleType simpleType =
             (XmlSchemaSimpleType)schemaCol.getTypeByQName(TYPE_QNAME);
@@ -125,7 +125,7 @@ public class AnnotationTest extends TestCase {
                                      "emptyDocumentation");
         InputStream is = new FileInputStream(Resources.asURI("annotation.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is), null);
 
         XmlSchemaSimpleType simpleType =
             (XmlSchemaSimpleType)schemaCol.getTypeByQName(TYPE_QNAME);
@@ -189,7 +189,7 @@ public class AnnotationTest extends TestCase {
                                      "emptyAppinfoDocumentation");
         InputStream is = new FileInputStream(Resources.asURI("annotation.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is), null);
 
         XmlSchemaSimpleType simpleType =
             (XmlSchemaSimpleType)schemaCol.getTypeByQName(TYPE_QNAME);
@@ -227,7 +227,7 @@ public class AnnotationTest extends TestCase {
                                      "annotationTest");
         InputStream is = new FileInputStream(Resources.asURI("annotation.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is), null);
 
         XmlSchemaSimpleType simpleType =
             (XmlSchemaSimpleType)schemaCol.getTypeByQName(TYPE_QNAME);
