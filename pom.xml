@@ -26,7 +26,7 @@
     <groupId>org.apache.ws.commons.schema</groupId>
     <artifactId>XmlSchema</artifactId>
     <name>XmlSchema</name>
-    <version>SNAPSHOT</version>
+    <version>1.4-SNAPSHOT</version>
     <description>Commons XMLSchema is a light weight schema object model that can be used to manipualte or
         generate a schema. It has a clean, easy to use API and can easily be integrated into an existing project
         since it has almost no dependancies on third party libraries.</description>
@@ -60,129 +60,6 @@
         </mailingList>
     </mailingLists>
     <inceptionYear>2004</inceptionYear>
-    <developers>
-        <developer>
-            <id>dims</id>
-            <name>Davanum Srinivas</name>
-            <email>dims AT wso2.com</email>
-            <organization>WSO2</organization>
-        </developer>
-        <developer>
-            <id>sanjiva</id>
-            <name>Sanjiva Weerawarana</name>
-            <email>sanjiva AT wso2.com</email>
-            <organization>WSO2</organization>
-        </developer>
-        <developer>
-            <id>gdaniels</id>
-            <name>Glen Daniels</name>
-            <email>gdaniels AT apache.org</email>
-            <organization>Sonic Software</organization>
-        </developer>
-        <developer>
-            <id>alek</id>
-            <name>Aleksander Slominski</name>
-            <email>aslom AT cs.indiana.edu</email>
-            <organization>Indiana University Extreme! Computing Lab</organization>
-        </developer>
-        <developer>
-            <id>hemapani</id>
-            <name>Srinath Perera</name>
-            <email>hemapani AT apache.org</email>
-            <url>http://www.apache.org/~hemapani</url>
-            <organization>Lanka Software Foundation</organization>
-        </developer>
-        <developer>
-            <id>chinthaka</id>
-            <name>Eran Chinthaka</name>
-            <email>chinthaka AT wso2.com</email>
-            <url>http://www.apache.org/~chinthaka</url>
-            <organization>WSO2</organization>
-        </developer>
-        <developer>
-            <id>dasarath</id>
-            <name>Dasarath Weerathunga</name>
-            <email>dasarath AT opensource.lk</email>
-            <organization>Lanka Software Foundation</organization>
-        </developer>
-        <developer>
-            <id>jaliya</id>
-            <name>Jaliya Ekanayake</name>
-            <email>jaliya AT opensource.lk</email>
-            <url>http://www.apache.org/~jaliya</url>
-            <organization>Virtusa / Lanka Software Foundation</organization>
-        </developer>
-        <developer>
-            <id>chathura</id>
-            <name>Chathura Herath</name>
-            <email>chathura AT opensource.lk</email>
-            <url>www.apache.org/~chathura</url>
-            <organization>LSF/MIT</organization>
-        </developer>
-        <developer>
-            <id>deepal</id>
-            <name>Deepal Jayasinghe</name>
-            <email>deepal AT wso2.com</email>
-            <url>http://www.apache.org/~deepal</url>
-            <organization>WSO2</organization>
-        </developer>
-        <developer>
-            <id>ajith</id>
-            <name>Ajith Ranabahu</name>
-            <email>ajith AT apache.org</email>
-            <url>http://www.apache.org/~ajith</url>
-            <organization>WSO2</organization>
-        </developer>
-        <developer>
-            <id>venkat</id>
-            <name>Venkat Reddy</name>
-            <email>vreddyp AT gmail.com</email>
-            <organization>Computer Associates</organization>
-        </developer>
-        <developer>
-            <id>ashu</id>
-            <name>Ashutosh Shahi</name>
-            <email>Ashutosh.Shahi AT ca.com</email>
-            <organization>Computer Associates</organization>
-        </developer>
-        <developer>
-            <id>jaya</id>
-            <name>Jayachandra Sekhara Rao Sunkara</name>
-            <email>jayachandra AT gmail.com</email>
-            <organization>Computer Associates</organization>
-        </developer>
-        <developer>
-            <id>thilina</id>
-            <name>Thilina Gunarathne</name>
-            <email>thilina AT wso2.com</email>
-            <url>http://www.apache.org/~thilina</url>
-            <organization>WSO2</organization>
-        </developer>
-        <developer>
-            <id>ruchith</id>
-            <name>Ruchith Fernando</name>
-            <email>ruchith AT wso2.com</email>
-            <organization>WSO2</organization>
-        </developer>
-        <developer>
-            <id>saminda</id>
-            <name>Saminda Abeyruwan</name>
-            <email>saminda AT wso2.com</email>
-            <organization>WSO2</organization>
-        </developer>
-        <developer>
-            <id>chamil</id>
-            <name>Chamil Thanthrimudalige</name>
-            <email>chamil AT wso2.com</email>
-            <organization>WSO2</organization>
-        </developer>
-        <developer>
-            <id>dandiep</id>
-            <name>Dan Diephouse</name>
-            <email>dandiep AT apache.org</email>
-            <organization>Envoi Solutions</organization>
-        </developer>
-    </developers>
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
@@ -272,12 +149,13 @@
                 <configuration>
                     <includes>
                         <include>**/*Test.java</include>
+                        <include>**/Test*.java</include>
                         <!--        Fails in about half of the tests
                                     <include>tests/w3c/TestW3CSchemaBucket.java</include>
                         -->
                     </includes>
                     <excludes>
-                        <exclude>tests/w3c/SchemaTest.java</exclude>
+                        <exclude>tests/w3c/**.java</exclude>
                     </excludes>
                 </configuration>
             </plugin>
@@ -287,7 +165,7 @@
                     <descriptors>
                         <descriptor>src/main/assembly/bin.xml</descriptor>
                         <descriptor>src/main/assembly/src.xml</descriptor>
-						<descriptor>src/main/assembly/doc.xml</descriptor>
+			<descriptor>src/main/assembly/doc.xml</descriptor>
                     </descriptors>
                     <tarLongFileMode>gnu</tarLongFileMode>
                 </configuration>
@@ -307,6 +185,7 @@
             </plugin>
             
         </plugins>
+        <defaultGoal>install</defaultGoal>
     </build>
     <profiles>
         <profile>
@@ -351,13 +230,14 @@
         				<configuration>
         					<includes>
         						<include>**/*Test.java</include>
+        						<include>**/Test*.java</include>
         						<!--        Fails in about half of the tests
         							<include>tests/w3c/TestW3CSchemaBucket.java</include>
         						-->
         					</includes>
         					<excludes>
         						<exclude>
-        							tests/w3c/SchemaTest.java
+        							tests/w3c/**.java
         						</exclude>
         					</excludes>
         					<systemProperties>

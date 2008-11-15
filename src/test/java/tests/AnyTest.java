@@ -82,7 +82,7 @@ public class AnyTest extends TestCase {
                                         "department");
         InputStream is = new FileInputStream(Resources.asURI("any.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is), null);
 
         verifyAccuracy(ELEMENT_QNAME, schemaCol,5L,10L);
 
@@ -121,7 +121,7 @@ public class AnyTest extends TestCase {
         schema.write(baos);
         
         XmlSchemaCollection schemaCol2 = new XmlSchemaCollection();
-        XmlSchema schema2 = schemaCol2.read(new StreamSource(new ByteArrayInputStream(baos.toByteArray())), null);
+        schemaCol2.read(new StreamSource(new ByteArrayInputStream(baos.toByteArray())), null);
         
         verifyAccuracy(ELEMENT_QNAME, schemaCol2,0,0);
        

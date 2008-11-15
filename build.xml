@@ -53,9 +53,11 @@
 	</target>
 
 	<target name="get-deps" if="downloadLibs">
-    	<get src="http://www.ibiblio.org/maven2/xmlunit/xmlunit/1.0/xmlunit-1.0.jar"
-    		dest="${build_lib.dir}/xmlunit-1.0.jar"/>
-    </target>
+	  <get src="http://www.ibiblio.org/maven2/xmlunit/xmlunit/1.0/xmlunit-1.0.jar"
+	       dest="${build_lib.dir}/xmlunit-1.0.jar"/>
+	  <get src="http://mirrors.ibiblio.org/pub/mirrors/maven2/junit/junit/3.8.2/junit-3.8.2.jar"
+	       dest="${build_lib.dir}/junit-3.8.2.jar"/>
+	</target>
 
     <target name="prepare-tests">
         <mkdir dir="${test_classes.dir}"/>

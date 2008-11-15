@@ -26,7 +26,6 @@ import org.w3c.dom.Document;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.namespace.QName;
-import java.io.File;
 
 public class RecursiveImportTest extends TestCase {
 

@@ -48,6 +48,11 @@ public class XmlSchemaType extends XmlSchemaAnnotated {
         finalDerivation = new XmlSchemaDerivationMethod(Constants.BlockConstants.NONE);
     }
 
+    /**
+     * This function returns null. It is intended at some point to return the base type in the event of a restriction,
+     * but that functionality is not implemented.
+     * @return null
+     */
     public Object getBaseSchemaType() {
         return baseSchemaType;
     }

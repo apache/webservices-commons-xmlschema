@@ -19,18 +19,17 @@
 
 package org.apache.ws.commons.schema;
 
-import org.apache.ws.commons.schema.constants.Constants;
-import org.apache.ws.commons.schema.extensions.ExtensionRegistry;
-import org.apache.ws.commons.schema.resolver.DefaultURIResolver;
-import org.apache.ws.commons.schema.resolver.URIResolver;
-import org.apache.ws.commons.schema.utils.NamespacePrefixList;
-import org.apache.ws.commons.schema.utils.TargetNamespaceValidator;
-import org.apache.ws.commons.schema.utils.DOMUtil;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
+import java.io.IOException;
+import java.io.Reader;
+import java.security.PrivilegedActionException;
+import java.security.PrivilegedExceptionAction;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Stack;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
@@ -40,12 +39,19 @@ import javax.xml.transform.Source;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamSource;
-import java.io.IOException;
-import java.io.Reader;
-import java.util.*;
-import java.security.PrivilegedAction;
-import java.security.PrivilegedExceptionAction;
-import java.security.PrivilegedActionException;
+
+import org.apache.ws.commons.schema.constants.Constants;
+import org.apache.ws.commons.schema.extensions.ExtensionRegistry;
+import org.apache.ws.commons.schema.resolver.DefaultURIResolver;
+import org.apache.ws.commons.schema.resolver.URIResolver;
+import org.apache.ws.commons.schema.utils.DOMUtil;
+import org.apache.ws.commons.schema.utils.NamespacePrefixList;
+import org.apache.ws.commons.schema.utils.TargetNamespaceValidator;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  * Contains a cache of XML Schema definition language (XSD).
