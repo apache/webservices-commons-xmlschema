@@ -210,6 +210,45 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
 			return element;
 		}
 	}
+    
+    protected XmlSchemaAttribute getAttributeByName(QName name, boolean deep, Stack schemaStack) {
+                                        if (schemaStack != null && schemaStack.contains(this)) {
+                                                // recursive schema - just return null
+                                                return null;
+                                        } else {
+                                                XmlSchemaAttribute attribute = (XmlSchemaAttribute) attributes
+                                                                .getItem(name);
+                                                if (deep) {
+                                                        if (attribute == null) {
+                                                                // search the imports
+                                                                for (Iterator includedItems = includes.getIterator(); includedItems
+                                                                                .hasNext();) {
+                                                                        
+                                                                        XmlSchema schema = getSchema(includedItems.next());
+                                                                        
+                                                                        if (schema != null) {
+                                                                        // create an empty stack - push the current parent in
+                                                                        // and
+                                                                        // use the protected method to process the schema
+                                                                        if (schemaStack == null) {
+                                                                                schemaStack = new Stack();
+                                                                        }
+                                                                        schemaStack.push(this);
+                                                                        attribute = schema.getAttributeByName(name, deep,
+                                                                                        schemaStack);
+                                                                        if (attribute != null) {
+                                                                                return attribute;
+                                                                        }
+                                                                        }
+                                                                }
+                                                        } else {
+                                                                return attribute;
+                                                        }
+                                                }
+
+                                                return attribute;
+                                        }
+                                }
 
 	/**
 	 * get an element by the name in the local schema
@@ -229,6 +268,15 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
 	 */
 	public XmlSchemaElement getElementByName(QName name) {
 		return this.getElementByName(name, true, null);
+	}
+	
+	/**
+	 * Look for a global attribute by its QName. Searches through all schemas.
+	 * @param name
+	 * @return
+	 */
+	public XmlSchemaAttribute getAttributeByName(QName name) {
+	    return this.getAttributeByName(name, true, null);
 	}
 
 	/**

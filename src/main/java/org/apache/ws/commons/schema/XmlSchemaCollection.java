@@ -179,7 +179,7 @@ public final class XmlSchemaCollection {
     public void init() {
     	
     	/*
-    	 * Defined in section .
+    	 * Defined in section 4.
     	 */
     	addSimpleType(xsd, Constants.XSD_ANYSIMPLETYPE.getLocalPart());
     	addSimpleType(xsd, Constants.XSD_ANYTYPE.getLocalPart());
@@ -510,6 +510,40 @@ public final class XmlSchemaCollection {
                     return type;
                 }
         }
+        }
+        return null;
+    }
+    
+    /**
+     * Find a global attribute by QName in this collection of schemas.
+     * @param schemaAttributeName the name of the attribute.
+     * @return the attribute or null.
+     */
+    public XmlSchemaAttribute getAttributeByQName(QName schemaAttributeName) {
+        String uri = schemaAttributeName.getNamespaceURI();
+        for (Iterator iter = schemas.entrySet().iterator();  iter.hasNext();  ) {
+            Map.Entry entry = (Map.Entry) iter.next();
+            if (((SchemaKey) entry.getKey()).getNamespace().equals(uri)) {
+                XmlSchemaAttribute attribute = ((XmlSchema) entry.getValue()).getAttributeByName(schemaAttributeName);
+                if (attribute != null) {
+                    return attribute;
+                }
+        }
+        }
+        return null;
+    }
+    
+    /**
+     * Return the schema from this collection for a particular targetNamespace.
+     * @param uri target namespace URI.
+     * @return
+     */
+    public XmlSchema schemaForNamespace(String uri) {
+        for (Iterator iter = schemas.entrySet().iterator();  iter.hasNext();  ) {
+            Map.Entry entry = (Map.Entry) iter.next();
+            if (((SchemaKey) entry.getKey()).getNamespace().equals(uri)) {
+                return (XmlSchema) entry.getValue();
+            }
         }
         return null;
     }
