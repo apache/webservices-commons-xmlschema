@@ -21,6 +21,7 @@ package tests;
 
 import junit.framework.TestCase;
 import org.apache.ws.commons.schema.*;
+import org.xml.sax.InputSource;
 
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
@@ -86,6 +87,33 @@ public class AnyTest extends TestCase {
 
         verifyAccuracy(ELEMENT_QNAME, schemaCol,5L,10L);
 
+    }
+    
+    public void testAnyAttribute() throws Exception {
+        InputStream is = new FileInputStream(Resources.asURI("anyAttribute.xsd"));
+        XmlSchemaCollection schemaCol = new XmlSchemaCollection();
+        schemaCol.read(new StreamSource(is), null);
+        
+        XmlSchema[] schemas = schemaCol.getXmlSchemas();
+        XmlSchema schema = null;
+        for(int x = 0; x < schemas.length; x ++) {
+        	if("http://soapinterop.org/types".equals(schemas[x].getTargetNamespace())) {
+        		schema = schemas[x];
+        	}
+        }
+        
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        schema.write(baos);
+        baos.close();
+        byte[] bytes = baos.toByteArray();
+        ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+        schemaCol = new XmlSchemaCollection();
+        schemaCol.read(new InputSource(bais), null);
+        XmlSchemaType type = schemaCol.getTypeByQName(new QName("http://soapinterop.org/types",
+                "OccuringStructWithAnyAttribute"));
+        XmlSchemaComplexType complexType = (XmlSchemaComplexType) type;
+        XmlSchemaAnyAttribute aa = complexType.getAnyAttribute();
+        assertNotNull(aa);
     }
 
     

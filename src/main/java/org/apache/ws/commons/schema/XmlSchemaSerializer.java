@@ -943,6 +943,12 @@ public class XmlSchemaSerializer {
         XmlSchemaObjectCollection attrColl = complexTypeObj.attributes;
         if (attrColl.getCount() > 0)
             setupAttr(doc, attrColl, schema, serializedComplexType);
+        
+        XmlSchemaAnyAttribute anyAttribute = complexTypeObj.getAnyAttribute();
+        if(anyAttribute != null) {
+        	serializedComplexType.appendChild(serializeAnyAttribute(doc, anyAttribute, schema));
+        }
+        
 
             //process extension
         processExtensibilityComponents(complexTypeObj,serializedComplexType);
