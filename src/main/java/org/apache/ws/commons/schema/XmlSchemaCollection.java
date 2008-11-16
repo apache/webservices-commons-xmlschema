@@ -144,9 +144,9 @@ public final class XmlSchemaCollection {
      * An org.xml.sax.EntityResolver that is used to
      * resolve the imports/includes
      */
-    URIResolver schemaResolver = new DefaultURIResolver();
+    private URIResolver schemaResolver = new DefaultURIResolver();
 
-    XmlSchema xsd = new XmlSchema(XmlSchema.SCHEMA_NS, this);
+	XmlSchema xsd = new XmlSchema(XmlSchema.SCHEMA_NS, this);
 
     /**
      * stack to track imports (to prevent recursion)
@@ -171,12 +171,27 @@ public final class XmlSchemaCollection {
     }
 
     /**
+     * Retrieve the custom URI resolver, if any.
+     * @return the current resolver.
+     */
+    public URIResolver getSchemaResolver() {
+		return schemaResolver;
+	}
+
+    /**
      * This section should comply to the XMLSchema specification; see
      * <a href="http://www.w3.org/TR/2004/PER-xmlschema-2-20040318/datatypes.html#built-in-datatypes">
      *  http://www.w3.org/TR/2004/PER-xmlschema-2-20040318/datatypes.html#built-in-datatypes</a>.
      * This needs to be inspected by another pair of eyes
      */
     public void init() {
+    	
+    	/*
+    	 * Defined in section 4.
+    	 */
+    	addSimpleType(xsd, Constants.XSD_ANYSIMPLETYPE.getLocalPart());
+    	addSimpleType(xsd, Constants.XSD_ANYTYPE.getLocalPart());
+    	
         /*
         Primitive types
 
@@ -503,6 +518,40 @@ public final class XmlSchemaCollection {
                     return type;
                 }
         }
+        }
+        return null;
+    }
+    
+    /**
+     * Find a global attribute by QName in this collection of schemas.
+     * @param schemaAttributeName the name of the attribute.
+     * @return the attribute or null.
+     */
+    public XmlSchemaAttribute getAttributeByQName(QName schemaAttributeName) {
+        String uri = schemaAttributeName.getNamespaceURI();
+        for (Iterator iter = schemas.entrySet().iterator();  iter.hasNext();  ) {
+            Map.Entry entry = (Map.Entry) iter.next();
+            if (((SchemaKey) entry.getKey()).getNamespace().equals(uri)) {
+                XmlSchemaAttribute attribute = ((XmlSchema) entry.getValue()).getAttributeByName(schemaAttributeName);
+                if (attribute != null) {
+                    return attribute;
+                }
+        }
+        }
+        return null;
+    }
+    
+    /**
+     * Return the schema from this collection for a particular targetNamespace.
+     * @param uri target namespace URI.
+     * @return
+     */
+    public XmlSchema schemaForNamespace(String uri) {
+        for (Iterator iter = schemas.entrySet().iterator();  iter.hasNext();  ) {
+            Map.Entry entry = (Map.Entry) iter.next();
+            if (((SchemaKey) entry.getKey()).getNamespace().equals(uri)) {
+                return (XmlSchema) entry.getValue();
+            }
         }
         return null;
     }

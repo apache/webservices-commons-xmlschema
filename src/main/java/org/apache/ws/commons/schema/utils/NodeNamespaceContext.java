@@ -20,42 +20,94 @@
 package org.apache.ws.commons.schema.utils;
 
 import org.apache.ws.commons.schema.constants.Constants;
+
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import javax.xml.namespace.NamespaceContext;
+
+import java.lang.reflect.Method;
 import java.util.*;
 
 /**
  * Implementation of {@link NamespaceContext}, which is based on a DOM node.
  */
 public class NodeNamespaceContext implements NamespacePrefixList {
+    private static final String NODE_NAMSPACE_CONTEXT = NamespacePrefixList.class.getName();
     private static final Collection XML_NS_PREFIX_COLLECTION = Collections.singletonList(Constants.XML_NS_PREFIX);
     private static final Collection XMLNS_ATTRIBUTE_COLLECTION = Collections.singletonList(Constants.XMLNS_ATTRIBUTE);
-    private Node node;
-    private Map declarations;
+    
+    static Method getUserData;
+    static Method setUserData;
+    static {
+        try {
+            Class cls = Class.forName("org.w3c.dom.UserDataHandler", false, Node.class.getClassLoader());
+            getUserData = Node.class.getMethod("getUserData", new Class[]{String.class});
+            setUserData = Node.class.getMethod("setUserData", new Class[]{String.class, Object.class, cls});
+        } catch (Throwable e) {
+            getUserData = null;
+            setUserData = null;
+        }
+    }
+    
+    
+    
+    private final Map declarations;
     private String[] prefixes;
 
     /**
      * Creates a new instance with the given nodes context.
      */
-    public NodeNamespaceContext(Node pNode) {
-        node = pNode;
+    private NodeNamespaceContext(Map decls) {
+        declarations = decls;
     }
-
-    private Map getDeclarations() {
-        if (declarations == null) {
-            declarations = new HashMap();
-            //FIXME: Do we really need to add this mapping? shows up in the serialized schema as xmlns="" 
-            //declarations.put(Constants.DEFAULT_NS_PREFIX, Constants.NULL_NS_URI);
-            new PrefixCollector(){
-                protected void declare(String pPrefix, String pNamespaceURI) {
-                    declarations.put(pPrefix, pNamespaceURI);
+    
+    public static NodeNamespaceContext getNamespaceContext(Node pNode) {
+        if (getUserData != null) {
+            try {
+                NodeNamespaceContext ctx = (NodeNamespaceContext)getUserData.invoke(pNode, new Object[] {NODE_NAMSPACE_CONTEXT});
+                if (ctx == null) {
+                    Map declarations = new HashMap();
+        
+                    Node parentNode = pNode.getParentNode();
+                    if (parentNode != null) {
+                        NodeNamespaceContext parent = 
+                            (NodeNamespaceContext)getUserData.invoke(parentNode, new Object[] {NODE_NAMSPACE_CONTEXT});
+                        if (parent == null) {
+                            parent = getNamespaceContext(parentNode);
+                        }
+                        declarations.putAll(parent.declarations);
+                    }
+                    
+                    NamedNodeMap map = pNode.getAttributes();
+                    if (map != null) {
+                        for (int i = 0; i < map.getLength(); i++) {
+                            Node attr = map.item(i);
+                            final String uri = attr.getNamespaceURI();
+                            if (Constants.XMLNS_ATTRIBUTE_NS_URI.equals(uri)) {
+                                String localName = attr.getLocalName();
+                                String prefix = Constants.XMLNS_ATTRIBUTE.equals(localName) ? Constants.DEFAULT_NS_PREFIX : localName;
+                                declarations.put(prefix, attr.getNodeValue());
+                            }
+                        }
+                    }
+                    ctx = new NodeNamespaceContext(declarations);
+                    setUserData.invoke(pNode, new Object[] {NODE_NAMSPACE_CONTEXT, ctx, null});
                 }
-            }.searchAllPrefixDeclarations(node);
-            Collection keys = declarations.keySet();
-            prefixes = (String[]) keys.toArray(new String[keys.size()]);
+                return ctx;
+            } catch (Throwable t) {
+                //ignore.  DOM level 2 implementation would not have the getUserData stuff.   
+                //Thus, fall back to the old, slower method.
+            }
         }
-        return declarations;
+        
+        final Map declarations = new HashMap();
+        new PrefixCollector(){
+            protected void declare(String pPrefix, String pNamespaceURI) {
+                declarations.put(pPrefix, pNamespaceURI);
+            }
+        }.searchAllPrefixDeclarations(pNode);
+        return new NodeNamespaceContext(declarations);
     }
 
     public String getNamespaceURI(String pPrefix) {
@@ -68,7 +120,7 @@ public class NodeNamespaceContext implements NamespacePrefixList {
         if (Constants.XMLNS_ATTRIBUTE.equals(pPrefix)) {
             return Constants.XMLNS_ATTRIBUTE_NS_URI;
         }
-        final String uri = (String) getDeclarations().get(pPrefix);
+        final String uri = (String) declarations.get(pPrefix);
         return uri == null ? Constants.NULL_NS_URI : uri;
     }
 
@@ -82,8 +134,7 @@ public class NodeNamespaceContext implements NamespacePrefixList {
         if (Constants.XMLNS_ATTRIBUTE_NS_URI.equals(pNamespaceURI)) {
             return Constants.XMLNS_ATTRIBUTE;
         }
-        Map decl = getDeclarations();
-        for (Iterator iter = decl.entrySet().iterator();  iter.hasNext();  ) {
+        for (Iterator iter = declarations.entrySet().iterator();  iter.hasNext();  ) {
             Map.Entry entry = (Map.Entry) iter.next();
             if (pNamespaceURI.equals(entry.getValue())) {
                 return (String) entry.getKey();
@@ -103,7 +154,7 @@ public class NodeNamespaceContext implements NamespacePrefixList {
             return XMLNS_ATTRIBUTE_COLLECTION.iterator();
         }
         final List list = new ArrayList();
-        for (Iterator iter = getDeclarations().entrySet().iterator();  iter.hasNext();  ) {
+        for (Iterator iter = declarations.entrySet().iterator();  iter.hasNext();  ) {
             Map.Entry entry = (Map.Entry) iter.next();
             if (pNamespaceURI.equals(entry.getValue())) {
                 list.add(entry.getKey());
@@ -113,7 +164,10 @@ public class NodeNamespaceContext implements NamespacePrefixList {
     }
 
     public String[] getDeclaredPrefixes() {
-        getDeclarations(); // Make sure, that the prefixes array is valid
+        if (prefixes == null) {
+            Collection keys = declarations.keySet();
+            prefixes = (String[]) keys.toArray(new String[keys.size()]);
+        }
         return prefixes;
     }
 }

@@ -128,7 +128,7 @@ public class SchemaBuilder {
 	 */
 	XmlSchema handleXmlSchemaElement(Element schemaEl, String uri) {
 		// get all the attributes along with the namespace declns
-		schema.setNamespaceContext(new NodeNamespaceContext(schemaEl));
+		schema.setNamespaceContext(NodeNamespaceContext.getNamespaceContext(schemaEl));
 		setNamespaceAttributes(schema, schemaEl);
 
 		XmlSchemaCollection.SchemaKey schemaKey = new XmlSchemaCollection.SchemaKey(
@@ -431,7 +431,7 @@ public class SchemaBuilder {
 					restrictionEl, XmlSchema.SCHEMA_NS, "simpleType");
 
 			if (restrictionEl.hasAttribute("base")) {
-				NamespaceContext ctx = new NodeNamespaceContext(restrictionEl);
+				NamespaceContext ctx = NodeNamespaceContext.getNamespaceContext(restrictionEl);
 				restriction.baseTypeName = getRefQName(restrictionEl
 						.getAttribute("base"), ctx);
 			} else if (inlineSimpleType != null) {
@@ -558,7 +558,7 @@ public class SchemaBuilder {
 	}
 
 	private QName getRefQName(String pName, Node pNode) {
-		return getRefQName(pName, new NodeNamespaceContext(pNode));
+		return getRefQName(pName, NodeNamespaceContext.getNamespaceContext(pNode));
 	}
 
 	private QName getRefQName(String pName, NamespaceContext pContext) {
@@ -1311,7 +1311,7 @@ public class SchemaBuilder {
 					// there is a possiblily of some namespace mapping
 					String prefix = value.substring(0, value.indexOf(":"));
 					if (ctx == null) {
-						ctx = new NodeNamespaceContext(attrEl);
+						ctx = NodeNamespaceContext.getNamespaceContext(attrEl);
 					}
 					String namespace = ctx.getNamespaceURI(prefix);
 					if (!Constants.NULL_NS_URI.equals(namespace)) {
@@ -1863,7 +1863,7 @@ public class SchemaBuilder {
         
 		//use the entity resolver provided if the schema location is present null
 		if (schemaLocation != null && !"".equals(schemaLocation)) {
-			InputSource source = collection.schemaResolver.resolveEntity(
+			InputSource source = collection.getSchemaResolver().resolveEntity(
 					targetNamespace, schemaLocation, baseUri);
 
 			//the entity resolver was unable to resolve this!!
@@ -1956,12 +1956,10 @@ public class SchemaBuilder {
 			}
 
 			//process elements
-			NodeList allChildren = parentElement.getChildNodes();
-			for (int i = 0; i < allChildren.getLength(); i++) {
-				if (allChildren.item(i).getNodeType() == Node.ELEMENT_NODE) {
-
-					Element extElement = (Element) allChildren.item(i);
-
+			Node child = parentElement.getFirstChild();
+			while (child != null) {
+				if (child.getNodeType() == Node.ELEMENT_NODE) {
+					Element extElement = (Element) child;
 					String namespaceURI = extElement.getNamespaceURI();
 					String name = extElement.getLocalName();
 
@@ -1973,9 +1971,9 @@ public class SchemaBuilder {
 						QName qName = new QName(namespaceURI, name);
 						extReg.deserializeExtension(schemaObject, qName,
 								extElement);
-
 					}
 				}
+				child = child.getNextSibling();
 			}
 		}
 
