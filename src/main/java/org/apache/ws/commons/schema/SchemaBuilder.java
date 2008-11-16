@@ -1879,6 +1879,10 @@ public class SchemaBuilder {
 			}
 			final String systemId = source.getSystemId() == null ? schemaLocation
 					: source.getSystemId();
+			// Push repaired system id back into source where read sees it.
+			// It is perhaps a bad thing to patch the source, but this fixes
+			// a problem.
+			source.setSystemId(systemId);
 			final SchemaKey key = new XmlSchemaCollection.SchemaKey(
 					targetNamespace, systemId);
 			XmlSchema schema = collection.getSchema(key);
@@ -1916,6 +1920,7 @@ public class SchemaBuilder {
 	 */
 	XmlSchema resolveXmlSchema(String targetNamespace, String schemaLocation,
 			TargetNamespaceValidator validator) {
+
 		return resolveXmlSchema(targetNamespace, schemaLocation,
 				collection.baseUri, validator);
 
