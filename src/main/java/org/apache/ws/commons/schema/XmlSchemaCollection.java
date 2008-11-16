@@ -177,6 +177,13 @@ public final class XmlSchemaCollection {
      * This needs to be inspected by another pair of eyes
      */
     public void init() {
+    	
+    	/*
+    	 * Defined in section .
+    	 */
+    	addSimpleType(xsd, Constants.XSD_ANYSIMPLETYPE.getLocalPart());
+    	addSimpleType(xsd, Constants.XSD_ANYTYPE.getLocalPart());
+    	
         /*
         Primitive types
 
