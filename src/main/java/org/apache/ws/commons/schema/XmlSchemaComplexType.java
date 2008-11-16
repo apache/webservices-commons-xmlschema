@@ -19,6 +19,8 @@
 
 package org.apache.ws.commons.schema;
 
+import javax.xml.namespace.QName;
+
 import org.apache.ws.commons.schema.constants.Constants;
 
 /**
@@ -153,4 +155,27 @@ public class XmlSchemaComplexType extends XmlSchemaType {
         xml += "</" + prefix + "complexType>\n";
         return xml;
     }
+
+    /**
+     * Return the QName of the base schema type, if any, as defined in the content model.
+     */
+	public QName getBaseSchemaTypeName() {
+		XmlSchemaContentModel model = getContentModel();
+		if (model == null) {
+			return null;
+		}
+		XmlSchemaContent content = model.getContent();
+		if (content == null) {
+			return null;
+		}
+
+		if (!(content instanceof XmlSchemaComplexContentExtension)) {
+			return null;
+		}
+
+		XmlSchemaComplexContentExtension ext = (XmlSchemaComplexContentExtension) content;
+		return ext.getBaseTypeName();
+	}
+
+
 }
