@@ -1863,7 +1863,7 @@ public class SchemaBuilder {
         
 		//use the entity resolver provided if the schema location is present null
 		if (schemaLocation != null && !"".equals(schemaLocation)) {
-			InputSource source = collection.schemaResolver.resolveEntity(
+			InputSource source = collection.getSchemaResolver().resolveEntity(
 					targetNamespace, schemaLocation, baseUri);
 
 			//the entity resolver was unable to resolve this!!

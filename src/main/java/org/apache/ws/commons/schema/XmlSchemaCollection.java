@@ -144,9 +144,9 @@ public final class XmlSchemaCollection {
      * An org.xml.sax.EntityResolver that is used to
      * resolve the imports/includes
      */
-    URIResolver schemaResolver = new DefaultURIResolver();
+    private URIResolver schemaResolver = new DefaultURIResolver();
 
-    XmlSchema xsd = new XmlSchema(XmlSchema.SCHEMA_NS, this);
+	XmlSchema xsd = new XmlSchema(XmlSchema.SCHEMA_NS, this);
 
     /**
      * stack to track imports (to prevent recursion)
@@ -169,6 +169,14 @@ public final class XmlSchemaCollection {
     public void setSchemaResolver(URIResolver schemaResolver) {
         this.schemaResolver = schemaResolver;
     }
+
+    /**
+     * Retrieve the custom URI resolver, if any.
+     * @return the current resolver.
+     */
+    public URIResolver getSchemaResolver() {
+		return schemaResolver;
+	}
 
     /**
      * This section should comply to the XMLSchema specification; see
