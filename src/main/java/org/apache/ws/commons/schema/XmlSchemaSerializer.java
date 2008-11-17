@@ -2390,9 +2390,11 @@ public class XmlSchemaSerializer {
 
         if (anyAttributeObj.processContent != null) {
             String processContent = anyAttributeObj.processContent.getValue();
-            processContent = convertString(processContent);
-            anyAttribute.setAttribute("processContents",
+            if(!Constants.BlockConstants.NONE.equals(processContent)){
+                processContent = convertString(processContent);
+                anyAttribute.setAttribute("processContents",
                     processContent);
+            }
         }
         if (anyAttributeObj.annotation != null) {
             Element annotation = serializeAnnotation(doc,
