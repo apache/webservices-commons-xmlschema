@@ -34,7 +34,9 @@ import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import java.lang.ref.SoftReference;
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -771,7 +773,7 @@ public class SchemaBuilder {
 		
 		return complexContent;
 	}
-
+	
 	private XmlSchemaSimpleContentRestriction handleSimpleContentRestriction(
 			XmlSchema schema, Element restrictionEl, Element schemaEl) {
 
@@ -805,10 +807,7 @@ public class SchemaBuilder {
 				restriction.setAnnotation(handleAnnotation(el));
 			} else {
 				XmlSchemaFacet facet = XmlSchemaFacet.construct(el);
-				NodeList annotations = el.getElementsByTagNameNS(
-						XmlSchema.SCHEMA_NS, "annotation");
-
-				if (annotations.getLength() > 0) {
+				if(XDOMUtil.anyElementsWithNameNS(el, XmlSchema.SCHEMA_NS, "annotation")) {
 					XmlSchemaAnnotation facetAnnotation = handleAnnotation(el);
 					facet.setAnnotation(facetAnnotation);
 				}
@@ -1564,7 +1563,7 @@ public class SchemaBuilder {
 	}
 
 	/**
-	 * Hanlde the import
+	 * Handle the import
 	 * @param schema
 	 * @param importEl
 	 * @param schemaEl
@@ -1734,10 +1733,9 @@ public class SchemaBuilder {
 	 */
 	XmlSchemaAppInfo handleAppInfo(Element content) {
 		XmlSchemaAppInfo appInfo = new XmlSchemaAppInfo();
-		NodeList markup = getChildren(content);
+		NodeList markup = new DocumentFragmentNodeList(content);
 
-		if (!content.hasAttribute("source")
-				&& (markup == null || markup.getLength() <= 0)) {
+		if (!content.hasAttribute("source")) {
 			return null;
 		}
 		appInfo.setSource(getAttribute(content, "source"));
@@ -1748,16 +1746,16 @@ public class SchemaBuilder {
 	//iterate each documentation element, create new XmlSchemaAppinfo and add to collection
 	XmlSchemaDocumentation handleDocumentation(Element content) {
 		XmlSchemaDocumentation documentation = new XmlSchemaDocumentation();
-		NodeList markup = getChildren(content);
+		List markup = getChildren(content);
 
 		if (!content.hasAttribute("source")
 				&& !content.hasAttribute("xml:lang")
-				&& (markup == null || markup.getLength() <= 0))
+				&& markup == null)
 			return null;
 
 		documentation.setSource(getAttribute(content, "source"));
 		documentation.setLanguage(getAttribute(content, "xml:lang"));
-		documentation.setMarkup(getChildren(content));
+		documentation.setMarkup(new DocumentFragmentNodeList(content));
 
 		return documentation;
 	}
@@ -1768,11 +1766,16 @@ public class SchemaBuilder {
 		return null;
 	}
 
-	private NodeList getChildren(Element content) {
-		NodeList childs = content.getChildNodes();
-		if (childs.getLength() > 0)
-			return childs;
-		return null;
+	private List getChildren(Element content) {
+		List result = new ArrayList();
+		for(Node n = content.getFirstChild(); n != null; n = n.getNextSibling()) {
+			result.add(n);
+		}
+		if(result.size() == 0) {
+			return null;
+		} else {
+			return result;
+		}
 	}
 
 	long getMinOccurs(Element el) {

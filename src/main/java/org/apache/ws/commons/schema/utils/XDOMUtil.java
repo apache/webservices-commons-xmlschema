@@ -66,5 +66,15 @@ public class XDOMUtil extends DOMUtil {
         return null;
 
     }
+    
+    public static boolean anyElementsWithNameNS(Element element, String uri, String name) {
+    	for (Element el = getFirstChildElementNS(element, uri); el != null; el = XDOMUtil.getNextSiblingElementNS(el, uri)) {
+    		if(el.getLocalName().equals(name) && el.getNamespaceURI().equals(uri)) {
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
 
 }
