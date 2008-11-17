@@ -1952,7 +1952,7 @@ public class XmlSchemaSerializer {
         if (appInfoObj.markup != null) {
             int markupLength = appInfoObj.markup.getLength();
             for (int j = 0; j < markupLength; j++) {
-                Node n = appInfoObj.markup.item(j);
+                Node n = (Node) appInfoObj.markup.item(j);
                appInfoEl.appendChild(doc.importNode(n,true));
             }
         }
@@ -1998,7 +1998,7 @@ public class XmlSchemaSerializer {
         if (documentationObj.markup != null) {
             int markupLength = documentationObj.markup.getLength();
             for (int j = 0; j < markupLength; j++) {
-                Node n = documentationObj.markup.item(j);
+                Node n = (Node) documentationObj.markup.item(j);
 
                 switch (n.getNodeType()) {
                     case Node.ELEMENT_NODE:

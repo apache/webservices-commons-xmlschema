@@ -598,9 +598,9 @@ public class DOMUtil {
      */
     public static String getInputEncoding(Document doc) {
         try {
-            Method m = Document.class.getMethod("getInputEncoding", new Class[]{});
+            Method m = doc.getClass().getMethod("getInputEncoding", new Class[]{});
             return (String) m.invoke(doc, new Object[]{});
-        } catch (Exception e) {
+        } catch (Throwable e) {
             return DEFAULT_ENCODING;
         }
     }
@@ -615,10 +615,10 @@ public class DOMUtil {
      */
     public static String getXmlEncoding(Document doc) {
         try {
-        	 Method m = Document.class.getMethod("getXmlEncoding", new Class[]{});
+        	 Method m = doc.getClass().getMethod("getXmlEncoding", new Class[]{});
              return (String) m.invoke(doc, new Object[]{});
-        } catch (Exception e) {
+        } catch (Throwable e) {
             return DEFAULT_ENCODING;
         }
     }
-} // class XUtil
+} 

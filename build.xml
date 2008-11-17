@@ -30,16 +30,16 @@
 	<property name="dist.dir" value="${build.dir}/dist"/>
 	<property name="dist.zip" value="${project.name}.zip"/>
 	<property name="srcdist.zip" value="${project.name}-src.zip"/>
-    <property name="test.dir" value="${basedir}/src/test/java"/>
+	<property name="test.dir" value="${basedir}/src/test/java"/>
 	<property name="test_classes.dir" value="${build.dir}/test-classes"/>
-    <property name="test_reports.dir" value="${build.dir}/test-reports"/>
-    <property name="test_reports_w3c.dir" value="${build.dir}/test-reports-w3c"/>
+	<property name="test_reports.dir" value="${build.dir}/test-reports"/>
+	<property name="test_reports_w3c.dir" value="${build.dir}/test-reports-w3c"/>
 
-    <target name="setproxy" if="http.proxyhost">
-        <setproxy proxyhost="${http.proxyHost}" proxyport="${http.proxyPort}"/>
-    </target>
+	<target name="setproxy" if="http.proxyhost">
+	  <setproxy proxyhost="${http.proxyHost}" proxyport="${http.proxyPort}"/>
+	</target>
 
-    <target name="prepare" depends="setproxy">
+	<target name="prepare" depends="setproxy">
 		<mkdir dir="${build_classes.dir}"/>
 		<mkdir dir="${build_lib.dir}"/>
     	
@@ -74,13 +74,13 @@
 	      </not>
 	    </condition>
     	<antcall target="get-xml-schema-tests"/>
-   </target>
+    </target>
     	
-	<target name="get-xml-schema-tests" if="needsTestsDownload">
-		<echo>Downloading 6MB XML Schema test suite. This make take a few minutes...</echo>
-		<get dest="${build.dir}/xsts-2002-01-16.tar.gz" 
-			src="http://www.w3.org/XML/2004/xml-schema-test-suite/xmlschema2002-01-16/xsts-2002-01-16.tar.gz"/>
-		<untar src="${build.dir}/xsts-2002-01-16.tar.gz" compression="gzip" dest="${build.dir}"/>
+    <target name="get-xml-schema-tests" if="needsTestsDownload">
+      <echo>Downloading 6MB XML Schema test suite. This make take a few minutes...</echo>
+      <get dest="${build.dir}/xsts-2002-01-16.tar.gz" 
+	   src="http://www.w3.org/XML/2004/xml-schema-test-suite/xmlschema2002-01-16/xsts-2002-01-16.tar.gz"/>
+      <untar src="${build.dir}/xsts-2002-01-16.tar.gz" compression="gzip" dest="${build.dir}"/>
     </target>
 
     <target name="compile" depends="prepare" description="compiles the src and puts it in build/classes">
