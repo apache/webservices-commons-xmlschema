@@ -51,10 +51,19 @@ public class XmlSchemaType extends XmlSchemaAnnotated {
     /**
      * This function returns null. It is intended at some point to return the base type in the event of a restriction,
      * but that functionality is not implemented.
+     * @see #getBaseSchemaTypeName()
      * @return null
      */
     public Object getBaseSchemaType() {
         return baseSchemaType;
+    }
+
+    /**
+     * If there is a base schema type, which by definition has to have a global name, return it.
+     * @return the qualified name of the base schema type. Return null if none (e.g. for simple types).
+     */
+    public QName getBaseSchemaTypeName() {
+    	return null;
     }
 
     public XmlSchemaDatatype getDataType() {

@@ -943,6 +943,12 @@ public class XmlSchemaSerializer {
         XmlSchemaObjectCollection attrColl = complexTypeObj.attributes;
         if (attrColl.getCount() > 0)
             setupAttr(doc, attrColl, schema, serializedComplexType);
+        
+        XmlSchemaAnyAttribute anyAttribute = complexTypeObj.getAnyAttribute();
+        if(anyAttribute != null) {
+        	serializedComplexType.appendChild(serializeAnyAttribute(doc, anyAttribute, schema));
+        }
+        
 
             //process extension
         processExtensibilityComponents(complexTypeObj,serializedComplexType);
@@ -2002,6 +2008,14 @@ public class XmlSchemaSerializer {
                         Text t = doc.createTextNode(n.getNodeValue());
                         documentationEl.appendChild(t);
                         break;
+                    case Node.CDATA_SECTION_NODE:
+                    	CDATASection s = doc.createCDATASection(n.getNodeValue());
+                    	documentationEl.appendChild(s);
+                    	break;
+                    case Node.COMMENT_NODE:
+                    	Comment c = doc.createComment(n.getNodeValue());
+                    	documentationEl.appendChild(c);
+                    	break;
                     default:
                         break;
                 }
@@ -2544,6 +2558,10 @@ public class XmlSchemaSerializer {
                 String nValue = n.getNodeValue();
                 Text t = doc.createTextNode(nValue);
                 el.appendChild(t);
+	    } else if (nodeType == Node.CDATA_SECTION_NODE) {
+		String nValue = n.getNodeValue();
+		CDATASection s = doc.createCDATASection(nValue);
+		el.appendChild(s);
             } else if (nodeType == Node.ELEMENT_NODE) {
                 appendElement(doc, el, n, schema);
             }
