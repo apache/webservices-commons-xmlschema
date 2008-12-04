@@ -544,7 +544,7 @@ public final class XmlSchemaCollection {
     /**
      * Return the schema from this collection for a particular targetNamespace.
      * @param uri target namespace URI.
-     * @return
+     * @return the schema.
      */
     public XmlSchema schemaForNamespace(String uri) {
         for (Iterator iter = schemas.entrySet().iterator();  iter.hasNext();  ) {

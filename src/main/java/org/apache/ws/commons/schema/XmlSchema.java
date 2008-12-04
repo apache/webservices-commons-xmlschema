@@ -254,7 +254,7 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
 	 * get an element by the name in the local schema
 	 * 
 	 * @param name
-	 * @return
+	 * @return the element.
 	 */
 	public XmlSchemaElement getElementByName(String name) {
         QName nameToSearchFor = new QName(this.getTargetNamespace(),name);
@@ -264,7 +264,7 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
 	/**
 	 * Look for a element by its qname. Searches through all the schemas
 	 * @param name
-	 * @return
+	 * @return the element.
 	 */
 	public XmlSchemaElement getElementByName(QName name) {
 		return this.getElementByName(name, true, null);
@@ -273,19 +273,20 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
 	/**
 	 * Look for a global attribute by its QName. Searches through all schemas.
 	 * @param name
-	 * @return
+	 * @return the attribute.
 	 */
 	public XmlSchemaAttribute getAttributeByName(QName name) {
 	    return this.getAttributeByName(name, true, null);
 	}
 
 	/**
-	 * protected method that allows safe (non-recursive schema loading)
-	 * 
+	 * Protected method that allows safe (non-recursive schema loading). It looks for a type
+	 * with constraints.
+         * 
 	 * @param name
 	 * @param deep
 	 * @param schemaStack
-	 * @return
+	 * @return the type.
 	 */
 	protected XmlSchemaType getTypeByName(QName name, boolean deep,
 			Stack schemaStack) {
@@ -328,18 +329,18 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
 
 	/**
 	 * Search this schema and all the imported/included ones
-     * for the given Qname
+         * for the given Qname
 	 * @param name
-	 * @return
+	 * @return the type.
 	 */
 	public XmlSchemaType getTypeByName(QName name) {
 		return getTypeByName(name, true, null);
 	}
 
 	/**
-	 * 
+	 * Search this schema for a type by qname.
 	 * @param name
-	 * @return
+	 * @return the type.
 	 */
 	public XmlSchemaType getTypeByName(String name) {
         QName nameToSearchFor = new QName(this.getTargetNamespace(),name);
@@ -350,7 +351,7 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
 	 * Get a schema from an import
 	 * 
 	 * @param includeOrImport
-	 * @return
+	 * @return return the schema object.
 	 */
 	private XmlSchema getSchema(Object includeOrImport) {
 		XmlSchema schema;
