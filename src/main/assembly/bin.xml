@@ -47,6 +47,16 @@
                 <exclude>*-sources.jar</exclude>
             </excludes>
         </fileSet>
+       <fileSet>
+         <directory>target/maven-shared-archive-resources/META-INF</directory>
+         <outputDirectory>.</outputDirectory>
+         <includes>
+             <include>*</include>
+         </includes>
+         <excludes>
+             <exclude>DEPENDENCIES</exclude>
+         </excludes>
+     </fileSet>
     </fileSets>
     <files>
 	<file>
