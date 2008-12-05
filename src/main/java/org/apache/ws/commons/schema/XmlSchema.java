@@ -19,6 +19,7 @@
 
 package org.apache.ws.commons.schema;
 
+import org.apache.ws.commons.schema.XmlSchemaSerializer.XmlSchemaSerializerException;
 import org.apache.ws.commons.schema.constants.Constants;
 import org.apache.ws.commons.schema.utils.NamespaceContextOwner;
 import org.apache.ws.commons.schema.utils.NamespacePrefixList;
@@ -34,23 +35,21 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Stack;
 
-
+// Ancient history, year unknown:-)
+//Oct 15th - momo - initial impl
+//Oct 17th - vidyanand - add SimpleType + element
+//Oct 18th - momo - add ComplexType
+//Oct 19th - vidyanand - handle external
+//Dec 6th - Vidyanand - changed RuntimeExceptions thrown to XmlSchemaExceptions
+//Jan 15th - Vidyanand - made changes to SchemaBuilder.handleElement to look for an element ref.
+//Feb 20th - Joni - Change the getXmlSchemaFromLocation schema
+//         variable to name s.
+//Feb 21th - Joni - Port to XMLDomUtil and Tranformation.
 /**
  * Contains the definition of a schema. All XML Schema definition language (XSD)
  * elements are children of the schema element. Represents the World Wide Web
  * Consortium (W3C) schema element
  */
-
-// Oct 15th - momo - initial impl
-// Oct 17th - vidyanand - add SimpleType + element
-// Oct 18th - momo - add ComplexType
-// Oct 19th - vidyanand - handle external
-// Dec 6th - Vidyanand - changed RuntimeExceptions thrown to XmlSchemaExceptions
-// Jan 15th - Vidyanand - made changes to SchemaBuilder.handleElement to look for an element ref.
-// Feb 20th - Joni - Change the getXmlSchemaFromLocation schema
-//            variable to name s.
-// Feb 21th - Joni - Port to XMLDomUtil and Tranformation.
-
 public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwner {
     private static final String UTF_8_ENCODING = "UTF-8";
 	static final String SCHEMA_NS = "http://www.w3.org/2001/XMLSchema";
@@ -626,11 +625,24 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
 
         return true;
     }
+    
+    /**
+     * Retrieve a DOM tree for this one schema, independent of any included or 
+     * related schemas.
+     * @return The DOM document.
+     * @throws XmlSchemaSerializerException
+     */
+    public Document getSchemaDocument() throws XmlSchemaSerializerException {
+        XmlSchemaSerializer xser = new XmlSchemaSerializer();
+        xser.setExtReg(this.parent.getExtReg());
+        return xser.serializeSchema(this, false)[0];
+    }
+    
     public String getInputEncoding() {
         return inputEncoding;
     }
     
-     public String toString() {
+    public String toString() {
         return super.toString() + "[" + logicalTargetNamespace + "]";
     }
 }

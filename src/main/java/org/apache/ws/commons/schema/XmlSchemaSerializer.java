@@ -19,28 +19,54 @@
 
 package org.apache.ws.commons.schema;
 
-import org.apache.ws.commons.schema.constants.Constants;
-import org.apache.ws.commons.schema.extensions.ExtensionRegistry;
-import org.apache.ws.commons.schema.utils.NamespacePrefixList;
-import org.w3c.dom.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Map;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.util.*;
-public class XmlSchemaSerializer {
 
+import org.apache.ws.commons.schema.constants.Constants;
+import org.apache.ws.commons.schema.extensions.ExtensionRegistry;
+import org.apache.ws.commons.schema.utils.NamespacePrefixList;
+import org.w3c.dom.Attr;
+import org.w3c.dom.CDATASection;
+import org.w3c.dom.Comment;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
+
+/**
+ * Convert from the XML Schema class representation to the standard
+ * XML representation. 
+  */
+public class XmlSchemaSerializer {
+	
     /**
      * Extension registry for the serializer
-     *  */
+     */
 
     private ExtensionRegistry extReg;
 
+    /**
+     * Get the registry of extensions for this serializer.
+     * @return the registry.
+     */
     public ExtensionRegistry getExtReg() {
         return extReg;
     }
 
+    /**
+     * Set the registry of extensions for this serializer.
+     * @param extReg the registry.
+     */
     public void setExtReg(ExtensionRegistry extReg) {
         this.extReg = extReg;
     }
@@ -55,28 +81,22 @@ public class XmlSchemaSerializer {
 
     private static final String XMLNS_NAMESPACE_URI = "http://www.w3.org/2000/xmlns/";
 
-    XmlSchemaSerializer() {
+    /**
+     * Create a new serializer.
+     */
+    public XmlSchemaSerializer() {
         docs = new ArrayList();
         schema_ns = new Hashtable();
     }
 
     /**
-     * *********************************************************************
-     * Document[]  serializeSchema(XmlSchema schemaObj,
-     * boolean serializeIncluded)
-     * <p/>
-     * Serialize XmlSchema object pass back the document containing a schema
-     * element as its root.
-     * <p/>
-     * Parameter:
-     * schemaObj - Schema object to serialize.
-     * serialzeIncluded - whether to serialize the included(imported)
-     * schema or not. pass true for serialize all included
-     * schema.
-     * <p/>
-     * Return:
-     * Array of Documents that include/imported.
-     * **********************************************************************
+     * Serialize an entire schema, returning an array of DOM Documents, one per XSL file. 
+     * @param schemaObj The XML Schema.
+     * @param serializeIncluded whether to create DOM trees for any included or imported 
+     * schemas.
+     * @return Documents. If serializeIncluded is false, the array with have one entry.
+     * The main document is always first.
+     * @throws XmlSchemaSerializerException
      */
     public Document[] serializeSchema(XmlSchema schemaObj,
                                              boolean serializeIncluded) throws XmlSchemaSerializerException {
@@ -2666,13 +2686,20 @@ public class XmlSchemaSerializer {
         }
     }
 
+    /**
+     * Exception class used for serialization problems.
+     */
     public static class XmlSchemaSerializerException extends Exception {
 
         /**
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
-
+		
+		/**
+		 * Standard constructor with a message.
+		 * @param msg the message.
+		 */
 		public XmlSchemaSerializerException(String msg) {
             super(msg);
         }
@@ -2680,14 +2707,14 @@ public class XmlSchemaSerializer {
 
 
     /**
-     * A generic method to process the extra attributes and the the extra
+     * A generic method to process the extra attributes and the extra
      * elements present within the schema.
-     * What are considered extensions are  child elements with non schema namespace
-     * and child attributes with any namespace
+     * What are considered extensions are child elements with non schema namespace
+     * and child attributes with any namespace.
      * @param schemaObject
      * @param parentElement
      */
-    private void processExtensibilityComponents(XmlSchemaObject schemaObject,Element parentElement){
+    private void processExtensibilityComponents(XmlSchemaObject schemaObject, Element parentElement) {
 
         if (extReg!=null){
             Map metaInfoMap = schemaObject.getMetaInfoMap();
