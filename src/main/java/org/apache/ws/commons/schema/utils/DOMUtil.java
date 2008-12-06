@@ -594,7 +594,7 @@ public class DOMUtil {
      * call getInputEncoding hence it returns the correct value
      * only if a DOM3 API is used. Otherwise it returns the default encoding
      * @param doc
-     * @return
+     * @return the encoding (e.g. UTF-8)
      */
     public static String getInputEncoding(Document doc) {
         try {
@@ -611,7 +611,7 @@ public class DOMUtil {
      * only if a DOM3 API is used. Otherwise it returns the default encoding
      * @see #getInputEncoding(Document)
      * @param doc
-     * @return
+     * @return the encoding (e.g. utf-8).
      */
     public static String getXmlEncoding(Document doc) {
         try {

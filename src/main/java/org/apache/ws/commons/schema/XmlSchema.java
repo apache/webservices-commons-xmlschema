@@ -19,6 +19,7 @@
 
 package org.apache.ws.commons.schema;
 
+import org.apache.ws.commons.schema.XmlSchemaSerializer.XmlSchemaSerializerException;
 import org.apache.ws.commons.schema.constants.Constants;
 import org.apache.ws.commons.schema.utils.NamespaceContextOwner;
 import org.apache.ws.commons.schema.utils.NamespacePrefixList;
@@ -34,23 +35,21 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Stack;
 
-
+// Ancient history, year unknown:-)
+//Oct 15th - momo - initial impl
+//Oct 17th - vidyanand - add SimpleType + element
+//Oct 18th - momo - add ComplexType
+//Oct 19th - vidyanand - handle external
+//Dec 6th - Vidyanand - changed RuntimeExceptions thrown to XmlSchemaExceptions
+//Jan 15th - Vidyanand - made changes to SchemaBuilder.handleElement to look for an element ref.
+//Feb 20th - Joni - Change the getXmlSchemaFromLocation schema
+//         variable to name s.
+//Feb 21th - Joni - Port to XMLDomUtil and Tranformation.
 /**
  * Contains the definition of a schema. All XML Schema definition language (XSD)
  * elements are children of the schema element. Represents the World Wide Web
  * Consortium (W3C) schema element
  */
-
-// Oct 15th - momo - initial impl
-// Oct 17th - vidyanand - add SimpleType + element
-// Oct 18th - momo - add ComplexType
-// Oct 19th - vidyanand - handle external
-// Dec 6th - Vidyanand - changed RuntimeExceptions thrown to XmlSchemaExceptions
-// Jan 15th - Vidyanand - made changes to SchemaBuilder.handleElement to look for an element ref.
-// Feb 20th - Joni - Change the getXmlSchemaFromLocation schema
-//            variable to name s.
-// Feb 21th - Joni - Port to XMLDomUtil and Tranformation.
-
 public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwner {
     private static final String UTF_8_ENCODING = "UTF-8";
 	static final String SCHEMA_NS = "http://www.w3.org/2001/XMLSchema";
@@ -254,7 +253,7 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
 	 * get an element by the name in the local schema
 	 * 
 	 * @param name
-	 * @return
+	 * @return the element.
 	 */
 	public XmlSchemaElement getElementByName(String name) {
         QName nameToSearchFor = new QName(this.getTargetNamespace(),name);
@@ -264,7 +263,7 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
 	/**
 	 * Look for a element by its qname. Searches through all the schemas
 	 * @param name
-	 * @return
+	 * @return the element.
 	 */
 	public XmlSchemaElement getElementByName(QName name) {
 		return this.getElementByName(name, true, null);
@@ -273,19 +272,20 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
 	/**
 	 * Look for a global attribute by its QName. Searches through all schemas.
 	 * @param name
-	 * @return
+	 * @return the attribute.
 	 */
 	public XmlSchemaAttribute getAttributeByName(QName name) {
 	    return this.getAttributeByName(name, true, null);
 	}
 
 	/**
-	 * protected method that allows safe (non-recursive schema loading)
-	 * 
+	 * Protected method that allows safe (non-recursive schema loading). It looks for a type
+	 * with constraints.
+         * 
 	 * @param name
 	 * @param deep
 	 * @param schemaStack
-	 * @return
+	 * @return the type.
 	 */
 	protected XmlSchemaType getTypeByName(QName name, boolean deep,
 			Stack schemaStack) {
@@ -328,18 +328,18 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
 
 	/**
 	 * Search this schema and all the imported/included ones
-     * for the given Qname
+         * for the given Qname
 	 * @param name
-	 * @return
+	 * @return the type.
 	 */
 	public XmlSchemaType getTypeByName(QName name) {
 		return getTypeByName(name, true, null);
 	}
 
 	/**
-	 * 
+	 * Search this schema for a type by qname.
 	 * @param name
-	 * @return
+	 * @return the type.
 	 */
 	public XmlSchemaType getTypeByName(String name) {
         QName nameToSearchFor = new QName(this.getTargetNamespace(),name);
@@ -350,7 +350,7 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
 	 * Get a schema from an import
 	 * 
 	 * @param includeOrImport
-	 * @return
+	 * @return return the schema object.
 	 */
 	private XmlSchema getSchema(Object includeOrImport) {
 		XmlSchema schema;
@@ -625,11 +625,24 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
 
         return true;
     }
+    
+    /**
+     * Retrieve a DOM tree for this one schema, independent of any included or 
+     * related schemas.
+     * @return The DOM document.
+     * @throws XmlSchemaSerializerException
+     */
+    public Document getSchemaDocument() throws XmlSchemaSerializerException {
+        XmlSchemaSerializer xser = new XmlSchemaSerializer();
+        xser.setExtReg(this.parent.getExtReg());
+        return xser.serializeSchema(this, false)[0];
+    }
+    
     public String getInputEncoding() {
         return inputEncoding;
     }
     
-     public String toString() {
+    public String toString() {
         return super.toString() + "[" + logicalTargetNamespace + "]";
     }
 }

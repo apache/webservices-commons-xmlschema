@@ -21,6 +21,7 @@
     <id>docs</id>
     <formats>
         <format>zip</format>
+        <format>dir</format>
     </formats>
     <includeSiteDirectory>true</includeSiteDirectory>
     <fileSets>
@@ -28,6 +29,33 @@
             <includes>
                 <include>*.txt</include>
             </includes>
+            <excludes>
+               <exclude>README.txt</exclude>
+               <exclude>RELEASE-NOTE.txt</exclude>
+            </excludes>
      </fileSet>
+        <fileSet>
+            <directory>target/maven-shared-archive-resources/META-INF</directory>
+            <outputDirectory>.</outputDirectory>
+            <includes>
+                <include>*</include>
+            </includes>
+            <excludes>
+                <exclude>DEPENDENCIES</exclude>
+            </excludes>
+        </fileSet>
     </fileSets>
+    <files>
+     <file>
+       <source>README.txt</source>
+       <outputDirectory>/</outputDirectory>
+       <filtered>true</filtered>
+     </file>
+      <file>
+       <source>RELEASE-NOTE.txt</source>
+       <outputDirectory>/</outputDirectory>
+       <filtered>true</filtered>
+     </file>
+  </files>
+
 </assembly>
