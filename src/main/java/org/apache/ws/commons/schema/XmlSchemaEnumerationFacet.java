@@ -20,8 +20,7 @@
 package org.apache.ws.commons.schema;
 
 /**
- * Class for defining enumeration facets. Represents the World Wide
- * Web Consortium (W3C) enumeration facet.
+ * Class for defining enumeration facets. Represents the World Wide Web Consortium (W3C) enumeration facet.
  */
 
 public class XmlSchemaEnumerationFacet extends XmlSchemaFacet {
@@ -44,7 +43,7 @@ public class XmlSchemaEnumerationFacet extends XmlSchemaFacet {
         xml.append("<enumeration value=\"");
         xml.append(super.getValue());
         xml.append("\" ");
-        
+
         xml.append("fixed=\"");
         xml.append(super.isFixed());
         xml.append("\"/>\n");

@@ -22,8 +22,7 @@ package org.apache.ws.commons.schema;
 import org.w3c.dom.Element;
 
 /**
- * Abstract class for all facets that are used when simple types are
- * derived by restriction.
+ * Abstract class for all facets that are used when simple types are derived by restriction.
  */
 
 public abstract class XmlSchemaFacet extends XmlSchemaAnnotated {
@@ -31,7 +30,6 @@ public abstract class XmlSchemaFacet extends XmlSchemaAnnotated {
     /**
      * Creates new XmlSchemaFacet
      */
-
 
     protected XmlSchemaFacet() {
     }
@@ -93,10 +91,11 @@ public abstract class XmlSchemaFacet extends XmlSchemaAnnotated {
         } else if (name.equals("whiteSpace")) {
             facet = new XmlSchemaWhiteSpaceFacet();
         } else {
-            throw new XmlSchemaException("Incorrect facet with name \""
-                                         + name + "\" found.");
+            throw new XmlSchemaException("Incorrect facet with name \"" + name + "\" found.");
         }
-        if (el.hasAttribute("id"))facet.setId(el.getAttribute("id"));
+        if (el.hasAttribute("id")) {
+            facet.setId(el.getAttribute("id"));
+        }
         facet.setFixed(fixed);
         facet.setValue(el.getAttribute("value"));
         return facet;

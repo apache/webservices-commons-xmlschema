@@ -50,56 +50,42 @@ public class UnionTest extends TestCase {
 
     /**
      * This method will test the union.
-     *
+     * 
      * @throws Exception Any exception encountered
      */
     public void testUnion() throws Exception {
 
         /*
-         <schema xmlns="http://www.w3.org/2001/XMLSchema"
-                 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-                 xmlns:tns="http://soapinterop.org/types"
-                 targetNamespace="http://soapinterop.org/types">
-  
-           <element name="unionTest">
-             <simpleType>
-               <union memberTypes="float decimal"/>
-             </simpleType>
-           </element>
+         * <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         * xmlns:tns="http://soapinterop.org/types" targetNamespace="http://soapinterop.org/types"> <element
+         * name="unionTest"> <simpleType> <union memberTypes="float decimal"/> </simpleType> </element>
+         * </schema>
+         */
 
-         </schema>
-        */
-
-        QName ELEMENT_QNAME = new QName("http://soapinterop.org/types",
-                                        "unionTest");
+        QName ELEMENT_QNAME = new QName("http://soapinterop.org/types", "unionTest");
         InputStream is = new FileInputStream(Resources.asURI("union.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         schemaCol.read(new StreamSource(is), null);
 
-
         XmlSchemaElement elem = schemaCol.getElementByQName(ELEMENT_QNAME);
         assertNotNull(elem);
         assertEquals("unionTest", elem.getName());
-        assertEquals(new QName("http://soapinterop.org/types", "unionTest"),
-                     elem.getQName());
+        assertEquals(new QName("http://soapinterop.org/types", "unionTest"), elem.getQName());
 
         XmlSchemaSimpleType simpleType = (XmlSchemaSimpleType)elem.getSchemaType();
         assertNotNull(simpleType);
 
-        XmlSchemaSimpleTypeUnion xsstu =
-            (XmlSchemaSimpleTypeUnion)simpleType.getContent();
+        XmlSchemaSimpleTypeUnion xsstu = (XmlSchemaSimpleTypeUnion)simpleType.getContent();
         assertNotNull(xsstu);
 
         QName[] qname = xsstu.getMemberTypesQNames();
         Set s = new HashSet();
         s.add(new QName("http://www.w3.org/2001/XMLSchema", "float"));
         s.add(new QName("http://www.w3.org/2001/XMLSchema", "decimal"));
-        for (int i = 0; i < qname.length; i++) {
-            assertTrue(s.remove(qname[i]));
+        for (QName element : qname) {
+            assertTrue(s.remove(element));
         }
-        assertTrue("The set should have been empty, but instead contained: "
-                   + s + ".",
-                   s.isEmpty());
+        assertTrue("The set should have been empty, but instead contained: " + s + ".", s.isEmpty());
 
         assertEquals("float decimal", xsstu.getMemberTypesSource());
 

@@ -20,8 +20,7 @@
 package org.apache.ws.commons.schema;
 
 /**
- * Class for defining maxInclusive facets. Represents the World
- * Wide Web Consortium (W3C) maxInclusive facet.
+ * Class for defining maxInclusive facets. Represents the World Wide Web Consortium (W3C) maxInclusive facet.
  */
 
 public class XmlSchemaMaxInclusiveFacet extends XmlSchemaFacet {
@@ -35,7 +34,7 @@ public class XmlSchemaMaxInclusiveFacet extends XmlSchemaFacet {
     public XmlSchemaMaxInclusiveFacet(Object value, boolean fixed) {
         super(value, fixed);
     }
-    
+
     public String toString(String prefix, int tab) {
         StringBuffer xml = new StringBuffer();
         for (int i = 0; i < tab; i++) {

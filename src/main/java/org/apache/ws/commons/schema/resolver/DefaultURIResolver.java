@@ -27,60 +27,50 @@ import java.net.URL;
 
 import org.xml.sax.InputSource;
 
-
 /**
- * This resolver provides the means of resolving the imports and includes of a
- * given schema document. The system will call this default resolver if there
- * is no other resolver present in the system. 
+ * This resolver provides the means of resolving the imports and includes of a given schema document. The
+ * system will call this default resolver if there is no other resolver present in the system.
  */
 public class DefaultURIResolver implements CollectionURIResolver {
-	
-	private String collectionBaseURI;
 
+    private String collectionBaseURI;
 
     /**
      * Try to resolve a schema location to some data.
+     * 
      * @param namespace targt namespace.
      * @param schemaLocation system ID.
      * @param baseUri base URI for the schema.
      */
-    public InputSource resolveEntity(String namespace,
-                                     String schemaLocation,
-                                     String baseUri) {
+    public InputSource resolveEntity(String namespace, String schemaLocation, String baseUri) {
 
-        if (baseUri!=null) 
-        {
-            try
-            {
+        if (baseUri != null) {
+            try {
                 File baseFile = new File(baseUri);
                 if (baseFile.exists()) {
-                	baseUri = baseFile.toURI().toString();
-                } else if(collectionBaseURI != null) {
-                	baseFile = new File(collectionBaseURI);
+                    baseUri = baseFile.toURI().toString();
+                } else if (collectionBaseURI != null) {
+                    baseFile = new File(collectionBaseURI);
                     if (baseFile.exists()) {
-                    	baseUri = baseFile.toURI().toString();
+                        baseUri = baseFile.toURI().toString();
                     }
                 }
-                
+
                 String ref = new URI(baseUri).resolve(new URI(schemaLocation)).toString();
 
                 return new InputSource(ref);
-            }
-            catch (URISyntaxException e1)
-            {
+            } catch (URISyntaxException e1) {
                 throw new RuntimeException(e1);
             }
 
         }
         return new InputSource(schemaLocation);
 
-
-
     }
 
     /**
      * Find whether a given uri is relative or not
-     *
+     * 
      * @param uri
      * @return boolean
      */
@@ -89,10 +79,8 @@ public class DefaultURIResolver implements CollectionURIResolver {
     }
 
     /**
-     * This is essentially a call to "new URL(contextURL, spec)"
-     * with extra handling in case spec is
-     * a file.
-     *
+     * This is essentially a call to "new URL(contextURL, spec)" with extra handling in case spec is a file.
+     * 
      * @param contextURL
      * @param spec
      * @throws java.io.IOException
@@ -114,8 +102,8 @@ public class DefaultURIResolver implements CollectionURIResolver {
 
             // if we are deail with files in both cases, create a url
             // by using the directory of the context URL.
-            if ((contextURL != null) && url.getProtocol().equals("file")
-                    && contextURL.getProtocol().equals("file")) {
+            if (contextURL != null && url.getProtocol().equals("file")
+                && contextURL.getProtocol().equals("file")) {
                 url = getFileURL(contextURL, path);
             }
         } catch (MalformedURLException me) {
@@ -125,20 +113,19 @@ public class DefaultURIResolver implements CollectionURIResolver {
         }
 
         // Everything is OK with this URL, although a file url constructed
-        // above may not exist.  This will be caught later when the URL is
+        // above may not exist. This will be caught later when the URL is
         // accessed.
         return url;
-    }    // getURL
+    } // getURL
 
     /**
      * Method getFileURL
-     *
+     * 
      * @param contextURL
      * @param path
      * @throws IOException
      */
-    protected URL getFileURL(URL contextURL, String path)
-            throws IOException {
+    protected URL getFileURL(URL contextURL, String path) throws IOException {
 
         if (contextURL != null) {
 
@@ -146,16 +133,16 @@ public class DefaultURIResolver implements CollectionURIResolver {
             // the spec string to the end.
             String contextFileName = contextURL.getFile();
             URL parent = null;
-            //the logic for finding the parent file is this.
-            //1.if the contextURI represents a file then take the parent file
-            //of it
-            //2. If the contextURI represents a directory, then take that as
-            //the parent
+            // the logic for finding the parent file is this.
+            // 1.if the contextURI represents a file then take the parent file
+            // of it
+            // 2. If the contextURI represents a directory, then take that as
+            // the parent
             File parentFile;
             File contextFile = new File(contextFileName);
-            if (contextFile.isDirectory()){
+            if (contextFile.isDirectory()) {
                 parentFile = contextFile;
-            }else{
+            } else {
                 parentFile = contextFile.getParentFile();
             }
 
@@ -168,21 +155,23 @@ public class DefaultURIResolver implements CollectionURIResolver {
         }
 
         return new URL("file", "", path);
-    }    // getFileURL
+    } // getFileURL
 
     /**
      * Get the base URI derived from a schema collection. It serves as a fallback from the specified base.
+     * 
      * @return URI
      */
-	public String getCollectionBaseURI() {
-		return collectionBaseURI;
-	}
+    public String getCollectionBaseURI() {
+        return collectionBaseURI;
+    }
 
-	/**
-	 * set the collection base URI, which serves as a fallback from the base of the immediate schema.
-	 * @param collectionBaseURI the URI.
-	 */
-	public void setCollectionBaseURI(String collectionBaseURI) {
-		this.collectionBaseURI = collectionBaseURI;
-	}
+    /**
+     * set the collection base URI, which serves as a fallback from the base of the immediate schema.
+     * 
+     * @param collectionBaseURI the URI.
+     */
+    public void setCollectionBaseURI(String collectionBaseURI) {
+        this.collectionBaseURI = collectionBaseURI;
+    }
 }

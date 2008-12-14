@@ -19,10 +19,8 @@
 
 package org.apache.ws.commons.schema;
 
-
 /**
- * Defines an annotation. Represents the World Wide Web Consortium (W3C)
- * annotation element.
+ * Defines an annotation. Represents the World Wide Web Consortium (W3C) annotation element.
  */
 
 public class XmlSchemaAnnotation extends XmlSchemaObject {

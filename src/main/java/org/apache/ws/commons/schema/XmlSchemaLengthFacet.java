@@ -20,8 +20,7 @@
 package org.apache.ws.commons.schema;
 
 /**
- * Class for defining length facets. Represents the World Wide Web
- * Consortium (W3C) length facet.
+ * Class for defining length facets. Represents the World Wide Web Consortium (W3C) length facet.
  */
 
 public class XmlSchemaLengthFacet extends XmlSchemaNumericFacet {
@@ -35,7 +34,7 @@ public class XmlSchemaLengthFacet extends XmlSchemaNumericFacet {
     public XmlSchemaLengthFacet(Object value, boolean fixed) {
         super(value, fixed);
     }
-    
+
     public String toString(String prefix, int tab) {
         StringBuffer xml = new StringBuffer();
         for (int i = 0; i < tab; i++) {

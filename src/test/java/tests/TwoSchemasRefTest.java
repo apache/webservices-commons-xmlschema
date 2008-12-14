@@ -32,23 +32,25 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 public class TwoSchemasRefTest extends TestCase {
 
-    public void testTwoSchemas() throws Exception{
+    public void testTwoSchemas() throws Exception {
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         documentBuilderFactory.setNamespaceAware(true);
-        Document doc = documentBuilderFactory.newDocumentBuilder().
-                parse(Resources.asURI("twoSchemas-ref.wsdl"));
+        Document doc = documentBuilderFactory.newDocumentBuilder().parse(
+                                                                         Resources
+                                                                             .asURI("twoSchemas-ref.wsdl"));
 
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-		NodeList schemaNodes = doc.getElementsByTagNameNS("http://www.w3.org/2001/XMLSchema","schema");
+        NodeList schemaNodes = doc.getElementsByTagNameNS("http://www.w3.org/2001/XMLSchema", "schema");
         for (int j = 0; j < schemaNodes.getLength(); j++) {
-        	Node schemaNode = schemaNodes.item(j);
-        	if("schema".equals(schemaNode.getLocalName())){
-        		schemaCol.read((Element)schemaNode);
-        	}
+            Node schemaNode = schemaNodes.item(j);
+            if ("schema".equals(schemaNode.getLocalName())) {
+                schemaCol.read((Element)schemaNode);
+            }
         }
 
-        XmlSchemaElement elementByQName = schemaCol.getElementByQName(new QName("http://tns.demo.org", "elem1"));
+        XmlSchemaElement elementByQName = schemaCol.getElementByQName(new QName("http://tns.demo.org",
+                                                                                "elem1"));
         assertNotNull(elementByQName);
-        
+
     }
 }

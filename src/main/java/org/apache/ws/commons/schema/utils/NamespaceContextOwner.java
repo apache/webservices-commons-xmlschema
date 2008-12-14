@@ -20,8 +20,7 @@
 package org.apache.ws.commons.schema.utils;
 
 /**
- * Interface of an object, which is able to provide a namespace
- * context.
+ * Interface of an object, which is able to provide a namespace context.
  */
 public interface NamespaceContextOwner {
     /**

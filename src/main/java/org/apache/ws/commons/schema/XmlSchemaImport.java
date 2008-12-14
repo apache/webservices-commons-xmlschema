@@ -20,8 +20,8 @@
 package org.apache.ws.commons.schema;
 
 /**
- * The class to import schema components from any schema.
- * Represents the World Wide Web Consortium (W3C) import element.
+ * The class to import schema components from any schema. Represents the World Wide Web Consortium (W3C)
+ * import element.
  */
 
 public class XmlSchemaImport extends XmlSchemaExternal {
@@ -42,6 +42,5 @@ public class XmlSchemaImport extends XmlSchemaExternal {
     public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
-
 
 }

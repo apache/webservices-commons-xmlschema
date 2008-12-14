@@ -35,46 +35,41 @@ import java.util.Map;
 
 public class EncodingTest extends TestCase {
 
+    public void testExternalAtt() throws Exception {
+        // create a DOM document
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        documentBuilderFactory.setNamespaceAware(true);
+        DocumentBuilder newDocumentBuilder = documentBuilderFactory.newDocumentBuilder();
 
-    public void testExternalAtt() throws Exception{
-             //create a DOM document
-           DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-           documentBuilderFactory.setNamespaceAware(true);
-           DocumentBuilder newDocumentBuilder = documentBuilderFactory.newDocumentBuilder();
+        // Skip test in JDK1.4 as it uses crimson parser and an old DOM implementation
+        try {
+            Document.class.getMethod("getInputEncoding", new Class[] {});
+        } catch (NoSuchMethodException e) {
+            System.out.println(">>>> Ignoring test as it needs DOM3");
+            return;
+        }
 
-           // Skip test in JDK1.4 as it uses crimson parser and an old DOM implementation
-           try {
-               Document.class.getMethod("getInputEncoding", new Class[]{});
-           } catch (NoSuchMethodException e) {
-               System.out.println(">>>> Ignoring test as it needs DOM3");
-               return;
-           }
+        Document doc = newDocumentBuilder.parse(Resources.asURI("other_encoding/japaneseElementForm.xsd"));
 
-		   Document doc = newDocumentBuilder.
-                   parse(Resources.asURI("other_encoding/japaneseElementForm.xsd"));
-           
-           XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-           XmlSchema s1 = schemaCol.read(doc.getDocumentElement());
-           assertNotNull(s1);
-           assertEquals("EUC-JP", s1.getInputEncoding().toUpperCase());
-           
-          //write it back to a stream - re read it and check the encoding
-           //we need to explicitly say to have the xml header
-           Map options = new HashMap();
-           options.put(OutputKeys.OMIT_XML_DECLARATION, "no");
-           
-           ByteArrayOutputStream baos = new ByteArrayOutputStream();
-           s1.write(baos,options);
-           
-           schemaCol = new XmlSchemaCollection();
-           Document doc2 = newDocumentBuilder.parse(new ByteArrayInputStream(baos.toByteArray()));
-           XmlSchema s2 = schemaCol.read(doc2.getDocumentElement());
-           assertNotNull(s2);
-           assertEquals("EUC-JP", s2.getInputEncoding().toUpperCase());
-            
-           
-           
+        XmlSchemaCollection schemaCol = new XmlSchemaCollection();
+        XmlSchema s1 = schemaCol.read(doc.getDocumentElement());
+        assertNotNull(s1);
+        assertEquals("EUC-JP", s1.getInputEncoding().toUpperCase());
 
-       }
+        // write it back to a stream - re read it and check the encoding
+        // we need to explicitly say to have the xml header
+        Map options = new HashMap();
+        options.put(OutputKeys.OMIT_XML_DECLARATION, "no");
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        s1.write(baos, options);
+
+        schemaCol = new XmlSchemaCollection();
+        Document doc2 = newDocumentBuilder.parse(new ByteArrayInputStream(baos.toByteArray()));
+        XmlSchema s2 = schemaCol.read(doc2.getDocumentElement());
+        assertNotNull(s2);
+        assertEquals("EUC-JP", s2.getInputEncoding().toUpperCase());
+
+    }
 
 }

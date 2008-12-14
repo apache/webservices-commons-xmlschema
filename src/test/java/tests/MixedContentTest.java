@@ -34,13 +34,10 @@ import java.io.InputStream;
 
 public class MixedContentTest extends TestCase {
     public void testMixedContent() throws Exception {
-        QName ELEMENT_QNAME = new QName("http://soapinterop.org/xsd",
-                                        "complexElt");
+        QName ELEMENT_QNAME = new QName("http://soapinterop.org/xsd", "complexElt");
 
+        QName TYPE_QNAME = new QName("http://soapinterop.org/xsd", "NoAssemblyRequiredProduct");
 
-        QName TYPE_QNAME = new QName("http://soapinterop.org/xsd",
-        "NoAssemblyRequiredProduct");
-        
         InputStream is = new FileInputStream(Resources.asURI("mixedContent.xsd"));
         XmlSchemaCollection schema = new XmlSchemaCollection();
         XmlSchema s = schema.read(new StreamSource(is), null);
@@ -52,13 +49,11 @@ public class MixedContentTest extends TestCase {
         assertNotNull(schemaType);
 
         assertTrue(schemaType.isMixed());
-        
+
         XmlSchemaComplexType typeByName = (XmlSchemaComplexType)s.getTypeByName(TYPE_QNAME);
         assertNotNull(typeByName);
-        
+
         assertTrue(((XmlSchemaComplexContent)typeByName.getContentModel()).isMixed());
-       
-        
-        
+
     }
 }

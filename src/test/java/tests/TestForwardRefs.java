@@ -30,10 +30,9 @@ import java.io.InputStream;
 /**
  */
 public class TestForwardRefs extends TestCase {
-    
+
     public void testForwardRefs() throws Exception {
-        QName ELEMENT_QNAME = new QName("http://soapinterop.org/types",
-                                        "attrTest");
+        QName ELEMENT_QNAME = new QName("http://soapinterop.org/types", "attrTest");
         InputStream is = new FileInputStream(Resources.asURI("forwardRef.xsd"));
         XmlSchemaCollection schema = new XmlSchemaCollection();
         schema.read(new StreamSource(is), null);

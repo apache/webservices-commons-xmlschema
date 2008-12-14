@@ -21,11 +21,9 @@ package org.apache.ws.commons.schema;
 
 import javax.xml.namespace.QName;
 
-
 /**
- * Class used within complex types that defines the reference to
- * groups defined at the schema level. Represents the World Wide
- * Web Consortium (W3C) group element with ref attribute.
+ * Class used within complex types that defines the reference to groups defined at the schema level.
+ * Represents the World Wide Web Consortium (W3C) group element with ref attribute.
  */
 
 public class XmlSchemaGroupRef extends XmlSchemaParticle {
@@ -51,6 +49,5 @@ public class XmlSchemaGroupRef extends XmlSchemaParticle {
     public void setRefName(QName refName) {
         this.refName = refName;
     }
-
 
 }

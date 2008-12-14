@@ -22,17 +22,14 @@ package org.apache.ws.commons.schema;
 import org.apache.ws.commons.schema.constants.Constants;
 
 /**
- * Provides information about the validation mode of any
- * and anyAttribute element replacements.
+ * Provides information about the validation mode of any and anyAttribute element replacements.
  */
 
 public class XmlSchemaContentProcessing extends org.apache.ws.commons.schema.constants.Enum {
 
-    static String[] members = new String[]{
-            Constants.BlockConstants.LAX,
-            Constants.BlockConstants.NONE,
-            Constants.BlockConstants.SKIP,
-            Constants.BlockConstants.STRICT
+    static String[] members = new String[] {
+        Constants.BlockConstants.LAX, Constants.BlockConstants.NONE, Constants.BlockConstants.SKIP,
+        Constants.BlockConstants.STRICT
     };
 
     /**

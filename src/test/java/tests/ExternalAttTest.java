@@ -30,28 +30,25 @@ import java.util.Map;
 
 public class ExternalAttTest extends TestCase {
 
+    public void testExternalAtt() throws Exception {
+        // create a DOM document
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        documentBuilderFactory.setNamespaceAware(true);
+        Document doc = documentBuilderFactory.newDocumentBuilder()
+            .parse(Resources.asURI("externalAttributes.xsd"));
 
-    public void testExternalAtt() throws Exception{
-             //create a DOM document
-           DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-           documentBuilderFactory.setNamespaceAware(true);
-           Document doc = documentBuilderFactory.newDocumentBuilder().
-                   parse(Resources.asURI("externalAttributes.xsd"));
+        XmlSchemaCollection schemaCol = new XmlSchemaCollection();
+        XmlSchema s = schemaCol.read(doc.getDocumentElement());
 
-           XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-           XmlSchema s = schemaCol.read(doc.getDocumentElement());
+        // check the meta data
+        Map metaInfoMap = s.getMetaInfoMap();
+        assertNotNull(metaInfoMap);
 
-           //check the meta data
-           Map metaInfoMap = s.getMetaInfoMap();
-           assertNotNull(metaInfoMap);
+        Map extenalAttributeMap = (Map)metaInfoMap.get(Constants.MetaDataConstants.EXTERNAL_ATTRIBUTES);
+        assertNotNull(extenalAttributeMap);
 
-           Map extenalAttributeMap = (Map)metaInfoMap.get(Constants.MetaDataConstants.EXTERNAL_ATTRIBUTES);
-           assertNotNull(extenalAttributeMap);
-           
-                    
-           assertEquals(1,extenalAttributeMap.size());
+        assertEquals(1, extenalAttributeMap.size());
 
-
-       }
+    }
 
 }

@@ -24,12 +24,10 @@ import org.apache.ws.commons.schema.constants.Constants;
 import javax.xml.namespace.QName;
 
 /**
- * Class for attribute types. Represents the World Wide Web Consortium
- * (W3C) attribute element.
+ * Class for attribute types. Represents the World Wide Web Consortium (W3C) attribute element.
  */
 
 // October 15th - momo - initial implementation
-
 public class XmlSchemaAttribute extends XmlSchemaAnnotated {
 
     Object attributeType;
@@ -126,11 +124,13 @@ public class XmlSchemaAttribute extends XmlSchemaAnnotated {
     public String toString(String prefix, int tab) {
         String xml = new String();
 
-        if (!prefix.equals("") && prefix.indexOf(":") == -1)
+        if (!prefix.equals("") && prefix.indexOf(":") == -1) {
             prefix += ":";
+        }
 
-        for (int i = 0; i < tab; i++)
+        for (int i = 0; i < tab; i++) {
             xml += "\t";
+        }
 
         xml += "<" + prefix + "attribute name=\"" + name + "\" type=\"" + schemaTypeName + "\"/>\n";
 

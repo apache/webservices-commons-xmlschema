@@ -31,22 +31,22 @@ import java.util.Map;
 public class CustomElementSerializer implements ExtensionSerializer {
     /**
      * serialize the given element
-     *
-     * @param schemaObject - Parent schema object.contains the extension
-     *                     to be serialized
-     * @param classOfType  - The class of type to be serialized
-     * @param domNode      - the parent DOM Node that will ultimately be serialized. The XMLSchema
-     *                     serialization mechanism is to create a DOM tree first and serialize it
+     * 
+     * @param schemaObject - Parent schema object.contains the extension to be serialized
+     * @param classOfType - The class of type to be serialized
+     * @param domNode - the parent DOM Node that will ultimately be serialized. The XMLSchema serialization
+     *            mechanism is to create a DOM tree first and serialize it
      */
     public void serialize(XmlSchemaObject schemaObject, Class classOfType, Node domNode) {
-       Map metaInfoMap = schemaObject.getMetaInfoMap();
-       CustomElement customElt = (CustomElement)metaInfoMap.get(CustomElement.CUSTOM_ELT_QNAME);
+        Map metaInfoMap = schemaObject.getMetaInfoMap();
+        CustomElement customElt = (CustomElement)metaInfoMap.get(CustomElement.CUSTOM_ELT_QNAME);
 
         Element elt = (Element)domNode;
-        Element extElt = elt.getOwnerDocument().createElementNS(CustomElement.CUSTOM_ELT_QNAME.getNamespaceURI(),
-                                                             CustomElement.CUSTOM_ELT_QNAME.getLocalPart());
-        extElt.setAttribute("prefix",customElt.getPrefix());
-        extElt.setAttribute("suffix",customElt.getSuffix());
+        Element extElt = elt.getOwnerDocument()
+            .createElementNS(CustomElement.CUSTOM_ELT_QNAME.getNamespaceURI(),
+                             CustomElement.CUSTOM_ELT_QNAME.getLocalPart());
+        extElt.setAttribute("prefix", customElt.getPrefix());
+        extElt.setAttribute("suffix", customElt.getSuffix());
 
         elt.appendChild(extElt);
 

@@ -23,7 +23,6 @@ import org.apache.ws.commons.schema.constants.Constants;
 
 import javax.xml.namespace.QName;
 
-
 /**
  * Class for elements. Represents the World Wide Web Consortium (W3C) element element.
  */
@@ -36,22 +35,21 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver 
     XmlSchemaDerivationMethod block;
 
     /**
-     * The value after an element has been compiled to post-schema infoset.
-     * This value is either from the type itself or, if not defined on the type, taken from the schema element.
+     * The value after an element has been compiled to post-schema infoset. This value is either from the type
+     * itself or, if not defined on the type, taken from the schema element.
      */
     XmlSchemaDerivationMethod blockResolved;
     XmlSchemaObjectCollection constraints;
 
     /**
-     * Provides the default value of the element if its content
-     * is a simple type or the element's content is textOnly.
+     * Provides the default value of the element if its content is a simple type or the element's content is
+     * textOnly.
      */
     String defaultValue;
     String fixedValue;
 
     /**
-     * Returns the correct common runtime library
-     * object based upon the SchemaType for the element.
+     * Returns the correct common runtime library object based upon the SchemaType for the element.
      */
     Object elementType;
 
@@ -59,8 +57,8 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver 
     XmlSchemaDerivationMethod finalDerivationResolved;
 
     /**
-     * The default value is the value of the elementFormDefault attribute for the schema element containing the attribute.
-     * The default is Unqualified.
+     * The default value is the value of the elementFormDefault attribute for the schema element containing
+     * the attribute. The default is Unqualified.
      */
     XmlSchemaForm form;
     boolean isAbstract;
@@ -70,14 +68,13 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver 
     QName refName;
 
     /**
-     * Returns the type of the element.
-     * This can either be a complex type or a simple type.
+     * Returns the type of the element. This can either be a complex type or a simple type.
      */
     XmlSchemaType schemaType;
 
     /**
-     * QName of a built-in data type defined in this schema or another
-     * schema indicated by the specified namespace.
+     * QName of a built-in data type defined in this schema or another schema indicated by the specified
+     * namespace.
      */
     QName schemaTypeName;
 
@@ -220,42 +217,52 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver 
     public String toString(String prefix, int tab) {
         String xml = new String();
 
-        if (!prefix.equals("") && prefix.indexOf(":") == -1)
+        if (!prefix.equals("") && prefix.indexOf(":") == -1) {
             prefix += ":";
+        }
 
-        for (int i = 0; i < tab; i++)
+        for (int i = 0; i < tab; i++) {
             xml += "\t";
+        }
 
         xml += "<" + prefix + "element ";
 
-        if (!name.equals(""))
+        if (!name.equals("")) {
             xml += "name=\"" + name + "\" ";
+        }
 
-        if (schemaTypeName != null)
+        if (schemaTypeName != null) {
             xml += "type=\"" + schemaTypeName + "\"";
+        }
 
-        if (refName != null)
+        if (refName != null) {
             xml += "ref=\"" + refName + "\" ";
+        }
 
-        if (minOccurs != 1)
+        if (minOccurs != 1) {
             xml += "minOccurs=\"" + minOccurs + "\" ";
+        }
 
-        if (maxOccurs != 1)
+        if (maxOccurs != 1) {
             xml += "maxOccurs=\"" + maxOccurs + "\" ";
-        
-        if (isNillable)
-          xml += "nillable=\"" + isNillable + "\" ";
+        }
+
+        if (isNillable) {
+            xml += "nillable=\"" + isNillable + "\" ";
+        }
 
         xml += ">\n";
 
-        if (constraints != null)
+        if (constraints != null) {
             xml += constraints.toString(prefix, (tab + 1));
+        }
 
         if (schemaType != null) {
             xml += schemaType.toString(prefix, (tab + 1));
         }
-        for (int i = 0; i < tab; i++)
+        for (int i = 0; i < tab; i++) {
             xml += "\t";
+        }
 
         xml += "</" + prefix + "element>\n";
 

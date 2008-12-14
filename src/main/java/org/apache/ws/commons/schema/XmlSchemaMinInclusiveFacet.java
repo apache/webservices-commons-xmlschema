@@ -20,8 +20,7 @@
 package org.apache.ws.commons.schema;
 
 /**
- * Class for defining minInclusive facets. Represents the World Wide
- * Web Consortium (W3C) minInclusive facet.
+ * Class for defining minInclusive facets. Represents the World Wide Web Consortium (W3C) minInclusive facet.
  */
 
 public class XmlSchemaMinInclusiveFacet extends XmlSchemaFacet {

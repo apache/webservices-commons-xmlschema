@@ -20,8 +20,8 @@
 package org.apache.ws.commons.schema;
 
 /**
- * Class for simple types and complex types with a simple content model.
- * Represents the World Wide Web Consortium (W3C) simpleContent element.
+ * Class for simple types and complex types with a simple content model. Represents the World Wide Web
+ * Consortium (W3C) simpleContent element.
  */
 
 public class XmlSchemaSimpleContent extends XmlSchemaContentModel {
@@ -32,7 +32,7 @@ public class XmlSchemaSimpleContent extends XmlSchemaContentModel {
     public XmlSchemaSimpleContent() {
     }
 
-    /*  One of XmlSchemaSimpleContentRestriction or XmlSchemaSimpleContentExtension. */
+    /* One of XmlSchemaSimpleContentRestriction or XmlSchemaSimpleContentExtension. */
     XmlSchemaContent content;
 
     public XmlSchemaContent getContent() {

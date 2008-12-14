@@ -26,9 +26,9 @@ public class ValidationEvent extends EventObject {
     /**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
+    /**
      * Creates new ValidationEvent
      */
     public ValidationEvent(Object source) {

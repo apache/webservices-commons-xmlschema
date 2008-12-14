@@ -31,11 +31,9 @@ public class XmlSchemaParticle extends XmlSchemaAnnotated {
     String minOccursString;
 
     /**
-     * Creates new XmlSchemaParticle
-     * Particle types are usually interchangeable.
-     * A local element declaration or reference to a global element
-     * declaration (element), a compositor ( sequence, choice, or all),
-     * a reference to a named content model group (group), or an element wildcard (any).
+     * Creates new XmlSchemaParticle Particle types are usually interchangeable. A local element declaration
+     * or reference to a global element declaration (element), a compositor ( sequence, choice, or all), a
+     * reference to a named content model group (group), or an element wildcard (any).
      */
     public XmlSchemaParticle() {
     }

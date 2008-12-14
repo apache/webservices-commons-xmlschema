@@ -32,10 +32,8 @@ import java.io.InputStream;
 
 public class TestSimpleRestriction extends TestCase {
     public void testSimpleRestriction() throws Exception {
-        QName TYPE_QNAME = new QName("http://soapinterop.org/types",
-                "layoutComponentType");
-        QName ELEMENT_QNAME = new QName("http://soapinterop.org/types",
-                "foo");
+        QName TYPE_QNAME = new QName("http://soapinterop.org/types", "layoutComponentType");
+        QName ELEMENT_QNAME = new QName("http://soapinterop.org/types", "foo");
 
         InputStream is = new FileInputStream(Resources.asURI("SimpleContentRestriction.xsd"));
         XmlSchemaCollection schema = new XmlSchemaCollection();
@@ -52,15 +50,16 @@ public class TestSimpleRestriction extends TestCase {
     }
 
     public void testSimpleTypeRestrictionWithoutNamespace() throws Exception {
-    	InputStream is = new FileInputStream(Resources.asURI("includedWithoutNamespace.xsd"));
-    	XmlSchemaCollection schema = new XmlSchemaCollection();
-    	schema.read(new StreamSource(is), null);
-    	XmlSchemaType principalId = schema.getTypeByQName(new QName("", "XdwsPrincipalId"));
-    	assertNotNull(principalId);
-    	XmlSchemaSimpleType groupId = (XmlSchemaSimpleType)schema.getTypeByQName(new QName("", "XdwsGroupId"));
-    	assertNotNull(groupId);
-    	QName baseName = ((XmlSchemaSimpleTypeRestriction)groupId.getContent()).getBaseTypeName();
+        InputStream is = new FileInputStream(Resources.asURI("includedWithoutNamespace.xsd"));
+        XmlSchemaCollection schema = new XmlSchemaCollection();
+        schema.read(new StreamSource(is), null);
+        XmlSchemaType principalId = schema.getTypeByQName(new QName("", "XdwsPrincipalId"));
+        assertNotNull(principalId);
+        XmlSchemaSimpleType groupId = (XmlSchemaSimpleType)schema
+            .getTypeByQName(new QName("", "XdwsGroupId"));
+        assertNotNull(groupId);
+        QName baseName = ((XmlSchemaSimpleTypeRestriction)groupId.getContent()).getBaseTypeName();
 
-    	assertEquals(principalId.getQName(), baseName);
+        assertEquals(principalId.getQName(), baseName);
     }
 }

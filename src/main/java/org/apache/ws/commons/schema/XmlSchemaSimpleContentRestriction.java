@@ -21,11 +21,10 @@ package org.apache.ws.commons.schema;
 
 import javax.xml.namespace.QName;
 
-
 /**
- * Class for simple types that are derived by restriction. Restricts the
- * range of values for the element to a subset of the inherited simple types.
- * Represents the World Wide Web Consortium (W3C) restriction element for simple content.
+ * Class for simple types that are derived by restriction. Restricts the range of values for the element to a
+ * subset of the inherited simple types. Represents the World Wide Web Consortium (W3C) restriction element
+ * for simple content.
  */
 
 public class XmlSchemaSimpleContentRestriction extends XmlSchemaContent {
@@ -38,7 +37,7 @@ public class XmlSchemaSimpleContentRestriction extends XmlSchemaContent {
         attributes = new XmlSchemaObjectCollection();
     }
 
-    /* Allows an XmlSchemaAnyAttribute to be used for the attribute value.*/
+    /* Allows an XmlSchemaAnyAttribute to be used for the attribute value. */
     XmlSchemaAnyAttribute anyAttribute;
 
     public void setAnyAttribute(XmlSchemaAnyAttribute anyAttribute) {
@@ -49,14 +48,17 @@ public class XmlSchemaSimpleContentRestriction extends XmlSchemaContent {
         return this.anyAttribute;
     }
 
-    /* Contains XmlSchemaAttribute and XmlSchemaAttributeGroupRef. Collection of attributes for the simple type.*/
+    /*
+     * Contains XmlSchemaAttribute and XmlSchemaAttributeGroupRef. Collection of attributes for the simple
+     * type.
+     */
     XmlSchemaObjectCollection attributes;
 
     public XmlSchemaObjectCollection getAttributes() {
         return this.attributes;
     }
 
-    /*Derived from the type specified by the base value.*/
+    /* Derived from the type specified by the base value. */
     XmlSchemaSimpleType baseType;
 
     public void setBaseType(XmlSchemaSimpleType baseType) {
@@ -67,7 +69,7 @@ public class XmlSchemaSimpleContentRestriction extends XmlSchemaContent {
         return this.baseType;
     }
 
-    /* Name of the built-in data type, simple type, or complex type.*/
+    /* Name of the built-in data type, simple type, or complex type. */
     QName baseTypeName;
 
     public void setBaseTypeName(QName baseTypeName) {
@@ -86,4 +88,3 @@ public class XmlSchemaSimpleContentRestriction extends XmlSchemaContent {
     }
 
 }
-			

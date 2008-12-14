@@ -33,17 +33,16 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- *  Test class to run through the full cycle of build-serialize-build-check
+ * Test class to run through the full cycle of build-serialize-build-check
  */
 public class CustomExtElementSerializerTest extends TestCase {
 
-
     public void testSerialization() throws Exception {
-        //set the system property for the custom extension registry
-        System.setProperty(Constants.SystemConstants.EXTENSION_REGISTRY_KEY,
-                CustomExtensionRegistry.class.getName());
+        // set the system property for the custom extension registry
+        System.setProperty(Constants.SystemConstants.EXTENSION_REGISTRY_KEY, CustomExtensionRegistry.class
+            .getName());
 
-        //create a DOM document
+        // create a DOM document
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         documentBuilderFactory.setNamespaceAware(true);
 
@@ -51,30 +50,31 @@ public class CustomExtElementSerializerTest extends TestCase {
         if (documentBuilderFactory.getClass().toString().indexOf("crimson") != -1) {
             return;
         }
-        Document doc = documentBuilderFactory.newDocumentBuilder().
-                parse(Resources.asURI("/external/externalElementAnnotations.xsd"));
+        Document doc = documentBuilderFactory.newDocumentBuilder()
+            .parse(Resources.asURI("/external/externalElementAnnotations.xsd"));
 
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(doc,null);
+        XmlSchema schema = schemaCol.read(doc, null);
         assertNotNull(schema);
 
-        //now serialize it to a byte stream
-        //and build a new document out of it
+        // now serialize it to a byte stream
+        // and build a new document out of it
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         schema.write(baos);
-        Document doc2 = documentBuilderFactory.newDocumentBuilder().
-                parse(new ByteArrayInputStream(baos.toByteArray()));
+        Document doc2 = documentBuilderFactory.newDocumentBuilder().parse(
+                                                                          new ByteArrayInputStream(baos
+                                                                              .toByteArray()));
 
         // we can't have two copies in the same collection.
         schemaCol = new XmlSchemaCollection();
-        schema = schemaCol.read(doc2,null);
+        schema = schemaCol.read(doc2, null);
         assertNotNull(schema);
 
         // get the elements and check whether their annotations are properly
         // populated
         Iterator values = schema.getElements().getValues();
         while (values.hasNext()) {
-            XmlSchemaElement elt =  (XmlSchemaElement) values.next();
+            XmlSchemaElement elt = (XmlSchemaElement)values.next();
             assertNotNull(elt);
             Map metaInfoMap = elt.getMetaInfoMap();
             assertNotNull(metaInfoMap);
@@ -84,7 +84,7 @@ public class CustomExtElementSerializerTest extends TestCase {
 
         }
 
-        //remove our system property
+        // remove our system property
         System.getProperties().remove(Constants.SystemConstants.EXTENSION_REGISTRY_KEY);
 
     }

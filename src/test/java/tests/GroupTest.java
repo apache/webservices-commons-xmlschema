@@ -51,46 +51,24 @@ public class GroupTest extends TestCase {
 
     /**
      * This method will test the group.
-     *
+     * 
      * @throws Exception Any exception encountered
      */
     public void testGroup() throws Exception {
 
         /*
-         <schema xmlns="http://www.w3.org/2001/XMLSchema"
-                 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-                 xmlns:tns="http://soapinterop.org/types"
-                 targetNamespace="http://soapinterop.org/types">
+         * <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         * xmlns:tns="http://soapinterop.org/types" targetNamespace="http://soapinterop.org/types"> <group
+         * name="priceGroup"> <annotation> <documentation xml:lang="en"> A price is any one of the following:
+         * Full Price (with amount) Sale Price (with amount and authorization) Clearance Price (with amount
+         * and authorization) Free (with authorization) </documentation> </annotation> <choice id="pg.choice">
+         * <element name="fullPrice" type="decimal"/> <element name="salePrice" type="decimal"/> <element
+         * name="clearancePrice" type="decimal"/> <element name="freePrice" type="decimal"/> </choice>
+         * </group> <element name="price"> <complexType> <group ref="tns:priceGroup" /> </complexType>
+         * </element> </schema>
+         */
 
-           <group name="priceGroup">
-             <annotation>
-               <documentation xml:lang="en">
-                  A price is any one of the following:
-                      * Full Price (with amount)
-                      * Sale Price (with amount and authorization)
-                      * Clearance Price (with amount and authorization)
-                      * Free (with authorization)
-               </documentation>
-             </annotation>
-             <choice id="pg.choice">
-               <element name="fullPrice" type="decimal"/>
-               <element name="salePrice" type="decimal"/>
-               <element name="clearancePrice" type="decimal"/>
-               <element name="freePrice" type="decimal"/>
-             </choice>
-           </group>
-  
-           <element name="price">
-             <complexType>
-               <group ref="tns:priceGroup" />
-             </complexType>
-           </element>
-
-         </schema>
-        */
-
-        QName ELEMENT_QNAME = new QName("http://soapinterop.org/types",
-                                        "price");
+        QName ELEMENT_QNAME = new QName("http://soapinterop.org/types", "price");
         InputStream is = new FileInputStream(Resources.asURI("group.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
@@ -98,41 +76,35 @@ public class GroupTest extends TestCase {
         XmlSchemaElement elem = schemaCol.getElementByQName(ELEMENT_QNAME);
         assertNotNull(elem);
         assertEquals("price", elem.getName());
-        assertEquals(new QName("http://soapinterop.org/types", "price"),
-                     elem.getQName());
+        assertEquals(new QName("http://soapinterop.org/types", "price"), elem.getQName());
 
         XmlSchemaComplexType cType = (XmlSchemaComplexType)elem.getSchemaType();
         assertNotNull(cType);
 
         XmlSchemaGroupRef ref = (XmlSchemaGroupRef)cType.getParticle();
-        assertEquals(new QName("http://soapinterop.org/types", "priceGroup"),
-                     ref.getRefName());
+        assertEquals(new QName("http://soapinterop.org/types", "priceGroup"), ref.getRefName());
 
         XmlSchemaObjectTable t = schema.getGroups();
         assertEquals(1, t.getCount());
 
         Set s = new HashSet();
         s.add("priceGroup");
-        for (Iterator i = t.getNames(); i.hasNext(); ) {
+        for (Iterator i = t.getNames(); i.hasNext();) {
             String name = ((QName)i.next()).getLocalPart();
             assertEquals("priceGroup", name);
             s.remove(name);
         }
-        assertTrue("The set should have been empty, but instead contained: "
-                   + s + ".",
-                   s.isEmpty());
+        assertTrue("The set should have been empty, but instead contained: " + s + ".", s.isEmpty());
 
         s.clear();
         s.add("org.apache.ws.commons.schema.XmlSchemaGroup");
         XmlSchemaGroup xsg = null;
-        for (Iterator i = t.getValues(); i.hasNext(); ) {
+        for (Iterator i = t.getValues(); i.hasNext();) {
             xsg = (XmlSchemaGroup)i.next();
             s.remove(xsg.getClass().getName());
         }
-        assertTrue("The set should have been empty, but instead contained: "
-                   + s + ".",
-                   s.isEmpty());
-        
+        assertTrue("The set should have been empty, but instead contained: " + s + ".", s.isEmpty());
+
         assertNotNull(xsg);
         assertEquals("priceGroup", xsg.getName().getLocalPart());
 
@@ -158,16 +130,12 @@ public class GroupTest extends TestCase {
             } else if (eName.equals("freePrice")) {
                 assertEquals(new QName("", "freePrice"), e.getQName());
             } else {
-                fail("The name \"" + eName + "\" was found but shouldn't "
-                     + "have been found.");
+                fail("The name \"" + eName + "\" was found but shouldn't " + "have been found.");
             }
-            assertEquals(new QName("http://www.w3.org/2001/XMLSchema",
-                                   "decimal"), e.getSchemaTypeName());
+            assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "decimal"), e.getSchemaTypeName());
             assertTrue(s.remove(e.getName()));
         }
-        assertTrue("The set should have been empty, but instead contained: "
-                   + s + ".",
-                   s.isEmpty());
+        assertTrue("The set should have been empty, but instead contained: " + s + ".", s.isEmpty());
 
     }
 

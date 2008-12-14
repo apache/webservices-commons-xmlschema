@@ -33,9 +33,8 @@ public abstract class PrefixCollector {
     protected abstract void declare(String pPrefix, String pNamespaceURI);
 
     /**
-     * Searches for namespace prefix declarations in the given node.
-     * For any prefix declaration, it invokes {@link #declare(String, String)}.
-     * This method doesn't work recursively: The parent nodes prefix
+     * Searches for namespace prefix declarations in the given node. For any prefix declaration, it invokes
+     * {@link #declare(String, String)}. This method doesn't work recursively: The parent nodes prefix
      * declarations are ignored.
      */
     public void searchLocalPrefixDeclarations(Node pNode) {
@@ -46,7 +45,8 @@ public abstract class PrefixCollector {
                 final String uri = attr.getNamespaceURI();
                 if (Constants.XMLNS_ATTRIBUTE_NS_URI.equals(uri)) {
                     String localName = attr.getLocalName();
-                    String prefix = Constants.XMLNS_ATTRIBUTE.equals(localName) ? Constants.DEFAULT_NS_PREFIX : localName;
+                    String prefix = Constants.XMLNS_ATTRIBUTE.equals(localName)
+                        ? Constants.DEFAULT_NS_PREFIX : localName;
                     declare(prefix, attr.getNodeValue());
                 }
             }
@@ -54,10 +54,9 @@ public abstract class PrefixCollector {
     }
 
     /**
-     * Searches for namespace prefix declarations in the given node.
-     * For any prefix declaration, it invokes {@link #declare(String, String)}.
-     * This method works recursively: The parent nodes prefix
-     * declarations are collected before the current nodes.
+     * Searches for namespace prefix declarations in the given node. For any prefix declaration, it invokes
+     * {@link #declare(String, String)}. This method works recursively: The parent nodes prefix declarations
+     * are collected before the current nodes.
      */
     public void searchAllPrefixDeclarations(Node pNode) {
         Node parent = pNode.getParentNode();

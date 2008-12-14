@@ -27,16 +27,13 @@ import org.w3c.dom.Attr;
 
 public class XmlSchemaAnnotated extends XmlSchemaObject {
     /**
-     * Defines an annotation.
-     * Creates an annotation element.
-     * Represents the W3C annotation element.
+     * Defines an annotation. Creates an annotation element. Represents the W3C annotation element.
      */
     XmlSchemaAnnotation annotation;
     String id;
 
     // Stores qualified attributes that do not belong to the schema target namespace.
     public Attr[] unhandledAttributes;
-
 
     /**
      * Creates new XmlSchemaAnnotated
@@ -67,13 +64,13 @@ public class XmlSchemaAnnotated extends XmlSchemaObject {
     public void setUnhandledAttributes(Attr[] unhandledAttributes) {
         this.unhandledAttributes = unhandledAttributes;
     }
-    
+
     public String toString() {
-    	if (id == null)
-    		return super.toString();
-    	else
-    		return super.toString() + " [id:" + id + "]";
+        if (id == null) {
+            return super.toString();
+        } else {
+            return super.toString() + " [id:" + id + "]";
+        }
     }
 
 }
-

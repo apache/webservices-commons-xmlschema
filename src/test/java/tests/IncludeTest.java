@@ -51,42 +51,22 @@ public class IncludeTest extends TestCase {
 
     /**
      * This method will test the include.
-     *
+     * 
      * @throws Exception Any exception encountered
      */
     public void testInclude() throws Exception {
 
         /*
-        <schema xmlns="http://www.w3.org/2001/XMLSchema"
-                xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-                xmlns:tns="http://soapinterop.org/types"
-                targetNamespace="http://soapinterop.org/types">
-  
-          <include schemaLocation="include2.xsd"/>
-          <include schemaLocation="include3.xsd"/>
-
-        </schema>
-
-        
-        <schema xmlns="http://www.w3.org/2001/XMLSchema"
-                xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-                xmlns:tns="http://soapinterop.org/types"
-                targetNamespace="http://soapinterop.org/types">
-  
-          <element name="test1include" type="string"/>
-
-        </schema>
-
-
-        <schema xmlns="http://www.w3.org/2001/XMLSchema"
-                xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-                xmlns:tns="http://soapinterop.org/types"
-                targetNamespace="http://soapinterop.org/types">
-  
-          <element name="test2include" type="integer"/>
-
-        </schema>
-        */
+         * <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         * xmlns:tns="http://soapinterop.org/types" targetNamespace="http://soapinterop.org/types"> <include
+         * schemaLocation="include2.xsd"/> <include schemaLocation="include3.xsd"/> </schema> <schema
+         * xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         * xmlns:tns="http://soapinterop.org/types" targetNamespace="http://soapinterop.org/types"> <element
+         * name="test1include" type="string"/> </schema> <schema xmlns="http://www.w3.org/2001/XMLSchema"
+         * xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://soapinterop.org/types"
+         * targetNamespace="http://soapinterop.org/types"> <element name="test2include" type="integer"/>
+         * </schema>
+         */
 
         InputStream is = new FileInputStream(Resources.asURI("include.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
@@ -105,48 +85,39 @@ public class IncludeTest extends TestCase {
             assertNotNull(s);
             String schemaLocation = include.getSchemaLocation();
             if (schemaLocation.equals(Resources.asURI("include2.xsd"))) {
-                XmlSchemaElement xse =
-                    s.getElementByName(new
-                        QName("http://soapinterop.org/types", "test1include"));
+                XmlSchemaElement xse = s.getElementByName(new QName("http://soapinterop.org/types",
+                                                                    "test1include"));
                 assertEquals("test1include", xse.getName());
-                assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "string"),
-                             xse.getSchemaTypeName());
+                assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "string"), xse.getSchemaTypeName());
             } else if (schemaLocation.equals(Resources.asURI("include3.xsd"))) {
-                XmlSchemaElement xse =
-                    s.getElementByName(new 
-                        QName("http://soapinterop.org/types", "test2include"));
+                XmlSchemaElement xse = s.getElementByName(new QName("http://soapinterop.org/types",
+                                                                    "test2include"));
                 assertEquals("test2include", xse.getName());
-                assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "integer"),
-                             xse.getSchemaTypeName());
+                assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "integer"), xse
+                    .getSchemaTypeName());
             } else {
-                fail("The schemaLocation of \"" + schemaLocation + "\" was"
-                     + " not expected.");
+                fail("The schemaLocation of \"" + schemaLocation + "\" was" + " not expected.");
             }
             set.remove(schemaLocation);
         }
 
-        assertTrue("The set should have been empty, but instead contained: "
-                   + set + ".",
-                   set.isEmpty());
+        assertTrue("The set should have been empty, but instead contained: " + set + ".", set.isEmpty());
 
     }
 
-	/**
-	 * Test importing a schema without namespace into a schema
-	 * with namespace.
-	 */
-	public void testImportSchemaWithoutNamespace() throws Exception {
+    /**
+     * Test importing a schema without namespace into a schema with namespace.
+     */
+    public void testImportSchemaWithoutNamespace() throws Exception {
         InputStream is = new FileInputStream(Resources.asURI("includingWithNamespace.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         schemaCol.read(new StreamSource(is), null);
 
         assertNotNull(schemaCol.getTypeByQName(new QName("http://tns.demo.org", "XdwsGroupId")));
-	}
-
+    }
 
     /**
-     * Test importing a schema without namespace into a schema
-     * with namespace.
+     * Test importing a schema without namespace into a schema with namespace.
      */
     public void testIncludeSchemaWithoutNamespace() throws Exception {
         String uri = Resources.asURI("woden.xsd");
@@ -157,7 +128,7 @@ public class IncludeTest extends TestCase {
 
         XmlSchemaObjectCollection c = schema.getIncludes();
         assertEquals(1, c.getCount());
-        
+
         XmlSchemaInclude schemaInclude = (XmlSchemaInclude)c.getItem(0);
         assertNotNull(schemaInclude);
 
@@ -167,9 +138,10 @@ public class IncludeTest extends TestCase {
 
     /**
      * Schema included defined xmlns="http://www.w3.org/2001/XMLSchema"
+     * 
      * @throws Exception
      */
-    public void testSchemaInclude() throws Exception{
+    public void testSchemaInclude() throws Exception {
         String uri = Resources.asURI("WSCOMMONS-87/includeBase.xsd");
         InputSource isource = new InputSource(new FileInputStream(uri));
         isource.setSystemId(uri);
@@ -177,12 +149,13 @@ public class IncludeTest extends TestCase {
         XmlSchema schema = schemaCol.read(isource, null);
         assertNotNull(schema);
     }
-    
+
     /**
      * Schema included does not define xmlns="http://www.w3.org/2001/XMLSchema"
+     * 
      * @throws Exception
      */
-    public void testSchemaIncludeNoDefaultNS() throws Exception{
+    public void testSchemaIncludeNoDefaultNS() throws Exception {
         String uri = Resources.asURI("WSCOMMONS-87/includeBaseNoDefaultNS.xsd");
         InputSource isource = new InputSource(new FileInputStream(uri));
         isource.setSystemId(uri);

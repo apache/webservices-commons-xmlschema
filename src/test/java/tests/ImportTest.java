@@ -30,60 +30,59 @@ import java.io.File;
 
 public class ImportTest extends TestCase {
 
-    public void testSchemaImport() throws Exception{
-        //create a DOM document
+    public void testSchemaImport() throws Exception {
+        // create a DOM document
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         documentBuilderFactory.setNamespaceAware(true);
-        Document doc = documentBuilderFactory.newDocumentBuilder().
-                parse(Resources.asURI("importBase.xsd"));
+        Document doc = documentBuilderFactory.newDocumentBuilder().parse(Resources.asURI("importBase.xsd"));
 
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         schemaCol.setBaseUri(Resources.TEST_RESOURCES);
-        XmlSchema schema = schemaCol.read(doc,null);
+        XmlSchema schema = schemaCol.read(doc, null);
         assertNotNull(schema);
 
         // attempt with slash now
         schemaCol = new XmlSchemaCollection();
         schemaCol.setBaseUri(Resources.TEST_RESOURCES + "/");
-        schema = schemaCol.read(doc,null);
+        schema = schemaCol.read(doc, null);
         assertNotNull(schema);
     }
 
     /**
      * variation of above don't set the base uri.
+     * 
      * @throws Exception
      */
-    public void testSchemaImport2() throws Exception{
+    public void testSchemaImport2() throws Exception {
         File file = new File(Resources.asURI("importBase.xsd"));
-        //create a DOM document
+        // create a DOM document
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         documentBuilderFactory.setNamespaceAware(true);
-        Document doc = documentBuilderFactory.newDocumentBuilder().
-                parse(file.toURL().toString());
+        Document doc = documentBuilderFactory.newDocumentBuilder().parse(file.toURL().toString());
 
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(doc,file.toURL().toString(),null);
+        XmlSchema schema = schemaCol.read(doc, file.toURL().toString(), null);
         assertNotNull(schema);
 
     }
 
     /**
      * see whether we can reach the types of the imported schemas.
+     * 
      * @throws Exception
      */
-    public void testSchemaImport3() throws Exception{
+    public void testSchemaImport3() throws Exception {
         File file = new File(Resources.asURI("importBase.xsd"));
-        //create a DOM document
+        // create a DOM document
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         documentBuilderFactory.setNamespaceAware(true);
-        Document doc = documentBuilderFactory.newDocumentBuilder().
-                parse(file.toURL().toString());
+        Document doc = documentBuilderFactory.newDocumentBuilder().parse(file.toURL().toString());
 
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(doc,file.toURL().toString(),null);
+        XmlSchema schema = schemaCol.read(doc, file.toURL().toString(), null);
         assertNotNull(schema);
 
-        assertNotNull(schema.getTypeByName(new QName("http://soapinterop.org/xsd2","SOAPStruct")));
-        assertNotNull(schema.getElementByName(new QName("http://soapinterop.org/xsd2","SOAPWrapper")));
+        assertNotNull(schema.getTypeByName(new QName("http://soapinterop.org/xsd2", "SOAPStruct")));
+        assertNotNull(schema.getElementByName(new QName("http://soapinterop.org/xsd2", "SOAPWrapper")));
     }
 }

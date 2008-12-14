@@ -24,8 +24,7 @@
 package org.apache.ws.commons.schema;
 
 /**
- * Class for defining whiteSpace facets. Represents the World Wide
- * Web Consortium (W3C) whiteSpace facet.
+ * Class for defining whiteSpace facets. Represents the World Wide Web Consortium (W3C) whiteSpace facet.
  */
 
 public class XmlSchemaWhiteSpaceFacet extends XmlSchemaFacet {

@@ -21,7 +21,6 @@ package org.apache.ws.commons.schema;
 
 /**
  * An abstract class for schema content.
- *
  */
 
 public abstract class XmlSchemaContent extends XmlSchemaAnnotated {

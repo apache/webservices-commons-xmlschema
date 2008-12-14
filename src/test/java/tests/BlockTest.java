@@ -31,9 +31,7 @@ import java.io.InputStream;
 
 public class BlockTest extends TestCase {
     public void testMixedContent() throws Exception {
-        QName ELEMENT_QNAME = new QName("http://soapinterop.org/xsd",
-                                        "complexElt");
-
+        QName ELEMENT_QNAME = new QName("http://soapinterop.org/xsd", "complexElt");
 
         InputStream is = new FileInputStream(Resources.asURI("block.xsd"));
         XmlSchemaCollection schema = new XmlSchemaCollection();
@@ -43,7 +41,7 @@ public class BlockTest extends TestCase {
         assertNotNull(elementByName);
 
         String value = elementByName.getBlock().getValue();
-        assertEquals("restriction",value);
+        assertEquals("restriction", value);
 
     }
 }

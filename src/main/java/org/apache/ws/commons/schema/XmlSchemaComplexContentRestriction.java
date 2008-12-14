@@ -21,12 +21,10 @@ package org.apache.ws.commons.schema;
 
 import javax.xml.namespace.QName;
 
-
 /**
- * Class for complex types with a complex content model that are derived
- * by restriction. Restricts the contents of the complex type to a subset
- * of the inherited complex type. Represents the World Wide Web Consortium
- * (W3C) restriction element for complex content.
+ * Class for complex types with a complex content model that are derived by restriction. Restricts the
+ * contents of the complex type to a subset of the inherited complex type. Represents the World Wide Web
+ * Consortium (W3C) restriction element for complex content.
  */
 
 public class XmlSchemaComplexContentRestriction extends XmlSchemaContent {
@@ -38,7 +36,7 @@ public class XmlSchemaComplexContentRestriction extends XmlSchemaContent {
         attributes = new XmlSchemaObjectCollection();
     }
 
-    /* Allows an XmlSchemaAnyAttribute to be used for the attribute value.*/
+    /* Allows an XmlSchemaAnyAttribute to be used for the attribute value. */
     XmlSchemaAnyAttribute anyAttribute;
 
     public void setAnyAttribute(XmlSchemaAnyAttribute anyAttribute) {
@@ -49,16 +47,17 @@ public class XmlSchemaComplexContentRestriction extends XmlSchemaContent {
         return this.anyAttribute;
     }
 
-    /* Contains XmlSchemaAttribute and XmlSchemaAttributeGroupRef. 
-	 *  Collection of attributes for the simple type.
-	 */
+    /*
+     * Contains XmlSchemaAttribute and XmlSchemaAttributeGroupRef. Collection of attributes for the simple
+     * type.
+     */
     XmlSchemaObjectCollection attributes;
 
     public XmlSchemaObjectCollection getAttributes() {
         return this.attributes;
     }
 
-    /* Name of the built-in data type, simple type, or complex type.*/
+    /* Name of the built-in data type, simple type, or complex type. */
     QName baseTypeName;
 
     public void setBaseTypeName(QName baseTypeName) {
@@ -69,9 +68,9 @@ public class XmlSchemaComplexContentRestriction extends XmlSchemaContent {
         return this.baseTypeName;
     }
 
-    /*One of the XmlSchemaGroupRef, XmlSchemaChoice, XmlSchemaAll, 
-	 * or XmlSchemaSequence classes.
-	 */
+    /*
+     * One of the XmlSchemaGroupRef, XmlSchemaChoice, XmlSchemaAll, or XmlSchemaSequence classes.
+     */
     XmlSchemaParticle particle;
 
     public XmlSchemaParticle getParticle() {
@@ -84,21 +83,24 @@ public class XmlSchemaComplexContentRestriction extends XmlSchemaContent {
 
     public String toString(String prefix, int tab) {
         String xml = new String();
-        for (int i = 0; i < tab; i++)
+        for (int i = 0; i < tab; i++) {
             xml += "\t";
-        if (!prefix.equals("") && prefix.indexOf(":") == -1)
+        }
+        if (!prefix.equals("") && prefix.indexOf(":") == -1) {
             prefix += ":";
+        }
 
         xml += "<" + prefix + "restriction>\n";
 
-        if (particle != null)
+        if (particle != null) {
             xml += particle.toString(prefix, (tab + 1));
+        }
 
-        for (int i = 0; i < tab; i++)
+        for (int i = 0; i < tab; i++) {
             xml += "\t";
+        }
 
         xml += "</" + prefix + "restriction>\n";
         return xml;
     }
 }
-

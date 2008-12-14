@@ -27,19 +27,16 @@ import java.util.List;
 import java.util.ListIterator;
 
 /**
- * Class to represent a bucket of tests described by a set of .testSet files.
- * All of the tests described in all of the .testSet files present in the top
- * level of the directory supplied will be round-trip tested.
- * Note: Subdirs are not traversed because the .testSet files in the top level
- * of the xmlschema2002-01-16 bucket describe all the tests in the bucket.   
- * cmd line parms: arg0 - location of the directory containing .testSet files
- *                        defaults to ./target/xmlschema2002-01-16
- *
+ * Class to represent a bucket of tests described by a set of .testSet files. All of the tests described in
+ * all of the .testSet files present in the top level of the directory supplied will be round-trip tested.
+ * Note: Subdirs are not traversed because the .testSet files in the top level of the xmlschema2002-01-16
+ * bucket describe all the tests in the bucket. cmd line parms: arg0 - location of the directory containing
+ * .testSet files defaults to ./target/xmlschema2002-01-16
  */
 public class TestW3CSchemaBucket extends TestSuite {
 
     private static List allTestSetFiles;
-    
+
     // If tests run from cmd line without any args, run the full suite
     private static String testSetsLocation = "./target/xmlschema2002-01-16";
 
@@ -55,9 +52,8 @@ public class TestW3CSchemaBucket extends TestSuite {
         }
     }
 
-
     public static Test suite() throws Exception {
-        testSetsLocation =  System.getProperty("W3CTestLocation", testSetsLocation);
+        testSetsLocation = System.getProperty("W3CTestLocation", testSetsLocation);
         TestSuite suite = new TestSuite("Test for tests");
         allTestSetFiles = getTestSetFiles(testSetsLocation);
         ListIterator li = allTestSetFiles.listIterator();
@@ -65,7 +61,7 @@ public class TestW3CSchemaBucket extends TestSuite {
             Object o = li.next();
             File testSet = null;
             if (o instanceof File) {
-                testSet = (File) o;  
+                testSet = (File)o;
             }
             suite.addTest(TestW3CSchemaTestSet.suite(testSet));
         }
@@ -75,13 +71,13 @@ public class TestW3CSchemaBucket extends TestSuite {
     private static List getTestSetFiles(String testSetsLocation) throws Exception {
         File dir = new File(testSetsLocation);
         if (!dir.isDirectory()) {
-            throw new Exception ("testSet files location must be a directory");
+            throw new Exception("testSet files location must be a directory");
         }
         ArrayList testSetFiles = new ArrayList();
         File[] files = dir.listFiles();
-        for (int i = 0; i < files.length; i++) {
-            if (files[i].getAbsolutePath().endsWith("testSet")) {
-                testSetFiles.add(files[i]);
+        for (File file : files) {
+            if (file.getAbsolutePath().endsWith("testSet")) {
+                testSetFiles.add(file);
             }
         }
         return testSetFiles;

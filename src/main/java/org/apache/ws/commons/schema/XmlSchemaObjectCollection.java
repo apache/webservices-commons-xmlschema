@@ -23,8 +23,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 /**
- * An object collection class to handle XmlSchemaObjects when collections
- * are returned from method calls.
+ * An object collection class to handle XmlSchemaObjects when collections are returned from method calls.
  */
 public class XmlSchemaObjectCollection {
 
@@ -42,7 +41,7 @@ public class XmlSchemaObjectCollection {
     }
 
     public XmlSchemaObject getItem(int i) {
-        return (XmlSchemaObject) objects.elementAt(i);
+        return (XmlSchemaObject)objects.elementAt(i);
     }
 
     public void setItem(int i, XmlSchemaObject item) {
@@ -79,7 +78,6 @@ public class XmlSchemaObjectCollection {
         for (int i = 0; i < getCount(); i++) {
             xml += getItem(i).toString(prefix, tab);
         }
-
 
         return xml;
 

@@ -21,10 +21,8 @@ package org.apache.ws.commons.schema.utils;
 
 import javax.xml.namespace.NamespaceContext;
 
-
 /**
- * Interface of an object, which is able to provide a list of currently
- * defined namespace prefixes.
+ * Interface of an object, which is able to provide a list of currently defined namespace prefixes.
  */
 public interface NamespacePrefixList extends NamespaceContext {
     /**

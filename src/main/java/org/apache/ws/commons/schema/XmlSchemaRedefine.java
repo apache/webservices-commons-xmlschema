@@ -20,10 +20,9 @@
 package org.apache.ws.commons.schema;
 
 /**
- * Allows simple and complex types, groups, and attribute groups from
- * external schema files to be redefined in the current schema. This
- * class provides versioning for the schema elements. Represents the
- * World Wide Web Consortium (W3C) redefine element.
+ * Allows simple and complex types, groups, and attribute groups from external schema files to be redefined in
+ * the current schema. This class provides versioning for the schema elements. Represents the World Wide Web
+ * Consortium (W3C) redefine element.
  */
 
 public class XmlSchemaRedefine extends XmlSchemaExternal {

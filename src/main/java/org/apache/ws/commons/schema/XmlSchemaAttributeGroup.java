@@ -22,10 +22,8 @@ package org.apache.ws.commons.schema;
 import javax.xml.namespace.QName;
 
 /**
- * Class for attribute groups. Groups a set of attribute declarations
- * so that they can be incorporated as a group into complex type
- * definitions. Represents the World Wide Web Consortium (W3C)
- * attributeGroup element.
+ * Class for attribute groups. Groups a set of attribute declarations so that they can be incorporated as a
+ * group into complex type definitions. Represents the World Wide Web Consortium (W3C) attributeGroup element.
  */
 
 public class XmlSchemaAttributeGroup extends XmlSchemaAnnotated {

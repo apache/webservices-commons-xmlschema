@@ -48,34 +48,20 @@ public class ListTest extends TestCase {
 
     /**
      * This method will test the list.
-     *
+     * 
      * @throws Exception Any exception encountered
      */
     public void testList() throws Exception {
 
         /*
-         <schema xmlns="http://www.w3.org/2001/XMLSchema"
-                 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-                 xmlns:tns="http://soapinterop.org/types"
-                 targetNamespace="http://soapinterop.org/types">
-        
-           <element name="workDays">
-             <simpleType>
-               <restriction base="tns:daysInWeek">
-                 <length value="5"/>
-               </restriction>
-             </simpleType>
-           </element>
+         * <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         * xmlns:tns="http://soapinterop.org/types" targetNamespace="http://soapinterop.org/types"> <element
+         * name="workDays"> <simpleType> <restriction base="tns:daysInWeek"> <length value="5"/>
+         * </restriction> </simpleType> </element> <simpleType name="daysInWeek"> <list
+         * itemType="xsd:integer"/> </simpleType> </schema>
+         */
 
-           <simpleType name="daysInWeek">
-             <list itemType="xsd:integer"/>
-           </simpleType>
-  
-         </schema>
-        */
-
-        QName ELEMENT_QNAME = new QName("http://soapinterop.org/types",
-                "workDays");
+        QName ELEMENT_QNAME = new QName("http://soapinterop.org/types", "workDays");
         InputStream is = new FileInputStream(Resources.asURI("list.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         schemaCol.read(new StreamSource(is), null);
@@ -83,24 +69,21 @@ public class ListTest extends TestCase {
         XmlSchemaElement elem = schemaCol.getElementByQName(ELEMENT_QNAME);
         assertNotNull(elem);
         assertEquals("workDays", elem.getName());
-        assertEquals(new QName("http://soapinterop.org/types", "workDays"),
-                     elem.getQName());
+        assertEquals(new QName("http://soapinterop.org/types", "workDays"), elem.getQName());
 
         XmlSchemaSimpleType simpleType = (XmlSchemaSimpleType)elem.getSchemaType();
         assertNotNull(simpleType);
 
-        XmlSchemaSimpleTypeRestriction r =
-            (XmlSchemaSimpleTypeRestriction)simpleType.getContent();
+        XmlSchemaSimpleTypeRestriction r = (XmlSchemaSimpleTypeRestriction)simpleType.getContent();
         assertNotNull(r);
 
         QName baseTypeName = r.getBaseTypeName();
-        assertEquals(new QName("http://soapinterop.org/types", "daysInWeek"),
-                     baseTypeName);
+        assertEquals(new QName("http://soapinterop.org/types", "daysInWeek"), baseTypeName);
         XmlSchemaType type = schemaCol.getTypeByQName(baseTypeName);
 
         XmlSchemaSimpleTypeContent content = ((XmlSchemaSimpleType)type).getContent();
         assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "integer"),
-                   ((XmlSchemaSimpleTypeList)content).getItemTypeName());
+                     ((XmlSchemaSimpleTypeList)content).getItemTypeName());
 
     }
 

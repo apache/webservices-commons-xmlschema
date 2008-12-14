@@ -20,8 +20,8 @@
 package org.apache.ws.commons.schema;
 
 /**
- * Identifies a unique constraint among a set of elements. Represents
- * the World Wide Web Consortium (W3C) unique element.
+ * Identifies a unique constraint among a set of elements. Represents the World Wide Web Consortium (W3C)
+ * unique element.
  */
 
 public class XmlSchemaUnique extends XmlSchemaIdentityConstraint {

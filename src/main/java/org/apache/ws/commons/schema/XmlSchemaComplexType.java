@@ -24,9 +24,8 @@ import javax.xml.namespace.QName;
 import org.apache.ws.commons.schema.constants.Constants;
 
 /**
- * Class for complex types. Defines a complex type that determines the
- * set of attributes and content of an element. Represents the World Wide
- * Web Consortium (W3C) complexType element.
+ * Class for complex types. Defines a complex type that determines the set of attributes and content of an
+ * element. Represents the World Wide Web Consortium (W3C) complexType element.
  */
 
 public class XmlSchemaComplexType extends XmlSchemaType {
@@ -129,28 +128,33 @@ public class XmlSchemaComplexType extends XmlSchemaType {
     public String toString(String prefix, int tab) {
         String xml = new String();
 
-        for (int i = 0; i < tab; i++)
+        for (int i = 0; i < tab; i++) {
             xml += "\t";
+        }
 
-        if (!prefix.equals("") && prefix.indexOf(":") == -1)
+        if (!prefix.equals("") && prefix.indexOf(":") == -1) {
             prefix += ":";
+        }
 
         String typeName = name != null ? name : "";
 
         xml += "<" + prefix + "complexType name=\"" + typeName + "\">\n";
 
-        if (particle != null)
+        if (particle != null) {
             xml += particle.toString(prefix, (tab + 1));
+        }
 
-        if (contentModel != null)
+        if (contentModel != null) {
             xml += contentModel.toString(prefix, (tab + 1));
+        }
 
         for (int i = 0; i < attributes.getCount(); i++) {
             xml += attributes.getItem(i).toString(prefix, (tab + 1));
         }
 
-        for (int i = 0; i < tab; i++)
+        for (int i = 0; i < tab; i++) {
             xml += "\t";
+        }
 
         xml += "</" + prefix + "complexType>\n";
         return xml;
@@ -159,23 +163,22 @@ public class XmlSchemaComplexType extends XmlSchemaType {
     /**
      * Return the QName of the base schema type, if any, as defined in the content model.
      */
-	public QName getBaseSchemaTypeName() {
-		XmlSchemaContentModel model = getContentModel();
-		if (model == null) {
-			return null;
-		}
-		XmlSchemaContent content = model.getContent();
-		if (content == null) {
-			return null;
-		}
+    public QName getBaseSchemaTypeName() {
+        XmlSchemaContentModel model = getContentModel();
+        if (model == null) {
+            return null;
+        }
+        XmlSchemaContent content = model.getContent();
+        if (content == null) {
+            return null;
+        }
 
-		if (!(content instanceof XmlSchemaComplexContentExtension)) {
-			return null;
-		}
+        if (!(content instanceof XmlSchemaComplexContentExtension)) {
+            return null;
+        }
 
-		XmlSchemaComplexContentExtension ext = (XmlSchemaComplexContentExtension) content;
-		return ext.getBaseTypeName();
-	}
-
+        XmlSchemaComplexContentExtension ext = (XmlSchemaComplexContentExtension)content;
+        return ext.getBaseTypeName();
+    }
 
 }

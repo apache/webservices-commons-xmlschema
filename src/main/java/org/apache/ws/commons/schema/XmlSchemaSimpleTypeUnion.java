@@ -21,11 +21,9 @@ package org.apache.ws.commons.schema;
 
 import javax.xml.namespace.QName;
 
-
 /**
- * Class for the union of simpleType elements. Defines a simpleType element
- * as a list of values of a specified data type. Represents the World
- * Wide Web Consortium (W3C) union element.
+ * Class for the union of simpleType elements. Defines a simpleType element as a list of values of a specified
+ * data type. Represents the World Wide Web Consortium (W3C) union element.
  */
 
 public class XmlSchemaSimpleTypeUnion extends XmlSchemaSimpleTypeContent {

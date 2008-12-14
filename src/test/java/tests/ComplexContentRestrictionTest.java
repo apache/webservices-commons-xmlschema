@@ -50,59 +50,36 @@ public class ComplexContentRestrictionTest extends TestCase {
 
     /**
      * This method will test complex content restriction.
-     *
+     * 
      * @throws Exception Any exception encountered
      */
     public void testComplexContentRestriction() throws Exception {
 
         /*
-        <schema xmlns="http://www.w3.org/2001/XMLSchema"
-                xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-                xmlns:tns="http://soapinterop.org/types"
-                targetNamespace="http://soapinterop.org/types">
+         * <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         * xmlns:tns="http://soapinterop.org/types" targetNamespace="http://soapinterop.org/types">
+         * <complexType name="AssemblyRequiredProduct"> <sequence> <element name="Name" type="string"/>
+         * <element name="Description" type="string" nillable="true"/> <element name="Parts" type="string"
+         * maxOccurs="unbounded"/> </sequence> </complexType> <complexType name="NoAssemblyRequiredProduct">
+         * <complexContent> <restriction base="tns:AssemblyRequiredProduct"> <sequence> <element name="Name"
+         * type="string"/> <element name="Description" type="string" nillable="true"/> <element name="Parts"
+         * type="string"/> </sequence> </restriction> </complexContent> </complexType> </schema>
+         */
 
-
-          <complexType name="AssemblyRequiredProduct">
-            <sequence>
-              <element name="Name" type="string"/>
-              <element name="Description" type="string" nillable="true"/>
-              <element name="Parts" type="string" maxOccurs="unbounded"/>
-            </sequence>
-          </complexType>
-  
-          <complexType name="NoAssemblyRequiredProduct">
-            <complexContent>
-              <restriction base="tns:AssemblyRequiredProduct">
-                <sequence>
-                  <element name="Name" type="string"/>
-                  <element name="Description" type="string" nillable="true"/>
-                  <element name="Parts" type="string"/>
-                </sequence>
-              </restriction>
-            </complexContent>
-          </complexType>  
-
-        </schema>
-        */
-
-        QName TYPE_QNAME = new QName("http://soapinterop.org/types",
-                                     "NoAssemblyRequiredProduct");
+        QName TYPE_QNAME = new QName("http://soapinterop.org/types", "NoAssemblyRequiredProduct");
         InputStream is = new FileInputStream(Resources.asURI("deriverestriction.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         schemaCol.read(new StreamSource(is), null);
 
-        XmlSchemaComplexType cType =
-            (XmlSchemaComplexType)schemaCol.getTypeByQName(TYPE_QNAME);
+        XmlSchemaComplexType cType = (XmlSchemaComplexType)schemaCol.getTypeByQName(TYPE_QNAME);
         assertNotNull(cType);
-        
+
         XmlSchemaContentModel xscm = cType.getContentModel();
         assertNotNull(xscm);
 
-        XmlSchemaComplexContentRestriction xsccr =
-            (XmlSchemaComplexContentRestriction)xscm.getContent();
-        assertEquals(new QName("http://soapinterop.org/types",
-                               "AssemblyRequiredProduct"),
-                     xsccr.getBaseTypeName());
+        XmlSchemaComplexContentRestriction xsccr = (XmlSchemaComplexContentRestriction)xscm.getContent();
+        assertEquals(new QName("http://soapinterop.org/types", "AssemblyRequiredProduct"), xsccr
+            .getBaseTypeName());
 
         XmlSchemaSequence xsp = (XmlSchemaSequence)xsccr.getParticle();
         assertNotNull(xsp);
@@ -117,36 +94,25 @@ public class ComplexContentRestrictionTest extends TestCase {
             XmlSchemaElement xse = (XmlSchemaElement)col.getItem(i);
             String name = xse.getName();
             if (name.equals("Name")) {
-                assertEquals(new QName("", "Name"),
-                             xse.getQName());
-                assertEquals(new QName("http://www.w3.org/2001/XMLSchema",
-                                       "string"),
-                                       xse.getSchemaTypeName());
+                assertEquals(new QName("", "Name"), xse.getQName());
+                assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "string"), xse.getSchemaTypeName());
                 assertTrue(!xse.isAbstract());
                 assertTrue(!xse.isNillable());
             } else if (name.equals("Description")) {
-                assertEquals(new QName("", "Description"),
-                             xse.getQName());
-                assertEquals(new QName("http://www.w3.org/2001/XMLSchema",
-                                       "string"),
-                                       xse.getSchemaTypeName());
+                assertEquals(new QName("", "Description"), xse.getQName());
+                assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "string"), xse.getSchemaTypeName());
                 assertTrue(!xse.isAbstract());
                 assertTrue(xse.isNillable());
             } else if (name.equals("Parts")) {
-                assertEquals(new QName("", "Parts"),
-                             xse.getQName());
-                assertEquals(new QName("http://www.w3.org/2001/XMLSchema",
-                                       "string"),
-                                       xse.getSchemaTypeName());
+                assertEquals(new QName("", "Parts"), xse.getQName());
+                assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "string"), xse.getSchemaTypeName());
             } else {
                 fail("An invalid name of \"" + name + "\" was found.");
             }
             s.remove(name);
         }
 
-        assertTrue("The set should have been empty, but instead contained: "
-                   + s + ".",
-                   s.isEmpty());
+        assertTrue("The set should have been empty, but instead contained: " + s + ".", s.isEmpty());
 
     }
 

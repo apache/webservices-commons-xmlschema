@@ -36,25 +36,25 @@ public abstract class Enum {
     protected String value = NULL;
 
     public void setValue(String value) {
-        if (value.equals(Enum.NULL))
+        if (value.equals(Enum.NULL)) {
             this.value = Enum.NULL;
-        else {
-            //the value can be a list of space seperated items
+        } else {
+            // the value can be a list of space seperated items
             String possibleValues[] = getValues();
             String[] valuesToBeTested = value.split("\\s");
             for (int i = 0; i < valuesToBeTested.length; i++) {
-                for (int j = 0; j < possibleValues.length; j++) {
-                    if (possibleValues[j].equals(valuesToBeTested[i])) {
+                for (String possibleValue : possibleValues) {
+                    if (possibleValue.equals(valuesToBeTested[i])) {
                         break;
                     }
-                    if (i == possibleValues.length - 1)
+                    if (i == possibleValues.length - 1) {
                         throw new EnumValueException("Bad Enumeration value '" + value + "'");
+                    }
                 }
             }
 
-            //when we reach here we have tested all the values to be correct (applicable)
-             this.value = value;
-
+            // when we reach here we have tested all the values to be correct (applicable)
+            this.value = value;
 
         }
     }
@@ -68,8 +68,7 @@ public abstract class Enum {
     }
 
     public boolean equals(Object what) {
-        return what.getClass().equals(this.getClass()) &&
-                ((Enum) what).getValue().equals(this.getValue());
+        return what.getClass().equals(this.getClass()) && ((Enum)what).getValue().equals(this.getValue());
     }
 
     public static class EnumValueException extends RuntimeException {
@@ -85,11 +84,10 @@ public abstract class Enum {
 
     protected static final int index(String value, String values[]) {
         for (int i = 0; i < values.length; i++) {
-            if (value.equals(values[i]))
+            if (value.equals(values[i])) {
                 return i;
+            }
         }
         return -1;
     }
 }
-
-

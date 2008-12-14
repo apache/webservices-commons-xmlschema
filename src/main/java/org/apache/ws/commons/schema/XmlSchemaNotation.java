@@ -20,11 +20,9 @@
 package org.apache.ws.commons.schema;
 
 /**
- * Class represents a notation. An XML Schema definition language (XSD)
- * notation declaration is a reconstruction of XML 1.0 NOTATION
- * declarations. The purpose of notations is to describe the format of
- * non-XML data within an XML document. Represents the World Wide Web Consortium
- * (W3C) notation element.
+ * Class represents a notation. An XML Schema definition language (XSD) notation declaration is a
+ * reconstruction of XML 1.0 NOTATION declarations. The purpose of notations is to describe the format of
+ * non-XML data within an XML document. Represents the World Wide Web Consortium (W3C) notation element.
  */
 
 public class XmlSchemaNotation extends XmlSchemaAnnotated {
@@ -60,6 +58,5 @@ public class XmlSchemaNotation extends XmlSchemaAnnotated {
     public void setSystem(String system) {
         this.system = system;
     }
-
 
 }

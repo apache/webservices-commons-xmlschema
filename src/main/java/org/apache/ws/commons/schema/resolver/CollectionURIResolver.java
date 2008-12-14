@@ -19,11 +19,10 @@
 package org.apache.ws.commons.schema.resolver;
 
 /**
- * 
- * Extended URIResolver that can be informed about
- * a collective base URI. 
+ * Extended URIResolver that can be informed about a collective base URI.
  */
 public interface CollectionURIResolver extends URIResolver {
-	void setCollectionBaseURI(String uri);
-	String getCollectionBaseURI();
+    void setCollectionBaseURI(String uri);
+
+    String getCollectionBaseURI();
 }

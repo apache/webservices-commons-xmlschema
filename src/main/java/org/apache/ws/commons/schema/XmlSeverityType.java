@@ -28,9 +28,8 @@ import org.apache.ws.commons.schema.constants.Enum;
 
 public class XmlSeverityType extends Enum {
 
-    static String[] members = new String[]{
-            Constants.BlockConstants.ERROR,
-            Constants.BlockConstants.WARNING
+    static String[] members = new String[] {
+        Constants.BlockConstants.ERROR, Constants.BlockConstants.WARNING
     };
 
     /**

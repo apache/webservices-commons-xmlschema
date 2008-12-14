@@ -28,16 +28,13 @@ public abstract class XmlSchemaObject {
     String sourceURI;
 
     /**
-     * a map for holding meta information
-     * Initially set to null to gain some improvement
-     * in memory. will be initialized only if a
-     * user attempts
+     * a map for holding meta information Initially set to null to gain some improvement in memory. will be
+     * initialized only if a user attempts
      */
     private Map metaInfoMap = null;
 
     /**
-     * returns the metainfo map. may be null
-     * if not utilized
+     * returns the metainfo map. may be null if not utilized
      */
     public Map getMetaInfoMap() {
         return metaInfoMap;
@@ -45,6 +42,7 @@ public abstract class XmlSchemaObject {
 
     /**
      * Directly set the meta info map into the schema element
+     * 
      * @param metaInfoMap
      */
     public void setMetaInfoMap(Map metaInfoMap) {
@@ -52,20 +50,18 @@ public abstract class XmlSchemaObject {
     }
 
     /**
-     * Add a value to the meta info map
-     * will be initialized if not used
-     * previously
+     * Add a value to the meta info map will be initialized if not used previously
+     * 
      * @param key
      * @param value
      */
-    public void addMetaInfo(Object key,Object value){
-      if (metaInfoMap==null){
-          metaInfoMap =  new LinkedHashMap();
-      }
+    public void addMetaInfo(Object key, Object value) {
+        if (metaInfoMap == null) {
+            metaInfoMap = new LinkedHashMap();
+        }
 
-      metaInfoMap.put(key,value);
+        metaInfoMap.put(key, value);
     }
-
 
     /**
      * Creates new XmlSchemaObject
@@ -102,12 +98,12 @@ public abstract class XmlSchemaObject {
             return true;
         }
 
-        // note: instanceof returns false if its first operand is null 
+        // note: instanceof returns false if its first operand is null
         if (!(what instanceof XmlSchemaObject)) {
             return false;
         }
 
-        XmlSchemaObject xso = (XmlSchemaObject) what;
+        XmlSchemaObject xso = (XmlSchemaObject)what;
 
         if (this.lineNumber != xso.lineNumber) {
             return false;
@@ -132,8 +128,9 @@ public abstract class XmlSchemaObject {
 
     public String toString(String prefix, int tab) {
         String xml = new String();
-        for (int i = 0; i < tab; i++)
+        for (int i = 0; i < tab; i++) {
             xml += "\t";
+        }
 
         xml += this.getClass().toString() + "\n";
         return xml;

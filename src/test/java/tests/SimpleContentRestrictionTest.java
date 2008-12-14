@@ -50,58 +50,36 @@ public class SimpleContentRestrictionTest extends TestCase {
 
     /**
      * This method will test the simple content restriction.
-     *
+     * 
      * @throws Exception Any exception encountered
      */
     public void testSimpleContentRestriction() throws Exception {
 
         /*
-         <schema xmlns="http://www.w3.org/2001/XMLSchema"
-                 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-                 xmlns:tns="http://soapinterop.org/types"
-                 targetNamespace="http://soapinterop.org/types"
-                 attributeFormDefault="qualified">
-  
-           <simpleType name="drinksize">
-             <restriction base="string">
-               <enumeration value="small"/>
-               <enumeration value="medium"/>
-               <enumeration value="large"/>
-             </restriction>
-           </simpleType>
+         * <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         * xmlns:tns="http://soapinterop.org/types" targetNamespace="http://soapinterop.org/types"
+         * attributeFormDefault="qualified"> <simpleType name="drinksize"> <restriction base="string">
+         * <enumeration value="small"/> <enumeration value="medium"/> <enumeration value="large"/>
+         * </restriction> </simpleType> <complexType name="dietdrinksize"> <simpleContent> <restriction
+         * base="tns:drinksize"> <enumeration value="small"/> <enumeration value="medium"/> <attribute
+         * name="units" type="string" use="required"/> <attribute name="id" type="integer" use="required"
+         * default="001"/> </restriction> </simpleContent> </complexType> </schema>
+         */
 
-           <complexType name="dietdrinksize">
-             <simpleContent>
-               <restriction base="tns:drinksize">
-                 <enumeration value="small"/>
-                 <enumeration value="medium"/>
-                 <attribute name="units" type="string" use="required"/>
-                 <attribute name="id" type="integer" use="required" default="001"/>
-               </restriction>
-             </simpleContent>
-           </complexType>
-           
-         </schema>
-        */                                                                      
-
-        QName TYPE_QNAME = new QName("http://soapinterop.org/types",
-                                     "dietdrinksize");
+        QName TYPE_QNAME = new QName("http://soapinterop.org/types", "dietdrinksize");
         InputStream is = new FileInputStream(Resources.asURI("screstriction.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
 
-        XmlSchemaComplexType xsct =
-            (XmlSchemaComplexType)schema.getTypeByName(TYPE_QNAME);
+        XmlSchemaComplexType xsct = (XmlSchemaComplexType)schema.getTypeByName(TYPE_QNAME);
         assertNotNull(xsct);
 
         XmlSchemaSimpleContent xssc = (XmlSchemaSimpleContent)xsct.getContentModel();
         assertNotNull(xssc);
-        
-        XmlSchemaSimpleContentRestriction xsscr 
-            = (XmlSchemaSimpleContentRestriction)xssc.getContent();
+
+        XmlSchemaSimpleContentRestriction xsscr = (XmlSchemaSimpleContentRestriction)xssc.getContent();
         assertNotNull(xsscr);
-        assertEquals(new QName("http://soapinterop.org/types", "drinksize"),
-                     xsscr.getBaseTypeName());
+        assertEquals(new QName("http://soapinterop.org/types", "drinksize"), xsscr.getBaseTypeName());
         XmlSchemaObjectCollection xsoc = xsscr.getAttributes();
         assertNotNull(xsoc);
         assertEquals(2, xsoc.getCount());
@@ -113,18 +91,15 @@ public class SimpleContentRestrictionTest extends TestCase {
             XmlSchemaAttribute xsa = (XmlSchemaAttribute)xsoc.getItem(i);
             String name = xsa.getName();
             if (name.equals("units")) {
-                assertEquals(new QName("http://soapinterop.org/types", "units"),
-                             xsa.getQName());
-                assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "string"),
-                             xsa.getSchemaTypeName());
+                assertEquals(new QName("http://soapinterop.org/types", "units"), xsa.getQName());
+                assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "string"), xsa.getSchemaTypeName());
                 assertNull(xsa.getDefaultValue());
                 assertEquals("required", xsa.getUse().getValue());
                 assertNull(xsa.getFixedValue());
             } else if (name.equals("id")) {
-                assertEquals(new QName("http://soapinterop.org/types", "id"),
-                             xsa.getQName());
-                assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "integer"),
-                             xsa.getSchemaTypeName());
+                assertEquals(new QName("http://soapinterop.org/types", "id"), xsa.getQName());
+                assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "integer"), xsa
+                    .getSchemaTypeName());
                 assertEquals("001", xsa.getDefaultValue());
                 assertEquals("required", xsa.getUse().getValue());
                 assertNull(xsa.getFixedValue());
@@ -133,10 +108,8 @@ public class SimpleContentRestrictionTest extends TestCase {
             }
             assertTrue(s.remove(name));
         }
-        assertTrue("The set should have been empty, but instead contained: "
-                   + s + ".",
-                   s.isEmpty());
-        
+        assertTrue("The set should have been empty, but instead contained: " + s + ".", s.isEmpty());
+
         XmlSchemaObjectCollection xsoc2 = xsscr.getFacets();
         assertNotNull(xsoc2);
         assertEquals(2, xsoc2.getCount());
@@ -145,18 +118,14 @@ public class SimpleContentRestrictionTest extends TestCase {
         s.add("small");
         s.add("medium");
         for (int i = 0; i < xsoc2.getCount(); i++) {
-            XmlSchemaEnumerationFacet xsef =
-                (XmlSchemaEnumerationFacet)xsoc2.getItem(i);
+            XmlSchemaEnumerationFacet xsef = (XmlSchemaEnumerationFacet)xsoc2.getItem(i);
             String value = (String)xsef.getValue();
             if (!(value.equals("small") || value.equals("medium"))) {
-                fail("Unexpected enumeration value of \"" + value
-                     + "\" found.");
+                fail("Unexpected enumeration value of \"" + value + "\" found.");
             }
             assertTrue(s.remove(value));
         }
-        assertTrue("The set should have been empty, but instead contained: "
-                   + s + ".",
-                   s.isEmpty());
+        assertTrue("The set should have been empty, but instead contained: " + s + ".", s.isEmpty());
 
     }
 

@@ -21,10 +21,9 @@ package org.apache.ws.commons.schema;
 
 import javax.xml.namespace.QName;
 
-
 /**
- * Class for the restriction of simpleType elements. Represents the World
- * Wide Web Consortium (W3C) restriction element for simple types.
+ * Class for the restriction of simpleType elements. Represents the World Wide Web Consortium (W3C)
+ * restriction element for simple types.
  */
 
 public class XmlSchemaSimpleTypeRestriction extends XmlSchemaSimpleTypeContent {
@@ -65,11 +64,13 @@ public class XmlSchemaSimpleTypeRestriction extends XmlSchemaSimpleTypeContent {
     public String toString(String prefix, int tab) {
         String xml = new String();
 
-        if (!prefix.equals("") && prefix.indexOf(":") == -1)
+        if (!prefix.equals("") && prefix.indexOf(":") == -1) {
             prefix += ":";
+        }
 
-        for (int i = 0; i < tab; i++)
+        for (int i = 0; i < tab; i++) {
             xml += "\t";
+        }
 
         xml += "<" + prefix + "restriction ";
 
@@ -82,10 +83,10 @@ public class XmlSchemaSimpleTypeRestriction extends XmlSchemaSimpleTypeContent {
         }
 
         xml += facets.toString(prefix, (tab + 1));
-        for (int i = 0; i < tab; i++)
+        for (int i = 0; i < tab; i++) {
             xml += "\t";
+        }
         xml += "</" + prefix + "restriction>\n";
-
 
         return xml;
 

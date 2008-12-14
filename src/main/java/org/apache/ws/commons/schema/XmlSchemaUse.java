@@ -26,12 +26,11 @@ import org.apache.ws.commons.schema.constants.Constants;
  */
 public class XmlSchemaUse extends org.apache.ws.commons.schema.constants.Enum {
 
-    static String[] members = new String[]{
-            Constants.BlockConstants.NONE,
-            Constants.BlockConstants.OPTIONAL,
-            Constants.BlockConstants.PROHIBITED,
-            Constants.BlockConstants.REQUIRED
+    static String[] members = new String[] {
+        Constants.BlockConstants.NONE, Constants.BlockConstants.OPTIONAL,
+        Constants.BlockConstants.PROHIBITED, Constants.BlockConstants.REQUIRED
     };
+
     /**
      * Creates new XmlSchemaUse
      */

@@ -20,8 +20,7 @@
 package org.apache.ws.commons.schema;
 
 /**
- * Class for defining maxLength facets. Represents the World Wide
- * Web Consortium (W3C) maxLength facet.
+ * Class for defining maxLength facets. Represents the World Wide Web Consortium (W3C) maxLength facet.
  */
 
 public class XmlSchemaMaxLengthFacet extends XmlSchemaNumericFacet {

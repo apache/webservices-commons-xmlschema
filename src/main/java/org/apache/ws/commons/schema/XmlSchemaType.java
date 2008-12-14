@@ -23,7 +23,6 @@ import org.apache.ws.commons.schema.constants.Constants;
 
 import javax.xml.namespace.QName;
 
-
 /**
  * The base class for all simple types and complex types.
  */
@@ -49,8 +48,9 @@ public class XmlSchemaType extends XmlSchemaAnnotated {
     }
 
     /**
-     * This function returns null. It is intended at some point to return the base type in the event of a restriction,
-     * but that functionality is not implemented.
+     * This function returns null. It is intended at some point to return the base type in the event of a
+     * restriction, but that functionality is not implemented.
+     * 
      * @see #getBaseSchemaTypeName()
      * @return null
      */
@@ -60,10 +60,11 @@ public class XmlSchemaType extends XmlSchemaAnnotated {
 
     /**
      * If there is a base schema type, which by definition has to have a global name, return it.
+     * 
      * @return the qualified name of the base schema type. Return null if none (e.g. for simple types).
      */
     public QName getBaseSchemaTypeName() {
-    	return null;
+        return null;
     }
 
     public XmlSchemaDatatype getDataType() {
@@ -103,20 +104,20 @@ public class XmlSchemaType extends XmlSchemaAnnotated {
     }
 
     public QName getQName() {
-        if(name == null) {
+        if (name == null) {
             return null;
         }
         return new QName(schema.logicalTargetNamespace, name);
     }
-    
+
     public String toString() {
-    	if(name == null) {
-    		return super.toString() + "[anonymous]";
-    	} else if (schema.logicalTargetNamespace == null) {
-    		return super.toString() + "[{}" + name + "]";
-    		
-    	} else {
-    		return super.toString() + "[{" + schema.logicalTargetNamespace + "}" + name + "]";
-    	}
+        if (name == null) {
+            return super.toString() + "[anonymous]";
+        } else if (schema.logicalTargetNamespace == null) {
+            return super.toString() + "[{}" + name + "]";
+
+        } else {
+            return super.toString() + "[{" + schema.logicalTargetNamespace + "}" + name + "]";
+        }
     }
 }

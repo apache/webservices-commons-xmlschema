@@ -20,8 +20,7 @@
 package org.apache.ws.commons.schema;
 
 /**
- * Class for defining pattern facets. Represents the World Wide
- * Web Consortium (W3C) pattern facet.
+ * Class for defining pattern facets. Represents the World Wide Web Consortium (W3C) pattern facet.
  */
 
 public class XmlSchemaPatternFacet extends XmlSchemaFacet {

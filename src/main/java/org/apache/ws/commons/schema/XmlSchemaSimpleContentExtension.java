@@ -21,11 +21,9 @@ package org.apache.ws.commons.schema;
 
 import javax.xml.namespace.QName;
 
-
 /**
- * Class for simple types that are derived by extension. Extends the simple
- * type content of the element by adding attributes. Represents the World Wide
- * Web Consortium (W3C) extension element for simple content.
+ * Class for simple types that are derived by extension. Extends the simple type content of the element by
+ * adding attributes. Represents the World Wide Web Consortium (W3C) extension element for simple content.
  */
 
 public class XmlSchemaSimpleContentExtension extends XmlSchemaContent {
@@ -38,7 +36,7 @@ public class XmlSchemaSimpleContentExtension extends XmlSchemaContent {
 
     }
 
-    /* Allows an XmlSchemaAnyAttribute to be used for the attribute value.*/
+    /* Allows an XmlSchemaAnyAttribute to be used for the attribute value. */
     XmlSchemaAnyAttribute anyAttribute;
 
     public void setAnyAttribute(XmlSchemaAnyAttribute anyAttribute) {
@@ -49,14 +47,17 @@ public class XmlSchemaSimpleContentExtension extends XmlSchemaContent {
         return this.anyAttribute;
     }
 
-    /* Contains XmlSchemaAttribute and XmlSchemaAttributeGroupRef. Collection of attributes for the simple type.*/
+    /*
+     * Contains XmlSchemaAttribute and XmlSchemaAttributeGroupRef. Collection of attributes for the simple
+     * type.
+     */
     XmlSchemaObjectCollection attributes;
 
     public XmlSchemaObjectCollection getAttributes() {
         return this.attributes;
     }
 
-    /* Name of the built-in data type, simple type, or complex type.*/
+    /* Name of the built-in data type, simple type, or complex type. */
     QName baseTypeName;
 
     public void setBaseTypeName(QName baseTypeName) {
@@ -68,4 +69,3 @@ public class XmlSchemaSimpleContentExtension extends XmlSchemaContent {
     }
 
 }
-

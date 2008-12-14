@@ -53,45 +53,31 @@ public class SequenceTest extends TestCase {
 
     /**
      * This method will test the sequence - the min and max occurences.
-     *
+     * 
      * @throws Exception Any exception encountered
      */
     public void testChoice() throws Exception {
 
         /*
-        <schema xmlns="http://www.w3.org/2001/XMLSchema"
-                xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-                xmlns:tns="http://soapinterop.org/types"
-                targetNamespace="http://soapinterop.org/types">
+         * <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         * xmlns:tns="http://soapinterop.org/types" targetNamespace="http://soapinterop.org/types"> <element
+         * name="computer"> <complexType> <sequence minOccurs="4" maxOccurs="50"> <element name="desktop"
+         * type="string"/> <element name="laptop" type="string"/> </sequence> </complexType> </element>
+         * </schema>
+         */
 
-           <element name="computer">
-            <complexType>
-              <sequence minOccurs="4" maxOccurs="50">
-                <element name="desktop" type="string"/>
-                <element name="laptop" type="string"/>
-              </sequence>
-            </complexType>
-          </element>
-
-        </schema>
-        */
-
-        QName computerElementQname = new QName("http://soapinterop.org/types",
-                                        "computer");
-
+        QName computerElementQname = new QName("http://soapinterop.org/types", "computer");
 
         InputStream is = new FileInputStream(Resources.asURI("sequence.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         schemaCol.read(new StreamSource(is), null);
 
-        QName WRONG_QNAME = new QName("http://soapinterop.org/types",
-                                      "machine");
+        QName WRONG_QNAME = new QName("http://soapinterop.org/types", "machine");
         XmlSchemaElement elem = schemaCol.getElementByQName(WRONG_QNAME);
         assertNull(elem);
         elem = schemaCol.getElementByQName(computerElementQname);
         assertEquals("computer", elem.getName());
-        assertEquals(new QName("http://soapinterop.org/types", "computer"),
-                     elem.getQName());
+        assertEquals(new QName("http://soapinterop.org/types", "computer"), elem.getQName());
 
         XmlSchemaComplexType cType = (XmlSchemaComplexType)elem.getSchemaType();
         assertNotNull(cType);
@@ -99,9 +85,9 @@ public class SequenceTest extends TestCase {
         XmlSchemaSequence sequence = (XmlSchemaSequence)cType.getParticle();
         assertNotNull(sequence);
 
-        //values from the XML file
-        assertEquals(sequence.getMinOccurs(),4);
-        assertEquals(sequence.getMaxOccurs(),50);
+        // values from the XML file
+        assertEquals(sequence.getMinOccurs(), 4);
+        assertEquals(sequence.getMaxOccurs(), 50);
 
     }
 

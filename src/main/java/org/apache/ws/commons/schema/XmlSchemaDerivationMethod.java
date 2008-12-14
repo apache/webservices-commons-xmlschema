@@ -25,15 +25,11 @@ import org.apache.ws.commons.schema.constants.Constants;
  * Provides different methods for preventing derivation.
  */
 public class XmlSchemaDerivationMethod extends org.apache.ws.commons.schema.constants.Enum {
-    static String[] members = new String[]{
-            Constants.BlockConstants.ALL,
-            Constants.BlockConstants.EMPTY,
-            Constants.BlockConstants.EXTENSION,
-            Constants.BlockConstants.LIST,
-            Constants.BlockConstants.NONE,
-            Constants.BlockConstants.RESTRICTION,
-            Constants.BlockConstants.SUBSITUTION,
-            Constants.BlockConstants.UNION};
+    static String[] members = new String[] {
+        Constants.BlockConstants.ALL, Constants.BlockConstants.EMPTY, Constants.BlockConstants.EXTENSION,
+        Constants.BlockConstants.LIST, Constants.BlockConstants.NONE, Constants.BlockConstants.RESTRICTION,
+        Constants.BlockConstants.SUBSITUTION, Constants.BlockConstants.UNION
+    };
 
     /**
      * Creates new XmlSeverityType
@@ -49,6 +45,5 @@ public class XmlSchemaDerivationMethod extends org.apache.ws.commons.schema.cons
     public String[] getValues() {
         return members;
     }
-
 
 }

@@ -23,17 +23,16 @@ import org.apache.ws.commons.schema.constants.Constants;
 import org.apache.ws.commons.schema.constants.Enum;
 
 /**
- * Enumerations for the content model of the complex type. This
- * represents the content in the post-schema-validation infoset.
+ * Enumerations for the content model of the complex type. This represents the content in the
+ * post-schema-validation infoset.
  */
 
 public class XmlSchemaContentType extends Enum {
 
-    static String[] members = new String[]{
-            Constants.BlockConstants.ELEMENT_ONLY,
-            Constants.BlockConstants.EMPTY,
-            Constants.BlockConstants.MIXED,
-            Constants.BlockConstants.TEXT_ONLY};
+    static String[] members = new String[] {
+        Constants.BlockConstants.ELEMENT_ONLY, Constants.BlockConstants.EMPTY,
+        Constants.BlockConstants.MIXED, Constants.BlockConstants.TEXT_ONLY
+    };
 
     /**
      * Creates new XmlSchemaContentType

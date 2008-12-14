@@ -21,15 +21,15 @@ package org.apache.ws.commons.schema.utils;
 import java.util.*;
 
 public class NamespaceMap extends HashMap implements NamespacePrefixList {
-    
+
     /**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public NamespaceMap() {
+    public NamespaceMap() {
     }
-    
+
     public NamespaceMap(Map map) {
         super(map);
     }
@@ -40,7 +40,7 @@ public class NamespaceMap extends HashMap implements NamespacePrefixList {
 
     public String[] getDeclaredPrefixes() {
         Set keys = keySet();
-        return (String[]) keys.toArray(new String[keys.size()]);
+        return (String[])keys.toArray(new String[keys.size()]);
     }
 
     public String getNamespaceURI(String prefix) {
@@ -50,9 +50,9 @@ public class NamespaceMap extends HashMap implements NamespacePrefixList {
     public String getPrefix(String namespaceURI) {
         Iterator iterator = entrySet().iterator();
         while (iterator.hasNext()) {
-            Map.Entry entry = (Map.Entry) iterator.next();
+            Map.Entry entry = (Map.Entry)iterator.next();
             if (entry.getValue().toString().equals(namespaceURI)) {
-                return (String) entry.getKey();
+                return (String)entry.getKey();
             }
         }
         return null;
@@ -62,7 +62,7 @@ public class NamespaceMap extends HashMap implements NamespacePrefixList {
         ArrayList list = new ArrayList();
         Iterator iterator = entrySet().iterator();
         while (iterator.hasNext()) {
-            Map.Entry entry = (Map.Entry) iterator.next();
+            Map.Entry entry = (Map.Entry)iterator.next();
             if (entry.getValue().toString().equals(namespaceURI)) {
                 list.add(entry.getKey());
             }

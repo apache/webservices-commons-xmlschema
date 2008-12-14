@@ -20,8 +20,7 @@
 package org.apache.ws.commons.schema;
 
 /**
- * Class for defining minExclusive facets. Represents the World
- * Wide Web Consortium (W3C) minExclusive facet.
+ * Class for defining minExclusive facets. Represents the World Wide Web Consortium (W3C) minExclusive facet.
  */
 
 public class XmlSchemaMinExclusiveFacet extends XmlSchemaFacet {
@@ -41,7 +40,7 @@ public class XmlSchemaMinExclusiveFacet extends XmlSchemaFacet {
         for (int i = 0; i < tab; i++) {
             xml.append("\t");
         }
-        xml.append("<minExclusive value=\"").append((String) super.getValue()).append("\" ");
+        xml.append("<minExclusive value=\"").append((String)super.getValue()).append("\" ");
         xml.append("fixed=\"" + super.isFixed() + "\"/>\n");
         return xml.toString();
     }

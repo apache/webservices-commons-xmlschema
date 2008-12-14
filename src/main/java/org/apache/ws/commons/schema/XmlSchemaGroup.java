@@ -22,10 +22,9 @@ package org.apache.ws.commons.schema;
 import javax.xml.namespace.QName;
 
 /**
- * Class that defines groups at the schema level that are referenced
- * from the complex types. Groups a set of element declarations so that
- * they can be incorporated as a group into complex type definitions.
- * Represents the World Wide Web Consortium (W3C) group element.
+ * Class that defines groups at the schema level that are referenced from the complex types. Groups a set of
+ * element declarations so that they can be incorporated as a group into complex type definitions. Represents
+ * the World Wide Web Consortium (W3C) group element.
  */
 
 public class XmlSchemaGroup extends XmlSchemaAnnotated {

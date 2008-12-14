@@ -33,10 +33,9 @@ import org.custommonkey.xmlunit.XMLTestCase;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.w3c.dom.Document;
 
-
 public class AppInfoMarkupTest extends XMLTestCase {
 
-    public void testAppInfo() throws Exception{
+    public void testAppInfo() throws Exception {
         DocumentBuilder b = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document pureDOMDocument = b.parse(new FileInputStream(Resources.asURI("appInfo.xsd")));
 
@@ -47,7 +46,7 @@ public class AppInfoMarkupTest extends XMLTestCase {
         s.write(baos);
 
         Document serialzedDoument = b.parse(new ByteArrayInputStream(baos.toByteArray()));
-        XMLUnit.compareXML(pureDOMDocument,serialzedDoument);
+        XMLUnit.compareXML(pureDOMDocument, serialzedDoument);
 
     }
 

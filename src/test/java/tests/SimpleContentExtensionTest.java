@@ -50,35 +50,21 @@ public class SimpleContentExtensionTest extends TestCase {
 
     /**
      * This method will test the simple content extension.
-     *
+     * 
      * @throws Exception Any exception encountered
      */
     public void testSimpleContentExtension() throws Exception {
 
         /*
-         <schema xmlns="http://www.w3.org/2001/XMLSchema"
-                 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-                 xmlns:tns="http://soapinterop.org/types"
-                 targetNamespace="http://soapinterop.org/types"
-                 attributeFormDefault="qualified">
-  
-           <element name="height">
-             <complexType>
-               <simpleContent>
-                 <extension base="integer">
-                   <attribute name="units" type="string" use="required"/>
-                   <attribute name="id" type="integer" use="required" default="001"/>
-                   <attribute name="desc" type="decimal" fixed="1.1"/>
-                 </extension>
-               </simpleContent>
-             </complexType>
-           </element>                                                           
+         * <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         * xmlns:tns="http://soapinterop.org/types" targetNamespace="http://soapinterop.org/types"
+         * attributeFormDefault="qualified"> <element name="height"> <complexType> <simpleContent> <extension
+         * base="integer"> <attribute name="units" type="string" use="required"/> <attribute name="id"
+         * type="integer" use="required" default="001"/> <attribute name="desc" type="decimal" fixed="1.1"/>
+         * </extension> </simpleContent> </complexType> </element> </schema>
+         */
 
-         </schema>
-        */                                                                      
-
-        QName ELEMENT_QNAME = new QName("http://soapinterop.org/types",
-                                        "height");
+        QName ELEMENT_QNAME = new QName("http://soapinterop.org/types", "height");
         InputStream is = new FileInputStream(Resources.asURI("simplecontentextension.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
@@ -86,19 +72,16 @@ public class SimpleContentExtensionTest extends TestCase {
         XmlSchemaElement elem = schema.getElementByName(ELEMENT_QNAME);
         assertNotNull(elem);
         assertEquals("height", elem.getName());
-        assertEquals(new QName("http://soapinterop.org/types", "height"),
-                     elem.getQName());
+        assertEquals(new QName("http://soapinterop.org/types", "height"), elem.getQName());
 
         XmlSchemaComplexType xsct = (XmlSchemaComplexType)elem.getSchemaType();
         assertNotNull(xsct);
         XmlSchemaSimpleContent xssc = (XmlSchemaSimpleContent)xsct.getContentModel();
         assertNotNull(xssc);
-        
-        XmlSchemaSimpleContentExtension xssce 
-            = (XmlSchemaSimpleContentExtension)xssc.getContent();
+
+        XmlSchemaSimpleContentExtension xssce = (XmlSchemaSimpleContentExtension)xssc.getContent();
         assertNotNull(xssce);
-        assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "integer"),
-                     xssce.getBaseTypeName());
+        assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "integer"), xssce.getBaseTypeName());
 
         XmlSchemaObjectCollection xsoc = xssce.getAttributes();
         assertEquals(3, xsoc.getCount());
@@ -111,26 +94,22 @@ public class SimpleContentExtensionTest extends TestCase {
             XmlSchemaAttribute xsa = (XmlSchemaAttribute)xsoc.getItem(i);
             String name = xsa.getName();
             if (name.equals("units")) {
-                assertEquals(new QName("http://soapinterop.org/types", "units"),
-                             xsa.getQName());
-                assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "string"),
-                             xsa.getSchemaTypeName());
+                assertEquals(new QName("http://soapinterop.org/types", "units"), xsa.getQName());
+                assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "string"), xsa.getSchemaTypeName());
                 assertNull(xsa.getDefaultValue());
                 assertEquals("required", xsa.getUse().getValue());
                 assertNull(xsa.getFixedValue());
             } else if (name.equals("id")) {
-                assertEquals(new QName("http://soapinterop.org/types", "id"),
-                             xsa.getQName());
-                assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "integer"),
-                             xsa.getSchemaTypeName());
+                assertEquals(new QName("http://soapinterop.org/types", "id"), xsa.getQName());
+                assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "integer"), xsa
+                    .getSchemaTypeName());
                 assertEquals("001", xsa.getDefaultValue());
                 assertEquals("required", xsa.getUse().getValue());
                 assertNull(xsa.getFixedValue());
             } else if (name.equals("desc")) {
-                assertEquals(new QName("http://soapinterop.org/types", "desc"),
-                             xsa.getQName());
-                assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "decimal"),
-                             xsa.getSchemaTypeName());
+                assertEquals(new QName("http://soapinterop.org/types", "desc"), xsa.getQName());
+                assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "decimal"), xsa
+                    .getSchemaTypeName());
                 assertEquals("none", xsa.getUse().getValue());
                 assertEquals("1.1", xsa.getFixedValue());
             } else {
@@ -139,9 +118,7 @@ public class SimpleContentExtensionTest extends TestCase {
             s.remove(name);
         }
 
-        assertTrue("The set should have been empty, but instead contained: "
-                   + s + ".",
-                   s.isEmpty());
+        assertTrue("The set should have been empty, but instead contained: " + s + ".", s.isEmpty());
 
     }
 

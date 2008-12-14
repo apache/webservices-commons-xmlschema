@@ -24,7 +24,6 @@ import org.w3c.dom.NodeList;
 
 /**
  * Class representing a single schema test as described in a .testSet file.
- *
  */
 public class SchemaTest {
 
@@ -46,19 +45,19 @@ public class SchemaTest {
         NodeList nl = n.getChildNodes();
         for (int i = 0; i < nl.getLength(); i++) {
             Node c = nl.item(i);
-            if (!(c instanceof Element))
+            if (!(c instanceof Element)) {
                 continue;
-            Element elem = (Element) c;
+            }
+            Element elem = (Element)c;
             String elemName = elem.getNodeName();
             if (elemName.equals(SCHEMA_DOCUMENT)) {
-                 schemaDocumentLink = elem.getAttributeNS(
-                        "http://www.w3.org/1999/xlink", "href");
-                 
-                 // Workaround for mistake in the NISTXMLSchema1-0-20020116.testSet file
-                 // See http://lists.w3.org/Archives/Public/www-xml-schema-comments/2006JulSep/0000.html
-                 if (schemaDocumentLink.equals("./NISTTestsAll/NISTSchema-anyURI-maxLength-1.xsd")) {
-                     schemaDocumentLink = "./nisttest/NISTTestsAll/NISTSchema-anyURI-maxLength-1.xsd";
-                 }
+                schemaDocumentLink = elem.getAttributeNS("http://www.w3.org/1999/xlink", "href");
+
+                // Workaround for mistake in the NISTXMLSchema1-0-20020116.testSet file
+                // See http://lists.w3.org/Archives/Public/www-xml-schema-comments/2006JulSep/0000.html
+                if (schemaDocumentLink.equals("./NISTTestsAll/NISTSchema-anyURI-maxLength-1.xsd")) {
+                    schemaDocumentLink = "./nisttest/NISTTestsAll/NISTSchema-anyURI-maxLength-1.xsd";
+                }
             }
 
             if (elemName.equals(EXPECTED)) {
@@ -75,7 +74,7 @@ public class SchemaTest {
     public boolean isValid() {
         return expectedValidity.equals("valid");
     }
-    
+
     public String toString() {
         StringBuffer sb = new StringBuffer("href=");
         sb.append(schemaDocumentLink);
@@ -85,7 +84,7 @@ public class SchemaTest {
         sb.append(currentStatus);
         sb.append(" currentDate=");
         sb.append(currentDate);
-        
+
         return sb.toString();
     }
 }

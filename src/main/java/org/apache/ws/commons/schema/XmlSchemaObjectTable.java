@@ -24,11 +24,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 /**
- * A collection class that provides read-only helpers for XmlSchemaObject
- * objects. This class is used to provide the collections for contained
- * elements that are within the schema as collections that are accessed
- * from the XmlSchema class (for example, Attributes, AttributeGroups,
- * Elements, and so on).
+ * A collection class that provides read-only helpers for XmlSchemaObject objects. This class is used to
+ * provide the collections for contained elements that are within the schema as collections that are accessed
+ * from the XmlSchema class (for example, Attributes, AttributeGroups, Elements, and so on).
  */
 
 public class XmlSchemaObjectTable {
@@ -47,7 +45,7 @@ public class XmlSchemaObjectTable {
     }
 
     public XmlSchemaObject getItem(QName name) {
-        return (XmlSchemaObject) collection.get(name);
+        return (XmlSchemaObject)collection.get(name);
     }
 
     public Iterator getNames() {

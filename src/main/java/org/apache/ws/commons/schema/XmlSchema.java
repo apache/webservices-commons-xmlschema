@@ -46,18 +46,15 @@ import java.util.Stack;
 //         variable to name s.
 //Feb 21th - Joni - Port to XMLDomUtil and Tranformation.
 /**
- * Contains the definition of a schema. All XML Schema definition language (XSD)
- * elements are children of the schema element. Represents the World Wide Web
- * Consortium (W3C) schema element
+ * Contains the definition of a schema. All XML Schema definition language (XSD) elements are children of the
+ * schema element. Represents the World Wide Web Consortium (W3C) schema element
  */
 public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwner {
     private static final String UTF_8_ENCODING = "UTF-8";
-	static final String SCHEMA_NS = "http://www.w3.org/2001/XMLSchema";
+    static final String SCHEMA_NS = "http://www.w3.org/2001/XMLSchema";
     XmlSchemaForm attributeFormDefault, elementFormDefault;
 
-    XmlSchemaObjectTable attributeGroups,
-            attributes, elements, groups,
-            notations, schemaTypes;
+    XmlSchemaObjectTable attributeGroups, attributes, elements, groups, notations, schemaTypes;
     XmlSchemaDerivationMethod blockDefault, finalDefault;
     XmlSchemaObjectCollection includes, items;
     boolean isCompiled;
@@ -66,34 +63,36 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
     XmlSchemaCollection parent;
 
     private NamespacePrefixList namespaceContext;
-    //keep the encoding of the input
+    // keep the encoding of the input
     private String inputEncoding;
 
-    public void setInputEncoding(String encoding){
+    public void setInputEncoding(String encoding) {
         this.inputEncoding = encoding;
     }
+
     /**
-     * Creates new XmlSchema
-     * Create a new XmlSchema. The schema is <i>not</i> added to the parent collection,
-     * since it has no target namespace when created through this constructor.
-     * Call {@link XmlSchema#XmlSchema(String, XmlSchemaCollection)} instead.
-      *
-      * @param parent the parent XmlSchemaCollection
+     * Creates new XmlSchema Create a new XmlSchema. The schema is <i>not</i> added to the parent collection,
+     * since it has no target namespace when created through this constructor. Call
+     * {@link XmlSchema#XmlSchema(String, XmlSchemaCollection)} instead.
+     * 
+     * @param parent the parent XmlSchemaCollection
      * @deprecated
-      */
-     public XmlSchema(XmlSchemaCollection parent) {
-    	this(null, null, parent);
+     */
+    @Deprecated
+    public XmlSchema(XmlSchemaCollection parent) {
+        this(null, null, parent);
     }
 
     /**
      * Create a schema that is not a member of a collection.
      */
     public XmlSchema() {
-    	this(null, null, null);
+        this(null, null, null);
     }
 
     /**
      * Create a new schema and record it as a member of a schema collection.
+     * 
      * @param namespace the target namespace.
      * @param systemId the system ID for the schema.
      * @param parent the parent collection.
@@ -115,22 +114,23 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
 
         syntacticalTargetNamespace = logicalTargetNamespace = namespace;
         if (logicalTargetNamespace == null) {
-             logicalTargetNamespace = "";
-         }
-        if(parent != null) {
-        	XmlSchemaCollection.SchemaKey schemaKey =
-        		new XmlSchemaCollection.SchemaKey(this.logicalTargetNamespace, systemId);
-        	if (parent.containsSchema(schemaKey)) {
-        		throw new XmlSchemaException("Schema name conflict in collection");
-        	} else {
-        		parent.addSchema(schemaKey, this);
-        	}
+            logicalTargetNamespace = "";
+        }
+        if (parent != null) {
+            XmlSchemaCollection.SchemaKey schemaKey = new XmlSchemaCollection.SchemaKey(
+                                                                                        this.logicalTargetNamespace,
+                                                                                        systemId);
+            if (parent.containsSchema(schemaKey)) {
+                throw new XmlSchemaException("Schema name conflict in collection");
+            } else {
+                parent.addSchema(schemaKey, this);
+            }
         }
     }
 
     public XmlSchema(String namespace, XmlSchemaCollection parent) {
         this(namespace, namespace, parent);
-       
+
     }
 
     public XmlSchemaForm getAttributeFormDefault() {
@@ -169,204 +169,193 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
         return elements;
     }
 
-    
-    protected XmlSchemaElement getElementByName(QName name, boolean deep,
-			Stack schemaStack) {
-		if (schemaStack != null && schemaStack.contains(this)) {
-			// recursive schema - just return null
-			return null;
-		} else {
-			XmlSchemaElement element = (XmlSchemaElement) elements
-					.getItem(name);
-			if (deep) {
-				if (element == null) {
-					// search the imports
-					for (Iterator includedItems = includes.getIterator(); includedItems
-							.hasNext();) {
-						
-						XmlSchema schema = getSchema(includedItems.next());
-						
-						if (schema != null) {
-						// create an empty stack - push the current parent in
-						// and
-						// use the protected method to process the schema
-						if (schemaStack == null) {
-							schemaStack = new Stack();
-						}
-						schemaStack.push(this);
-						element = schema.getElementByName(name, deep,
-								schemaStack);
-						if (element != null) {
-							return element;
-						}
-						}
-					}
-				} else {
-					return element;
-				}
-			}
+    protected XmlSchemaElement getElementByName(QName name, boolean deep, Stack schemaStack) {
+        if (schemaStack != null && schemaStack.contains(this)) {
+            // recursive schema - just return null
+            return null;
+        } else {
+            XmlSchemaElement element = (XmlSchemaElement)elements.getItem(name);
+            if (deep) {
+                if (element == null) {
+                    // search the imports
+                    for (Iterator includedItems = includes.getIterator(); includedItems.hasNext();) {
 
-			return element;
-		}
-	}
-    
+                        XmlSchema schema = getSchema(includedItems.next());
+
+                        if (schema != null) {
+                            // create an empty stack - push the current parent in
+                            // and
+                            // use the protected method to process the schema
+                            if (schemaStack == null) {
+                                schemaStack = new Stack();
+                            }
+                            schemaStack.push(this);
+                            element = schema.getElementByName(name, deep, schemaStack);
+                            if (element != null) {
+                                return element;
+                            }
+                        }
+                    }
+                } else {
+                    return element;
+                }
+            }
+
+            return element;
+        }
+    }
+
     protected XmlSchemaAttribute getAttributeByName(QName name, boolean deep, Stack schemaStack) {
-                                        if (schemaStack != null && schemaStack.contains(this)) {
-                                                // recursive schema - just return null
-                                                return null;
-                                        } else {
-                                                XmlSchemaAttribute attribute = (XmlSchemaAttribute) attributes
-                                                                .getItem(name);
-                                                if (deep) {
-                                                        if (attribute == null) {
-                                                                // search the imports
-                                                                for (Iterator includedItems = includes.getIterator(); includedItems
-                                                                                .hasNext();) {
-                                                                        
-                                                                        XmlSchema schema = getSchema(includedItems.next());
-                                                                        
-                                                                        if (schema != null) {
-                                                                        // create an empty stack - push the current parent in
-                                                                        // and
-                                                                        // use the protected method to process the schema
-                                                                        if (schemaStack == null) {
-                                                                                schemaStack = new Stack();
-                                                                        }
-                                                                        schemaStack.push(this);
-                                                                        attribute = schema.getAttributeByName(name, deep,
-                                                                                        schemaStack);
-                                                                        if (attribute != null) {
-                                                                                return attribute;
-                                                                        }
-                                                                        }
-                                                                }
-                                                        } else {
-                                                                return attribute;
-                                                        }
-                                                }
+        if (schemaStack != null && schemaStack.contains(this)) {
+            // recursive schema - just return null
+            return null;
+        } else {
+            XmlSchemaAttribute attribute = (XmlSchemaAttribute)attributes.getItem(name);
+            if (deep) {
+                if (attribute == null) {
+                    // search the imports
+                    for (Iterator includedItems = includes.getIterator(); includedItems.hasNext();) {
 
-                                                return attribute;
-                                        }
-                                }
+                        XmlSchema schema = getSchema(includedItems.next());
 
-	/**
-	 * get an element by the name in the local schema
-	 * 
-	 * @param name
-	 * @return the element.
-	 */
-	public XmlSchemaElement getElementByName(String name) {
-        QName nameToSearchFor = new QName(this.getTargetNamespace(),name);
+                        if (schema != null) {
+                            // create an empty stack - push the current parent in
+                            // and
+                            // use the protected method to process the schema
+                            if (schemaStack == null) {
+                                schemaStack = new Stack();
+                            }
+                            schemaStack.push(this);
+                            attribute = schema.getAttributeByName(name, deep, schemaStack);
+                            if (attribute != null) {
+                                return attribute;
+                            }
+                        }
+                    }
+                } else {
+                    return attribute;
+                }
+            }
+
+            return attribute;
+        }
+    }
+
+    /**
+     * get an element by the name in the local schema
+     * 
+     * @param name
+     * @return the element.
+     */
+    public XmlSchemaElement getElementByName(String name) {
+        QName nameToSearchFor = new QName(this.getTargetNamespace(), name);
         return this.getElementByName(nameToSearchFor, false, null);
-	}
+    }
 
-	/**
-	 * Look for a element by its qname. Searches through all the schemas
-	 * @param name
-	 * @return the element.
-	 */
-	public XmlSchemaElement getElementByName(QName name) {
-		return this.getElementByName(name, true, null);
-	}
-	
-	/**
-	 * Look for a global attribute by its QName. Searches through all schemas.
-	 * @param name
-	 * @return the attribute.
-	 */
-	public XmlSchemaAttribute getAttributeByName(QName name) {
-	    return this.getAttributeByName(name, true, null);
-	}
+    /**
+     * Look for a element by its qname. Searches through all the schemas
+     * 
+     * @param name
+     * @return the element.
+     */
+    public XmlSchemaElement getElementByName(QName name) {
+        return this.getElementByName(name, true, null);
+    }
 
-	/**
-	 * Protected method that allows safe (non-recursive schema loading). It looks for a type
-	 * with constraints.
-         * 
-	 * @param name
-	 * @param deep
-	 * @param schemaStack
-	 * @return the type.
-	 */
-	protected XmlSchemaType getTypeByName(QName name, boolean deep,
-			Stack schemaStack) {
-		if (schemaStack != null && schemaStack.contains(this)) {
-			// recursive schema - just return null
-			return null;
-		} else {
-			XmlSchemaType type = (XmlSchemaType) schemaTypes.getItem(name);
+    /**
+     * Look for a global attribute by its QName. Searches through all schemas.
+     * 
+     * @param name
+     * @return the attribute.
+     */
+    public XmlSchemaAttribute getAttributeByName(QName name) {
+        return this.getAttributeByName(name, true, null);
+    }
 
-			if (deep) {
-				if (type == null) {
-					// search the imports
-					for (Iterator includedItems = includes.getIterator(); includedItems
-							.hasNext();) {
+    /**
+     * Protected method that allows safe (non-recursive schema loading). It looks for a type with constraints.
+     * 
+     * @param name
+     * @param deep
+     * @param schemaStack
+     * @return the type.
+     */
+    protected XmlSchemaType getTypeByName(QName name, boolean deep, Stack schemaStack) {
+        if (schemaStack != null && schemaStack.contains(this)) {
+            // recursive schema - just return null
+            return null;
+        } else {
+            XmlSchemaType type = (XmlSchemaType)schemaTypes.getItem(name);
 
-						XmlSchema schema = getSchema(includedItems.next());
-						
-						if (schema != null) {
-							// create an empty stack - push the current parent
-							// use the protected method to process the schema
-							if (schemaStack == null) {
-								schemaStack = new Stack();
-							}
-							schemaStack.push(this);
-							type = schema
-									.getTypeByName(name, deep, schemaStack);
-							if (type != null) {
-								return type;
-							}
-						}
-					}
-				} else {
-					return type;
-				}
-			}
+            if (deep) {
+                if (type == null) {
+                    // search the imports
+                    for (Iterator includedItems = includes.getIterator(); includedItems.hasNext();) {
 
-			return type;
-		}
-	}
+                        XmlSchema schema = getSchema(includedItems.next());
 
-	/**
-	 * Search this schema and all the imported/included ones
-         * for the given Qname
-	 * @param name
-	 * @return the type.
-	 */
-	public XmlSchemaType getTypeByName(QName name) {
-		return getTypeByName(name, true, null);
-	}
+                        if (schema != null) {
+                            // create an empty stack - push the current parent
+                            // use the protected method to process the schema
+                            if (schemaStack == null) {
+                                schemaStack = new Stack();
+                            }
+                            schemaStack.push(this);
+                            type = schema.getTypeByName(name, deep, schemaStack);
+                            if (type != null) {
+                                return type;
+                            }
+                        }
+                    }
+                } else {
+                    return type;
+                }
+            }
 
-	/**
-	 * Search this schema for a type by qname.
-	 * @param name
-	 * @return the type.
-	 */
-	public XmlSchemaType getTypeByName(String name) {
-        QName nameToSearchFor = new QName(this.getTargetNamespace(),name);
+            return type;
+        }
+    }
+
+    /**
+     * Search this schema and all the imported/included ones for the given Qname
+     * 
+     * @param name
+     * @return the type.
+     */
+    public XmlSchemaType getTypeByName(QName name) {
+        return getTypeByName(name, true, null);
+    }
+
+    /**
+     * Search this schema for a type by qname.
+     * 
+     * @param name
+     * @return the type.
+     */
+    public XmlSchemaType getTypeByName(String name) {
+        QName nameToSearchFor = new QName(this.getTargetNamespace(), name);
         return getTypeByName(nameToSearchFor, false, null);
-	}
+    }
 
-	/**
-	 * Get a schema from an import
-	 * 
-	 * @param includeOrImport
-	 * @return return the schema object.
-	 */
-	private XmlSchema getSchema(Object includeOrImport) {
-		XmlSchema schema;
-		if (includeOrImport instanceof XmlSchemaImport) {
-			schema = ((XmlSchemaImport) includeOrImport).getSchema();
-		} else if (includeOrImport instanceof XmlSchemaInclude) {
-			schema = ((XmlSchemaInclude) includeOrImport).getSchema();
-		} else {
-			// skip ?
-			schema = null;
-		}
+    /**
+     * Get a schema from an import
+     * 
+     * @param includeOrImport
+     * @return return the schema object.
+     */
+    private XmlSchema getSchema(Object includeOrImport) {
+        XmlSchema schema;
+        if (includeOrImport instanceof XmlSchemaImport) {
+            schema = ((XmlSchemaImport)includeOrImport).getSchema();
+        } else if (includeOrImport instanceof XmlSchemaInclude) {
+            schema = ((XmlSchemaInclude)includeOrImport).getSchema();
+        } else {
+            // skip ?
+            schema = null;
+        }
 
-		return schema;
-	}
-
-    
+        return schema;
+    }
 
     public XmlSchemaDerivationMethod getFinalDefault() {
         return finalDefault;
@@ -420,39 +409,39 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
 
     /**
      * Serialize the schema into the given output stream
+     * 
      * @param out - the output stream to write to
      */
     public void write(OutputStream out) {
-    try {
-        if (this.inputEncoding!= null &&
-                !"".equals(this.inputEncoding)){
-                write(new OutputStreamWriter(out,this.inputEncoding));
-        }else{
-        	//As per the XML spec the default is taken to be UTF 8
-            write(new OutputStreamWriter(out,UTF_8_ENCODING));
+        try {
+            if (this.inputEncoding != null && !"".equals(this.inputEncoding)) {
+                write(new OutputStreamWriter(out, this.inputEncoding));
+            } else {
+                // As per the XML spec the default is taken to be UTF 8
+                write(new OutputStreamWriter(out, UTF_8_ENCODING));
+            }
+        } catch (UnsupportedEncodingException e) {
+            // log the error and just write it without the encoding
+            write(new OutputStreamWriter(out));
         }
-    } catch (UnsupportedEncodingException e) {
-        //log the error and just write it without the encoding
-        write(new OutputStreamWriter(out));
-    }
 
     }
 
     /**
      * Serialize the schema into the given output stream
+     * 
      * @param out - the output stream to write to
-     * @param options -  a map of options
+     * @param options - a map of options
      */
     public void write(OutputStream out, Map options) {
-    	try {
-	        if (this.inputEncoding!= null &&
-	                !"".equals(this.inputEncoding)){
-	                write(new OutputStreamWriter(out,this.inputEncoding),options);
-	        }else{
-	            write(new OutputStreamWriter(out,UTF_8_ENCODING),options);
-	        }
-    	} catch (UnsupportedEncodingException e) {
-            //log the error and just write it without the encoding
+        try {
+            if (this.inputEncoding != null && !"".equals(this.inputEncoding)) {
+                write(new OutputStreamWriter(out, this.inputEncoding), options);
+            } else {
+                write(new OutputStreamWriter(out, UTF_8_ENCODING), options);
+            }
+        } catch (UnsupportedEncodingException e) {
+            // log the error and just write it without the encoding
             write(new OutputStreamWriter(out));
         }
 
@@ -460,17 +449,20 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
 
     /**
      * Serialie the schema to a given writer
+     * 
      * @param writer - the writer to write this
      */
-    public void write(Writer writer,Map options) {
-        serialize_internal(this, writer,options);
+    public void write(Writer writer, Map options) {
+        serialize_internal(this, writer, options);
     }
+
     /**
      * Serialie the schema to a given writer
+     * 
      * @param writer - the writer to write this
      */
     public void write(Writer writer) {
-        serialize_internal(this, writer,null);
+        serialize_internal(this, writer, null);
     }
 
     public Document[] getAllSchemas() {
@@ -487,11 +479,12 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
 
     /**
      * serialize the schema - this is the method tht does to work
+     * 
      * @param schema
      * @param out
      * @param options
      */
-    private  void serialize_internal(XmlSchema schema, Writer out, Map options) {
+    private void serialize_internal(XmlSchema schema, Writer out, Map options) {
 
         try {
             XmlSchemaSerializer xser = new XmlSchemaSerializer();
@@ -502,25 +495,24 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
             try {
                 trFac.setAttribute("indent-number", "4");
             } catch (IllegalArgumentException e) {
-                //do nothing - we'll just silently let this pass if it
-                //was not compatible
+                // do nothing - we'll just silently let this pass if it
+                // was not compatible
             }
 
             Source source = new DOMSource(serializedSchemas[0]);
             Result result = new StreamResult(out);
             javax.xml.transform.Transformer tr = trFac.newTransformer();
 
-            //use the input encoding if there is one
-            if (schema.inputEncoding!= null &&
-                    !"".equals(schema.inputEncoding)){
-                tr.setOutputProperty(OutputKeys.ENCODING,schema.inputEncoding);
+            // use the input encoding if there is one
+            if (schema.inputEncoding != null && !"".equals(schema.inputEncoding)) {
+                tr.setOutputProperty(OutputKeys.ENCODING, schema.inputEncoding);
             }
 
-            //let these be configured from outside  if any is present
-            //Note that one can enforce the encoding by passing the necessary
-            //property in options
+            // let these be configured from outside if any is present
+            // Note that one can enforce the encoding by passing the necessary
+            // property in options
 
-            if (options==null){
+            if (options == null) {
                 options = new HashMap();
                 loadDefaultOptions(options);
             }
@@ -545,7 +537,8 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
 
     /**
      * Load the default options
-     * @param options  - the map of
+     * 
+     * @param options - the map of
      */
     private void loadDefaultOptions(Map options) {
         options.put(OutputKeys.OMIT_XML_DECLARATION, "yes");
@@ -555,9 +548,8 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
     public void addType(XmlSchemaType type) {
         QName qname = type.getQName();
         if (schemaTypes.contains(qname)) {
-            throw new XmlSchemaException(" Schema for namespace '" +
-                    syntacticalTargetNamespace + "' already contains type '" +
-                    qname.getLocalPart() + "'");
+            throw new XmlSchemaException(" Schema for namespace '" + syntacticalTargetNamespace
+                                         + "' already contains type '" + qname.getLocalPart() + "'");
         }
         schemaTypes.add(qname, type);
     }
@@ -567,31 +559,31 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
     }
 
     /**
-     * Sets the schema elements namespace context. This may be used for schema
-     * serialization, until a better mechanism was found.
+     * Sets the schema elements namespace context. This may be used for schema serialization, until a better
+     * mechanism was found.
      */
     public void setNamespaceContext(NamespacePrefixList namespaceContext) {
         this.namespaceContext = namespaceContext;
     }
 
     /**
-     * Override the equals(Object) method with equivalence checking
-     * that is specific to this class.
+     * Override the equals(Object) method with equivalence checking that is specific to this class.
      */
     public boolean equals(Object what) {
 
-        //Note: this method may no longer be required when line number/position are used correctly in XmlSchemaObject.
-        //Currently they are simply initialized to zero, but they are used in XmlSchemaObject.equals 
-        //which can result in a false positive (e.g. if a WSDL contains 2 inlined schemas).
+        // Note: this method may no longer be required when line number/position are used correctly in
+        // XmlSchemaObject.
+        // Currently they are simply initialized to zero, but they are used in XmlSchemaObject.equals
+        // which can result in a false positive (e.g. if a WSDL contains 2 inlined schemas).
 
         if (what == this) {
             return true;
         }
 
-        //If the inherited behaviour determines that the objects are NOT equal, return false. 
-        //Otherwise, do some further equivalence checking.
+        // If the inherited behaviour determines that the objects are NOT equal, return false.
+        // Otherwise, do some further equivalence checking.
 
-        if(!super.equals(what)) {
+        if (!super.equals(what)) {
             return false;
         }
 
@@ -599,7 +591,7 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
             return false;
         }
 
-        XmlSchema xs = (XmlSchema) what;
+        XmlSchema xs = (XmlSchema)what;
 
         if (this.id != null) {
             if (!this.id.equals(xs.id)) {
@@ -621,14 +613,14 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
             }
         }
 
-        //TODO decide if further schema content should be checked for equivalence.
+        // TODO decide if further schema content should be checked for equivalence.
 
         return true;
     }
-    
+
     /**
-     * Retrieve a DOM tree for this one schema, independent of any included or 
-     * related schemas.
+     * Retrieve a DOM tree for this one schema, independent of any included or related schemas.
+     * 
      * @return The DOM document.
      * @throws XmlSchemaSerializerException
      */
@@ -637,11 +629,11 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
         xser.setExtReg(this.parent.getExtReg());
         return xser.serializeSchema(this, false)[0];
     }
-    
+
     public String getInputEncoding() {
         return inputEncoding;
     }
-    
+
     public String toString() {
         return super.toString() + "[" + logicalTargetNamespace + "]";
     }

@@ -3,7 +3,6 @@
  * (C) Copyright 2003-2008 Alexander Veit
  */
 
-
 package tests;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -17,10 +16,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-
 /**
- * @author alex
- * $Revision$
+ * @author alex $Revision$
  */
 public class WSCOMMONS377Test extends TestCase {
 
@@ -38,7 +35,8 @@ public class WSCOMMONS377Test extends TestCase {
         XmlSchema[] schemas = new XmlSchema[nodesSchema.getLength()];
 
         String systemIdBase = "urn:schemas";
-        for (int i = 0; i < nodesSchema.getLength(); i++)
+        for (int i = 0; i < nodesSchema.getLength(); i++) {
             schemas[i] = xsColl.read((Element)nodesSchema.item(i), systemIdBase + i);
+        }
     }
 }

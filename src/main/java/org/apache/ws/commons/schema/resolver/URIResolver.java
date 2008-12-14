@@ -20,17 +20,14 @@ package org.apache.ws.commons.schema.resolver;
 
 import org.xml.sax.InputSource;
 
-
 public interface URIResolver {
     /**
      * Resolves an interface
+     * 
      * @param targetNamespace
      * @param schemaLocation
      * @param baseUri
      */
-     InputSource resolveEntity(String targetNamespace,
-                                     String schemaLocation,
-                                     String baseUri
-                                     );
+    InputSource resolveEntity(String targetNamespace, String schemaLocation, String baseUri);
 
 }

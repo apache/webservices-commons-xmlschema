@@ -28,35 +28,32 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ListIterator;
 
 /**
- * Class to test a single schema by roundtripping it using XMLUnit 
- * cmd line parms: arg0 - valid|invalid arg1 - path to xsd file
- *
+ * Class to test a single schema by roundtripping it using XMLUnit cmd line parms: arg0 - valid|invalid arg1 -
+ * path to xsd file
  */
 public class TestRoundTripXSD extends XMLTestCase {
 
     private static boolean debug;
-    
+
     static {
         String debugString = System.getProperty("debug");
-        debug = (debugString == null) ? false : debugString.equals("true");
+        debug = debugString == null ? false : debugString.equals("true");
     }
-    
+
     private File fileToTest = null;
 
     private boolean valid = false;
 
     public final static void main(String[] args) {
-        junit.textui.TestRunner.run(new TestRoundTripXSD(new File(args[1]),
-                args[0].equals("valid")));
+        junit.textui.TestRunner.run(new TestRoundTripXSD(new File(args[1]), args[0].equals("valid")));
     }
 
-    
     public TestRoundTripXSD() {
-        this(new File(System.getProperty("W3CTestLocation")),
-             System.getProperty("W3CTestValidity").equals("valid"));
-        
+        this(new File(System.getProperty("W3CTestLocation")), System.getProperty("W3CTestValidity")
+            .equals("valid"));
+
     }
-    
+
     public TestRoundTripXSD(File f, boolean valid) {
         super(basename(f));
 
@@ -67,30 +64,27 @@ public class TestRoundTripXSD extends XMLTestCase {
     private static String basename(File f) {
         String path = f.getPath();
         int i = path.lastIndexOf(System.getProperty("file.separator"));
-        String retval = path.substring(i+1);
+        String retval = path.substring(i + 1);
         return retval;
     }
-    
+
     protected void runTest() throws Throwable {
         try {
             testRoundTrip();
-        }
-        catch (InvocationTargetException e) {
+        } catch (InvocationTargetException e) {
             e.fillInStackTrace();
             throw e.getTargetException();
-        }
-        catch (IllegalAccessException e) {
+        } catch (IllegalAccessException e) {
             e.fillInStackTrace();
             throw e;
         }
     }
 
-    
     public void testRoundTrip() throws Exception {
-        
+
         XmlSchema schema = null;
         DetailedDiff detaileddiffs = null;
-        
+
         try {
             if (debug) {
                 System.out.println("fileToTest=" + this.fileToTest);
@@ -105,21 +99,23 @@ public class TestRoundTripXSD extends XMLTestCase {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             schema.write(baos);
             Diff diff = new Diff(new FileReader(fileToTest),
-                    new InputStreamReader(new ByteArrayInputStream(baos
-                            .toByteArray())));
+                                 new InputStreamReader(new ByteArrayInputStream(baos.toByteArray())));
 
             detaileddiffs = new DetailedDiff(diff);
             detaileddiffs.overrideDifferenceListener(new SchemaAttrDiff());
             boolean result = detaileddiffs.similar();
-            if (!result && debug) printFailureDetail(schema, detaileddiffs); 
+            if (!result && debug) {
+                printFailureDetail(schema, detaileddiffs);
+            }
             assertTrue("Serialized out schema not similar to original", result);
         } catch (Exception e) {
             if (this.valid) {
-                if (debug) printFailureDetail(schema, detaileddiffs);
+                if (debug) {
+                    printFailureDetail(schema, detaileddiffs);
+                }
                 throw new Exception(this.fileToTest.getPath(), e);
             }
         }
-        
 
     }
 
@@ -130,35 +126,29 @@ public class TestRoundTripXSD extends XMLTestCase {
         return xmlSchema;
     }
 
-    static class SchemaAttrDiff extends
-            IgnoreTextAndAttributeValuesDifferenceListener {
+    static class SchemaAttrDiff extends IgnoreTextAndAttributeValuesDifferenceListener {
 
         public int differenceFound(Difference difference) {
 
-            if (difference.getId() == DifferenceConstants.ELEMENT_NUM_ATTRIBUTES
-                    .getId()) {
+            if (difference.getId() == DifferenceConstants.ELEMENT_NUM_ATTRIBUTES.getId()) {
                 // control and test have to be elements
                 // check if they are schema elements .. they only
                 // seem to have the added attributeFormDefault and
                 // elementFormDefault attributes
                 // so shldnt have more than 2 attributes difference
-                Element actualEl = (Element) difference.getControlNodeDetail()
-                        .getNode();
+                Element actualEl = (Element)difference.getControlNodeDetail().getNode();
 
                 if (actualEl.getLocalName().equals("schema")) {
 
-                    int expectedAttrs = Integer.parseInt(difference
-                            .getControlNodeDetail().getValue());
-                    int actualAttrs = Integer.parseInt(difference
-                            .getTestNodeDetail().getValue());
+                    int expectedAttrs = Integer.parseInt(difference.getControlNodeDetail().getValue());
+                    int actualAttrs = Integer.parseInt(difference.getTestNodeDetail().getValue());
                     if (Math.abs(actualAttrs - expectedAttrs) <= 2) {
                         return RETURN_IGNORE_DIFFERENCE_NODES_SIMILAR;
                     }
                 }
             } else if (difference.getId() == DifferenceConstants.ATTR_NAME_NOT_FOUND_ID) {
                 // sometimes the serializer throws in a few extra attributes...
-                Element actualEl = (Element) difference.getControlNodeDetail()
-                        .getNode();
+                Element actualEl = (Element)difference.getControlNodeDetail().getNode();
 
                 if (actualEl.getLocalName().equals("schema")) {
                     return RETURN_IGNORE_DIFFERENCE_NODES_SIMILAR;
@@ -182,5 +172,4 @@ public class TestRoundTripXSD extends XMLTestCase {
         }
     }
 
-    
 }

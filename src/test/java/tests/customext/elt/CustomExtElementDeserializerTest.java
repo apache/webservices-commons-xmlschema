@@ -35,38 +35,37 @@ import java.util.Map;
  */
 public class CustomExtElementDeserializerTest extends TestCase {
 
-
     public void testDeserialization() throws Exception {
-            //set the system property for the custom extension registry
-            System.setProperty(Constants.SystemConstants.EXTENSION_REGISTRY_KEY,
-                    CustomExtensionRegistry.class.getName());
+        // set the system property for the custom extension registry
+        System.setProperty(Constants.SystemConstants.EXTENSION_REGISTRY_KEY, CustomExtensionRegistry.class
+            .getName());
 
-           //create a DOM document
-           DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-           documentBuilderFactory.setNamespaceAware(true);
-           Document doc = documentBuilderFactory.newDocumentBuilder().
-                   parse(Resources.asURI("/external/externalElementAnnotations.xsd"));
+        // create a DOM document
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        documentBuilderFactory.setNamespaceAware(true);
+        Document doc = documentBuilderFactory.newDocumentBuilder()
+            .parse(Resources.asURI("/external/externalElementAnnotations.xsd"));
 
-           XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-           XmlSchema schema = schemaCol.read(doc,null);
-           assertNotNull(schema);
+        XmlSchemaCollection schemaCol = new XmlSchemaCollection();
+        XmlSchema schema = schemaCol.read(doc, null);
+        assertNotNull(schema);
 
-          // get the elements and check whether their annotations are properly
-          // populated
-           Iterator values = schema.getElements().getValues();
-           while (values.hasNext()) {
-               XmlSchemaElement elt =  (XmlSchemaElement) values.next();
-               assertNotNull(elt);
-               Map metaInfoMap = elt.getMetaInfoMap();
-               assertNotNull(metaInfoMap);
+        // get the elements and check whether their annotations are properly
+        // populated
+        Iterator values = schema.getElements().getValues();
+        while (values.hasNext()) {
+            XmlSchemaElement elt = (XmlSchemaElement)values.next();
+            assertNotNull(elt);
+            Map metaInfoMap = elt.getMetaInfoMap();
+            assertNotNull(metaInfoMap);
 
-               CustomElement customElt = (CustomElement)metaInfoMap.get(CustomElement.CUSTOM_ELT_QNAME);
-               assertNotNull(customElt);
+            CustomElement customElt = (CustomElement)metaInfoMap.get(CustomElement.CUSTOM_ELT_QNAME);
+            assertNotNull(customElt);
 
-           }
+        }
 
-            //remove our system property
-            System.getProperties().remove(Constants.SystemConstants.EXTENSION_REGISTRY_KEY);
+        // remove our system property
+        System.getProperties().remove(Constants.SystemConstants.EXTENSION_REGISTRY_KEY);
 
     }
 }

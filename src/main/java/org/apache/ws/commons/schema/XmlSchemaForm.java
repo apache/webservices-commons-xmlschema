@@ -30,8 +30,10 @@ public class XmlSchemaForm extends Enum {
     public static final String QUALIFIED = "qualified";
     public static final String UNQUALIFIED = "unqualified";
     public static final String NONE = "none";
-    
-    static String[] members = new String[]{NONE, QUALIFIED, UNQUALIFIED};
+
+    static String[] members = new String[] {
+        NONE, QUALIFIED, UNQUALIFIED
+    };
 
     /**
      * Creates new XmlSchemaForm

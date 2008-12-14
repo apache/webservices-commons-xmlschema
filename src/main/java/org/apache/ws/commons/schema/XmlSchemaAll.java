@@ -20,9 +20,8 @@
 package org.apache.ws.commons.schema;
 
 /**
- * Permits the elements in the group to appear (or not appear)
- * in any order in the containing element. Represents the World
- * Wide Web Consortium (W3C) all element (compositor).
+ * Permits the elements in the group to appear (or not appear) in any order in the containing element.
+ * Represents the World Wide Web Consortium (W3C) all element (compositor).
  */
 public class XmlSchemaAll extends XmlSchemaGroupBase {
 

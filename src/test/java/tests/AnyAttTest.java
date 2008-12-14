@@ -25,37 +25,35 @@ import org.w3c.dom.Document;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-
 public class AnyAttTest extends TestCase {
 
     protected void setUp() throws Exception {
 
     }
 
-    public void testAnyAtt() throws Exception{
-          //create a DOM document
+    public void testAnyAtt() throws Exception {
+        // create a DOM document
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         documentBuilderFactory.setNamespaceAware(true);
-        Document doc = documentBuilderFactory.newDocumentBuilder().
-                parse(Resources.asURI("anyAttTest.xsd"));
+        Document doc = documentBuilderFactory.newDocumentBuilder().parse(Resources.asURI("anyAttTest.xsd"));
 
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema s = schemaCol.read(doc.getDocumentElement());
 
-        //get the element
-        XmlSchemaElement elt = s.getElementByName(new QName("http://unqualified-elements.example.com","AnyAttContainer"));
-        assertNotNull("Element \"AnyAttContainer\" is missing! ",elt);
+        // get the element
+        XmlSchemaElement elt = s.getElementByName(new QName("http://unqualified-elements.example.com",
+                                                            "AnyAttContainer"));
+        assertNotNull("Element \"AnyAttContainer\" is missing! ", elt);
 
         XmlSchemaType schemaType = elt.getSchemaType();
-        assertNotNull("Relevant schema type is missing!",schemaType);
+        assertNotNull("Relevant schema type is missing!", schemaType);
 
-        XmlSchemaComplexType xmlSchemaComplexType = ((XmlSchemaComplexType) schemaType);
+        XmlSchemaComplexType xmlSchemaComplexType = (XmlSchemaComplexType)schemaType;
         XmlSchemaParticle particle = xmlSchemaComplexType.getParticle();
         assertNotNull(particle);
 
         XmlSchemaAnyAttribute anyAttribute = xmlSchemaComplexType.getAnyAttribute();
-        assertNotNull("Any attribute is missing",anyAttribute);
-
+        assertNotNull("Any attribute is missing", anyAttribute);
 
     }
 

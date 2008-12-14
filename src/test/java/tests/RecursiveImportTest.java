@@ -29,25 +29,21 @@ import javax.xml.namespace.QName;
 
 public class RecursiveImportTest extends TestCase {
 
-    public void testSchemaImport() throws Exception{
-        //create a DOM document
+    public void testSchemaImport() throws Exception {
+        // create a DOM document
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         documentBuilderFactory.setNamespaceAware(true);
-        Document doc = documentBuilderFactory.newDocumentBuilder().
-                parse(Resources.asURI("circular/a.xsd"));
+        Document doc = documentBuilderFactory.newDocumentBuilder().parse(Resources.asURI("circular/a.xsd"));
 
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         schemaCol.setBaseUri(Resources.TEST_RESOURCES + "/circular");
-        XmlSchema schema = schemaCol.read(doc,null);
+        XmlSchema schema = schemaCol.read(doc, null);
         assertNotNull(schema);
 
-      
-        
-        //these qnames are *not* there in these schemas
-        assertNull(schema.getTypeByName(new QName("http://soapinterop.org/xsd2","SOAPStruct")));
-        assertNull(schema.getElementByName(new QName("http://soapinterop.org/xsd2","SOAPWrapper")));
+        // these qnames are *not* there in these schemas
+        assertNull(schema.getTypeByName(new QName("http://soapinterop.org/xsd2", "SOAPStruct")));
+        assertNull(schema.getElementByName(new QName("http://soapinterop.org/xsd2", "SOAPWrapper")));
 
     }
 
-    
 }

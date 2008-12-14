@@ -20,8 +20,8 @@
 package org.apache.ws.commons.schema;
 
 /**
- * Class for defining fractionDigits facets. Represents the World Wide
- * Web Consortium (W3C) fractionDigits facet.
+ * Class for defining fractionDigits facets. Represents the World Wide Web Consortium (W3C) fractionDigits
+ * facet.
  */
 
 public class XmlSchemaFractionDigitsFacet extends XmlSchemaNumericFacet {
@@ -44,7 +44,7 @@ public class XmlSchemaFractionDigitsFacet extends XmlSchemaNumericFacet {
         xml.append("<fractionDigits value=\"");
         xml.append(super.getValue());
         xml.append("\" ");
-        
+
         xml.append("fixed=\"");
         xml.append(super.isFixed());
         xml.append("\"/>\n");

@@ -20,8 +20,7 @@
 package org.apache.ws.commons.schema;
 
 /**
- * Identifies a key constraint. Represents the World Wide Web Consortium
- * (W3C) key element.
+ * Identifies a key constraint. Represents the World Wide Web Consortium (W3C) key element.
  */
 
 public class XmlSchemaKey extends XmlSchemaIdentityConstraint {

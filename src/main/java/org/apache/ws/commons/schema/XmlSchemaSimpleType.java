@@ -20,9 +20,8 @@
 package org.apache.ws.commons.schema;
 
 /**
- * Class defines a simple type that determines the information and
- * constraints for the values of attributes or elements with text-only
- * content. Represents the World Wide Web Consortium (W3C) simpleType element.
+ * Class defines a simple type that determines the information and constraints for the values of attributes or
+ * elements with text-only content. Represents the World Wide Web Consortium (W3C) simpleType element.
  */
 
 public class XmlSchemaSimpleType extends XmlSchemaType {
@@ -47,24 +46,26 @@ public class XmlSchemaSimpleType extends XmlSchemaType {
     public String toString(String prefix, int tab) {
         String xml = new String();
 
-        for (int i = 0; i < tab; i++)
+        for (int i = 0; i < tab; i++) {
             xml += "\t";
+        }
 
-        if (!prefix.equals("") && prefix.indexOf(":") == -1)
+        if (!prefix.equals("") && prefix.indexOf(":") == -1) {
             prefix += ":";
-
+        }
 
         xml += "<" + prefix + "simpleType>\n";
 
-        if (content != null)
+        if (content != null) {
             xml += content.toString(prefix, (tab + 1));
+        }
 
-        for (int i = 0; i < tab; i++)
+        for (int i = 0; i < tab; i++) {
             xml += "\t";
+        }
 
         xml += "</" + prefix + "simpleType>\n";
         return xml;
     }
 
 }
-

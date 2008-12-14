@@ -22,9 +22,8 @@ package org.apache.ws.commons.schema;
 import org.apache.ws.commons.schema.constants.Constants;
 
 /**
- * Enables any attribute from the specified namespace or namespaces
- * to appear in the containing complexType element. Represents the
- * World Wide Web Consortium (W3C) anyAttribute element.
+ * Enables any attribute from the specified namespace or namespaces to appear in the containing complexType
+ * element. Represents the World Wide Web Consortium (W3C) anyAttribute element.
  */
 public class XmlSchemaAnyAttribute extends XmlSchemaAnnotated {
 
@@ -32,8 +31,7 @@ public class XmlSchemaAnyAttribute extends XmlSchemaAnnotated {
      * Creates new XmlSchemaAnyAttribute
      */
     public XmlSchemaAnyAttribute() {
-        processContent = new XmlSchemaContentProcessing(
-                Constants.BlockConstants.NONE);
+        processContent = new XmlSchemaContentProcessing(Constants.BlockConstants.NONE);
     }
 
     String namespace;

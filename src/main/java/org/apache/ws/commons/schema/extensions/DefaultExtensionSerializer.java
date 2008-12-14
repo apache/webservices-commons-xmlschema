@@ -31,13 +31,13 @@ import java.util.Map;
 /**
 
  */
-public class DefaultExtensionSerializer implements ExtensionSerializer{
+public class DefaultExtensionSerializer implements ExtensionSerializer {
 
     /**
      * serialize the given element
-     *
+     * 
      * @param schemaObject - Parent schema element
-     * @param classOfType  - the class of the object to be serialized
+     * @param classOfType - the class of the object to be serialized
      * @param node - The DOM Node that is the parent of the serialzation
      */
     public void serialize(XmlSchemaObject schemaObject, Class classOfType, Node node) {
@@ -48,21 +48,20 @@ public class DefaultExtensionSerializer implements ExtensionSerializer{
         // elements or the attributes
         Map metaInfoMap = schemaObject.getMetaInfoMap();
         Document parentDoc = node.getOwnerDocument();
-        if (metaInfoMap.containsKey(Constants.MetaDataConstants.EXTERNAL_ATTRIBUTES)){
-            Map attribMap  = (Map)metaInfoMap.get(Constants.MetaDataConstants.EXTERNAL_ATTRIBUTES);
-           for(Iterator it = attribMap.values().iterator();it.hasNext();){
-                if (node.getNodeType()==Node.ELEMENT_NODE){
-                    ((Element)node).setAttributeNodeNS((Attr)parentDoc.importNode((Node)it.next(),true));
+        if (metaInfoMap.containsKey(Constants.MetaDataConstants.EXTERNAL_ATTRIBUTES)) {
+            Map attribMap = (Map)metaInfoMap.get(Constants.MetaDataConstants.EXTERNAL_ATTRIBUTES);
+            for (Iterator it = attribMap.values().iterator(); it.hasNext();) {
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    ((Element)node).setAttributeNodeNS((Attr)parentDoc.importNode((Node)it.next(), true));
                 }
 
             }
         }
 
-        if (metaInfoMap.containsKey(Constants.MetaDataConstants.EXTERNAL_ELEMENTS)){
-            Map elementMap  = (Map)metaInfoMap.get(Constants.MetaDataConstants.EXTERNAL_ELEMENTS);
-            for(Iterator it = elementMap.values().iterator();it.hasNext();){
-                node.appendChild(
-                        parentDoc.importNode((Node)it.next(),true));
+        if (metaInfoMap.containsKey(Constants.MetaDataConstants.EXTERNAL_ELEMENTS)) {
+            Map elementMap = (Map)metaInfoMap.get(Constants.MetaDataConstants.EXTERNAL_ELEMENTS);
+            for (Iterator it = elementMap.values().iterator(); it.hasNext();) {
+                node.appendChild(parentDoc.importNode((Node)it.next(), true));
             }
         }
 

@@ -20,8 +20,8 @@
 package org.apache.ws.commons.schema;
 
 /**
- * Allows only one of its children to appear in an instance. Represents
- * the World Wide Web Consortium (W3C) choice (compositor) element.
+ * Allows only one of its children to appear in an instance. Represents the World Wide Web Consortium (W3C)
+ * choice (compositor) element.
  */
 public class XmlSchemaChoice extends XmlSchemaGroupBase {
 

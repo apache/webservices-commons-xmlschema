@@ -21,10 +21,10 @@ package org.apache.ws.commons.schema;
 
 public class XmlTokenizedType extends org.apache.ws.commons.schema.constants.Enum {
 
-    static String[] members = new String[]{"CDATA", "IDREF", "IDREFS",
-                                           "ENTITY", "ENTITIES", "NMTOKEN",
-                                           "NMTOKENS", "NOTATION", "ENUMERATION",
-                                           "QName", "NCName", "None"};
+    static String[] members = new String[] {
+        "CDATA", "IDREF", "IDREFS", "ENTITY", "ENTITIES", "NMTOKEN", "NMTOKENS", "NOTATION", "ENUMERATION",
+        "QName", "NCName", "None"
+    };
 
     /**
      * Creates new XmlSchemaForm

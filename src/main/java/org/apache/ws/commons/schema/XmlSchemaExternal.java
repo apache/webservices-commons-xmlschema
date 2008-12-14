@@ -51,4 +51,3 @@ public abstract class XmlSchemaExternal extends XmlSchemaAnnotated {
         this.schemaLocation = schemaLocation;
     }
 }
-

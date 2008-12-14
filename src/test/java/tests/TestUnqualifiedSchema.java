@@ -29,35 +29,32 @@ import java.util.Iterator;
 
 public class TestUnqualifiedSchema extends TestCase {
 
-
     public void testUnqualifiedSchemas() throws Exception {
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         documentBuilderFactory.setNamespaceAware(true);
-        Document doc = documentBuilderFactory.newDocumentBuilder().
-                parse(Resources.asURI("unqualifiedTypes.xsd"));
+        Document doc = documentBuilderFactory.newDocumentBuilder().parse(
+                                                                         Resources
+                                                                             .asURI("unqualifiedTypes.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema s = schemaCol.read(doc.getDocumentElement());
 
         assertNotNull(s);
 
-        XmlSchemaElement e=s.getElementByName(new QName("http://soapinterop.org/xsd","complexElt") );
-        XmlSchemaComplexType t  =(XmlSchemaComplexType)e.getSchemaType();
+        XmlSchemaElement e = s.getElementByName(new QName("http://soapinterop.org/xsd", "complexElt"));
+        XmlSchemaComplexType t = (XmlSchemaComplexType)e.getSchemaType();
         assertNotNull(t);
 
         XmlSchemaSequence seq = (XmlSchemaSequence)t.getParticle();
         XmlSchemaObjectCollection items = seq.getItems();
         Iterator iterator = items.getIterator();
         while (iterator.hasNext()) {
-            XmlSchemaElement elt2 = (XmlSchemaElement) iterator.next();
+            XmlSchemaElement elt2 = (XmlSchemaElement)iterator.next();
             System.out.println(elt2.getQName());
             XmlSchemaType schemaType2 = elt2.getSchemaType();
 
             assertNotNull(schemaType2);
         }
 
-
-
     }
-
 
 }

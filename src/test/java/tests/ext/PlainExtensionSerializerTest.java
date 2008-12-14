@@ -35,34 +35,33 @@ import tests.Resources;
  */
 public class PlainExtensionSerializerTest extends TestCase {
 
-     public void testSerialization() throws Exception {
+    public void testSerialization() throws Exception {
 
-           //create a DOM document
-           DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-           documentBuilderFactory.setNamespaceAware(true);
-           Document doc = documentBuilderFactory.newDocumentBuilder().
-                   parse(Resources.asURI("/external/externalAnnotations.xsd"));
+        // create a DOM document
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        documentBuilderFactory.setNamespaceAware(true);
+        Document doc = documentBuilderFactory.newDocumentBuilder()
+            .parse(Resources.asURI("/external/externalAnnotations.xsd"));
 
-           XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-           XmlSchema schema = schemaCol.read(doc,null);
-           assertNotNull(schema);
+        XmlSchemaCollection schemaCol = new XmlSchemaCollection();
+        XmlSchema schema = schemaCol.read(doc, null);
+        assertNotNull(schema);
 
-           schema.write(new ByteArrayOutputStream());
-     }
-
+        schema.write(new ByteArrayOutputStream());
+    }
 
     public void testSerialization1() throws Exception {
 
-           //create a DOM document
-           DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-           documentBuilderFactory.setNamespaceAware(true);
-           Document doc = documentBuilderFactory.newDocumentBuilder().
-                   parse(Resources.asURI("/external/externalElementAnnotations.xsd"));
+        // create a DOM document
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        documentBuilderFactory.setNamespaceAware(true);
+        Document doc = documentBuilderFactory.newDocumentBuilder()
+            .parse(Resources.asURI("/external/externalElementAnnotations.xsd"));
 
-           XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-           XmlSchema schema = schemaCol.read(doc,null);
-           assertNotNull(schema);
+        XmlSchemaCollection schemaCol = new XmlSchemaCollection();
+        XmlSchema schema = schemaCol.read(doc, null);
+        assertNotNull(schema);
 
-           schema.write(new ByteArrayOutputStream());
-     }
+        schema.write(new ByteArrayOutputStream());
+    }
 }

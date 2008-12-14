@@ -9,18 +9,15 @@ import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchema;
 
 /**
- * Created by IntelliJ IDEA.
- * User: ajith
+ * Created by IntelliJ IDEA. User: ajith
  */
 public class EnumValueTest extends TestCase {
 
-
-    public void testValue() throws Exception{
-        //create a DOM document
+    public void testValue() throws Exception {
+        // create a DOM document
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         documentBuilderFactory.setNamespaceAware(true);
-        Document doc = documentBuilderFactory.newDocumentBuilder().
-                parse(Resources.asURI("enum.xsd"));
+        Document doc = documentBuilderFactory.newDocumentBuilder().parse(Resources.asURI("enum.xsd"));
 
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema s = schemaCol.read(doc.getDocumentElement());

@@ -31,8 +31,7 @@ import java.util.Iterator;
 
 public class ElementRefsTest extends TestCase {
     public void testElementRefs() throws Exception {
-        QName ELEMENT_QNAME = new QName("http://soapinterop.org/types",
-                "attTests");
+        QName ELEMENT_QNAME = new QName("http://soapinterop.org/types", "attTests");
         InputStream is = new FileInputStream(Resources.asURI("elementreferences.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
@@ -46,7 +45,7 @@ public class ElementRefsTest extends TestCase {
 
         Iterator it = items.getIterator();
         while (it.hasNext()) {
-            XmlSchemaElement innerElement =  (XmlSchemaElement)it.next();
+            XmlSchemaElement innerElement = (XmlSchemaElement)it.next();
             assertNotNull(innerElement.getRefName());
         }
 

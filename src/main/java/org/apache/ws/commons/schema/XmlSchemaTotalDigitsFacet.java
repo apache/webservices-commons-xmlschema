@@ -20,8 +20,7 @@
 package org.apache.ws.commons.schema;
 
 /**
- * Class for defining totalDigits facets. Represents the World Wide
- * Web Consortium (W3C) totalDigits facet.
+ * Class for defining totalDigits facets. Represents the World Wide Web Consortium (W3C) totalDigits facet.
  */
 
 public class XmlSchemaTotalDigitsFacet extends XmlSchemaNumericFacet {

@@ -58,5 +58,4 @@ public class XmlSchemaIdentityConstraint extends XmlSchemaAnnotated {
         this.selector = selector;
     }
 
-
 }

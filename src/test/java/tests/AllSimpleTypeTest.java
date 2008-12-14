@@ -32,27 +32,27 @@ import java.util.Iterator;
 public class AllSimpleTypeTest extends TestCase {
 
     public void testSimpleTypeSchemaGeneration() throws Exception {
-        //create a DOM document
+        // create a DOM document
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         documentBuilderFactory.setNamespaceAware(true);
-        Document doc = documentBuilderFactory.newDocumentBuilder().
-                parse(Resources.asURI("allSimpleTypes.xsd"));
+        Document doc = documentBuilderFactory.newDocumentBuilder().parse(
+                                                                         Resources
+                                                                             .asURI("allSimpleTypes.xsd"));
 
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(doc,null);
+        XmlSchema schema = schemaCol.read(doc, null);
         assertNotNull(schema);
 
-        //loop through the schema elements and inspect the SchemaTypeObject
-        //if the type is registered, then getSchemaType should return a SchemaType
-        //object
+        // loop through the schema elements and inspect the SchemaTypeObject
+        // if the type is registered, then getSchemaType should return a SchemaType
+        // object
         Iterator values = schema.getElements().getValues();
         while (values.hasNext()) {
-            XmlSchemaElement elt =  (XmlSchemaElement) values.next();
+            XmlSchemaElement elt = (XmlSchemaElement)values.next();
             XmlSchemaType schemaType = elt.getSchemaType();
             assertNotNull(schemaType);
 
         }
-
 
     }
 }
