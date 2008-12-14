@@ -109,7 +109,7 @@ public class FacetsTest extends TestCase {
     /**
      * This method will test for the pattern facet.
      *
-     * @throwss Exception Any Exception encountered
+     * @throws Exception Any Exception encountered
      */
     public void testPatternFacet() throws Exception {
 
