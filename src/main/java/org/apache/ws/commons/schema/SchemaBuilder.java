@@ -126,15 +126,15 @@ public class SchemaBuilder {
 	/**
 	 * handles the schema element
 	 * @param schemaEl
-	 * @param uri
+	 * @param systemId
 	 */
-	XmlSchema handleXmlSchemaElement(Element schemaEl, String uri) {
+	XmlSchema handleXmlSchemaElement(Element schemaEl, String systemId) {
 		// get all the attributes along with the namespace declns
 		schema.setNamespaceContext(NodeNamespaceContext.getNamespaceContext(schemaEl));
 		setNamespaceAttributes(schema, schemaEl);
 
 		XmlSchemaCollection.SchemaKey schemaKey = new XmlSchemaCollection.SchemaKey(
-				schema.logicalTargetNamespace, uri);
+				schema.logicalTargetNamespace, systemId);
 		if (!collection.containsSchema(schemaKey)) {
 			collection.addSchema(schemaKey, schema);
 			schema.parent = collection; // establish parentage now.
@@ -153,7 +153,7 @@ public class SchemaBuilder {
 			schema.id = schemaEl.getAttribute("id");
 		}
 
-		schema.setSourceURI(uri);
+		schema.setSourceURI(systemId);
 
 		/***********
 		 * for ( each childElement)
