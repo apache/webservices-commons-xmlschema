@@ -31,28 +31,36 @@ import org.xml.sax.InputSource;
 /**
  * This resolver provides the means of resolving the imports and includes of a
  * given schema document. The system will call this default resolver if there
- * is no other resolver present in the system
+ * is no other resolver present in the system. 
  */
-public class DefaultURIResolver implements URIResolver {
+public class DefaultURIResolver implements CollectionURIResolver {
+	
+	private String collectionBaseURI;
 
 
     /**
-     * As for the resolver the publid ID is the target namespace of the
-     * schema and the schemaLocation is the value of the schema location
-     * @param namespace
-     * @param schemaLocation
-     * @param baseUri
+     * Try to resolve a schema location to some data.
+     * @param namespace targt namespace.
+     * @param schemaLocation system ID.
+     * @param baseUri base URI for the schema.
      */
     public InputSource resolveEntity(String namespace,
                                      String schemaLocation,
-                                     String baseUri){
+                                     String baseUri) {
 
         if (baseUri!=null) 
         {
             try
             {
                 File baseFile = new File(baseUri);
-                if (baseFile.exists()) baseUri = baseFile.toURI().toString();
+                if (baseFile.exists()) {
+                	baseUri = baseFile.toURI().toString();
+                } else if(collectionBaseURI != null) {
+                	baseFile = new File(collectionBaseURI);
+                    if (baseFile.exists()) {
+                    	baseUri = baseFile.toURI().toString();
+                    }
+                }
                 
                 String ref = new URI(baseUri).resolve(new URI(schemaLocation)).toString();
 
@@ -161,4 +169,20 @@ public class DefaultURIResolver implements URIResolver {
 
         return new URL("file", "", path);
     }    // getFileURL
+
+    /**
+     * Get the base URI derived from a schema collection. It serves as a fallback from the specified base.
+     * @return URI
+     */
+	public String getCollectionBaseURI() {
+		return collectionBaseURI;
+	}
+
+	/**
+	 * set the collection base URI, which serves as a fallback from the base of the immediate schema.
+	 * @param collectionBaseURI the URI.
+	 */
+	public void setCollectionBaseURI(String collectionBaseURI) {
+		this.collectionBaseURI = collectionBaseURI;
+	}
 }
