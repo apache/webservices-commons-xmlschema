@@ -27,6 +27,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -45,7 +46,6 @@ import org.w3c.dom.Text;
 import org.apache.ws.commons.schema.constants.Constants;
 import org.apache.ws.commons.schema.extensions.ExtensionRegistry;
 import org.apache.ws.commons.schema.utils.NamespacePrefixList;
-import org.custommonkey.xmlunit.XMLConstants;
 
 /**
  * Convert from the XML Schema class representation to the standard XML representation.
