@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -18,15 +18,16 @@
  */
 package org.apache.ws.commons.schema.extensions;
 
-import org.apache.ws.commons.schema.XmlSchemaObject;
-import org.apache.ws.commons.schema.constants.Constants;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.Element;
-import org.w3c.dom.Attr;
-
 import java.util.Iterator;
 import java.util.Map;
+
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+
+import org.apache.ws.commons.schema.XmlSchemaObject;
+import org.apache.ws.commons.schema.constants.Constants;
 
 /**
 

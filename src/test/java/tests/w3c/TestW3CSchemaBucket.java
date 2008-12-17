@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -18,13 +18,13 @@
  */
 package tests.w3c;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 /**
  * Class to represent a bucket of tests described by a set of .testSet files. All of the tests described in
@@ -35,7 +35,7 @@ import java.util.ListIterator;
  */
 public class TestW3CSchemaBucket extends TestSuite {
 
-    private static List allTestSetFiles;
+    private static List<File> allTestSetFiles;
 
     // If tests run from cmd line without any args, run the full suite
     private static String testSetsLocation = "./target/xmlschema2002-01-16";
@@ -56,24 +56,24 @@ public class TestW3CSchemaBucket extends TestSuite {
         testSetsLocation = System.getProperty("W3CTestLocation", testSetsLocation);
         TestSuite suite = new TestSuite("Test for tests");
         allTestSetFiles = getTestSetFiles(testSetsLocation);
-        ListIterator li = allTestSetFiles.listIterator();
+        ListIterator<File> li = allTestSetFiles.listIterator();
         while (li.hasNext()) {
             Object o = li.next();
             File testSet = null;
             if (o instanceof File) {
                 testSet = (File)o;
             }
-            suite.addTest(TestW3CSchemaTestSet.suite(testSet));
+            suite.addTest(TestW3CSchemaTestSet.getSuite(testSet));
         }
         return suite;
     }
 
-    private static List getTestSetFiles(String testSetsLocation) throws Exception {
-        File dir = new File(testSetsLocation);
+    private static List<File> getTestSetFiles(String aTestSetsLocation) throws Exception {
+        File dir = new File(aTestSetsLocation);
         if (!dir.isDirectory()) {
             throw new Exception("testSet files location must be a directory");
         }
-        ArrayList testSetFiles = new ArrayList();
+        List<File> testSetFiles = new ArrayList<File>();
         File[] files = dir.listFiles();
         for (File file : files) {
             if (file.getAbsolutePath().endsWith("testSet")) {

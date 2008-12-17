@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -19,19 +19,21 @@
 
 package tests;
 
-import junit.framework.TestCase;
-import org.apache.ws.commons.schema.XmlSchema;
-import org.apache.ws.commons.schema.XmlSchemaCollection;
-import org.w3c.dom.Document;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.util.HashMap;
-import java.util.Map;
+import org.w3c.dom.Document;
+
+import junit.framework.TestCase;
+
+import org.apache.ws.commons.schema.XmlSchema;
+import org.apache.ws.commons.schema.XmlSchemaCollection;
 
 public class EncodingTest extends TestCase {
 
@@ -58,7 +60,7 @@ public class EncodingTest extends TestCase {
 
         // write it back to a stream - re read it and check the encoding
         // we need to explicitly say to have the xml header
-        Map options = new HashMap();
+        Map<String, String> options = new HashMap<String, String>();
         options.put(OutputKeys.OMIT_XML_DECLARATION, "no");
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

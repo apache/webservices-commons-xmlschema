@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -26,6 +26,7 @@ import org.w3c.dom.Attr;
  */
 
 public class XmlSchemaAnnotated extends XmlSchemaObject {
+    
     /**
      * Defines an annotation. Creates an annotation element. Represents the W3C annotation element.
      */
@@ -33,7 +34,8 @@ public class XmlSchemaAnnotated extends XmlSchemaObject {
     String id;
 
     // Stores qualified attributes that do not belong to the schema target namespace.
-    public Attr[] unhandledAttributes;
+    private Attr[] unhandledAttributes;
+
 
     /**
      * Creates new XmlSchemaAnnotated

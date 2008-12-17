@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -19,25 +19,31 @@
 
 package tests;
 
-import junit.framework.TestCase;
-import org.apache.ws.commons.schema.*;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
-import java.io.FileInputStream;
-import java.io.InputStream;
+
+import junit.framework.TestCase;
+
+import org.apache.ws.commons.schema.XmlSchemaCollection;
+import org.apache.ws.commons.schema.XmlSchemaComplexType;
+import org.apache.ws.commons.schema.XmlSchemaElement;
+import org.apache.ws.commons.schema.XmlSchemaSequence;
+import org.apache.ws.commons.schema.XmlSchemaType;
 
 /**
  */
 public class TestForwardRefs extends TestCase {
 
     public void testForwardRefs() throws Exception {
-        QName ELEMENT_QNAME = new QName("http://soapinterop.org/types", "attrTest");
+        QName elementQName = new QName("http://soapinterop.org/types", "attrTest");
         InputStream is = new FileInputStream(Resources.asURI("forwardRef.xsd"));
         XmlSchemaCollection schema = new XmlSchemaCollection();
         schema.read(new StreamSource(is), null);
 
-        XmlSchemaElement elem = schema.getElementByQName(ELEMENT_QNAME);
+        XmlSchemaElement elem = schema.getElementByQName(elementQName);
         assertNotNull(elem);
         XmlSchemaType type = elem.getSchemaType();
         assertNotNull(type);

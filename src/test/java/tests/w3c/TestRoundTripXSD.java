@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -18,14 +18,25 @@
  */
 package tests.w3c;
 
-import org.apache.ws.commons.schema.XmlSchema;
-import org.apache.ws.commons.schema.XmlSchemaCollection;
-import org.custommonkey.xmlunit.*;
-import org.w3c.dom.Element;
-
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ListIterator;
+
+import org.w3c.dom.Element;
+
+import org.apache.ws.commons.schema.XmlSchema;
+import org.apache.ws.commons.schema.XmlSchemaCollection;
+
+import org.custommonkey.xmlunit.DetailedDiff;
+import org.custommonkey.xmlunit.Diff;
+import org.custommonkey.xmlunit.Difference;
+import org.custommonkey.xmlunit.DifferenceConstants;
+import org.custommonkey.xmlunit.IgnoreTextAndAttributeValuesDifferenceListener;
+import org.custommonkey.xmlunit.XMLTestCase;
 
 /**
  * Class to test a single schema by roundtripping it using XMLUnit cmd line parms: arg0 - valid|invalid arg1 -
@@ -33,19 +44,47 @@ import java.util.ListIterator;
  */
 public class TestRoundTripXSD extends XMLTestCase {
 
+    static class SchemaAttrDiff extends IgnoreTextAndAttributeValuesDifferenceListener {
+
+        public int differenceFound(Difference difference) {
+
+            if (difference.getId() == DifferenceConstants.ELEMENT_NUM_ATTRIBUTES.getId()) {
+                // control and test have to be elements
+                // check if they are schema elements .. they only
+                // seem to have the added attributeFormDefault and
+                // elementFormDefault attributes
+                // so shldnt have more than 2 attributes difference
+                Element actualEl = (Element)difference.getControlNodeDetail().getNode();
+
+                if (actualEl.getLocalName().equals("schema")) {
+
+                    int expectedAttrs = Integer.parseInt(difference.getControlNodeDetail().getValue());
+                    int actualAttrs = Integer.parseInt(difference.getTestNodeDetail().getValue());
+                    if (Math.abs(actualAttrs - expectedAttrs) <= 2) {
+                        return RETURN_IGNORE_DIFFERENCE_NODES_SIMILAR;
+                    }
+                }
+            } else if (difference.getId() == DifferenceConstants.ATTR_NAME_NOT_FOUND_ID) {
+                // sometimes the serializer throws in a few extra attributes...
+                Element actualEl = (Element)difference.getControlNodeDetail().getNode();
+
+                if (actualEl.getLocalName().equals("schema")) {
+                    return RETURN_IGNORE_DIFFERENCE_NODES_SIMILAR;
+                }
+            }
+
+            return super.differenceFound(difference);
+        }
+    }
+
     private static boolean debug;
+
+    private File fileToTest;
+    private boolean valid;
 
     static {
         String debugString = System.getProperty("debug");
-        debug = debugString == null ? false : debugString.equals("true");
-    }
-
-    private File fileToTest = null;
-
-    private boolean valid = false;
-
-    public final static void main(String[] args) {
-        junit.textui.TestRunner.run(new TestRoundTripXSD(new File(args[1]), args[0].equals("valid")));
+        debug = debugString == null ? false : "true".equals(debugString);
     }
 
     public TestRoundTripXSD() {
@@ -61,23 +100,20 @@ public class TestRoundTripXSD extends XMLTestCase {
         this.valid = valid;
     }
 
+    public static final void main(String[] args) {
+        junit.textui.TestRunner.run(new TestRoundTripXSD(new File(args[1]), args[0].equals("valid")));
+    }
+
     private static String basename(File f) {
         String path = f.getPath();
         int i = path.lastIndexOf(System.getProperty("file.separator"));
-        String retval = path.substring(i + 1);
-        return retval;
+        return path.substring(i + 1);
     }
 
-    protected void runTest() throws Throwable {
-        try {
-            testRoundTrip();
-        } catch (InvocationTargetException e) {
-            e.fillInStackTrace();
-            throw e.getTargetException();
-        } catch (IllegalAccessException e) {
-            e.fillInStackTrace();
-            throw e;
-        }
+    public XmlSchema loadSchema(File f) throws Exception {
+        XmlSchemaCollection col = new XmlSchemaCollection();
+        col.setBaseUri(f.getPath());
+        return col.read(new FileReader(f), null);
     }
 
     public void testRoundTrip() throws Exception {
@@ -119,43 +155,15 @@ public class TestRoundTripXSD extends XMLTestCase {
 
     }
 
-    public XmlSchema loadSchema(File f) throws Exception {
-        XmlSchemaCollection col = new XmlSchemaCollection();
-        col.setBaseUri(f.getPath());
-        XmlSchema xmlSchema = col.read(new FileReader(f), null);
-        return xmlSchema;
-    }
-
-    static class SchemaAttrDiff extends IgnoreTextAndAttributeValuesDifferenceListener {
-
-        public int differenceFound(Difference difference) {
-
-            if (difference.getId() == DifferenceConstants.ELEMENT_NUM_ATTRIBUTES.getId()) {
-                // control and test have to be elements
-                // check if they are schema elements .. they only
-                // seem to have the added attributeFormDefault and
-                // elementFormDefault attributes
-                // so shldnt have more than 2 attributes difference
-                Element actualEl = (Element)difference.getControlNodeDetail().getNode();
-
-                if (actualEl.getLocalName().equals("schema")) {
-
-                    int expectedAttrs = Integer.parseInt(difference.getControlNodeDetail().getValue());
-                    int actualAttrs = Integer.parseInt(difference.getTestNodeDetail().getValue());
-                    if (Math.abs(actualAttrs - expectedAttrs) <= 2) {
-                        return RETURN_IGNORE_DIFFERENCE_NODES_SIMILAR;
-                    }
-                }
-            } else if (difference.getId() == DifferenceConstants.ATTR_NAME_NOT_FOUND_ID) {
-                // sometimes the serializer throws in a few extra attributes...
-                Element actualEl = (Element)difference.getControlNodeDetail().getNode();
-
-                if (actualEl.getLocalName().equals("schema")) {
-                    return RETURN_IGNORE_DIFFERENCE_NODES_SIMILAR;
-                }
-            }
-
-            return super.differenceFound(difference);
+    protected void runTest() throws Throwable {
+        try {
+            testRoundTrip();
+        } catch (InvocationTargetException e) {
+            e.fillInStackTrace();
+            throw e.getTargetException();
+        } catch (IllegalAccessException e) {
+            e.fillInStackTrace();
+            throw e;
         }
     }
 

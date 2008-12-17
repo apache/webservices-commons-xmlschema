@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -25,6 +25,7 @@ package org.apache.ws.commons.schema;
  */
 
 public class XmlSchemaXPath extends XmlSchemaAnnotated {
+    String xpath;
 
     /**
      * Creates new XmlSchemaXPath
@@ -32,13 +33,12 @@ public class XmlSchemaXPath extends XmlSchemaAnnotated {
     public XmlSchemaXPath() {
     }
 
-    String xpath;
 
     public String getXPath() {
         return xpath;
     }
 
-    public void setXPath(String xpath) {
-        this.xpath = xpath;
+    public void setXPath(String xpathString) {
+        this.xpath = xpathString;
     }
 }

@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -25,26 +25,26 @@ package org.apache.ws.commons.schema;
 
 public abstract class XmlSchemaExternal extends XmlSchemaAnnotated {
 
+    XmlSchema schema;
+
+    String schemaLocation;
+
     /**
      * Creates new XmlSchemaExternal
      */
     protected XmlSchemaExternal() {
     }
 
-    XmlSchema schema;
-
     public XmlSchema getSchema() {
         return schema;
     }
 
-    public void setSchema(XmlSchema schema) {
-        this.schema = schema;
-    }
-
-    String schemaLocation;
-
     public String getSchemaLocation() {
         return schemaLocation;
+    }
+
+    public void setSchema(XmlSchema schema) {
+        this.schema = schema;
     }
 
     public void setSchemaLocation(String schemaLocation) {

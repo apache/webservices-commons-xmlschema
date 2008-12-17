@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -19,21 +19,23 @@
 
 package org.apache.ws.commons.schema;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
 
 /**
  * An object collection class to handle XmlSchemaObjects when collections are returned from method calls.
  */
 public class XmlSchemaObjectCollection {
 
-    Vector objects;
+    List<XmlSchemaObject> objects;
 
     /**
      * Creates new XmlSchemaObjectCollection
      */
     public XmlSchemaObjectCollection() {
-        objects = new Vector();
+        objects = Collections.synchronizedList(new ArrayList<XmlSchemaObject>());
     }
 
     public int getCount() {
@@ -41,15 +43,15 @@ public class XmlSchemaObjectCollection {
     }
 
     public XmlSchemaObject getItem(int i) {
-        return (XmlSchemaObject)objects.elementAt(i);
+        return (XmlSchemaObject)objects.get(i);
     }
 
     public void setItem(int i, XmlSchemaObject item) {
-        objects.insertElementAt(item, i);
+        objects.add(i, item);
     }
 
     public void add(XmlSchemaObject item) {
-        objects.addElement(item);
+        objects.add(item);
     }
 
     public boolean contains(XmlSchemaObject item) {
@@ -65,7 +67,7 @@ public class XmlSchemaObjectCollection {
     }
 
     public void removeAt(int index) {
-        objects.removeElementAt(index);
+        objects.remove(index);
     }
 
     public Iterator getIterator() {

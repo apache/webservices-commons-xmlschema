@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -28,19 +28,19 @@ import javax.xml.namespace.QName;
 
 public class XmlSchemaGroupRef extends XmlSchemaParticle {
 
+    XmlSchemaGroupBase particle;
+
+    QName refName;
+
     /**
      * Creates new XmlSchemaGroupRef
      */
     public XmlSchemaGroupRef() {
     }
 
-    XmlSchemaGroupBase particle;
-
     public XmlSchemaGroupBase getParticle() {
         return this.particle;
     }
-
-    QName refName;
 
     public QName getRefName() {
         return this.refName;

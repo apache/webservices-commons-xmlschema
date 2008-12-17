@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -19,9 +19,9 @@
 
 package org.apache.ws.commons.schema;
 
-import org.apache.ws.commons.schema.constants.Constants;
-
 import javax.xml.namespace.QName;
+
+import org.apache.ws.commons.schema.constants.Constants;
 
 /**
  * Class for attribute types. Represents the World Wide Web Consortium (W3C) attribute element.
@@ -31,10 +31,14 @@ import javax.xml.namespace.QName;
 public class XmlSchemaAttribute extends XmlSchemaAnnotated {
 
     Object attributeType;
-    String defaultValue, fixedValue, name;
+    String defaultValue;
+    String fixedValue;
+    String name;
     XmlSchemaForm form;
     XmlSchemaSimpleType schemaType;
-    QName schemaTypeName, qualifiedName, refName;
+    QName schemaTypeName;
+    QName qualifiedName;
+    QName refName;
     XmlSchemaUse use;
 
     /**
@@ -69,16 +73,16 @@ public class XmlSchemaAttribute extends XmlSchemaAnnotated {
         return form;
     }
 
-    public void setSchemaForm(XmlSchemaForm form) {
-        this.form = form;
+    public void setSchemaForm(XmlSchemaForm formValue) {
+        this.form = formValue;
     }
 
     public QName getQName() {
         return qualifiedName;
     }
 
-    public void setQName(QName qualifiedName) {
-        this.qualifiedName = qualifiedName;
+    public void setQName(QName qualifiedNameValue) {
+        this.qualifiedName = qualifiedNameValue;
     }
 
     public String getName() {
@@ -121,10 +125,11 @@ public class XmlSchemaAttribute extends XmlSchemaAnnotated {
         this.use = use;
     }
 
-    public String toString(String prefix, int tab) {
+    public String toString(String aprefix, int tab) {
+        String prefix = aprefix;
         String xml = new String();
 
-        if (!prefix.equals("") && prefix.indexOf(":") == -1) {
+        if (!"".equals(prefix) && prefix.indexOf(":") == -1) {
             prefix += ":";
         }
 

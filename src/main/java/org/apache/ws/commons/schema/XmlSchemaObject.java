@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -31,22 +31,12 @@ public abstract class XmlSchemaObject {
      * a map for holding meta information Initially set to null to gain some improvement in memory. will be
      * initialized only if a user attempts
      */
-    private Map metaInfoMap = null;
+    private Map<Object, Object> metaInfoMap;
 
     /**
-     * returns the metainfo map. may be null if not utilized
+     * Creates new XmlSchemaObject
      */
-    public Map getMetaInfoMap() {
-        return metaInfoMap;
-    }
-
-    /**
-     * Directly set the meta info map into the schema element
-     * 
-     * @param metaInfoMap
-     */
-    public void setMetaInfoMap(Map metaInfoMap) {
-        this.metaInfoMap = metaInfoMap;
+    protected XmlSchemaObject() {
     }
 
     /**
@@ -57,42 +47,13 @@ public abstract class XmlSchemaObject {
      */
     public void addMetaInfo(Object key, Object value) {
         if (metaInfoMap == null) {
-            metaInfoMap = new LinkedHashMap();
+            metaInfoMap = new LinkedHashMap<Object, Object>();
         }
 
         metaInfoMap.put(key, value);
     }
 
-    /**
-     * Creates new XmlSchemaObject
-     */
-    protected XmlSchemaObject() {
-    }
-
-    public int getLineNumber() {
-        return lineNumber;
-    }
-
-    public void setLineNumber(int lineNumber) {
-        this.lineNumber = lineNumber;
-    }
-
-    public int getLinePosition() {
-        return linePosition;
-    }
-
-    public void setLinePosition(int linePosition) {
-        this.linePosition = linePosition;
-    }
-
-    public String getSourceURI() {
-        return sourceURI;
-    }
-
-    public void setSourceURI(String sourceURI) {
-        this.sourceURI = sourceURI;
-    }
-
+    @Override
     public boolean equals(Object what) {
         if (what == this) {
             return true;
@@ -124,6 +85,51 @@ public abstract class XmlSchemaObject {
         }
 
         return true;
+    }
+    
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    public int getLineNumber() {
+        return lineNumber;
+    }
+
+    public int getLinePosition() {
+        return linePosition;
+    }
+
+    /**
+     * returns the metainfo map. may be null if not utilized
+     */
+    public Map<Object, Object> getMetaInfoMap() {
+        return metaInfoMap;
+    }
+
+    public String getSourceURI() {
+        return sourceURI;
+    }
+
+    public void setLineNumber(int lineNumber) {
+        this.lineNumber = lineNumber;
+    }
+
+    public void setLinePosition(int linePosition) {
+        this.linePosition = linePosition;
+    }
+
+    /**
+     * Directly set the meta info map into the schema element
+     * 
+     * @param metaInfoMap
+     */
+    public void setMetaInfoMap(Map<Object, Object> metaInfoMap) {
+        this.metaInfoMap = metaInfoMap;
+    }
+
+    public void setSourceURI(String sourceURI) {
+        this.sourceURI = sourceURI;
     }
 
     public String toString(String prefix, int tab) {

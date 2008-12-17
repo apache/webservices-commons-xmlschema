@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -19,34 +19,27 @@
 
 package tests;
 
-import junit.framework.TestCase;
-import org.apache.ws.commons.schema.*;
-
-import javax.xml.namespace.QName;
-import javax.xml.transform.stream.StreamSource;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-/*
- * Copyright 2004,2007 The Apache Software Foundation.
- * Copyright 2006 International Business Machines Corp.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- */
+import javax.xml.namespace.QName;
+import javax.xml.transform.stream.StreamSource;
+
+import junit.framework.TestCase;
+
+import org.apache.ws.commons.schema.XmlSchema;
+import org.apache.ws.commons.schema.XmlSchemaChoice;
+import org.apache.ws.commons.schema.XmlSchemaCollection;
+import org.apache.ws.commons.schema.XmlSchemaComplexType;
+import org.apache.ws.commons.schema.XmlSchemaElement;
+import org.apache.ws.commons.schema.XmlSchemaGroup;
+import org.apache.ws.commons.schema.XmlSchemaGroupRef;
+import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
+import org.apache.ws.commons.schema.XmlSchemaObjectTable;
+
 public class GroupTest extends TestCase {
 
     /**
@@ -68,12 +61,12 @@ public class GroupTest extends TestCase {
          * </element> </schema>
          */
 
-        QName ELEMENT_QNAME = new QName("http://soapinterop.org/types", "price");
+        QName elementQName = new QName("http://soapinterop.org/types", "price");
         InputStream is = new FileInputStream(Resources.asURI("group.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
 
-        XmlSchemaElement elem = schemaCol.getElementByQName(ELEMENT_QNAME);
+        XmlSchemaElement elem = schemaCol.getElementByQName(elementQName);
         assertNotNull(elem);
         assertEquals("price", elem.getName());
         assertEquals(new QName("http://soapinterop.org/types", "price"), elem.getQName());
@@ -87,7 +80,7 @@ public class GroupTest extends TestCase {
         XmlSchemaObjectTable t = schema.getGroups();
         assertEquals(1, t.getCount());
 
-        Set s = new HashSet();
+        Set<String> s = new HashSet<String>();
         s.add("priceGroup");
         for (Iterator i = t.getNames(); i.hasNext();) {
             String name = ((QName)i.next()).getLocalPart();
@@ -121,13 +114,13 @@ public class GroupTest extends TestCase {
         while (iterator.hasNext()) {
             XmlSchemaElement e = (XmlSchemaElement)iterator.next();
             String eName = e.getName();
-            if (eName.equals("fullPrice")) {
+            if ("fullPrice".equals(eName)) {
                 assertEquals(new QName("", "fullPrice"), e.getQName());
-            } else if (eName.equals("salePrice")) {
+            } else if ("salePrice".equals(eName)) {
                 assertEquals(new QName("", "salePrice"), e.getQName());
-            } else if (eName.equals("clearancePrice")) {
+            } else if ("clearancePrice".equals(eName)) {
                 assertEquals(new QName("", "clearancePrice"), e.getQName());
-            } else if (eName.equals("freePrice")) {
+            } else if ("freePrice".equals(eName)) {
                 assertEquals(new QName("", "freePrice"), e.getQName());
             } else {
                 fail("The name \"" + eName + "\" was found but shouldn't " + "have been found.");

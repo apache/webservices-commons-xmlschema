@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -19,18 +19,24 @@
 
 package tests;
 
-import junit.framework.TestCase;
+import java.util.Iterator;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.XmlSchemaType;
-import org.w3c.dom.Document;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-import java.util.Iterator;
+import org.junit.Test;
 
-public class AllSimpleTypeTest extends TestCase {
+import static org.junit.Assert.assertNotNull;
 
+public class AllSimpleTypeTest {
+
+    @Test
     public void testSimpleTypeSchemaGeneration() throws Exception {
         // create a DOM document
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();

@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -27,9 +27,9 @@ import org.apache.ws.commons.schema.constants.Enum;
 
 public class XmlSchemaForm extends Enum {
 
+    public static final String NONE = "none";
     public static final String QUALIFIED = "qualified";
     public static final String UNQUALIFIED = "unqualified";
-    public static final String NONE = "none";
 
     static String[] members = new String[] {
         NONE, QUALIFIED, UNQUALIFIED

@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -29,16 +29,19 @@ import org.apache.ws.commons.schema.constants.Constants;
 public class XmlSchemaAny extends XmlSchemaParticle {
 
     /**
+     * Namespaces containing the elements that can be used.
+     */
+    String namespace;
+    XmlSchemaContentProcessing processContent;
+
+    
+    /**
      * Creates new XmlSchemaAny
      */
     public XmlSchemaAny() {
         processContent = new XmlSchemaContentProcessing(Constants.BlockConstants.NONE);
     }
 
-    /**
-     * Namespaces containing the elements that can be used.
-     */
-    String namespace;
 
     public String getNamespace() {
         return namespace;
@@ -47,8 +50,6 @@ public class XmlSchemaAny extends XmlSchemaParticle {
     public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
-
-    XmlSchemaContentProcessing processContent;
 
     public XmlSchemaContentProcessing getProcessContent() {
         return processContent;

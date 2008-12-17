@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -19,33 +19,24 @@
 
 package tests;
 
-import junit.framework.TestCase;
-import org.apache.ws.commons.schema.*;
-
-import javax.xml.namespace.QName;
-import javax.xml.transform.stream.StreamSource;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Set;
 
-/*
- * Copyright 2004,2007 The Apache Software Foundation.
- * Copyright 2006 International Business Machines Corp.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- */
+import javax.xml.namespace.QName;
+import javax.xml.transform.stream.StreamSource;
+
+import junit.framework.TestCase;
+
+import org.apache.ws.commons.schema.XmlSchemaCollection;
+import org.apache.ws.commons.schema.XmlSchemaComplexContentRestriction;
+import org.apache.ws.commons.schema.XmlSchemaComplexType;
+import org.apache.ws.commons.schema.XmlSchemaContentModel;
+import org.apache.ws.commons.schema.XmlSchemaElement;
+import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
+import org.apache.ws.commons.schema.XmlSchemaSequence;
+
 public class ComplexContentRestrictionTest extends TestCase {
 
     /**
@@ -66,12 +57,12 @@ public class ComplexContentRestrictionTest extends TestCase {
          * type="string"/> </sequence> </restriction> </complexContent> </complexType> </schema>
          */
 
-        QName TYPE_QNAME = new QName("http://soapinterop.org/types", "NoAssemblyRequiredProduct");
+        QName typeQName = new QName("http://soapinterop.org/types", "NoAssemblyRequiredProduct");
         InputStream is = new FileInputStream(Resources.asURI("deriverestriction.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         schemaCol.read(new StreamSource(is), null);
 
-        XmlSchemaComplexType cType = (XmlSchemaComplexType)schemaCol.getTypeByQName(TYPE_QNAME);
+        XmlSchemaComplexType cType = (XmlSchemaComplexType)schemaCol.getTypeByQName(typeQName);
         assertNotNull(cType);
 
         XmlSchemaContentModel xscm = cType.getContentModel();
@@ -86,26 +77,29 @@ public class ComplexContentRestrictionTest extends TestCase {
 
         XmlSchemaObjectCollection col = xsp.getItems();
 
-        Set s = new HashSet();
+        Set<String> s = new HashSet<String>();
         s.add("Name");
         s.add("Description");
         s.add("Parts");
         for (int i = 0; i < col.getCount(); i++) {
             XmlSchemaElement xse = (XmlSchemaElement)col.getItem(i);
             String name = xse.getName();
-            if (name.equals("Name")) {
+            if ("Name".equals(name)) {
                 assertEquals(new QName("", "Name"), xse.getQName());
-                assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "string"), xse.getSchemaTypeName());
+                assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "string"), 
+                             xse.getSchemaTypeName());
                 assertTrue(!xse.isAbstract());
                 assertTrue(!xse.isNillable());
-            } else if (name.equals("Description")) {
+            } else if ("Description".equals(name)) {
                 assertEquals(new QName("", "Description"), xse.getQName());
-                assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "string"), xse.getSchemaTypeName());
+                assertEquals(new QName("http://www.w3.org/2001/XMLSchema", 
+                                       "string"), xse.getSchemaTypeName());
                 assertTrue(!xse.isAbstract());
                 assertTrue(xse.isNillable());
-            } else if (name.equals("Parts")) {
+            } else if ("Parts".equals(name)) {
                 assertEquals(new QName("", "Parts"), xse.getQName());
-                assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "string"), xse.getSchemaTypeName());
+                assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "string"), 
+                             xse.getSchemaTypeName());
             } else {
                 fail("An invalid name of \"" + name + "\" was found.");
             }

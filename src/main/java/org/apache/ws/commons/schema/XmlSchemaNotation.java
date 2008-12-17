@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -27,7 +27,9 @@ package org.apache.ws.commons.schema;
 
 public class XmlSchemaNotation extends XmlSchemaAnnotated {
 
-    String name, system, publicNotation;
+    String name;
+    String system;
+    String publicNotation;
 
     /**
      * Creates new XmlSchemaNotation
@@ -39,7 +41,7 @@ public class XmlSchemaNotation extends XmlSchemaAnnotated {
         return name;
     }
 
-    public void setString(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -47,8 +49,8 @@ public class XmlSchemaNotation extends XmlSchemaAnnotated {
         return publicNotation;
     }
 
-    public void setPublic(String publicNotation) {
-        this.publicNotation = publicNotation;
+    public void setPublic(String isPublic) {
+        this.publicNotation = isPublic;
     }
 
     public String getSystem() {

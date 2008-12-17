@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -29,25 +29,25 @@ import javax.xml.namespace.QName;
 
 public class XmlSchemaGroup extends XmlSchemaAnnotated {
 
+    QName name;
+
+    XmlSchemaGroupBase particle;
     /**
      * Creates new XmlSchemaGroup
      */
     public XmlSchemaGroup() {
     }
 
-    QName name;
-    XmlSchemaGroupBase particle;
-
     public QName getName() {
         return name;
     }
 
-    public void setName(QName name) {
-        this.name = name;
-    }
-
     public XmlSchemaGroupBase getParticle() {
         return particle;
+    }
+
+    public void setName(QName name) {
+        this.name = name;
     }
 
     public void setParticle(XmlSchemaGroupBase particle) {

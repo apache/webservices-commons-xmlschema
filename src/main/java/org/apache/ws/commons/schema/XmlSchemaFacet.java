@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -27,6 +27,10 @@ import org.w3c.dom.Element;
 
 public abstract class XmlSchemaFacet extends XmlSchemaAnnotated {
 
+    boolean fixed;
+
+    Object value;
+
     /**
      * Creates new XmlSchemaFacet
      */
@@ -39,26 +43,6 @@ public abstract class XmlSchemaFacet extends XmlSchemaAnnotated {
         this.fixed = fixed;
     }
 
-    boolean fixed;
-
-    Object value;
-
-    public boolean isFixed() {
-        return fixed;
-    }
-
-    public void setFixed(boolean fixed) {
-        this.fixed = fixed;
-    }
-
-    public Object getValue() {
-        return value;
-    }
-
-    public void setValue(Object value) {
-        this.value = value;
-    }
-
     public static XmlSchemaFacet construct(Element el) {
         String name = el.getLocalName();
         boolean fixed = false;
@@ -66,29 +50,29 @@ public abstract class XmlSchemaFacet extends XmlSchemaAnnotated {
             fixed = true;
         }
         XmlSchemaFacet facet;
-        if (name.equals("enumeration")) {
+        if ("enumeration".equals(name)) {
             facet = new XmlSchemaEnumerationFacet();
-        } else if (name.equals("fractionDigits")) {
+        } else if ("fractionDigits".equals(name)) {
             facet = new XmlSchemaFractionDigitsFacet();
-        } else if (name.equals("length")) {
+        } else if ("length".equals(name)) {
             facet = new XmlSchemaLengthFacet();
-        } else if (name.equals("maxExclusive")) {
+        } else if ("maxExclusive".equals(name)) {
             facet = new XmlSchemaMaxExclusiveFacet();
-        } else if (name.equals("maxInclusive")) {
+        } else if ("maxInclusive".equals(name)) {
             facet = new XmlSchemaMaxInclusiveFacet();
-        } else if (name.equals("maxLength")) {
+        } else if ("maxLength".equals(name)) {
             facet = new XmlSchemaMaxLengthFacet();
-        } else if (name.equals("minLength")) {
+        } else if ("minLength".equals(name)) {
             facet = new XmlSchemaMinLengthFacet();
-        } else if (name.equals("minExclusive")) {
+        } else if ("minExclusive".equals(name)) {
             facet = new XmlSchemaMinExclusiveFacet();
-        } else if (name.equals("minInclusive")) {
+        } else if ("minInclusive".equals(name)) {
             facet = new XmlSchemaMinInclusiveFacet();
-        } else if (name.equals("pattern")) {
+        } else if ("pattern".equals(name)) {
             facet = new XmlSchemaPatternFacet();
-        } else if (name.equals("totalDigits")) {
+        } else if ("totalDigits".equals(name)) {
             facet = new XmlSchemaTotalDigitsFacet();
-        } else if (name.equals("whiteSpace")) {
+        } else if ("whiteSpace".equals(name)) {
             facet = new XmlSchemaWhiteSpaceFacet();
         } else {
             throw new XmlSchemaException("Incorrect facet with name \"" + name + "\" found.");
@@ -99,5 +83,21 @@ public abstract class XmlSchemaFacet extends XmlSchemaAnnotated {
         facet.setFixed(fixed);
         facet.setValue(el.getAttribute("value"));
         return facet;
+    }
+
+    public Object getValue() {
+        return value;
+    }
+
+    public boolean isFixed() {
+        return fixed;
+    }
+
+    public void setFixed(boolean fixed) {
+        this.fixed = fixed;
+    }
+
+    public void setValue(Object value) {
+        this.value = value;
     }
 }

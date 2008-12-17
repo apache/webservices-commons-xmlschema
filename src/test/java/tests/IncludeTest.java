@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -19,34 +19,24 @@
 
 package tests;
 
-import junit.framework.TestCase;
-import org.apache.ws.commons.schema.*;
-import org.xml.sax.InputSource;
-
-import javax.xml.namespace.QName;
-import javax.xml.transform.stream.StreamSource;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Set;
 
-/*
- * Copyright 2004,2007 The Apache Software Foundation.
- * Copyright 2006 International Business Machines Corp.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- */
+import javax.xml.namespace.QName;
+import javax.xml.transform.stream.StreamSource;
+
+import org.xml.sax.InputSource;
+
+import junit.framework.TestCase;
+
+import org.apache.ws.commons.schema.XmlSchema;
+import org.apache.ws.commons.schema.XmlSchemaCollection;
+import org.apache.ws.commons.schema.XmlSchemaElement;
+import org.apache.ws.commons.schema.XmlSchemaInclude;
+import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
+
 public class IncludeTest extends TestCase {
 
     /**
@@ -75,7 +65,7 @@ public class IncludeTest extends TestCase {
         XmlSchemaObjectCollection c = schema.getIncludes();
         assertEquals(2, c.getCount());
 
-        Set set = new HashSet();
+        Set<String> set = new HashSet<String>();
         set.add(Resources.asURI("include2.xsd"));
         set.add(Resources.asURI("include3.xsd"));
         for (int i = 0; i < c.getCount(); i++) {
@@ -88,7 +78,8 @@ public class IncludeTest extends TestCase {
                 XmlSchemaElement xse = s.getElementByName(new QName("http://soapinterop.org/types",
                                                                     "test1include"));
                 assertEquals("test1include", xse.getName());
-                assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "string"), xse.getSchemaTypeName());
+                assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "string"), 
+                             xse.getSchemaTypeName());
             } else if (schemaLocation.equals(Resources.asURI("include3.xsd"))) {
                 XmlSchemaElement xse = s.getElementByName(new QName("http://soapinterop.org/types",
                                                                     "test2include"));

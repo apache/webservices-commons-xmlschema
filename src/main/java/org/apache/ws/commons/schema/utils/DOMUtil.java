@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -19,9 +19,13 @@
 
 package org.apache.ws.commons.schema.utils;
 
-import org.w3c.dom.*;
-
 import java.lang.reflect.Method;
+
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 
 /**
  * Some useful utility methods. This class was modified in Xerces2 with a view to abstracting as much as
@@ -114,10 +118,8 @@ public class DOMUtil {
         // search for node
         Node child = parent.getFirstChild();
         while (child != null) {
-            if (child.getNodeType() == Node.ELEMENT_NODE) {
-                if (child.getNodeName().equals(elemName)) {
-                    return (Element)child;
-                }
+            if (child.getNodeType() == Node.ELEMENT_NODE && child.getNodeName().equals(elemName)) {
+                return (Element)child;
             }
             child = child.getNextSibling();
         }
@@ -135,10 +137,8 @@ public class DOMUtil {
         // search for node
         Node child = parent.getLastChild();
         while (child != null) {
-            if (child.getNodeType() == Node.ELEMENT_NODE) {
-                if (child.getNodeName().equals(elemName)) {
-                    return (Element)child;
-                }
+            if (child.getNodeType() == Node.ELEMENT_NODE && child.getNodeName().equals(elemName)) {
+                return (Element)child;
             }
             child = child.getPreviousSibling();
         }
@@ -156,10 +156,8 @@ public class DOMUtil {
         // search for node
         Node sibling = node.getNextSibling();
         while (sibling != null) {
-            if (sibling.getNodeType() == Node.ELEMENT_NODE) {
-                if (sibling.getNodeName().equals(elemName)) {
-                    return (Element)sibling;
-                }
+            if (sibling.getNodeType() == Node.ELEMENT_NODE && sibling.getNodeName().equals(elemName)) {
+                return (Element)sibling;
             }
             sibling = sibling.getNextSibling();
         }
@@ -223,7 +221,8 @@ public class DOMUtil {
         while (sibling != null) {
             if (sibling.getNodeType() == Node.ELEMENT_NODE) {
                 String siblingURI = sibling.getNamespaceURI();
-                if (siblingURI != null && siblingURI.equals(uri) && sibling.getLocalName().equals(localpart)) {
+                if (siblingURI != null && siblingURI.equals(uri) 
+                    && sibling.getLocalName().equals(localpart)) {
                     return (Element)sibling;
                 }
             }
@@ -363,7 +362,8 @@ public class DOMUtil {
             if (sibling.getNodeType() == Node.ELEMENT_NODE) {
                 for (String[] elemName : elemNames) {
                     String uri = sibling.getNamespaceURI();
-                    if (uri != null && uri.equals(elemName[0]) && sibling.getLocalName().equals(elemName[1])) {
+                    if (uri != null && uri.equals(elemName[0]) 
+                        && sibling.getLocalName().equals(elemName[1])) {
                         return (Element)sibling;
                     }
                 }
@@ -379,7 +379,8 @@ public class DOMUtil {
     /**
      * Finds and returns the first child node with the given name and attribute name, value pair.
      */
-    public static Element getFirstChildElement(Node parent, String elemName, String attrName, String attrValue) {
+    public static Element getFirstChildElement(Node parent, String elemName, 
+                                               String attrName, String attrValue) {
 
         // search for node
         Node child = parent.getFirstChild();
@@ -402,7 +403,8 @@ public class DOMUtil {
     /**
      * Finds and returns the last child node with the given name and attribute name, value pair.
      */
-    public static Element getLastChildElement(Node parent, String elemName, String attrName, String attrValue) {
+    public static Element getLastChildElement(Node parent, String elemName, 
+                                              String attrName, String attrValue) {
 
         // search for node
         Node child = parent.getLastChild();
@@ -426,7 +428,8 @@ public class DOMUtil {
      * Finds and returns the next sibling node with the given name and attribute name, value pair. Since only
      * elements have attributes, the node returned will be of type Node.ELEMENT_NODE.
      */
-    public static Element getNextSiblingElement(Node node, String elemName, String attrName, String attrValue) {
+    public static Element getNextSiblingElement(Node node, String elemName, 
+                                                String attrName, String attrValue) {
 
         // search for node
         Node sibling = node.getNextSibling();

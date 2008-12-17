@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -27,6 +27,9 @@ import javax.xml.namespace.QName;
  */
 
 public class XmlSchemaAttributeGroup extends XmlSchemaAnnotated {
+    XmlSchemaAnyAttribute anyAttribute;
+    XmlSchemaObjectCollection attributes;
+    QName name;
 
     /**
      * Creates new XmlSchemaAttributeGroup
@@ -34,8 +37,6 @@ public class XmlSchemaAttributeGroup extends XmlSchemaAnnotated {
     public XmlSchemaAttributeGroup() {
         attributes = new XmlSchemaObjectCollection();
     }
-
-    XmlSchemaAnyAttribute anyAttribute;
 
     public XmlSchemaAnyAttribute getAnyAttribute() {
         return this.anyAttribute;
@@ -45,8 +46,6 @@ public class XmlSchemaAttributeGroup extends XmlSchemaAnnotated {
         this.anyAttribute = anyAttribute;
     }
 
-    XmlSchemaObjectCollection attributes;
-
     public XmlSchemaObjectCollection getAttributes() {
         return this.attributes;
     }
@@ -54,8 +53,6 @@ public class XmlSchemaAttributeGroup extends XmlSchemaAnnotated {
     public void setAttributes(XmlSchemaObjectCollection attributes) {
         this.attributes = attributes;
     }
-
-    QName name;
 
     public QName getName() {
         return this.name;

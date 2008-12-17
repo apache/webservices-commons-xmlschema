@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -26,6 +26,8 @@ import org.apache.ws.commons.schema.constants.Constants;
  * element. Represents the World Wide Web Consortium (W3C) anyAttribute element.
  */
 public class XmlSchemaAnyAttribute extends XmlSchemaAnnotated {
+    String namespace;
+    XmlSchemaContentProcessing processContent;
 
     /**
      * Creates new XmlSchemaAnyAttribute
@@ -34,8 +36,6 @@ public class XmlSchemaAnyAttribute extends XmlSchemaAnnotated {
         processContent = new XmlSchemaContentProcessing(Constants.BlockConstants.NONE);
     }
 
-    String namespace;
-
     public String getNamespace() {
         return namespace;
     }
@@ -43,8 +43,6 @@ public class XmlSchemaAnyAttribute extends XmlSchemaAnnotated {
     public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
-
-    XmlSchemaContentProcessing processContent;
 
     public XmlSchemaContentProcessing getProcessContent() {
         return processContent;

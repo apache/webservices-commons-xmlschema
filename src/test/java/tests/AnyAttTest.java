@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -18,19 +18,24 @@
  */
 package tests;
 
-import junit.framework.TestCase;
-import org.apache.ws.commons.schema.*;
-import org.w3c.dom.Document;
-
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-public class AnyAttTest extends TestCase {
+import org.w3c.dom.Document;
 
-    protected void setUp() throws Exception {
+import org.apache.ws.commons.schema.XmlSchema;
+import org.apache.ws.commons.schema.XmlSchemaAnyAttribute;
+import org.apache.ws.commons.schema.XmlSchemaCollection;
+import org.apache.ws.commons.schema.XmlSchemaComplexType;
+import org.apache.ws.commons.schema.XmlSchemaElement;
+import org.apache.ws.commons.schema.XmlSchemaParticle;
+import org.apache.ws.commons.schema.XmlSchemaType;
 
-    }
+import org.junit.Assert;
+import org.junit.Test;
 
+public class AnyAttTest extends Assert {
+    @Test
     public void testAnyAtt() throws Exception {
         // create a DOM document
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();

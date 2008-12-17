@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -27,6 +27,12 @@ package org.apache.ws.commons.schema;
 
 public class XmlSchemaRedefine extends XmlSchemaExternal {
 
+    XmlSchemaObjectTable attributeGroups;
+    XmlSchemaObjectTable groups;
+    XmlSchemaObjectTable schemaTypes;
+
+    XmlSchemaObjectCollection items;
+
     /**
      * Creates new XmlSchemaRedefine
      */
@@ -37,8 +43,6 @@ public class XmlSchemaRedefine extends XmlSchemaExternal {
         attributeGroups = new XmlSchemaObjectTable();
     }
 
-    XmlSchemaObjectTable attributeGroups, groups, schemaTypes;
-
     public XmlSchemaObjectTable getAttributeGroup() {
         return attributeGroups;
     }
@@ -46,8 +50,6 @@ public class XmlSchemaRedefine extends XmlSchemaExternal {
     public XmlSchemaObjectTable getGroup() {
         return groups;
     }
-
-    XmlSchemaObjectCollection items;
 
     public XmlSchemaObjectCollection getItems() {
         return items;

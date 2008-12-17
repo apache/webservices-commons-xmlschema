@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -18,20 +18,26 @@
  */
 package tests;
 
-import junit.framework.TestCase;
-import org.apache.ws.commons.schema.*;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
-import java.io.FileInputStream;
-import java.io.InputStream;
+
+import junit.framework.TestCase;
+
+import org.apache.ws.commons.schema.XmlSchemaCollection;
+import org.apache.ws.commons.schema.XmlSchemaComplexType;
+import org.apache.ws.commons.schema.XmlSchemaElement;
+import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
+import org.apache.ws.commons.schema.XmlSchemaSequence;
 
 /**
  * TestElementForm
  */
 public class TestElementForm extends TestCase {
-    String NS = "http://unqualified-elements.example.com";
-    QName UNQUAL = new QName(NS, "unQualifiedLocals");
+    static final String NS = "http://unqualified-elements.example.com";
+    static final QName UNQUAL = new QName(NS, "unQualifiedLocals");
     private XmlSchemaCollection schema;
 
     protected void setUp() throws Exception {

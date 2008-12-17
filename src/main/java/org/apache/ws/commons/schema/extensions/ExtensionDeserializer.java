@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -18,10 +18,11 @@
  */
 package org.apache.ws.commons.schema.extensions;
 
-import org.apache.ws.commons.schema.XmlSchemaObject;
+import javax.xml.namespace.QName;
+
 import org.w3c.dom.Node;
 
-import javax.xml.namespace.QName;
+import org.apache.ws.commons.schema.XmlSchemaObject;
 
 /**
  * Interface for the extension deserializer. The purpose of an instance of this is to deserialize the relevant
@@ -41,6 +42,6 @@ public interface ExtensionDeserializer {
      * @param domNode - the raw DOM Node read from the source. This will be the extension element itself if
      *            for an element or the extension attribute object if it is an attribute
      */
-    public void deserialize(XmlSchemaObject schemaObject, QName name, Node domNode);
+    void deserialize(XmlSchemaObject schemaObject, QName name, Node domNode);
 
 }

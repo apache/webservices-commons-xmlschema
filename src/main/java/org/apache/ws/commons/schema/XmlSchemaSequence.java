@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -45,13 +45,13 @@ public class XmlSchemaSequence extends XmlSchemaGroupBase {
         for (int i = 0; i < tab; i++) {
             xml += "\t";
         }
-        if (!prefix.equals("") && prefix.indexOf(":") == -1) {
+        if (!"".equals(prefix) && prefix.indexOf(":") == -1) {
             prefix += ":";
         }
 
         xml += "<" + prefix + "sequence>\n";
         for (int i = 0; i < items.getCount(); i++) {
-            xml += items.getItem(i).toString(prefix, (tab + 1));
+            xml += items.getItem(i).toString(prefix, tab + 1);
         }
 
         for (int i = 0; i < tab; i++) {

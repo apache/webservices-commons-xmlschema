@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -19,28 +19,35 @@
 
 package org.apache.ws.commons.schema.utils;
 
-import org.apache.ws.commons.schema.constants.Constants;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
-import javax.xml.namespace.NamespaceContext;
-
-import java.lang.reflect.Method;
-import java.util.*;
+import org.apache.ws.commons.schema.constants.Constants;
 
 /**
  * Implementation of {@link NamespaceContext}, which is based on a DOM node.
  */
-public class NodeNamespaceContext implements NamespacePrefixList {
-    private static final String NODE_NAMSPACE_CONTEXT = NamespacePrefixList.class.getName();
-    private static final Collection XML_NS_PREFIX_COLLECTION = Collections
-        .singletonList(Constants.XML_NS_PREFIX);
-    private static final Collection XMLNS_ATTRIBUTE_COLLECTION = Collections
-        .singletonList(Constants.XMLNS_ATTRIBUTE);
-
+public final class NodeNamespaceContext implements NamespacePrefixList {
     static Method getUserData;
     static Method setUserData;
+    private static final String NODE_NAMSPACE_CONTEXT = NamespacePrefixList.class.getName();
+
+    private static final Collection<String> XML_NS_PREFIX_COLLECTION = Collections
+        .singletonList(Constants.XML_NS_PREFIX);
+    private static final Collection<String> XMLNS_ATTRIBUTE_COLLECTION = Collections
+        .singletonList(Constants.XMLNS_ATTRIBUTE);
+    private final Map<String, String> declarations;
+
+    private String[] prefixes;
     static {
         try {
             Class cls = Class.forName("org.w3c.dom.UserDataHandler", false, Node.class.getClassLoader());
@@ -56,13 +63,10 @@ public class NodeNamespaceContext implements NamespacePrefixList {
         }
     }
 
-    private final Map declarations;
-    private String[] prefixes;
-
     /**
      * Creates a new instance with the given nodes context.
      */
-    private NodeNamespaceContext(Map decls) {
+    private NodeNamespaceContext(Map<String, String> decls) {
         declarations = decls;
     }
 
@@ -73,14 +77,13 @@ public class NodeNamespaceContext implements NamespacePrefixList {
                     NODE_NAMSPACE_CONTEXT
                 });
                 if (ctx == null) {
-                    Map declarations = new HashMap();
+                    Map<String, String> declarations = new HashMap<String, String>();
 
                     Node parentNode = pNode.getParentNode();
                     if (parentNode != null) {
-                        NodeNamespaceContext parent = (NodeNamespaceContext)getUserData.invoke(parentNode,
-                                                                                               new Object[] {
-                                                                                                   NODE_NAMSPACE_CONTEXT
-                                                                                               });
+                        NodeNamespaceContext parent = (NodeNamespaceContext)
+                            getUserData.invoke(parentNode,
+                                               new Object[] {NODE_NAMSPACE_CONTEXT });
                         if (parent == null) {
                             parent = getNamespaceContext(parentNode);
                         }
@@ -112,13 +115,21 @@ public class NodeNamespaceContext implements NamespacePrefixList {
             }
         }
 
-        final Map declarations = new HashMap();
+        final Map<String, String> declarations = new HashMap<String, String>();
         new PrefixCollector() {
             protected void declare(String pPrefix, String pNamespaceURI) {
                 declarations.put(pPrefix, pNamespaceURI);
             }
-        }.searchAllPrefixDeclarations(pNode);
+        } .searchAllPrefixDeclarations(pNode);
         return new NodeNamespaceContext(declarations);
+    }
+
+    public String[] getDeclaredPrefixes() {
+        if (prefixes == null) {
+            Collection<String> keys = declarations.keySet();
+            prefixes = keys.toArray(new String[keys.size()]);
+        }
+        return prefixes;
     }
 
     public String getNamespaceURI(String pPrefix) {
@@ -131,7 +142,7 @@ public class NodeNamespaceContext implements NamespacePrefixList {
         if (Constants.XMLNS_ATTRIBUTE.equals(pPrefix)) {
             return Constants.XMLNS_ATTRIBUTE_NS_URI;
         }
-        final String uri = (String)declarations.get(pPrefix);
+        final String uri = declarations.get(pPrefix);
         return uri == null ? Constants.NULL_NS_URI : uri;
     }
 
@@ -154,7 +165,7 @@ public class NodeNamespaceContext implements NamespacePrefixList {
         return null;
     }
 
-    public Iterator getPrefixes(String pNamespaceURI) {
+    public Iterator<String> getPrefixes(String pNamespaceURI) {
         if (pNamespaceURI == null) {
             throw new IllegalArgumentException("The namespace URI must not be null.");
         }
@@ -164,21 +175,12 @@ public class NodeNamespaceContext implements NamespacePrefixList {
         if (Constants.XMLNS_ATTRIBUTE_NS_URI.equals(pNamespaceURI)) {
             return XMLNS_ATTRIBUTE_COLLECTION.iterator();
         }
-        final List list = new ArrayList();
-        for (Iterator iter = declarations.entrySet().iterator(); iter.hasNext();) {
-            Map.Entry entry = (Map.Entry)iter.next();
+        final List<String> list = new ArrayList<String>();
+        for (Map.Entry<String, String> entry : declarations.entrySet()) {
             if (pNamespaceURI.equals(entry.getValue())) {
                 list.add(entry.getKey());
             }
         }
         return list.iterator();
-    }
-
-    public String[] getDeclaredPrefixes() {
-        if (prefixes == null) {
-            Collection keys = declarations.keySet();
-            prefixes = (String[])keys.toArray(new String[keys.size()]);
-        }
-        return prefixes;
     }
 }

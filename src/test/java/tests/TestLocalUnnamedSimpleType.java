@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -19,11 +19,13 @@
 
 package tests;
 
-import junit.framework.TestCase;
-import org.apache.ws.commons.schema.XmlSchemaCollection;
+import java.io.ByteArrayInputStream;
 
 import javax.xml.transform.stream.StreamSource;
-import java.io.ByteArrayInputStream;
+
+import junit.framework.TestCase;
+
+import org.apache.ws.commons.schema.XmlSchemaCollection;
 
 /**
  * TestElementForm

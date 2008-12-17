@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -19,34 +19,23 @@
 
 package tests;
 
-import junit.framework.TestCase;
-import org.apache.ws.commons.schema.*;
-
-import javax.xml.namespace.QName;
-import javax.xml.transform.stream.StreamSource;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-/*
- * Copyright 2004,2007 The Apache Software Foundation.
- * Copyright 2006 International Business Machines Corp.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- */
+import javax.xml.namespace.QName;
+import javax.xml.transform.stream.StreamSource;
+
+import junit.framework.TestCase;
+
+import org.apache.ws.commons.schema.XmlSchemaChoice;
+import org.apache.ws.commons.schema.XmlSchemaCollection;
+import org.apache.ws.commons.schema.XmlSchemaComplexType;
+import org.apache.ws.commons.schema.XmlSchemaElement;
+import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
+
 public class ChoiceTest extends TestCase {
 
     /**
@@ -70,8 +59,8 @@ public class ChoiceTest extends TestCase {
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         schemaCol.read(new StreamSource(is), null);
 
-        QName WRONG_QNAME = new QName("http://soapinterop.org/types", "machine");
-        XmlSchemaElement elem = schemaCol.getElementByQName(WRONG_QNAME);
+        QName wrongQName = new QName("http://soapinterop.org/types", "machine");
+        XmlSchemaElement elem = schemaCol.getElementByQName(wrongQName);
         assertNull(elem);
         elem = schemaCol.getElementByQName(computerElementQname);
         assertEquals("computer", elem.getName());
@@ -83,7 +72,7 @@ public class ChoiceTest extends TestCase {
         XmlSchemaChoice choice = (XmlSchemaChoice)cType.getParticle();
         assertNotNull(choice);
 
-        Set s = new HashSet();
+        Set<String> s = new HashSet<String>();
         s.add("desktop");
         s.add("laptop");
         XmlSchemaObjectCollection items = choice.getItems();
@@ -91,10 +80,10 @@ public class ChoiceTest extends TestCase {
         while (iterator.hasNext()) {
             XmlSchemaElement e = (XmlSchemaElement)iterator.next();
             String eName = e.getName();
-            if (eName.equals("desktop")) {
+            if ("desktop".equals(eName)) {
                 assertEquals(new QName("", "desktop"), e.getQName());
                 assertEquals(e.getName(), "desktop");
-            } else if (eName.equals("laptop")) {
+            } else if ("laptop".equals(eName)) {
                 assertEquals(new QName("", "laptop"), e.getQName());
                 assertEquals(e.getName(), "laptop");
             } else {

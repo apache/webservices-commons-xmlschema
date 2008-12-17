@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -19,33 +19,22 @@
 
 package tests;
 
-import junit.framework.TestCase;
-import org.apache.ws.commons.schema.*;
-
-import javax.xml.namespace.QName;
-import javax.xml.transform.stream.StreamSource;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Set;
 
-/*
- * Copyright 2004,2007 The Apache Software Foundation.
- * Copyright 2006 International Business Machines Corp.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- */
+import javax.xml.namespace.QName;
+import javax.xml.transform.stream.StreamSource;
+
+import junit.framework.TestCase;
+
+import org.apache.ws.commons.schema.XmlSchemaCollection;
+import org.apache.ws.commons.schema.XmlSchemaElement;
+import org.apache.ws.commons.schema.XmlSchemaSimpleType;
+import org.apache.ws.commons.schema.XmlSchemaSimpleTypeUnion;
+
+
 public class UnionTest extends TestCase {
 
     /**
@@ -62,12 +51,12 @@ public class UnionTest extends TestCase {
          * </schema>
          */
 
-        QName ELEMENT_QNAME = new QName("http://soapinterop.org/types", "unionTest");
+        QName elementQName = new QName("http://soapinterop.org/types", "unionTest");
         InputStream is = new FileInputStream(Resources.asURI("union.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         schemaCol.read(new StreamSource(is), null);
 
-        XmlSchemaElement elem = schemaCol.getElementByQName(ELEMENT_QNAME);
+        XmlSchemaElement elem = schemaCol.getElementByQName(elementQName);
         assertNotNull(elem);
         assertEquals("unionTest", elem.getName());
         assertEquals(new QName("http://soapinterop.org/types", "unionTest"), elem.getQName());
@@ -79,7 +68,7 @@ public class UnionTest extends TestCase {
         assertNotNull(xsstu);
 
         QName[] qname = xsstu.getMemberTypesQNames();
-        Set s = new HashSet();
+        Set<QName> s = new HashSet<QName>();
         s.add(new QName("http://www.w3.org/2001/XMLSchema", "float"));
         s.add(new QName("http://www.w3.org/2001/XMLSchema", "decimal"));
         for (QName element : qname) {

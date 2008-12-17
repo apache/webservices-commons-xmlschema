@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -19,9 +19,11 @@
 
 package org.apache.ws.commons.schema;
 
-import javax.xml.namespace.QName;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+
+import javax.xml.namespace.QName;
 
 /**
  * A collection class that provides read-only helpers for XmlSchemaObject objects. This class is used to
@@ -31,13 +33,13 @@ import java.util.Iterator;
 
 public class XmlSchemaObjectTable {
 
-    HashMap collection;
+    Map<QName, XmlSchemaObject> collection;
 
     /**
      * Creates new XmlSchemaObjectTable
      */
     public XmlSchemaObjectTable() {
-        this.collection = new HashMap();
+        this.collection = new HashMap<QName, XmlSchemaObject>();
     }
 
     public int getCount() {

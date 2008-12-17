@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -50,14 +50,14 @@ public class XmlSchemaSimpleType extends XmlSchemaType {
             xml += "\t";
         }
 
-        if (!prefix.equals("") && prefix.indexOf(":") == -1) {
+        if (!"".equals(prefix) && prefix.indexOf(":") == -1) {
             prefix += ":";
         }
 
         xml += "<" + prefix + "simpleType>\n";
 
         if (content != null) {
-            xml += content.toString(prefix, (tab + 1));
+            xml += content.toString(prefix, tab + 1);
         }
 
         for (int i = 0; i < tab; i++) {

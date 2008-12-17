@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -19,9 +19,9 @@
 
 package org.apache.ws.commons.schema;
 
+import javax.xml.namespace.QName;
 import org.apache.ws.commons.schema.constants.Constants;
 
-import javax.xml.namespace.QName;
 
 /**
  * The base class for all simple types and complex types.
@@ -31,7 +31,9 @@ public class XmlSchemaType extends XmlSchemaAnnotated {
 
     Object baseSchemaType;
     XmlSchemaDatatype dataType;
-    XmlSchemaDerivationMethod deriveBy, finalDerivation, finalResolved;
+    XmlSchemaDerivationMethod deriveBy;
+    XmlSchemaDerivationMethod finalDerivation;
+    XmlSchemaDerivationMethod finalResolved;
     boolean isMixed;
 
     // name of the type
@@ -79,8 +81,8 @@ public class XmlSchemaType extends XmlSchemaAnnotated {
         return finalDerivation;
     }
 
-    public void setFinal(XmlSchemaDerivationMethod finalDerivation) {
-        this.finalDerivation = finalDerivation;
+    public void setFinal(XmlSchemaDerivationMethod finalDerivationValue) {
+        this.finalDerivation = finalDerivationValue;
     }
 
     public XmlSchemaDerivationMethod getFinalResolved() {
@@ -91,8 +93,8 @@ public class XmlSchemaType extends XmlSchemaAnnotated {
         return isMixed;
     }
 
-    public void setMixed(boolean isMixed) {
-        this.isMixed = isMixed;
+    public void setMixed(boolean isMixedValue) {
+        this.isMixed = isMixedValue;
     }
 
     public String getName() {

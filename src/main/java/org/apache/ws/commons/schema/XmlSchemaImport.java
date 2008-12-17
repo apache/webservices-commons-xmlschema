@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -26,14 +26,14 @@ package org.apache.ws.commons.schema;
 
 public class XmlSchemaImport extends XmlSchemaExternal {
 
+    String namespace;
+
     /**
      * Creates new XmlSchemaImport
      */
     public XmlSchemaImport() {
         super();
     }
-
-    String namespace;
 
     public String getNamespace() {
         return this.namespace;

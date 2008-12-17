@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -18,19 +18,26 @@
  */
 package org.apache.ws.commons.schema.utils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-public class NamespaceMap extends HashMap implements NamespacePrefixList {
+/**
+ * This class maps from a prefix to an object that is either a String or a URI.
+ * In fact, it will work with anything with a toString result that is useful
+ * as a namespace URI.
+ */
+public class NamespaceMap extends HashMap<String, Object> implements NamespacePrefixList {
 
-    /**
-	 * 
-	 */
     private static final long serialVersionUID = 1L;
 
     public NamespaceMap() {
     }
 
-    public NamespaceMap(Map map) {
+    public NamespaceMap(Map<String, Object> map) {
         super(map);
     }
 
@@ -39,7 +46,7 @@ public class NamespaceMap extends HashMap implements NamespacePrefixList {
     }
 
     public String[] getDeclaredPrefixes() {
-        Set keys = keySet();
+        Set<String> keys = keySet();
         return (String[])keys.toArray(new String[keys.size()]);
     }
 
@@ -48,9 +55,7 @@ public class NamespaceMap extends HashMap implements NamespacePrefixList {
     }
 
     public String getPrefix(String namespaceURI) {
-        Iterator iterator = entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry entry = (Map.Entry)iterator.next();
+        for (Map.Entry<String, Object> entry : entrySet()) {
             if (entry.getValue().toString().equals(namespaceURI)) {
                 return (String)entry.getKey();
             }
@@ -59,10 +64,8 @@ public class NamespaceMap extends HashMap implements NamespacePrefixList {
     }
 
     public Iterator getPrefixes(String namespaceURI) {
-        ArrayList list = new ArrayList();
-        Iterator iterator = entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry entry = (Map.Entry)iterator.next();
+        List<String> list = new ArrayList<String>();
+        for (Map.Entry<String, Object> entry : entrySet()) {
             if (entry.getValue().toString().equals(namespaceURI)) {
                 list.add(entry.getKey());
             }

@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -28,6 +28,18 @@ import javax.xml.namespace.QName;
 
 public class XmlSchemaSimpleContentExtension extends XmlSchemaContent {
 
+    /* Allows an XmlSchemaAnyAttribute to be used for the attribute value. */
+    XmlSchemaAnyAttribute anyAttribute;
+
+    /*
+     * Contains XmlSchemaAttribute and XmlSchemaAttributeGroupRef. Collection of attributes for the simple
+     * type.
+     */
+    XmlSchemaObjectCollection attributes;
+
+    /* Name of the built-in data type, simple type, or complex type. */
+    QName baseTypeName;
+
     /**
      * Creates new XmlSchemaSimpleContentExtension
      */
@@ -36,36 +48,24 @@ public class XmlSchemaSimpleContentExtension extends XmlSchemaContent {
 
     }
 
-    /* Allows an XmlSchemaAnyAttribute to be used for the attribute value. */
-    XmlSchemaAnyAttribute anyAttribute;
-
-    public void setAnyAttribute(XmlSchemaAnyAttribute anyAttribute) {
-        this.anyAttribute = anyAttribute;
-    }
-
     public XmlSchemaAnyAttribute getAnyAttribute() {
         return this.anyAttribute;
     }
-
-    /*
-     * Contains XmlSchemaAttribute and XmlSchemaAttributeGroupRef. Collection of attributes for the simple
-     * type.
-     */
-    XmlSchemaObjectCollection attributes;
 
     public XmlSchemaObjectCollection getAttributes() {
         return this.attributes;
     }
 
-    /* Name of the built-in data type, simple type, or complex type. */
-    QName baseTypeName;
+    public QName getBaseTypeName() {
+        return this.baseTypeName;
+    }
+
+    public void setAnyAttribute(XmlSchemaAnyAttribute anyAttribute) {
+        this.anyAttribute = anyAttribute;
+    }
 
     public void setBaseTypeName(QName baseTypeName) {
         this.baseTypeName = baseTypeName;
-    }
-
-    public QName getBaseTypeName() {
-        return this.baseTypeName;
     }
 
 }

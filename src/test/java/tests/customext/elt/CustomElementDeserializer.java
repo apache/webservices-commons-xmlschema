@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -18,12 +18,13 @@
  */
 package tests.customext.elt;
 
-import org.apache.ws.commons.schema.XmlSchemaObject;
-import org.apache.ws.commons.schema.extensions.ExtensionDeserializer;
+import javax.xml.namespace.QName;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import javax.xml.namespace.QName;
+import org.apache.ws.commons.schema.XmlSchemaObject;
+import org.apache.ws.commons.schema.extensions.ExtensionDeserializer;
 
 /**
  * Custom element deserializer

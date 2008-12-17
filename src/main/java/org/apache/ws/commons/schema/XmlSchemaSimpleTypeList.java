@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -26,6 +26,9 @@ import javax.xml.namespace.QName;
  * data type. Represents the World Wide Web Consortium (W3C) list element.
  */
 public class XmlSchemaSimpleTypeList extends XmlSchemaSimpleTypeContent {
+    XmlSchemaSimpleType itemType;
+    QName itemTypeName;
+
 
     /**
      * Creates new XmlSchemaSimpleTypeList
@@ -33,7 +36,6 @@ public class XmlSchemaSimpleTypeList extends XmlSchemaSimpleTypeContent {
     public XmlSchemaSimpleTypeList() {
     }
 
-    XmlSchemaSimpleType itemType;
 
     public XmlSchemaSimpleType getItemType() {
         return this.itemType;
@@ -42,8 +44,6 @@ public class XmlSchemaSimpleTypeList extends XmlSchemaSimpleTypeContent {
     public void setItemType(XmlSchemaSimpleType itemType) {
         this.itemType = itemType;
     }
-
-    QName itemTypeName;
 
     public QName getItemTypeName() {
         return this.itemTypeName;

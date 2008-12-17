@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -29,6 +29,19 @@ import javax.xml.namespace.QName;
 
 public class XmlSchemaComplexContentExtension extends XmlSchemaContent {
 
+    /* Allows an XmlSchemaAnyAttribute to be used for the attribute value. */
+    XmlSchemaAnyAttribute anyAttribute;
+    /*
+     * Contains XmlSchemaAttribute and XmlSchemaAttributeGroupRef. Collection of attributes for the simple
+     * type.
+     */
+    XmlSchemaObjectCollection attributes;
+    /* Name of the built-in data type, simple type, or complex type. */
+    QName baseTypeName;
+
+    /* One of the XmlSchemaGroupRef, XmlSchemaChoice, XmlSchemaAll, or XmlSchemaSequence classes. */
+    XmlSchemaParticle particle;
+
     /**
      * Creates new XmlSchemaComplexContentExtension
      */
@@ -36,9 +49,6 @@ public class XmlSchemaComplexContentExtension extends XmlSchemaContent {
         attributes = new XmlSchemaObjectCollection();
 
     }
-
-    /* Allows an XmlSchemaAnyAttribute to be used for the attribute value. */
-    XmlSchemaAnyAttribute anyAttribute;
 
     public void setAnyAttribute(XmlSchemaAnyAttribute anyAttribute) {
         this.anyAttribute = anyAttribute;
@@ -48,18 +58,9 @@ public class XmlSchemaComplexContentExtension extends XmlSchemaContent {
         return this.anyAttribute;
     }
 
-    /*
-     * Contains XmlSchemaAttribute and XmlSchemaAttributeGroupRef. Collection of attributes for the simple
-     * type.
-     */
-    XmlSchemaObjectCollection attributes;
-
     public XmlSchemaObjectCollection getAttributes() {
         return this.attributes;
     }
-
-    /* Name of the built-in data type, simple type, or complex type. */
-    QName baseTypeName;
 
     public void setBaseTypeName(QName baseTypeName) {
         this.baseTypeName = baseTypeName;
@@ -68,9 +69,6 @@ public class XmlSchemaComplexContentExtension extends XmlSchemaContent {
     public QName getBaseTypeName() {
         return this.baseTypeName;
     }
-
-    /* One of the XmlSchemaGroupRef, XmlSchemaChoice, XmlSchemaAll, or XmlSchemaSequence classes. */
-    XmlSchemaParticle particle;
 
     public XmlSchemaParticle getParticle() {
         return this.particle;
@@ -85,14 +83,14 @@ public class XmlSchemaComplexContentExtension extends XmlSchemaContent {
         for (int i = 0; i < tab; i++) {
             xml += "\t";
         }
-        if (!prefix.equals("") && prefix.indexOf(":") == -1) {
+        if (!"".equals(prefix) && prefix.indexOf(":") == -1) {
             prefix += ":";
         }
 
         xml += "<" + prefix + "extension>\n";
 
         if (particle != null) {
-            xml += particle.toString(prefix, (tab + 1));
+            xml += particle.toString(prefix, tab + 1);
         }
 
         for (int i = 0; i < tab; i++) {

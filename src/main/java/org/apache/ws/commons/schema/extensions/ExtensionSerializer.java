@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -18,8 +18,9 @@
  */
 package org.apache.ws.commons.schema.extensions;
 
-import org.apache.ws.commons.schema.XmlSchemaObject;
 import org.w3c.dom.Node;
+
+import org.apache.ws.commons.schema.XmlSchemaObject;
 
 /**
  * Interface for the extension serializer. The purpose of an instance of this is to serialize the relevant
@@ -37,5 +38,5 @@ public interface ExtensionSerializer {
      * @param domNode - the parent DOM Node that will ultimately be serialized. The XMLSchema serialization
      *            mechanism is to create a DOM tree first and serialize it
      */
-    public void serialize(XmlSchemaObject schemaObject, Class classOfType, Node domNode);
+    void serialize(XmlSchemaObject schemaObject, Class classOfType, Node domNode);
 }

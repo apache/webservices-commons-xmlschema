@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -24,20 +24,23 @@ package org.apache.ws.commons.schema;
  * complex type that has mixed content or elements only. Represents the World Wide Web Consortium (W3C)
  * complexContent element.
  */
-
-// Vidyanand - 16th Oct - initial implementation
 public class XmlSchemaComplexContent extends XmlSchemaContentModel {
+    /*
+     * One of either the XmlSchemaComplexContentRestriction or XmlSchemaComplexContentExtension classes.
+     */
+    XmlSchemaContent content;
+    /*
+     * Indicates that this type has a mixed content model. Character data is allowed to appear between the
+     * child elements of the complex type.
+     */
+    private boolean mixed;
+
 
     /**
      * Creates new XmlSchemaComplexContent
      */
     public XmlSchemaComplexContent() {
     }
-
-    /*
-     * One of either the XmlSchemaComplexContentRestriction or XmlSchemaComplexContentExtension classes.
-     */
-    XmlSchemaContent content;
 
     public XmlSchemaContent getContent() {
         return this.content;
@@ -47,11 +50,6 @@ public class XmlSchemaComplexContent extends XmlSchemaContentModel {
         this.content = content;
     }
 
-    /*
-     * Indicates that this type has a mixed content model. Character data is allowed to appear between the
-     * child elements of the complex type.
-     */
-    public boolean mixed;
 
     public boolean isMixed() {
         return this.mixed;
@@ -67,13 +65,13 @@ public class XmlSchemaComplexContent extends XmlSchemaContentModel {
             xml += "\t";
         }
 
-        if (!prefix.equals("") && prefix.indexOf(":") == -1) {
+        if (!"".equals(prefix) && prefix.indexOf(":") == -1) {
             prefix += ":";
         }
 
         xml += "<" + prefix + "complexContent>\n";
 
-        xml += content.toString(prefix, (tab + 1));
+        xml += content.toString(prefix, tab + 1);
 
         for (int i = 0; i < tab; i++) {
             xml += "\t";

@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -28,6 +28,23 @@ import javax.xml.namespace.QName;
  */
 
 public class XmlSchemaSimpleContentRestriction extends XmlSchemaContent {
+    XmlSchemaAnyAttribute anyAttribute;
+    /*
+     * Contains XmlSchemaAttribute and XmlSchemaAttributeGroupRef. Collection of attributes for the simple
+     * type.
+     */
+    XmlSchemaObjectCollection attributes;
+
+    /* Derived from the type specified by the base value. */
+    XmlSchemaSimpleType baseType;
+
+    /* Name of the built-in data type, simple type, or complex type. */
+    QName baseTypeName;
+
+
+    /* One or more of the facet classes: */
+    XmlSchemaObjectCollection facets;
+
 
     /**
      * Creates new XmlSchemaSimpleContentRestriction
@@ -38,7 +55,6 @@ public class XmlSchemaSimpleContentRestriction extends XmlSchemaContent {
     }
 
     /* Allows an XmlSchemaAnyAttribute to be used for the attribute value. */
-    XmlSchemaAnyAttribute anyAttribute;
 
     public void setAnyAttribute(XmlSchemaAnyAttribute anyAttribute) {
         this.anyAttribute = anyAttribute;
@@ -48,18 +64,11 @@ public class XmlSchemaSimpleContentRestriction extends XmlSchemaContent {
         return this.anyAttribute;
     }
 
-    /*
-     * Contains XmlSchemaAttribute and XmlSchemaAttributeGroupRef. Collection of attributes for the simple
-     * type.
-     */
-    XmlSchemaObjectCollection attributes;
+
 
     public XmlSchemaObjectCollection getAttributes() {
         return this.attributes;
     }
-
-    /* Derived from the type specified by the base value. */
-    XmlSchemaSimpleType baseType;
 
     public void setBaseType(XmlSchemaSimpleType baseType) {
         this.baseType = baseType;
@@ -68,10 +77,6 @@ public class XmlSchemaSimpleContentRestriction extends XmlSchemaContent {
     public XmlSchemaSimpleType getBaseType() {
         return this.baseType;
     }
-
-    /* Name of the built-in data type, simple type, or complex type. */
-    QName baseTypeName;
-
     public void setBaseTypeName(QName baseTypeName) {
         this.baseTypeName = baseTypeName;
     }
@@ -79,9 +84,6 @@ public class XmlSchemaSimpleContentRestriction extends XmlSchemaContent {
     public QName getBaseTypeName() {
         return this.baseTypeName;
     }
-
-    /* One or more of the facet classes: */
-    XmlSchemaObjectCollection facets;
 
     public XmlSchemaObjectCollection getFacets() {
         return this.facets;

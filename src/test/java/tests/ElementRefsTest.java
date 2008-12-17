@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -19,24 +19,31 @@
 
 package tests;
 
-import junit.framework.TestCase;
-import org.apache.ws.commons.schema.*;
-
-import javax.xml.namespace.QName;
-import javax.xml.transform.stream.StreamSource;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Iterator;
 
+import javax.xml.namespace.QName;
+import javax.xml.transform.stream.StreamSource;
+
+import junit.framework.TestCase;
+
+import org.apache.ws.commons.schema.XmlSchema;
+import org.apache.ws.commons.schema.XmlSchemaCollection;
+import org.apache.ws.commons.schema.XmlSchemaComplexType;
+import org.apache.ws.commons.schema.XmlSchemaElement;
+import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
+import org.apache.ws.commons.schema.XmlSchemaSequence;
+
 public class ElementRefsTest extends TestCase {
     public void testElementRefs() throws Exception {
-        QName ELEMENT_QNAME = new QName("http://soapinterop.org/types", "attTests");
+        QName elementQName = new QName("http://soapinterop.org/types", "attTests");
         InputStream is = new FileInputStream(Resources.asURI("elementreferences.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
 
-        XmlSchemaElement elem = schemaCol.getElementByQName(ELEMENT_QNAME);
+        XmlSchemaElement elem = schemaCol.getElementByQName(elementQName);
 
         assertNotNull(elem);
 

@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -19,7 +19,14 @@
 
 package tests;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
+
+import javax.xml.namespace.QName;
+import javax.xml.transform.stream.StreamSource;
+
 import junit.framework.TestCase;
+
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaComplexContent;
@@ -27,22 +34,17 @@ import org.apache.ws.commons.schema.XmlSchemaComplexType;
 import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.XmlSchemaType;
 
-import javax.xml.namespace.QName;
-import javax.xml.transform.stream.StreamSource;
-import java.io.FileInputStream;
-import java.io.InputStream;
-
 public class MixedContentTest extends TestCase {
     public void testMixedContent() throws Exception {
-        QName ELEMENT_QNAME = new QName("http://soapinterop.org/xsd", "complexElt");
+        QName elementQName = new QName("http://soapinterop.org/xsd", "complexElt");
 
-        QName TYPE_QNAME = new QName("http://soapinterop.org/xsd", "NoAssemblyRequiredProduct");
+        QName typeQName = new QName("http://soapinterop.org/xsd", "NoAssemblyRequiredProduct");
 
         InputStream is = new FileInputStream(Resources.asURI("mixedContent.xsd"));
         XmlSchemaCollection schema = new XmlSchemaCollection();
         XmlSchema s = schema.read(new StreamSource(is), null);
 
-        XmlSchemaElement elementByName = s.getElementByName(ELEMENT_QNAME);
+        XmlSchemaElement elementByName = s.getElementByName(elementQName);
         assertNotNull(elementByName);
 
         XmlSchemaType schemaType = elementByName.getSchemaType();
@@ -50,7 +52,7 @@ public class MixedContentTest extends TestCase {
 
         assertTrue(schemaType.isMixed());
 
-        XmlSchemaComplexType typeByName = (XmlSchemaComplexType)s.getTypeByName(TYPE_QNAME);
+        XmlSchemaComplexType typeByName = (XmlSchemaComplexType)s.getTypeByName(typeQName);
         assertNotNull(typeByName);
 
         assertTrue(((XmlSchemaComplexContent)typeByName.getContentModel()).isMixed());

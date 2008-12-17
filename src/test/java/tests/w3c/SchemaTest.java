@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -27,19 +27,14 @@ import org.w3c.dom.NodeList;
  */
 public class SchemaTest {
 
-    private final static String SCHEMA_DOCUMENT = "schemaDocument";
+    private static final String SCHEMA_DOCUMENT = "schemaDocument";
+    private static final String EXPECTED = "expected";
+    private static final String CURRENT = "current";
 
-    private final static String EXPECTED = "expected";
-
-    private final static String CURRENT = "current";
-
-    String schemaDocumentLink = null;
-
-    private String expectedValidity = null;
-
-    String currentStatus = null;
-
-    String currentDate = null;
+    String schemaDocumentLink;
+    private String expectedValidity;
+    private String currentStatus;
+    private String currentDate;
 
     public SchemaTest(Element n) throws Exception {
         NodeList nl = n.getChildNodes();
@@ -55,7 +50,7 @@ public class SchemaTest {
 
                 // Workaround for mistake in the NISTXMLSchema1-0-20020116.testSet file
                 // See http://lists.w3.org/Archives/Public/www-xml-schema-comments/2006JulSep/0000.html
-                if (schemaDocumentLink.equals("./NISTTestsAll/NISTSchema-anyURI-maxLength-1.xsd")) {
+                if ("./NISTTestsAll/NISTSchema-anyURI-maxLength-1.xsd".equals(schemaDocumentLink)) {
                     schemaDocumentLink = "./nisttest/NISTTestsAll/NISTSchema-anyURI-maxLength-1.xsd";
                 }
             }
@@ -72,7 +67,7 @@ public class SchemaTest {
     }
 
     public boolean isValid() {
-        return expectedValidity.equals("valid");
+        return "valid".equals(expectedValidity);
     }
 
     public String toString() {
@@ -86,5 +81,13 @@ public class SchemaTest {
         sb.append(currentDate);
 
         return sb.toString();
+    }
+
+    public void setCurrentStatus(String currentStatus) {
+        this.currentStatus = currentStatus;
+    }
+
+    public String getCurrentStatus() {
+        return currentStatus;
     }
 }

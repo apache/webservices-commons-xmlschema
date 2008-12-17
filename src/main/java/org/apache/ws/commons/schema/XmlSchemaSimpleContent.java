@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -25,6 +25,8 @@ package org.apache.ws.commons.schema;
  */
 
 public class XmlSchemaSimpleContent extends XmlSchemaContentModel {
+    /* One of XmlSchemaSimpleContentRestriction or XmlSchemaSimpleContentExtension. */
+    XmlSchemaContent content;
 
     /**
      * Creates new XmlSchemaSimpleContent
@@ -32,8 +34,6 @@ public class XmlSchemaSimpleContent extends XmlSchemaContentModel {
     public XmlSchemaSimpleContent() {
     }
 
-    /* One of XmlSchemaSimpleContentRestriction or XmlSchemaSimpleContentExtension. */
-    XmlSchemaContent content;
 
     public XmlSchemaContent getContent() {
         return this.content;
@@ -46,7 +46,7 @@ public class XmlSchemaSimpleContent extends XmlSchemaContentModel {
     public String toString(String prefix, int tab) {
         String xml = new String();
 
-        if (!prefix.equals("") && prefix.indexOf(":") == -1) {
+        if (!"".equals(prefix) && prefix.indexOf(":") == -1) {
             prefix += ":";
         }
         return xml;

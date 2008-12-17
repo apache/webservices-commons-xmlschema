@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -19,20 +19,32 @@
 
 package tests;
 
-import junit.framework.TestCase;
-import org.apache.ws.commons.schema.*;
-
-import org.xml.sax.InputSource;
-
-import javax.xml.namespace.QName;
-import javax.xml.transform.stream.StreamSource;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.xml.namespace.QName;
+import javax.xml.transform.stream.StreamSource;
+
+import org.xml.sax.InputSource;
+
+import org.apache.ws.commons.schema.XmlSchema;
+import org.apache.ws.commons.schema.XmlSchemaAny;
+import org.apache.ws.commons.schema.XmlSchemaAnyAttribute;
+import org.apache.ws.commons.schema.XmlSchemaCollection;
+import org.apache.ws.commons.schema.XmlSchemaComplexType;
+import org.apache.ws.commons.schema.XmlSchemaContentProcessing;
+import org.apache.ws.commons.schema.XmlSchemaElement;
+import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
+import org.apache.ws.commons.schema.XmlSchemaSequence;
+import org.apache.ws.commons.schema.XmlSchemaType;
+
+import org.junit.Assert;
+import org.junit.Test;
+
 
 /*
  * Copyright 2004,2007 The Apache Software Foundation.
@@ -51,13 +63,14 @@ import java.util.Set;
  * limitations under the License.
  *
  */
-public class AnyTest extends TestCase {
+public class AnyTest extends Assert {
 
     /**
      * This method will test the any.
      * 
      * @throws Exception Any exception encountered
      */
+    @Test
     public void testAny() throws Exception {
 
         /*
@@ -68,15 +81,16 @@ public class AnyTest extends TestCase {
          * maxOccurs="10"/> </sequence> </complexType> </element> </schema>
          */
 
-        QName ELEMENT_QNAME = new QName("http://soapinterop.org/types", "department");
+        QName elementQName = new QName("http://soapinterop.org/types", "department");
         InputStream is = new FileInputStream(Resources.asURI("any.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         schemaCol.read(new StreamSource(is), null);
 
-        verifyAccuracy(ELEMENT_QNAME, schemaCol, 5L, 10L);
+        verifyAccuracy(elementQName, schemaCol, 5L, 10L);
 
     }
 
+    @Test
     public void testAnyAttribute() throws Exception {
         InputStream is = new FileInputStream(Resources.asURI("anyAttribute.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
@@ -104,6 +118,7 @@ public class AnyTest extends TestCase {
         assertNotNull(aa);
     }
 
+    @Test
     public void testAnyZeroOccurs() throws Exception {
 
         /*
@@ -114,7 +129,7 @@ public class AnyTest extends TestCase {
          * maxOccurs="10"/> </sequence> </complexType> </element> </schema>
          */
 
-        QName ELEMENT_QNAME = new QName("http://soapinterop.org/types", "department");
+        QName elementQName = new QName("http://soapinterop.org/types", "department");
         InputStream is = new FileInputStream(Resources.asURI("anyZero.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
@@ -125,13 +140,13 @@ public class AnyTest extends TestCase {
         XmlSchemaCollection schemaCol2 = new XmlSchemaCollection();
         schemaCol2.read(new StreamSource(new ByteArrayInputStream(baos.toByteArray())), null);
 
-        verifyAccuracy(ELEMENT_QNAME, schemaCol2, 0, 0);
+        verifyAccuracy(elementQName, schemaCol2, 0, 0);
 
     }
 
-    private void verifyAccuracy(QName ELEMENT_QNAME, XmlSchemaCollection schemaCol, long minCount,
+    private void verifyAccuracy(QName elementQName, XmlSchemaCollection schemaCol, long minCount,
                                 long maxCount) {
-        XmlSchemaElement elem = schemaCol.getElementByQName(ELEMENT_QNAME);
+        XmlSchemaElement elem = schemaCol.getElementByQName(elementQName);
         assertNotNull(elem);
         assertEquals("department", elem.getName());
         assertEquals(new QName("http://soapinterop.org/types", "department"), elem.getQName());
@@ -145,7 +160,7 @@ public class AnyTest extends TestCase {
         XmlSchemaObjectCollection c = xss.getItems();
         assertEquals(3, c.getCount());
 
-        Set s = new HashSet();
+        Set<String> s = new HashSet<String>();
         s.add("id");
         s.add("name");
         Object o = null;
@@ -153,10 +168,10 @@ public class AnyTest extends TestCase {
             o = c.getItem(i);
             if (o instanceof XmlSchemaElement) {
                 String name = ((XmlSchemaElement)o).getName();
-                if (name.equals("id")) {
+                if ("id".equals(name)) {
                     assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "integer"),
                                  ((XmlSchemaElement)o).getSchemaTypeName());
-                } else if (name.equals("name")) {
+                } else if ("name".equals(name)) {
                     assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "string"),
                                  ((XmlSchemaElement)o).getSchemaTypeName());
                 }

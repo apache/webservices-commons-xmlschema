@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -18,17 +18,21 @@
  */
 package tests.customext.elt;
 
+import java.util.Iterator;
+import java.util.Map;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+
 import junit.framework.TestCase;
+
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.constants.Constants;
-import org.w3c.dom.Document;
-import tests.Resources;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-import java.util.Iterator;
-import java.util.Map;
+import tests.Resources;
 
 /**
  * Test class to run through the full cycle of build-check

@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -28,5 +28,5 @@ public interface NamespacePrefixList extends NamespaceContext {
     /**
      * Returns the list of currently defined namespace prefixes.
      */
-    public String[] getDeclaredPrefixes();
+    String[] getDeclaredPrefixes();
 }

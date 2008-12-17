@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -25,6 +25,12 @@ package org.apache.ws.commons.schema;
 
 public class XmlSchemaIdentityConstraint extends XmlSchemaAnnotated {
 
+    XmlSchemaObjectCollection fields;
+
+    String name;
+
+    XmlSchemaXPath selector;
+
     /**
      * Creates new XmlSchemaIdentityConstraint
      */
@@ -32,26 +38,20 @@ public class XmlSchemaIdentityConstraint extends XmlSchemaAnnotated {
         fields = new XmlSchemaObjectCollection();
     }
 
-    XmlSchemaObjectCollection fields;
-
     public XmlSchemaObjectCollection getFields() {
         return fields;
     }
-
-    String name;
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    XmlSchemaXPath selector;
-
     public XmlSchemaXPath getSelector() {
         return selector;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setSelector(XmlSchemaXPath selector) {

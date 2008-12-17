@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -28,11 +28,6 @@ import org.w3c.dom.NodeList;
 
 public class XmlSchemaDocumentation extends XmlSchemaObject {
 
-    /**
-     * Creates new XmlSchemaDocumentation
-     */
-    public XmlSchemaDocumentation() {
-    }
 
     /**
      * Provides the source of the application information.
@@ -44,6 +39,12 @@ public class XmlSchemaDocumentation extends XmlSchemaObject {
      * Returns an array of XmlNode that represents the document text markup.
      */
     NodeList markup;
+    
+    /**
+     * Creates new XmlSchemaDocumentation
+     */
+    public XmlSchemaDocumentation() {
+    }
 
     public String getSource() {
         return source;

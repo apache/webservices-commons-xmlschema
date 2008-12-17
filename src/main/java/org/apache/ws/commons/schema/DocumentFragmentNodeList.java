@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -29,7 +29,7 @@ import org.w3c.dom.NodeList;
  * Class to return a node list without thread-safety issue.
  */
 class DocumentFragmentNodeList implements NodeList {
-    private List nodes;
+    private List<Node> nodes;
     private DocumentFragment fragment;
 
     /**
@@ -39,7 +39,7 @@ class DocumentFragmentNodeList implements NodeList {
      */
     DocumentFragmentNodeList(Node parentNode) {
         fragment = parentNode.getOwnerDocument().createDocumentFragment();
-        nodes = new ArrayList();
+        nodes = new ArrayList<Node>();
         for (Node child = parentNode.getFirstChild(); child != null; child = child.getNextSibling()) {
             nodes.add(fragment.appendChild(child.cloneNode(true)));
         }
@@ -54,7 +54,7 @@ class DocumentFragmentNodeList implements NodeList {
      */
     DocumentFragmentNodeList(Node parentNode, String filterUri, String filterLocal) {
         fragment = parentNode.getOwnerDocument().createDocumentFragment();
-        nodes = new ArrayList();
+        nodes = new ArrayList<Node>();
         for (Node child = parentNode.getFirstChild(); child != null; child = child.getNextSibling()) {
             if (child.getNodeType() == Node.ELEMENT_NODE && child.getNamespaceURI().equals(filterUri)
                 && child.getLocalName().equals(filterLocal)) {
@@ -71,7 +71,7 @@ class DocumentFragmentNodeList implements NodeList {
         if (nodes == null) {
             return null;
         } else {
-            return (Node)nodes.get(index);
+            return nodes.get(index);
         }
     }
 

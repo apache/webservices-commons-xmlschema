@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -19,9 +19,10 @@
 
 package org.apache.ws.commons.schema.utils;
 
-import org.apache.ws.commons.schema.constants.Constants;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+
+import org.apache.ws.commons.schema.constants.Constants;
 
 /**
  * Searches for namespace prefix declarations.

@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -19,25 +19,27 @@
 
 package tests;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
+
+import javax.xml.namespace.QName;
+import javax.xml.transform.stream.StreamSource;
+
 import junit.framework.TestCase;
+
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaElement;
 
-import javax.xml.namespace.QName;
-import javax.xml.transform.stream.StreamSource;
-import java.io.FileInputStream;
-import java.io.InputStream;
-
 public class BlockTest extends TestCase {
     public void testMixedContent() throws Exception {
-        QName ELEMENT_QNAME = new QName("http://soapinterop.org/xsd", "complexElt");
+        QName elementQName = new QName("http://soapinterop.org/xsd", "complexElt");
 
         InputStream is = new FileInputStream(Resources.asURI("block.xsd"));
         XmlSchemaCollection schema = new XmlSchemaCollection();
         XmlSchema s = schema.read(new StreamSource(is), null);
 
-        XmlSchemaElement elementByName = s.getElementByName(ELEMENT_QNAME);
+        XmlSchemaElement elementByName = s.getElementByName(elementQName);
         assertNotNull(elementByName);
 
         String value = elementByName.getBlock().getValue();

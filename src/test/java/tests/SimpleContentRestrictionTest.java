@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -19,15 +19,24 @@
 
 package tests;
 
-import junit.framework.TestCase;
-import org.apache.ws.commons.schema.*;
-
-import javax.xml.namespace.QName;
-import javax.xml.transform.stream.StreamSource;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.xml.namespace.QName;
+import javax.xml.transform.stream.StreamSource;
+
+import junit.framework.TestCase;
+
+import org.apache.ws.commons.schema.XmlSchema;
+import org.apache.ws.commons.schema.XmlSchemaAttribute;
+import org.apache.ws.commons.schema.XmlSchemaCollection;
+import org.apache.ws.commons.schema.XmlSchemaComplexType;
+import org.apache.ws.commons.schema.XmlSchemaEnumerationFacet;
+import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
+import org.apache.ws.commons.schema.XmlSchemaSimpleContent;
+import org.apache.ws.commons.schema.XmlSchemaSimpleContentRestriction;
 
 /*
  * Copyright 2004,2007 The Apache Software Foundation.
@@ -66,12 +75,12 @@ public class SimpleContentRestrictionTest extends TestCase {
          * default="001"/> </restriction> </simpleContent> </complexType> </schema>
          */
 
-        QName TYPE_QNAME = new QName("http://soapinterop.org/types", "dietdrinksize");
+        QName typeQName = new QName("http://soapinterop.org/types", "dietdrinksize");
         InputStream is = new FileInputStream(Resources.asURI("screstriction.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
 
-        XmlSchemaComplexType xsct = (XmlSchemaComplexType)schema.getTypeByName(TYPE_QNAME);
+        XmlSchemaComplexType xsct = (XmlSchemaComplexType)schema.getTypeByName(typeQName);
         assertNotNull(xsct);
 
         XmlSchemaSimpleContent xssc = (XmlSchemaSimpleContent)xsct.getContentModel();
@@ -84,19 +93,20 @@ public class SimpleContentRestrictionTest extends TestCase {
         assertNotNull(xsoc);
         assertEquals(2, xsoc.getCount());
 
-        Set s = new HashSet();
+        Set<String> s = new HashSet<String>();
         s.add("units");
         s.add("id");
         for (int i = 0; i < xsoc.getCount(); i++) {
             XmlSchemaAttribute xsa = (XmlSchemaAttribute)xsoc.getItem(i);
             String name = xsa.getName();
-            if (name.equals("units")) {
+            if ("units".equals(name)) {
                 assertEquals(new QName("http://soapinterop.org/types", "units"), xsa.getQName());
-                assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "string"), xsa.getSchemaTypeName());
+                assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "string"), 
+                             xsa.getSchemaTypeName());
                 assertNull(xsa.getDefaultValue());
                 assertEquals("required", xsa.getUse().getValue());
                 assertNull(xsa.getFixedValue());
-            } else if (name.equals("id")) {
+            } else if ("id".equals(name)) {
                 assertEquals(new QName("http://soapinterop.org/types", "id"), xsa.getQName());
                 assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "integer"), xsa
                     .getSchemaTypeName());
@@ -120,7 +130,7 @@ public class SimpleContentRestrictionTest extends TestCase {
         for (int i = 0; i < xsoc2.getCount(); i++) {
             XmlSchemaEnumerationFacet xsef = (XmlSchemaEnumerationFacet)xsoc2.getItem(i);
             String value = (String)xsef.getValue();
-            if (!(value.equals("small") || value.equals("medium"))) {
+            if (!("small".equals(value) || "medium".equals(value))) {
                 fail("Unexpected enumeration value of \"" + value + "\" found.");
             }
             assertTrue(s.remove(value));

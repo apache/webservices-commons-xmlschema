@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -18,12 +18,14 @@
  */
 package org.apache.ws.commons.schema.extensions;
 
-import org.apache.ws.commons.schema.XmlSchemaObject;
-import org.w3c.dom.Node;
-
-import javax.xml.namespace.QName;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.xml.namespace.QName;
+
+import org.w3c.dom.Node;
+
+import org.apache.ws.commons.schema.XmlSchemaObject;
 
 /**
  * The task of the extension serializer is to delegate the serilization of the extensions. The extension
@@ -36,8 +38,9 @@ public class ExtensionRegistry {
     /**
      * Maps for the storage of extension serializers /deserializers
      */
-    private Map extensionSerializers = new HashMap();
-    private Map extensionDeserializers = new HashMap();
+    private Map<Class, ExtensionSerializer> extensionSerializers = new HashMap<Class, ExtensionSerializer>();
+    private Map<QName, ExtensionDeserializer> extensionDeserializers = 
+        new HashMap<QName, ExtensionDeserializer>();
 
     /**
      * Default serializer and serializer

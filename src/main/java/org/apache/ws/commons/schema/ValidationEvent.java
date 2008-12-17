@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -23,9 +23,6 @@ import java.util.EventObject;
 
 public class ValidationEvent extends EventObject {
 
-    /**
-	 * 
-	 */
     private static final long serialVersionUID = 1L;
 
     /**

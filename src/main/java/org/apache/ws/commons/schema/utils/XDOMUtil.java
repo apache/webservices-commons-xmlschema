@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -22,7 +22,7 @@ package org.apache.ws.commons.schema.utils;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-public class XDOMUtil extends DOMUtil {
+public final class XDOMUtil extends DOMUtil {
 
     /**
      * Creates a new instance of XDOMUtil

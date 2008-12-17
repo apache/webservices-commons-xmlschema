@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -29,14 +29,18 @@ import org.apache.ws.commons.schema.constants.Constants;
  */
 
 public class XmlSchemaComplexType extends XmlSchemaType {
-    XmlSchemaAnyAttribute anyAttribute, attributeWildcard;
+    XmlSchemaAnyAttribute anyAttribute;
+    XmlSchemaAnyAttribute attributeWildcard;
     XmlSchemaObjectCollection attributes;
     XmlSchemaObjectTable attributeUses;
-    XmlSchemaDerivationMethod block, blockResolved;
+    XmlSchemaDerivationMethod block;
+    XmlSchemaDerivationMethod blockResolved;
     XmlSchemaContentModel contentModel;
     XmlSchemaContentType contentType;
-    XmlSchemaParticle particleType, particle;
-    boolean isAbstract, isMixed;
+    XmlSchemaParticle particleType;
+    XmlSchemaParticle particle;
+    boolean isAbstract;
+    boolean isMixed;
 
     /**
      * Creates new XmlSchemaComplexType
@@ -132,7 +136,7 @@ public class XmlSchemaComplexType extends XmlSchemaType {
             xml += "\t";
         }
 
-        if (!prefix.equals("") && prefix.indexOf(":") == -1) {
+        if (!"".equals(prefix) && prefix.indexOf(":") == -1) {
             prefix += ":";
         }
 
@@ -141,15 +145,15 @@ public class XmlSchemaComplexType extends XmlSchemaType {
         xml += "<" + prefix + "complexType name=\"" + typeName + "\">\n";
 
         if (particle != null) {
-            xml += particle.toString(prefix, (tab + 1));
+            xml += particle.toString(prefix, tab + 1);
         }
 
         if (contentModel != null) {
-            xml += contentModel.toString(prefix, (tab + 1));
+            xml += contentModel.toString(prefix, tab + 1);
         }
 
         for (int i = 0; i < attributes.getCount(); i++) {
-            xml += attributes.getItem(i).toString(prefix, (tab + 1));
+            xml += attributes.getItem(i).toString(prefix, tab + 1);
         }
 
         for (int i = 0; i < tab; i++) {

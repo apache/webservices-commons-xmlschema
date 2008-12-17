@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -19,9 +19,9 @@
 
 package org.apache.ws.commons.schema;
 
-import org.apache.ws.commons.schema.constants.Constants;
-
 import javax.xml.namespace.QName;
+
+import org.apache.ws.commons.schema.constants.Constants;
 
 /**
  * Class for elements. Represents the World Wide Web Consortium (W3C) element element.
@@ -61,8 +61,8 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver 
      * the attribute. The default is Unqualified.
      */
     XmlSchemaForm form;
-    boolean isAbstract;
-    boolean isNillable;
+    boolean abstractElement;
+    boolean nillable;
     String name;
     QName qualifiedName;
     QName refName;
@@ -88,8 +88,8 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver 
      */
     public XmlSchemaElement() {
         constraints = new XmlSchemaObjectCollection();
-        isAbstract = false;
-        isNillable = false;
+        abstractElement = false;
+        nillable = false;
         form = new XmlSchemaForm(XmlSchemaForm.NONE);
         finalDerivation = new XmlSchemaDerivationMethod(Constants.BlockConstants.NONE);
         block = new XmlSchemaDerivationMethod(Constants.BlockConstants.NONE);
@@ -122,8 +122,8 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver 
         return finalDerivation;
     }
 
-    public void setFinal(XmlSchemaDerivationMethod finalDerivation) {
-        this.finalDerivation = finalDerivation;
+    public void setFinal(XmlSchemaDerivationMethod finalDerivationValue) {
+        this.finalDerivation = finalDerivationValue;
     }
 
     public XmlSchemaDerivationMethod getBlockResolved() {
@@ -151,19 +151,19 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver 
     }
 
     public boolean isAbstract() {
-        return isAbstract;
+        return abstractElement;
     }
 
     public void setAbstract(boolean isAbstract) {
-        this.isAbstract = isAbstract;
+        this.abstractElement = isAbstract;
     }
 
     public boolean isNillable() {
-        return isNillable;
+        return nillable;
     }
 
     public void setNillable(boolean isNillable) {
-        this.isNillable = isNillable;
+        this.nillable = isNillable;
     }
 
     public String getName() {
@@ -186,8 +186,8 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver 
         return qualifiedName;
     }
 
-    public void setQName(QName qualifiedName) {
-        this.qualifiedName = qualifiedName;
+    public void setQName(QName qname) {
+        this.qualifiedName = qname;
     }
 
     public XmlSchemaType getSchemaType() {
@@ -217,7 +217,7 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver 
     public String toString(String prefix, int tab) {
         String xml = new String();
 
-        if (!prefix.equals("") && prefix.indexOf(":") == -1) {
+        if (!"".equals(prefix) && prefix.indexOf(":") == -1) {
             prefix += ":";
         }
 
@@ -227,7 +227,7 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver 
 
         xml += "<" + prefix + "element ";
 
-        if (!name.equals("")) {
+        if (!"".equals(name)) {
             xml += "name=\"" + name + "\" ";
         }
 
@@ -247,18 +247,18 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver 
             xml += "maxOccurs=\"" + maxOccurs + "\" ";
         }
 
-        if (isNillable) {
-            xml += "nillable=\"" + isNillable + "\" ";
+        if (nillable) {
+            xml += "nillable=\"" + nillable + "\" ";
         }
 
         xml += ">\n";
 
         if (constraints != null) {
-            xml += constraints.toString(prefix, (tab + 1));
+            xml += constraints.toString(prefix, tab + 1);
         }
 
         if (schemaType != null) {
-            xml += schemaType.toString(prefix, (tab + 1));
+            xml += schemaType.toString(prefix, tab + 1);
         }
         for (int i = 0; i < tab; i++) {
             xml += "\t";

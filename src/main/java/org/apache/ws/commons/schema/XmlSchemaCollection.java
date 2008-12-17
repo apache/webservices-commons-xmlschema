@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -40,6 +40,13 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamSource;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
 import org.apache.ws.commons.schema.constants.Constants;
 import org.apache.ws.commons.schema.extensions.ExtensionRegistry;
 import org.apache.ws.commons.schema.resolver.CollectionURIResolver;
@@ -48,51 +55,16 @@ import org.apache.ws.commons.schema.resolver.URIResolver;
 import org.apache.ws.commons.schema.utils.DOMUtil;
 import org.apache.ws.commons.schema.utils.NamespacePrefixList;
 import org.apache.ws.commons.schema.utils.TargetNamespaceValidator;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 /**
  * Contains a cache of XML Schema definition language (XSD).
  */
 public final class XmlSchemaCollection {
 
-    // the default extension registry
-    private ExtensionRegistry extReg = new ExtensionRegistry();
-
-    public ExtensionRegistry getExtReg() {
-        return extReg;
-    }
-
-    public void setExtReg(ExtensionRegistry extReg) {
-        this.extReg = extReg;
-    }
-
     /**
-     * This map contains a list of Schema objects keyed in by their namespaces When resolving schemas, this
-     * map will be checked for the presence of the schema first
+     * base URI is used as the base for loading the imports
      */
-    private Map knownNamespaceMap = new HashMap();
-
-    /**
-     * get the namespace map
-     * 
-     * @return a map of previously known XMLSchema objects keyed by their namespace (String)
-     */
-    public Map getKnownNamespaceMap() {
-        return knownNamespaceMap;
-    }
-
-    /**
-     * sets the known namespace map
-     * 
-     * @param knownNamespaceMap a map of previously known XMLSchema objects keyed by their namespace (String)
-     */
-    public void setKnownNamespaceMap(Map knownNamespaceMap) {
-        this.knownNamespaceMap = knownNamespaceMap;
-    }
+    String baseUri;
 
     /**
      * Key that identifies a schema in a collection, composed of a targetNamespace and a system ID.
@@ -106,19 +78,16 @@ public final class XmlSchemaCollection {
             systemId = pSystemId == null ? "" : pSystemId;
         }
 
-        String getNamespace() {
-            return namespace;
-        }
-
-        String getSystemId() {
-            return systemId;
-        }
-
+        @Override
         public int hashCode() {
-            final int PRIME = 31;
-            return (PRIME + namespace.hashCode()) * PRIME + systemId.hashCode();
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + ((namespace == null) ? 0 : namespace.hashCode());
+            result = prime * result + ((systemId == null) ? 0 : systemId.hashCode());
+            return result;
         }
 
+        @Override
         public boolean equals(Object obj) {
             if (this == obj) {
                 return true;
@@ -129,61 +98,147 @@ public final class XmlSchemaCollection {
             if (getClass() != obj.getClass()) {
                 return false;
             }
-            final SchemaKey other = (SchemaKey)obj;
-            return namespace.equals(other.namespace) && systemId.equals(other.systemId);
+            SchemaKey other = (SchemaKey)obj;
+            if (namespace == null) {
+                if (other.namespace != null) {
+                    return false;
+                }
+            } else if (!namespace.equals(other.namespace)) {
+                return false;
+            }
+            if (systemId == null) {
+                if (other.systemId != null) {
+                    return false;
+                }
+            } else if (!systemId.equals(other.systemId)) {
+                return false;
+            }
+            return true;
         }
+
+
 
         public String toString() {
             return Constants.NULL_NS_URI.equals(namespace) ? systemId : "{" + namespace + "}" + systemId;
         }
+
+        String getNamespace() {
+            return namespace;
+        }
+
+        String getSystemId() {
+            return systemId;
+        }
     }
 
     /**
-     * Map of included schemas.
+     * stack to track imports (to prevent recursion)
      */
-    private Map schemas = new HashMap();
+    Stack<SchemaKey> stack;
+    Map<QName, List<TypeReceiver>> unresolvedTypes;
+    XmlSchema xsd;
+    // the default extension registry
+    private ExtensionRegistry extReg;
 
     /**
-     * base URI is used as the base for loading the imports
+     * This map contains a list of Schema objects keyed in by their namespaces.
+     *  When resolving schemas, this map will be checked for the presence of the schema first.
      */
-    String baseUri = null;
+    private Map<String, XmlSchema> knownNamespaceMap;
+
     /**
      * In-scope namespaces for XML processing
      */
     private NamespacePrefixList namespaceContext;
 
     /**
-     * An org.xml.sax.EntityResolver that is used to resolve the imports/includes
+     * Resolver to find included schemas.
      */
-    private URIResolver schemaResolver = new DefaultURIResolver();
-
-    XmlSchema xsd = new XmlSchema(XmlSchema.SCHEMA_NS, this);
+    private URIResolver schemaResolver;
+    /**
+     * Map of included schemas.
+     */
+    private Map<SchemaKey, XmlSchema> schemas;
 
     /**
-     * stack to track imports (to prevent recursion)
+     * Creates new XmlSchemaCollection
      */
-    Stack stack = new Stack();
-
-    /**
-     * Set the base URI. This is used when schemas need to be loaded from relative locations
-     * 
-     * @param baseUri baseUri for this collection.
-     */
-    public void setBaseUri(String baseUri) {
-        this.baseUri = baseUri;
-        if (schemaResolver instanceof CollectionURIResolver) {
-            CollectionURIResolver resolverWithBase = (CollectionURIResolver)schemaResolver;
-            resolverWithBase.setCollectionBaseURI(baseUri);
-        }
+    public XmlSchemaCollection() {
+        init();
     }
 
     /**
-     * Register a custom URI resolver
+     * Return an indication of whether a particular schema is in the working stack of schemas. This function,
+     * while public, is probably not useful outside of the implementation.
      * 
-     * @param schemaResolver resolver
+     * @param pKey schema key
+     * @return true if the schema is in the stack.
      */
-    public void setSchemaResolver(URIResolver schemaResolver) {
-        this.schemaResolver = schemaResolver;
+    public boolean check(SchemaKey pKey) {
+        return stack.indexOf(pKey) == -1;
+    }
+
+    /**
+     * Find a global attribute by QName in this collection of schemas.
+     * 
+     * @param schemaAttributeName the name of the attribute.
+     * @return the attribute or null.
+     */
+    public XmlSchemaAttribute getAttributeByQName(QName schemaAttributeName) {
+        String uri = schemaAttributeName.getNamespaceURI();
+        for (Iterator iter = schemas.entrySet().iterator(); iter.hasNext();) {
+            Map.Entry entry = (Map.Entry)iter.next();
+            if (((SchemaKey)entry.getKey()).getNamespace().equals(uri)) {
+                XmlSchemaAttribute attribute = ((XmlSchema)entry.getValue())
+                    .getAttributeByName(schemaAttributeName);
+                if (attribute != null) {
+                    return attribute;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Retrieve a global element from the schema collection.
+     * 
+     * @param qname the element QName.
+     * @return the element object, or null.
+     */
+    public XmlSchemaElement getElementByQName(QName qname) {
+        String uri = qname.getNamespaceURI();
+        for (Iterator iter = schemas.entrySet().iterator(); iter.hasNext();) {
+            Map.Entry entry = (Map.Entry)iter.next();
+            if (((SchemaKey)entry.getKey()).getNamespace().equals(uri)) {
+                XmlSchemaElement element = ((XmlSchema)entry.getValue()).getElementByName(qname);
+                if (element != null) {
+                    return element;
+                }
+            }
+        }
+        return null;
+    }
+
+    public ExtensionRegistry getExtReg() {
+        return extReg;
+    }
+
+    /**
+     * get the namespace map
+     * 
+     * @return a map of previously known XMLSchema objects keyed by their namespace (String)
+     */
+    public Map<String, XmlSchema> getKnownNamespaceMap() {
+        return knownNamespaceMap;
+    }
+
+    /**
+     * Retrieve the namespace context.
+     * 
+     * @return the namespace context.
+     */
+    public NamespacePrefixList getNamespaceContext() {
+        return namespaceContext;
     }
 
     /**
@@ -196,13 +251,73 @@ public final class XmlSchemaCollection {
     }
 
     /**
+     * Retrieve a global type from the schema collection.
+     * 
+     * @param schemaTypeName the QName of the type.
+     * @return the type object, or null.
+     */
+    public XmlSchemaType getTypeByQName(QName schemaTypeName) {
+        String uri = schemaTypeName.getNamespaceURI();
+        for (Iterator iter = schemas.entrySet().iterator(); iter.hasNext();) {
+            Map.Entry entry = (Map.Entry)iter.next();
+            if (((SchemaKey)entry.getKey()).getNamespace().equals(uri)) {
+                XmlSchemaType type = ((XmlSchema)entry.getValue()).getTypeByName(schemaTypeName);
+                if (type != null) {
+                    return type;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Retrieve a set containing the XmlSchema instances with the given system ID. In general, this will
+     * return a single instance, or none. However, if the schema has no targetNamespace attribute and was
+     * included from schemata with different target namespaces, then it may occur, that multiple schema
+     * instances with different logical target namespaces may be returned.
+     * 
+     * @param systemId the system id for this schema
+     * @return array of XmlSchema objects
+     */
+    public XmlSchema[] getXmlSchema(String systemId) {
+        if (systemId == null) {
+            systemId = "";
+        }
+        final List<XmlSchema> result = new ArrayList<XmlSchema>();
+        for (Map.Entry<SchemaKey, XmlSchema> entry : schemas.entrySet()) {
+            if (((SchemaKey)entry.getKey()).getSystemId().equals(systemId)) {
+                result.add(entry.getValue());
+            }
+        }
+        return result.toArray(new XmlSchema[result.size()]);
+    }
+
+    /**
+     * Returns an array of all the XmlSchemas in this collection.
+     * 
+     * @return the list of XmlSchema objects
+     */
+    public XmlSchema[] getXmlSchemas() {
+        Collection<XmlSchema> c = schemas.values();
+        return c.toArray(new XmlSchema[c.size()]);
+    }
+
+    /**
      * This section should comply to the XMLSchema specification; see <a
      * href="http://www.w3.org/TR/2004/PER-xmlschema-2-20040318/datatypes.html#built-in-datatypes">
      * http://www.w3.org/TR/2004/PER-xmlschema-2-20040318/datatypes.html#built-in-datatypes</a>. This needs to
      * be inspected by another pair of eyes
      */
     public void init() {
-
+        
+        stack = new Stack<SchemaKey>();
+        unresolvedTypes = new HashMap<QName, List<TypeReceiver>>();
+        extReg = new ExtensionRegistry();
+        knownNamespaceMap = new HashMap<String, XmlSchema>();
+        schemaResolver = new DefaultURIResolver();
+        schemas = new HashMap<SchemaKey, XmlSchema>();
+        // LAST, since the ctor for XmlSchema will reach back into here. 
+        xsd = new XmlSchema(XmlSchema.SCHEMA_NS, this);
         /*
          * Defined in section 4.
          */
@@ -294,156 +409,22 @@ public final class XmlSchemaCollection {
         }
     }
 
-    boolean containsSchema(SchemaKey pKey) {
-        return schemas.containsKey(pKey);
+    /**
+     * Pop the stack of schemas. This function, while public, is probably not useful outside of the
+     * implementation.
+     */
+    public void pop() {
+        stack.pop();
     }
 
     /**
-     * gets a schema from the external namespace map
+     * Push a schema onto the stack of schemas. This function, while public, is probably not useful outside of
+     * the implementation.
      * 
-     * @param namespace
-     * @return
+     * @param pKey the schema key.
      */
-    XmlSchema getKnownSchema(String namespace) {
-        return (XmlSchema)knownNamespaceMap.get(namespace);
-    }
-
-    /**
-     * Get a schema given a SchemaKey
-     * 
-     * @param pKey
-     * @return
-     */
-    XmlSchema getSchema(SchemaKey pKey) {
-        return (XmlSchema)schemas.get(pKey);
-    }
-
-    void addSchema(SchemaKey pKey, XmlSchema pSchema) {
-        if (schemas.containsKey(pKey)) {
-            throw new IllegalStateException("A schema with target namespace " + pKey.getNamespace()
-                                            + " and system ID " + pKey.getSystemId() + " is already present.");
-        }
-        schemas.put(pKey, pSchema);
-    }
-
-    private void addSimpleType(XmlSchema schema, String typeName) {
-        XmlSchemaSimpleType type;
-        type = new XmlSchemaSimpleType(schema);
-        type.setName(typeName);
-        schema.addType(type);
-    }
-
-    public XmlSchema read(Reader r, ValidationEventHandler veh) {
-        return read(new InputSource(r), veh);
-    }
-
-    XmlSchema read(final InputSource inputSource, ValidationEventHandler veh,
-                   TargetNamespaceValidator namespaceValidator) {
-        try {
-            DocumentBuilderFactory docFac = DocumentBuilderFactory.newInstance();
-            docFac.setNamespaceAware(true);
-            final DocumentBuilder builder = docFac.newDocumentBuilder();
-            Document doc = null;
-            doc = parse_doPriv(inputSource, builder, doc);
-            return read(doc, inputSource.getSystemId(), veh, namespaceValidator);
-        } catch (ParserConfigurationException e) {
-            throw new XmlSchemaException(e.getMessage());
-        } catch (IOException e) {
-            throw new XmlSchemaException(e.getMessage());
-        } catch (SAXException e) {
-            throw new XmlSchemaException(e.getMessage());
-        }
-    }
-
-    private Document parse_doPriv(final InputSource inputSource, final DocumentBuilder builder, Document doc)
-        throws IOException, SAXException {
-        try {
-            doc = (Document)java.security.AccessController.doPrivileged(new PrivilegedExceptionAction() {
-                public Object run() throws IOException, SAXException {
-                    return builder.parse(inputSource);
-                }
-            });
-        } catch (PrivilegedActionException e) {
-            Exception exception = e.getException();
-            if (exception instanceof IOException) {
-                throw (IOException)exception;
-            }
-            if (exception instanceof SAXException) {
-                throw (SAXException)exception;
-            }
-        }
-        return doc;
-    }
-
-    /**
-     * Read an XML schema into the collection from a SAX InputSource. Schemas in a collection must be unique
-     * in the concatenation of system ID and targetNamespace. In this API, the systemID is taken from the
-     * source.
-     * 
-     * @param inputSource the XSD document.
-     * @param veh handler that is called back for validation.
-     * @return the XML schema object.
-     */
-    public XmlSchema read(InputSource inputSource, ValidationEventHandler veh) {
-        return read(inputSource, veh, null);
-    }
-
-    /**
-     * Read an XML schema into the collection from a TRaX source. Schemas in a collection must be unique in
-     * the concatenation of system ID and targetNamespace. In this API, the systemID is taken from the Source.
-     * 
-     * @param source the XSD document.
-     * @param veh handler that is called back for validation.
-     * @return the XML schema object.
-     */
-    public XmlSchema read(Source source, ValidationEventHandler veh) {
-        if (source instanceof SAXSource) {
-            return read(((SAXSource)source).getInputSource(), veh);
-        } else if (source instanceof DOMSource) {
-            Node node = ((DOMSource)source).getNode();
-            if (node instanceof Document) {
-                node = ((Document)node).getDocumentElement();
-            }
-            return read((Document)node, veh);
-        } else if (source instanceof StreamSource) {
-            StreamSource ss = (StreamSource)source;
-            InputSource isource = new InputSource(ss.getSystemId());
-            isource.setByteStream(ss.getInputStream());
-            isource.setCharacterStream(ss.getReader());
-            isource.setPublicId(ss.getPublicId());
-            return read(isource, veh);
-        } else {
-            InputSource isource = new InputSource(source.getSystemId());
-            return read(isource, veh);
-        }
-    }
-
-    /**
-     * Read an XML schema into the collection from a DOM document. Schemas in a collection must be unique in
-     * the concatenation of system ID and targetNamespace. In this API, the systemID is taken from the
-     * document.
-     * 
-     * @param doc the XSD document.
-     * @param veh handler that is called back for validation.
-     * @return the XML schema object.
-     */
-    public XmlSchema read(Document doc, ValidationEventHandler veh) {
-        SchemaBuilder builder = new SchemaBuilder(this, null);
-        return builder.build(doc, null, veh);
-    }
-
-    /**
-     * Read an XML Schema into the collection from a DOM element. Schemas in a collection must be unique in
-     * the concatentation of System ID and targetNamespace. The system ID will be empty for this API.
-     * 
-     * @param elem the DOM element for the schema.
-     * @return the XmlSchema
-     */
-    public XmlSchema read(Element elem) {
-        SchemaBuilder builder = new SchemaBuilder(this, null);
-        XmlSchema xmlSchema = builder.handleXmlSchemaElement(elem, null);
-        xmlSchema.setInputEncoding(DOMUtil.getXmlEncoding(elem.getOwnerDocument()));
-        return xmlSchema;
+    public void push(SchemaKey pKey) {
+        stack.push(pKey);
     }
 
     /**
@@ -478,6 +459,34 @@ public final class XmlSchemaCollection {
     }
 
     /**
+     * Read an XML schema into the collection from a DOM document. Schemas in a collection must be unique in
+     * the concatenation of system ID and targetNamespace. In this API, the systemID is taken from the
+     * document.
+     * 
+     * @param doc the XSD document.
+     * @param veh handler that is called back for validation.
+     * @return the XML schema object.
+     */
+    public XmlSchema read(Document doc, ValidationEventHandler veh) {
+        SchemaBuilder builder = new SchemaBuilder(this, null);
+        return builder.build(doc, null, veh);
+    }
+
+    /**
+     * Read an XML Schema into the collection from a DOM element. Schemas in a collection must be unique in
+     * the concatentation of System ID and targetNamespace. The system ID will be empty for this API.
+     * 
+     * @param elem the DOM element for the schema.
+     * @return the XmlSchema
+     */
+    public XmlSchema read(Element elem) {
+        SchemaBuilder builder = new SchemaBuilder(this, null);
+        XmlSchema xmlSchema = builder.handleXmlSchemaElement(elem, null);
+        xmlSchema.setInputEncoding(DOMUtil.getXmlEncoding(elem.getOwnerDocument()));
+        return xmlSchema;
+    }
+
+    /**
      * Read a schema from a DOM tree into the collection. The schemas in a collection must be unique in the
      * concatenation of the target namespace and the system ID.
      * 
@@ -493,104 +502,50 @@ public final class XmlSchemaCollection {
     }
 
     /**
-     * Creates new XmlSchemaCollection
+     * Read an XML schema into the collection from a SAX InputSource. Schemas in a collection must be unique
+     * in the concatenation of system ID and targetNamespace. In this API, the systemID is taken from the
+     * source.
+     * 
+     * @param inputSource the XSD document.
+     * @param veh handler that is called back for validation.
+     * @return the XML schema object.
      */
-    public XmlSchemaCollection() {
-        init();
+    public XmlSchema read(InputSource inputSource, ValidationEventHandler veh) {
+        return read(inputSource, veh, null);
+    }
+
+    public XmlSchema read(Reader r, ValidationEventHandler veh) {
+        return read(new InputSource(r), veh);
     }
 
     /**
-     * Retrieve a set containing the XmlSchema instances with the given system ID. In general, this will
-     * return a single instance, or none. However, if the schema has no targetNamespace attribute and was
-     * included from schemata with different target namespaces, then it may occur, that multiple schema
-     * instances with different logical target namespaces may be returned.
+     * Read an XML schema into the collection from a TRaX source. Schemas in a collection must be unique in
+     * the concatenation of system ID and targetNamespace. In this API, the systemID is taken from the Source.
      * 
-     * @param systemId the system id for this schema
-     * @return array of XmlSchema objects
+     * @param source the XSD document.
+     * @param veh handler that is called back for validation.
+     * @return the XML schema object.
      */
-    public XmlSchema[] getXmlSchema(String systemId) {
-        if (systemId == null) {
-            systemId = "";
-        }
-        final List result = new ArrayList();
-        for (Iterator iter = schemas.entrySet().iterator(); iter.hasNext();) {
-            Map.Entry entry = (Map.Entry)iter.next();
-            if (((SchemaKey)entry.getKey()).getSystemId().equals(systemId)) {
-                result.add(entry.getValue());
+    public XmlSchema read(Source source, ValidationEventHandler veh) {
+        if (source instanceof SAXSource) {
+            return read(((SAXSource)source).getInputSource(), veh);
+        } else if (source instanceof DOMSource) {
+            Node node = ((DOMSource)source).getNode();
+            if (node instanceof Document) {
+                node = ((Document)node).getDocumentElement();
             }
+            return read((Document)node, veh);
+        } else if (source instanceof StreamSource) {
+            StreamSource ss = (StreamSource)source;
+            InputSource isource = new InputSource(ss.getSystemId());
+            isource.setByteStream(ss.getInputStream());
+            isource.setCharacterStream(ss.getReader());
+            isource.setPublicId(ss.getPublicId());
+            return read(isource, veh);
+        } else {
+            InputSource isource = new InputSource(source.getSystemId());
+            return read(isource, veh);
         }
-        return (XmlSchema[])result.toArray(new XmlSchema[result.size()]);
-    }
-
-    /**
-     * Returns an array of all the XmlSchemas in this collection.
-     * 
-     * @return the list of XmlSchema objects
-     */
-    public XmlSchema[] getXmlSchemas() {
-        Collection c = schemas.values();
-        return (XmlSchema[])c.toArray(new XmlSchema[c.size()]);
-    }
-
-    /**
-     * Retrieve a global element from the schema collection.
-     * 
-     * @param qname the element QName.
-     * @return the element object, or null.
-     */
-    public XmlSchemaElement getElementByQName(QName qname) {
-        String uri = qname.getNamespaceURI();
-        for (Iterator iter = schemas.entrySet().iterator(); iter.hasNext();) {
-            Map.Entry entry = (Map.Entry)iter.next();
-            if (((SchemaKey)entry.getKey()).getNamespace().equals(uri)) {
-                XmlSchemaElement element = ((XmlSchema)entry.getValue()).getElementByName(qname);
-                if (element != null) {
-                    return element;
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Retrieve a global type from the schema collection.
-     * 
-     * @param schemaTypeName the QName of the type.
-     * @return the type object, or null.
-     */
-    public XmlSchemaType getTypeByQName(QName schemaTypeName) {
-        String uri = schemaTypeName.getNamespaceURI();
-        for (Iterator iter = schemas.entrySet().iterator(); iter.hasNext();) {
-            Map.Entry entry = (Map.Entry)iter.next();
-            if (((SchemaKey)entry.getKey()).getNamespace().equals(uri)) {
-                XmlSchemaType type = ((XmlSchema)entry.getValue()).getTypeByName(schemaTypeName);
-                if (type != null) {
-                    return type;
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Find a global attribute by QName in this collection of schemas.
-     * 
-     * @param schemaAttributeName the name of the attribute.
-     * @return the attribute or null.
-     */
-    public XmlSchemaAttribute getAttributeByQName(QName schemaAttributeName) {
-        String uri = schemaAttributeName.getNamespaceURI();
-        for (Iterator iter = schemas.entrySet().iterator(); iter.hasNext();) {
-            Map.Entry entry = (Map.Entry)iter.next();
-            if (((SchemaKey)entry.getKey()).getNamespace().equals(uri)) {
-                XmlSchemaAttribute attribute = ((XmlSchema)entry.getValue())
-                    .getAttributeByName(schemaAttributeName);
-                if (attribute != null) {
-                    return attribute;
-                }
-            }
-        }
-        return null;
     }
 
     /**
@@ -609,36 +564,30 @@ public final class XmlSchemaCollection {
         return null;
     }
 
-    Map unresolvedTypes = new HashMap();
-
-    void addUnresolvedType(QName type, TypeReceiver receiver) {
-        ArrayList receivers = (ArrayList)unresolvedTypes.get(type);
-        if (receivers == null) {
-            receivers = new ArrayList();
-            unresolvedTypes.put(type, receivers);
+    /**
+     * Set the base URI. This is used when schemas need to be loaded from relative locations
+     * 
+     * @param baseUri baseUri for this collection.
+     */
+    public void setBaseUri(String baseUri) {
+        this.baseUri = baseUri;
+        if (schemaResolver instanceof CollectionURIResolver) {
+            CollectionURIResolver resolverWithBase = (CollectionURIResolver)schemaResolver;
+            resolverWithBase.setCollectionBaseURI(baseUri);
         }
-        receivers.add(receiver);
     }
 
-    void resolveType(QName typeName, XmlSchemaType type) {
-        ArrayList receivers = (ArrayList)unresolvedTypes.get(typeName);
-        if (receivers == null) {
-            return;
-        }
-        for (Iterator i = receivers.iterator(); i.hasNext();) {
-            TypeReceiver receiver = (TypeReceiver)i.next();
-            receiver.setType(type);
-        }
-        unresolvedTypes.remove(typeName);
+    public void setExtReg(ExtensionRegistry extReg) {
+        this.extReg = extReg;
     }
 
     /**
-     * Retrieve the namespace context.
+     * sets the known namespace map
      * 
-     * @return the namespace context.
+     * @param knownNamespaceMap a map of previously known XMLSchema objects keyed by their namespace (String)
      */
-    public NamespacePrefixList getNamespaceContext() {
-        return namespaceContext;
+    public void setKnownNamespaceMap(Map<String, XmlSchema> knownNamespaceMap) {
+        this.knownNamespaceMap = knownNamespaceMap;
     }
 
     /**
@@ -652,35 +601,116 @@ public final class XmlSchemaCollection {
     }
 
     /**
-     * Push a schema onto the stack of schemas. This function, while public, is probably not useful outside of
-     * the implementation.
+     * Register a custom URI resolver
      * 
-     * @param pKey the schema key.
+     * @param schemaResolver resolver
      */
-    public void push(SchemaKey pKey) {
-        stack.push(pKey);
-    }
-
-    /**
-     * Pop the stack of schemas. This function, while public, is probably not useful outside of the
-     * implementation.
-     */
-    public void pop() {
-        stack.pop();
-    }
-
-    /**
-     * Return an indication of whether a particular schema is in the working stack of schemas. This function,
-     * while public, is probably not useful outside of the implementation.
-     * 
-     * @param pKey schema key
-     * @return true if the schema is in the stack.
-     */
-    public boolean check(SchemaKey pKey) {
-        return stack.indexOf(pKey) == -1;
+    public void setSchemaResolver(URIResolver schemaResolver) {
+        this.schemaResolver = schemaResolver;
     }
 
     public String toString() {
         return super.toString() + "[" + schemas.toString() + "]";
+    }
+
+    void addSchema(SchemaKey pKey, XmlSchema pSchema) {
+        if (schemas.containsKey(pKey)) {
+            throw 
+                new IllegalStateException("A schema with target namespace " 
+                                          + pKey.getNamespace()
+                                          + " and system ID " 
+                                          + pKey.getSystemId() + " is already present.");
+        }
+        schemas.put(pKey, pSchema);
+    }
+
+    void addUnresolvedType(QName type, TypeReceiver receiver) {
+        List<TypeReceiver> receivers = unresolvedTypes.get(type);
+        if (receivers == null) {
+            receivers = new ArrayList<TypeReceiver>();
+            unresolvedTypes.put(type, receivers);
+        }
+        receivers.add(receiver);
+    }
+
+    boolean containsSchema(SchemaKey pKey) {
+        return schemas.containsKey(pKey);
+    }
+
+    /**
+     * gets a schema from the external namespace map
+     * 
+     * @param namespace
+     * @return
+     */
+    XmlSchema getKnownSchema(String namespace) {
+        return (XmlSchema)knownNamespaceMap.get(namespace);
+    }
+
+    /**
+     * Get a schema given a SchemaKey
+     * 
+     * @param pKey
+     * @return
+     */
+    XmlSchema getSchema(SchemaKey pKey) {
+        return schemas.get(pKey);
+    }
+
+    XmlSchema read(final InputSource inputSource, ValidationEventHandler veh,
+                   TargetNamespaceValidator namespaceValidator) {
+        try {
+            DocumentBuilderFactory docFac = DocumentBuilderFactory.newInstance();
+            docFac.setNamespaceAware(true);
+            final DocumentBuilder builder = docFac.newDocumentBuilder();
+            Document doc = null;
+            doc = parseDoPriv(inputSource, builder, doc);
+            return read(doc, inputSource.getSystemId(), veh, namespaceValidator);
+        } catch (ParserConfigurationException e) {
+            throw new XmlSchemaException(e.getMessage());
+        } catch (IOException e) {
+            throw new XmlSchemaException(e.getMessage());
+        } catch (SAXException e) {
+            throw new XmlSchemaException(e.getMessage());
+        }
+    }
+
+    void resolveType(QName typeName, XmlSchemaType type) {
+        List receivers = unresolvedTypes.get(typeName);
+        if (receivers == null) {
+            return;
+        }
+        for (Iterator i = receivers.iterator(); i.hasNext();) {
+            TypeReceiver receiver = (TypeReceiver)i.next();
+            receiver.setType(type);
+        }
+        unresolvedTypes.remove(typeName);
+    }
+
+    private void addSimpleType(XmlSchema schema, String typeName) {
+        XmlSchemaSimpleType type;
+        type = new XmlSchemaSimpleType(schema);
+        type.setName(typeName);
+        schema.addType(type);
+    }
+
+    private Document parseDoPriv(final InputSource inputSource, final DocumentBuilder builder, Document doc)
+        throws IOException, SAXException {
+        try {
+            doc = java.security.AccessController.doPrivileged(new PrivilegedExceptionAction<Document>() {
+                public Document run() throws IOException, SAXException {
+                    return builder.parse(inputSource);
+                }
+            });
+        } catch (PrivilegedActionException e) {
+            Exception exception = e.getException();
+            if (exception instanceof IOException) {
+                throw (IOException)exception;
+            }
+            if (exception instanceof SAXException) {
+                throw (SAXException)exception;
+            }
+        }
+        return doc;
     }
 }

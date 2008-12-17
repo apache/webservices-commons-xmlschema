@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -18,16 +18,34 @@
  */
 package tests;
 
-import junit.framework.TestCase;
-import org.apache.ws.commons.schema.*;
-
-import javax.xml.namespace.QName;
-import javax.xml.transform.stream.StreamSource;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+
+import javax.xml.namespace.QName;
+import javax.xml.transform.stream.StreamSource;
+
+import junit.framework.TestCase;
+
+import org.apache.ws.commons.schema.XmlSchemaCollection;
+import org.apache.ws.commons.schema.XmlSchemaElement;
+import org.apache.ws.commons.schema.XmlSchemaEnumerationFacet;
+import org.apache.ws.commons.schema.XmlSchemaFractionDigitsFacet;
+import org.apache.ws.commons.schema.XmlSchemaLengthFacet;
+import org.apache.ws.commons.schema.XmlSchemaMaxExclusiveFacet;
+import org.apache.ws.commons.schema.XmlSchemaMaxInclusiveFacet;
+import org.apache.ws.commons.schema.XmlSchemaMaxLengthFacet;
+import org.apache.ws.commons.schema.XmlSchemaMinExclusiveFacet;
+import org.apache.ws.commons.schema.XmlSchemaMinInclusiveFacet;
+import org.apache.ws.commons.schema.XmlSchemaMinLengthFacet;
+import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
+import org.apache.ws.commons.schema.XmlSchemaPatternFacet;
+import org.apache.ws.commons.schema.XmlSchemaSimpleType;
+import org.apache.ws.commons.schema.XmlSchemaSimpleTypeRestriction;
+import org.apache.ws.commons.schema.XmlSchemaTotalDigitsFacet;
+import org.apache.ws.commons.schema.XmlSchemaWhiteSpaceFacet;
 
 public class FacetsTest extends TestCase {
 
@@ -43,12 +61,12 @@ public class FacetsTest extends TestCase {
          * value="\d{5}"/> </restriction> </simpleType> <element name="myZipCode" type="tns:zipCode"/>
          */
 
-        QName ELEMENT_QNAME = new QName("http://soapinterop.org/types", "myZipCode");
+        QName elementQName = new QName("http://soapinterop.org/types", "myZipCode");
         InputStream is = new FileInputStream(Resources.asURI("facets.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         schemaCol.read(new StreamSource(is), null);
 
-        XmlSchemaElement elem = schemaCol.getElementByQName(ELEMENT_QNAME);
+        XmlSchemaElement elem = schemaCol.getElementByQName(elementQName);
         assertNotNull(elem);
         assertEquals("myZipCode", elem.getName());
         assertEquals(new QName("http://soapinterop.org/types", "myZipCode"), elem.getQName());
@@ -65,7 +83,7 @@ public class FacetsTest extends TestCase {
         XmlSchemaObjectCollection collection = r.getFacets();
         assertEquals(2, collection.getCount());
 
-        Set s = new HashSet();
+        Set<String> s = new HashSet<String>();
         s.add(XmlSchemaLengthFacet.class.getName());
         s.add(XmlSchemaPatternFacet.class.getName());
         for (Iterator i = collection.getIterator(); i.hasNext();) {
@@ -106,12 +124,12 @@ public class FacetsTest extends TestCase {
          * </restriction> </simpleType> <element name="myCreditCardNumber" type="tns:creditCardNumber"/>
          */
 
-        QName ELEMENT_QNAME = new QName("http://soapinterop.org/types", "myCreditCardNumber");
+        QName elementQName = new QName("http://soapinterop.org/types", "myCreditCardNumber");
         InputStream is = new FileInputStream(Resources.asURI("facets.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         schemaCol.read(new StreamSource(is), null);
 
-        XmlSchemaElement elem = schemaCol.getElementByQName(ELEMENT_QNAME);
+        XmlSchemaElement elem = schemaCol.getElementByQName(elementQName);
         assertNotNull(elem);
         assertEquals("myCreditCardNumber", elem.getName());
         assertEquals(new QName("http://soapinterop.org/types", "myCreditCardNumber"), elem.getQName());
@@ -128,7 +146,7 @@ public class FacetsTest extends TestCase {
         XmlSchemaObjectCollection collection = r.getFacets();
         assertEquals(1, collection.getCount());
 
-        Set s = new HashSet();
+        Set<String> s = new HashSet<String>();
         s.add(XmlSchemaPatternFacet.class.getName());
         for (Iterator i = collection.getIterator(); i.hasNext();) {
             Object o = i.next();
@@ -161,12 +179,12 @@ public class FacetsTest extends TestCase {
          * </simpleType> <element name="myAge" type="tns:age"/>
          */
 
-        QName ELEMENT_QNAME = new QName("http://soapinterop.org/types", "myAge");
+        QName elementQName = new QName("http://soapinterop.org/types", "myAge");
         InputStream is = new FileInputStream(Resources.asURI("facets.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         schemaCol.read(new StreamSource(is), null);
 
-        XmlSchemaElement elem = schemaCol.getElementByQName(ELEMENT_QNAME);
+        XmlSchemaElement elem = schemaCol.getElementByQName(elementQName);
         assertNotNull(elem);
         assertEquals("myAge", elem.getName());
         assertEquals(new QName("http://soapinterop.org/types", "myAge"), elem.getQName());
@@ -183,7 +201,7 @@ public class FacetsTest extends TestCase {
         XmlSchemaObjectCollection collection = r.getFacets();
         assertEquals(1, collection.getCount());
 
-        Set s = new HashSet();
+        Set<String> s = new HashSet<String>();
         s.add(XmlSchemaTotalDigitsFacet.class.getName());
         for (Iterator i = collection.getIterator(); i.hasNext();) {
             Object o = i.next();
@@ -217,12 +235,12 @@ public class FacetsTest extends TestCase {
          * type="tns:distance"/>
          */
 
-        QName ELEMENT_QNAME = new QName("http://soapinterop.org/types", "myDistance");
+        QName elementQName = new QName("http://soapinterop.org/types", "myDistance");
         InputStream is = new FileInputStream(Resources.asURI("facets.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         schemaCol.read(new StreamSource(is), null);
 
-        XmlSchemaElement elem = schemaCol.getElementByQName(ELEMENT_QNAME);
+        XmlSchemaElement elem = schemaCol.getElementByQName(elementQName);
         assertNotNull(elem);
         assertEquals("myDistance", elem.getName());
         assertEquals(new QName("http://soapinterop.org/types", "myDistance"), elem.getQName());
@@ -239,7 +257,7 @@ public class FacetsTest extends TestCase {
         XmlSchemaObjectCollection collection = r.getFacets();
         assertEquals(2, collection.getCount());
 
-        Set s = new HashSet();
+        Set<String> s = new HashSet<String>();
         s.add(XmlSchemaMaxInclusiveFacet.class.getName());
         s.add(XmlSchemaMinInclusiveFacet.class.getName());
         for (Iterator i = collection.getIterator(); i.hasNext();) {
@@ -280,12 +298,12 @@ public class FacetsTest extends TestCase {
          * value="1"/> </restriction> </simpleType> <element name="myWeight" type="tns:weight"/>
          */
 
-        QName ELEMENT_QNAME = new QName("http://soapinterop.org/types", "myWeight");
+        QName elementQName = new QName("http://soapinterop.org/types", "myWeight");
         InputStream is = new FileInputStream(Resources.asURI("facets.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         schemaCol.read(new StreamSource(is), null);
 
-        XmlSchemaElement elem = schemaCol.getElementByQName(ELEMENT_QNAME);
+        XmlSchemaElement elem = schemaCol.getElementByQName(elementQName);
         assertNotNull(elem);
         assertEquals("myWeight", elem.getName());
         assertEquals(new QName("http://soapinterop.org/types", "myWeight"), elem.getQName());
@@ -302,7 +320,7 @@ public class FacetsTest extends TestCase {
         XmlSchemaObjectCollection collection = r.getFacets();
         assertEquals(2, collection.getCount());
 
-        Set s = new HashSet();
+        Set<String> s = new HashSet<String>();
         s.add(XmlSchemaMaxExclusiveFacet.class.getName());
         s.add(XmlSchemaMinExclusiveFacet.class.getName());
         for (Iterator i = collection.getIterator(); i.hasNext();) {
@@ -343,12 +361,12 @@ public class FacetsTest extends TestCase {
          * </restriction> </simpleType> <element name="myWhiteSpace" type="tns:noWhiteSpace"/>
          */
 
-        QName ELEMENT_QNAME = new QName("http://soapinterop.org/types", "myWhiteSpace");
+        QName elementQName = new QName("http://soapinterop.org/types", "myWhiteSpace");
         InputStream is = new FileInputStream(Resources.asURI("facets.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         schemaCol.read(new StreamSource(is), null);
 
-        XmlSchemaElement elem = schemaCol.getElementByQName(ELEMENT_QNAME);
+        XmlSchemaElement elem = schemaCol.getElementByQName(elementQName);
         assertNotNull(elem);
         assertEquals("myWhiteSpace", elem.getName());
         assertEquals(new QName("http://soapinterop.org/types", "myWhiteSpace"), elem.getQName());
@@ -365,7 +383,7 @@ public class FacetsTest extends TestCase {
         XmlSchemaObjectCollection collection = r.getFacets();
         assertEquals(1, collection.getCount());
 
-        Set s = new HashSet();
+        Set<String> s = new HashSet<String>();
         s.add(XmlSchemaWhiteSpaceFacet.class.getName());
         for (Iterator i = collection.getIterator(); i.hasNext();) {
             Object o = i.next();
@@ -398,12 +416,12 @@ public class FacetsTest extends TestCase {
          * value="2"/> </restriction> </simpleType> <element name="myHeight" type="tns:height"/>
          */
 
-        QName ELEMENT_QNAME = new QName("http://soapinterop.org/types", "myHeight");
+        QName elementQName = new QName("http://soapinterop.org/types", "myHeight");
         InputStream is = new FileInputStream(Resources.asURI("facets.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         schemaCol.read(new StreamSource(is), null);
 
-        XmlSchemaElement elem = schemaCol.getElementByQName(ELEMENT_QNAME);
+        XmlSchemaElement elem = schemaCol.getElementByQName(elementQName);
         assertNotNull(elem);
         assertEquals("myHeight", elem.getName());
         assertEquals(new QName("http://soapinterop.org/types", "myHeight"), elem.getQName());
@@ -420,7 +438,7 @@ public class FacetsTest extends TestCase {
         XmlSchemaObjectCollection collection = r.getFacets();
         assertEquals(2, collection.getCount());
 
-        Set s = new HashSet();
+        Set<String> s = new HashSet<String>();
         s.add(XmlSchemaFractionDigitsFacet.class.getName());
         s.add(XmlSchemaTotalDigitsFacet.class.getName());
         for (Iterator i = collection.getIterator(); i.hasNext();) {
@@ -462,12 +480,12 @@ public class FacetsTest extends TestCase {
          * type="tns:yardLength"/>
          */
 
-        QName ELEMENT_QNAME = new QName("http://soapinterop.org/types", "myYardLength");
+        QName elementQName = new QName("http://soapinterop.org/types", "myYardLength");
         InputStream is = new FileInputStream(Resources.asURI("facets.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         schemaCol.read(new StreamSource(is), null);
 
-        XmlSchemaElement elem = schemaCol.getElementByQName(ELEMENT_QNAME);
+        XmlSchemaElement elem = schemaCol.getElementByQName(elementQName);
         assertNotNull(elem);
         assertEquals("myYardLength", elem.getName());
         assertEquals(new QName("http://soapinterop.org/types", "myYardLength"), elem.getQName());
@@ -476,7 +494,8 @@ public class FacetsTest extends TestCase {
         XmlSchemaSimpleType simpleType = (XmlSchemaSimpleType)elem.getSchemaType();
 
         XmlSchemaSimpleTypeRestriction r = (XmlSchemaSimpleTypeRestriction)simpleType.getContent();
-        assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "nonNegativeInteger"), r.getBaseTypeName());
+        assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "nonNegativeInteger"), 
+                     r.getBaseTypeName());
 
         XmlSchemaSimpleType xsst = r.getBaseType();
         assertNull(xsst);
@@ -484,7 +503,7 @@ public class FacetsTest extends TestCase {
         XmlSchemaObjectCollection collection = r.getFacets();
         assertEquals(2, collection.getCount());
 
-        Set s = new HashSet();
+        Set<String> s = new HashSet<String>();
         s.add(XmlSchemaMinLengthFacet.class.getName());
         s.add(XmlSchemaMaxLengthFacet.class.getName());
         for (Iterator i = collection.getIterator(); i.hasNext();) {
@@ -526,12 +545,12 @@ public class FacetsTest extends TestCase {
          * type="tns:layoutComponentType"/>
          */
 
-        QName ELEMENT_QNAME = new QName("http://soapinterop.org/types", "layoutComponent");
+        QName elementQName = new QName("http://soapinterop.org/types", "layoutComponent");
         InputStream is = new FileInputStream(Resources.asURI("facets.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         schemaCol.read(new StreamSource(is), null);
 
-        XmlSchemaElement elem = schemaCol.getElementByQName(ELEMENT_QNAME);
+        XmlSchemaElement elem = schemaCol.getElementByQName(elementQName);
         assertNotNull(elem);
         assertEquals("layoutComponent", elem.getName());
         assertEquals(new QName("http://soapinterop.org/types", "layoutComponent"), elem.getQName());
@@ -549,7 +568,7 @@ public class FacetsTest extends TestCase {
         XmlSchemaObjectCollection collection = r.getFacets();
         assertEquals(2, collection.getCount());
 
-        Set s = new HashSet();
+        Set<String> s = new HashSet<String>();
         s.add("Field");
         s.add("Separator");
         for (Iterator i = collection.getIterator(); i.hasNext();) {
@@ -558,11 +577,11 @@ public class FacetsTest extends TestCase {
             assertTrue("Atempted to remove an enumeration with the value of " + "\"" + value
                        + "\", but the value was not in the set.", s.remove(value));
             String toStr = xsef.toString("xsd", 1);
-            if (value.equals("Field")) {
+            if ("Field".equals(value)) {
                 assertTrue("The toString(String, int) method did not contain "
                            + "\"enumeration\", but did contain: " + toStr, toStr
                     .indexOf("enumeration value=\"Field\"") != -1);
-            } else if (value.equals("Separator")) {
+            } else if ("Separator".equals(value)) {
                 assertTrue("The toString(String, int) method did not contain "
                            + "\"enumeration\", but did contain: " + toStr, toStr
                     .indexOf("enumeration value=\"Separator\"") != -1);

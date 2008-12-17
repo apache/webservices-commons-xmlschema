@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -21,21 +21,53 @@ package org.apache.ws.commons.schema.constants;
 
 public abstract class Enum {
 
-    public static String NULL = "NULL";
+    public static class EnumValueException extends RuntimeException {
+        /**
+         *
+         */
+        private static final long serialVersionUID = 1L;
 
-    protected Enum(String value) {
-        setValue(value);
+        public EnumValueException(String mesg) {
+            super(mesg);
+        }
     }
+
+    public static final String NULL = "NULL";
+
+    protected String value = NULL;
 
     protected Enum() {
         this(NULL);
     }
 
-    protected abstract String[] getValues();
+    protected Enum(String value) {
+        setValue(value);
+    }
 
-    protected String value = NULL;
+    protected static final int index(String value, String values[]) {
+        for (int i = 0; i < values.length; i++) {
+            if (value.equals(values[i])) {
+                return i;
+            }
+        }
+        return -1;
+    }
 
-    public void setValue(String value) {
+    @Override
+    public boolean equals(Object what) {
+        return what.getClass().equals(this.getClass()) && ((Enum)what).getValue().equals(this.getValue());
+    }
+    
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public final void setValue(String value) {
         if (value.equals(Enum.NULL)) {
             this.value = Enum.NULL;
         } else {
@@ -59,35 +91,9 @@ public abstract class Enum {
         }
     }
 
-    public String getValue() {
-        return value;
-    }
-
     public String toString() {
         return value;
     }
 
-    public boolean equals(Object what) {
-        return what.getClass().equals(this.getClass()) && ((Enum)what).getValue().equals(this.getValue());
-    }
-
-    public static class EnumValueException extends RuntimeException {
-        /**
-         *
-         */
-        private static final long serialVersionUID = 1L;
-
-        public EnumValueException(String mesg) {
-            super(mesg);
-        }
-    }
-
-    protected static final int index(String value, String values[]) {
-        for (int i = 0; i < values.length; i++) {
-            if (value.equals(values[i])) {
-                return i;
-            }
-        }
-        return -1;
-    }
+    protected abstract String[] getValues();
 }

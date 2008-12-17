@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -27,14 +27,18 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.stream.StreamSource;
 
-import org.apache.ws.commons.schema.XmlSchema;
-import org.apache.ws.commons.schema.XmlSchemaCollection;
-import org.custommonkey.xmlunit.XMLTestCase;
-import org.custommonkey.xmlunit.XMLUnit;
 import org.w3c.dom.Document;
 
-public class AppInfoMarkupTest extends XMLTestCase {
+import org.apache.ws.commons.schema.XmlSchema;
+import org.apache.ws.commons.schema.XmlSchemaCollection;
 
+import org.custommonkey.xmlunit.XMLTestCase;
+import org.custommonkey.xmlunit.XMLUnit;
+
+import org.junit.Test;
+
+public class AppInfoMarkupTest extends XMLTestCase {
+    @Test
     public void testAppInfo() throws Exception {
         DocumentBuilder b = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document pureDOMDocument = b.parse(new FileInputStream(Resources.asURI("appInfo.xsd")));

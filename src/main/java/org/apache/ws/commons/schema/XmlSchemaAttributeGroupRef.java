@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -26,14 +26,13 @@ import javax.xml.namespace.QName;
  * element with the ref attribute.
  */
 public class XmlSchemaAttributeGroupRef extends XmlSchemaAnnotated {
-
+    QName refName;
+    
     /**
      * Creates new XmlSchemaAttributeGroupRef
      */
     public XmlSchemaAttributeGroupRef() {
     }
-
-    QName refName;
 
     public QName getRefName() {
         return this.refName;

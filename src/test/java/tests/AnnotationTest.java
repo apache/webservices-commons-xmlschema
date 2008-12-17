@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -18,19 +18,30 @@
  */
 package tests;
 
-import junit.framework.TestCase;
-import org.apache.ws.commons.schema.*;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-import javax.xml.namespace.QName;
-import javax.xml.transform.stream.StreamSource;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Set;
 
-public class AnnotationTest extends TestCase {
+import javax.xml.namespace.QName;
+import javax.xml.transform.stream.StreamSource;
+
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import org.apache.ws.commons.schema.XmlSchema;
+import org.apache.ws.commons.schema.XmlSchemaAnnotation;
+import org.apache.ws.commons.schema.XmlSchemaAppInfo;
+import org.apache.ws.commons.schema.XmlSchemaCollection;
+import org.apache.ws.commons.schema.XmlSchemaDocumentation;
+import org.apache.ws.commons.schema.XmlSchemaObject;
+import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
+import org.apache.ws.commons.schema.XmlSchemaSimpleType;
+
+import org.junit.Assert;
+import org.junit.Test;
+
+public class AnnotationTest extends Assert {
 
     /**
      * This method will test for when the appinfo element of an annotation doesn't include a source attribute
@@ -38,6 +49,7 @@ public class AnnotationTest extends TestCase {
      * 
      * @throws Exception Any exception encountered
      */
+    @Test
     public void testEmptyAppInfo() throws Exception {
 
         /*
@@ -46,12 +58,12 @@ public class AnnotationTest extends TestCase {
          * <length value="1"/> </restriction> </simpleType>
          */
 
-        QName TYPE_QNAME = new QName("http://soapinterop.org/types", "emptyAppinfo");
+        QName typeQName = new QName("http://soapinterop.org/types", "emptyAppinfo");
         InputStream is = new FileInputStream(Resources.asURI("annotation.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         schemaCol.read(new StreamSource(is), null);
 
-        XmlSchemaSimpleType simpleType = (XmlSchemaSimpleType)schemaCol.getTypeByQName(TYPE_QNAME);
+        XmlSchemaSimpleType simpleType = (XmlSchemaSimpleType)schemaCol.getTypeByQName(typeQName);
         assertNotNull(simpleType);
 
         XmlSchemaAnnotation xsa = simpleType.getAnnotation();
@@ -60,7 +72,7 @@ public class AnnotationTest extends TestCase {
         XmlSchemaObjectCollection col = xsa.getItems();
         assertEquals(1, col.getCount());
 
-        Set s = new HashSet();
+        Set<String> s = new HashSet<String>();
         s.add(XmlSchemaDocumentation.class.getName());
         for (int i = 0; i < col.getCount(); i++) {
             XmlSchemaObject o = col.getItem(i);
@@ -89,6 +101,7 @@ public class AnnotationTest extends TestCase {
      * 
      * @throws Exception Any exception encountered
      */
+    @Test
     public void testEmptyDocumentation() throws Exception {
 
         /*
@@ -97,12 +110,12 @@ public class AnnotationTest extends TestCase {
          * <length value="2"/> </restriction> </simpleType>
          */
 
-        QName TYPE_QNAME = new QName("http://soapinterop.org/types", "emptyDocumentation");
+        QName typeQName = new QName("http://soapinterop.org/types", "emptyDocumentation");
         InputStream is = new FileInputStream(Resources.asURI("annotation.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         schemaCol.read(new StreamSource(is), null);
 
-        XmlSchemaSimpleType simpleType = (XmlSchemaSimpleType)schemaCol.getTypeByQName(TYPE_QNAME);
+        XmlSchemaSimpleType simpleType = (XmlSchemaSimpleType)schemaCol.getTypeByQName(typeQName);
         assertNotNull(simpleType);
 
         XmlSchemaAnnotation xsa = simpleType.getAnnotation();
@@ -111,7 +124,7 @@ public class AnnotationTest extends TestCase {
         XmlSchemaObjectCollection col = xsa.getItems();
         assertEquals(1, col.getCount());
 
-        Set s = new HashSet();
+        Set<String> s = new HashSet<String>();
         s.add(XmlSchemaAppInfo.class.getName());
         for (int i = 0; i < col.getCount(); i++) {
             XmlSchemaObject o = col.getItem(i);
@@ -139,6 +152,7 @@ public class AnnotationTest extends TestCase {
      * 
      * @throws Exception Any exception encountered
      */
+    @Test
     public void testEmptyAppinfoDocumentation() throws Exception {
 
         /*
@@ -146,12 +160,12 @@ public class AnnotationTest extends TestCase {
          * </annotation> <restriction base="string"> <length value="1"/> </restriction> </simpleType>
          */
 
-        QName TYPE_QNAME = new QName("http://soapinterop.org/types", "emptyAppinfoDocumentation");
+        QName typeQName = new QName("http://soapinterop.org/types", "emptyAppinfoDocumentation");
         InputStream is = new FileInputStream(Resources.asURI("annotation.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         schemaCol.read(new StreamSource(is), null);
 
-        XmlSchemaSimpleType simpleType = (XmlSchemaSimpleType)schemaCol.getTypeByQName(TYPE_QNAME);
+        XmlSchemaSimpleType simpleType = (XmlSchemaSimpleType)schemaCol.getTypeByQName(typeQName);
         assertNotNull(simpleType);
 
         XmlSchemaAnnotation xsa = simpleType.getAnnotation();
@@ -167,6 +181,7 @@ public class AnnotationTest extends TestCase {
      * 
      * @throws Exception Any exception encountered
      */
+    @Test
     public void testFullDocumentationAppinfo() throws Exception {
 
         /*
@@ -176,12 +191,12 @@ public class AnnotationTest extends TestCase {
          * <length value="1"/> </restriction> </simpleType>
          */
 
-        QName TYPE_QNAME = new QName("http://soapinterop.org/types", "annotationTest");
+        QName typeQName = new QName("http://soapinterop.org/types", "annotationTest");
         InputStream is = new FileInputStream(Resources.asURI("annotation.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         schemaCol.read(new StreamSource(is), null);
 
-        XmlSchemaSimpleType simpleType = (XmlSchemaSimpleType)schemaCol.getTypeByQName(TYPE_QNAME);
+        XmlSchemaSimpleType simpleType = (XmlSchemaSimpleType)schemaCol.getTypeByQName(typeQName);
         assertNotNull(simpleType);
 
         XmlSchemaAnnotation xsa = simpleType.getAnnotation();
@@ -190,7 +205,7 @@ public class AnnotationTest extends TestCase {
         XmlSchemaObjectCollection col = xsa.getItems();
         assertEquals(2, col.getCount());
 
-        Set s = new HashSet();
+        Set<String> s = new HashSet<String>();
         s.add(XmlSchemaAppInfo.class.getName());
         s.add(XmlSchemaDocumentation.class.getName());
         for (int i = 0; i < col.getCount(); i++) {
@@ -225,6 +240,7 @@ public class AnnotationTest extends TestCase {
      * 
      * @throws Exception Any exception encountered
      */
+    @Test
     public void testXmlSchemaElementAnnotation() throws Exception {
 
         /*
@@ -241,7 +257,7 @@ public class AnnotationTest extends TestCase {
         XmlSchemaObjectCollection col = xsa.getItems();
         assertEquals(2, col.getCount());
 
-        Set s = new HashSet();
+        Set<String> s = new HashSet<String>();
         s.add(XmlSchemaAppInfo.class.getName());
         s.add(XmlSchemaDocumentation.class.getName());
         for (int i = 0; i < col.getCount(); i++) {

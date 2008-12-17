@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -27,6 +27,9 @@ import javax.xml.namespace.QName;
  */
 
 public class XmlSchemaSimpleTypeRestriction extends XmlSchemaSimpleTypeContent {
+    XmlSchemaSimpleType baseType;
+    QName baseTypeName;
+    XmlSchemaObjectCollection facets;
 
     /**
      * Creates new XmlSchemaSimpleTypeRestriction
@@ -35,7 +38,6 @@ public class XmlSchemaSimpleTypeRestriction extends XmlSchemaSimpleTypeContent {
         facets = new XmlSchemaObjectCollection();
     }
 
-    XmlSchemaSimpleType baseType;
 
     public XmlSchemaSimpleType getBaseType() {
         return this.baseType;
@@ -45,8 +47,6 @@ public class XmlSchemaSimpleTypeRestriction extends XmlSchemaSimpleTypeContent {
         this.baseType = baseType;
     }
 
-    QName baseTypeName;
-
     public QName getBaseTypeName() {
         return this.baseTypeName;
     }
@@ -55,8 +55,6 @@ public class XmlSchemaSimpleTypeRestriction extends XmlSchemaSimpleTypeContent {
         this.baseTypeName = baseTypeName;
     }
 
-    XmlSchemaObjectCollection facets;// = new XmlSchemaObjectCollection();
-
     public XmlSchemaObjectCollection getFacets() {
         return this.facets;
     }
@@ -64,7 +62,7 @@ public class XmlSchemaSimpleTypeRestriction extends XmlSchemaSimpleTypeContent {
     public String toString(String prefix, int tab) {
         String xml = new String();
 
-        if (!prefix.equals("") && prefix.indexOf(":") == -1) {
+        if (!"".equals(prefix) && prefix.indexOf(":") == -1) {
             prefix += ":";
         }
 
@@ -79,10 +77,10 @@ public class XmlSchemaSimpleTypeRestriction extends XmlSchemaSimpleTypeContent {
         } else {
             xml += ">\n";
             // inline def
-            xml += baseType.toString(prefix, (tab + 1));
+            xml += baseType.toString(prefix, tab + 1);
         }
 
-        xml += facets.toString(prefix, (tab + 1));
+        xml += facets.toString(prefix, tab + 1);
         for (int i = 0; i < tab; i++) {
             xml += "\t";
         }

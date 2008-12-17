@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -18,13 +18,15 @@
  */
 package tests;
 
-import junit.framework.TestCase;
-import org.apache.ws.commons.schema.XmlSchema;
-import org.apache.ws.commons.schema.XmlSchemaCollection;
-import org.xml.sax.InputSource;
-
 import java.io.File;
 import java.io.FileInputStream;
+
+import org.xml.sax.InputSource;
+
+import junit.framework.TestCase;
+
+import org.apache.ws.commons.schema.XmlSchema;
+import org.apache.ws.commons.schema.XmlSchemaCollection;
 
 public class CircularSchemaTest extends TestCase {
     public void testCircular() throws Exception {

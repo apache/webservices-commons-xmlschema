@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -27,13 +27,13 @@ import javax.xml.namespace.QName;
 
 public class XmlSchemaKeyref extends XmlSchemaIdentityConstraint {
 
+    QName refer;
+
     /**
      * Creates new XmlSchemaKeyref
      */
     public XmlSchemaKeyref() {
     }
-
-    QName refer;
 
     public QName getRefer() {
         return refer;

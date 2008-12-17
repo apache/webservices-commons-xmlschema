@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -18,21 +18,23 @@
  */
 package tests.ext;
 
-import junit.framework.TestCase;
-
-import java.util.Map;
 import java.util.Iterator;
-
-import tests.Resources;
-import org.apache.ws.commons.schema.XmlSchemaCollection;
-import org.apache.ws.commons.schema.XmlSchema;
-import org.apache.ws.commons.schema.XmlSchemaElement;
-import org.w3c.dom.Document;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.w3c.dom.Document;
+
+import junit.framework.TestCase;
+
+import org.apache.ws.commons.schema.XmlSchema;
+import org.apache.ws.commons.schema.XmlSchemaCollection;
+import org.apache.ws.commons.schema.XmlSchemaElement;
+
+import tests.Resources;
+
 /**
- * Test the custom extension dserialization without any specialized hooks
+ * Test the custom extension deserialization without any specialized hooks
  */
 public class PlainExtensionDeserializerTest extends TestCase {
 

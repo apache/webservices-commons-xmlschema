@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -19,18 +19,20 @@
 
 package tests;
 
-import org.apache.ws.commons.schema.XmlSchema;
-import org.apache.ws.commons.schema.XmlSchemaCollection;
-import org.apache.ws.commons.schema.utils.NamespaceMap;
-import org.custommonkey.xmlunit.XMLTestCase;
-import org.custommonkey.xmlunit.XMLUnit;
-import org.xml.sax.InputSource;
-
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.xml.sax.InputSource;
+
+import org.apache.ws.commons.schema.XmlSchema;
+import org.apache.ws.commons.schema.XmlSchemaCollection;
+import org.apache.ws.commons.schema.utils.NamespaceMap;
+
+import org.custommonkey.xmlunit.XMLTestCase;
+import org.custommonkey.xmlunit.XMLUnit;
 
 public class NamespaceContextTest extends XMLTestCase {
     protected boolean whitespace = true;
@@ -45,7 +47,7 @@ public class NamespaceContextTest extends XMLTestCase {
     }
 
     public void testNamespaceContext() throws Exception {
-        Map namespaceMapFromWSDL = new HashMap();
+        Map<String, Object> namespaceMapFromWSDL = new HashMap<String, Object>();
         namespaceMapFromWSDL.put("tns", new URI("http://example.org/getBalance/"));
         namespaceMapFromWSDL.put("xsd", new URI("http://www.w3.org/2001/XMLSchema"));
         String schema = "\t\t<xsd:schema targetNamespace=\"http://example.org/getBalance/\"\n"

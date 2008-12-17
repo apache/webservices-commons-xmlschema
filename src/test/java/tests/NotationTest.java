@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -19,18 +19,31 @@
 
 package tests;
 
-import junit.framework.TestCase;
-import org.apache.ws.commons.schema.*;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-import javax.xml.namespace.QName;
-import javax.xml.transform.stream.StreamSource;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+
+import javax.xml.namespace.QName;
+import javax.xml.transform.stream.StreamSource;
+
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import junit.framework.TestCase;
+
+import org.apache.ws.commons.schema.XmlSchema;
+import org.apache.ws.commons.schema.XmlSchemaAnnotation;
+import org.apache.ws.commons.schema.XmlSchemaCollection;
+import org.apache.ws.commons.schema.XmlSchemaDocumentation;
+import org.apache.ws.commons.schema.XmlSchemaElement;
+import org.apache.ws.commons.schema.XmlSchemaEnumerationFacet;
+import org.apache.ws.commons.schema.XmlSchemaNotation;
+import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
+import org.apache.ws.commons.schema.XmlSchemaObjectTable;
+import org.apache.ws.commons.schema.XmlSchemaSimpleType;
+import org.apache.ws.commons.schema.XmlSchemaSimpleTypeRestriction;
 
 /*
  * Copyright 2004,2007 The Apache Software Foundation.
@@ -72,51 +85,24 @@ public class NotationTest extends TestCase {
          * value="tns:teamMascot"/> </restriction> </simpleType> </element> </schema>
          */
 
-        QName ELEMENT_QNAME = new QName("http://soapinterop.org/types", "demoNotation");
+        QName elementQName = new QName("http://soapinterop.org/types", "demoNotation");
         QName notationName = new QName("http://soapinterop.org/types", "teamLogo");
 
         InputStream is = new FileInputStream(Resources.asURI("notation.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
 
-        XmlSchemaObjectTable notations = schema.getNotations();
-        assertNotNull(notations.getItem(notationName));
-
-        XmlSchemaElement elem = schemaCol.getElementByQName(ELEMENT_QNAME);
-        assertNotNull(elem);
-        assertEquals("demoNotation", elem.getName());
-        assertEquals(new QName("http://soapinterop.org/types", "demoNotation"), elem.getQName());
-
-        XmlSchemaSimpleType type = (XmlSchemaSimpleType)elem.getSchemaType();
-        assertNotNull(type);
-
-        XmlSchemaSimpleTypeRestriction xsstc = (XmlSchemaSimpleTypeRestriction)type.getContent();
-        assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "NOTATION"), xsstc.getBaseTypeName());
-
-        XmlSchemaObjectCollection xsoc = xsstc.getFacets();
-        assertEquals(2, xsoc.getCount());
-        Set s = new HashSet();
-        s.add("tns:teamLogo");
-        s.add("tns:teamMascot");
-        for (int i = 0; i < xsoc.getCount(); i++) {
-            XmlSchemaEnumerationFacet xsef = (XmlSchemaEnumerationFacet)xsoc.getItem(i);
-            String value = (String)xsef.getValue();
-            if (!(value.equals("tns:teamLogo") || value.equals("tns:teamMascot"))) {
-                fail("An unexpected value of \"" + value + "\" was found.");
-            }
-            assertTrue(s.remove(value));
-        }
-        assertTrue("The set should have been empty, but instead contained: " + s + ".", s.isEmpty());
+        testSimpleRestrictions(elementQName, notationName, schemaCol, schema);
 
         XmlSchemaObjectTable xsot = schema.getNotations();
         assertEquals(2, xsot.getCount());
 
-        s.clear();
+        Set<String> s = new HashSet<String>();
         s.add("teamMascot");
         s.add("teamLogo");
         for (Iterator i = xsot.getNames(); i.hasNext();) {
             String name = ((QName)i.next()).getLocalPart();
-            if (!(name.equals("teamLogo") || name.equals("teamMascot"))) {
+            if (!("teamLogo".equals(name) || "teamMascot".equals(name))) {
                 fail("An unexpected name of \"" + name + "\" was found.");
             }
             assertTrue(s.remove(name));
@@ -136,7 +122,7 @@ public class NotationTest extends TestCase {
             for (int k = 0; k < col.getCount(); k++) {
                 xsd = (XmlSchemaDocumentation)col.getItem(k);
             }
-            if (name.equals("teamMascot")) {
+            if ("teamMascot".equals(name)) {
                 assertEquals("http://www.team.com/graphics/teamMascot", xsn.getPublic());
                 assertEquals("com/team/graphics/teamMascot", xsn.getSystem());
                 assertEquals("notation.teamMascot", xsn.getId());
@@ -148,7 +134,7 @@ public class NotationTest extends TestCase {
                         assertEquals("Location of the corporate mascot.", n.getNodeValue());
                     }
                 }
-            } else if (name.equals("teamLogo")) {
+            } else if ("teamLogo".equals(name)) {
                 assertEquals("http://www.team.com/graphics/teamLogo", xsn.getPublic());
                 assertEquals("com/team/graphics/teamLogo", xsn.getSystem());
                 assertEquals("notation.teamLogo", xsn.getId());
@@ -167,6 +153,38 @@ public class NotationTest extends TestCase {
         }
         assertTrue("The set should have been empty, but instead contained: " + s + ".", s.isEmpty());
 
+    }
+
+    private void testSimpleRestrictions(QName elementQName, QName notationName, XmlSchemaCollection schemaCol,
+                                  XmlSchema schema) {
+        XmlSchemaObjectTable notations = schema.getNotations();
+        assertNotNull(notations.getItem(notationName));
+
+        XmlSchemaElement elem = schemaCol.getElementByQName(elementQName);
+        assertNotNull(elem);
+        assertEquals("demoNotation", elem.getName());
+        assertEquals(new QName("http://soapinterop.org/types", "demoNotation"), elem.getQName());
+
+        XmlSchemaSimpleType type = (XmlSchemaSimpleType)elem.getSchemaType();
+        assertNotNull(type);
+
+        XmlSchemaSimpleTypeRestriction xsstc = (XmlSchemaSimpleTypeRestriction)type.getContent();
+        assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "NOTATION"), xsstc.getBaseTypeName());
+
+        XmlSchemaObjectCollection xsoc = xsstc.getFacets();
+        assertEquals(2, xsoc.getCount());
+        Set<String> s = new HashSet<String>();
+        s.add("tns:teamLogo");
+        s.add("tns:teamMascot");
+        for (int i = 0; i < xsoc.getCount(); i++) {
+            XmlSchemaEnumerationFacet xsef = (XmlSchemaEnumerationFacet)xsoc.getItem(i);
+            String value = (String)xsef.getValue();
+            if (!("tns:teamLogo".equals(value) || "tns:teamMascot".equals(value))) {
+                fail("An unexpected value of \"" + value + "\" was found.");
+            }
+            assertTrue(s.remove(value));
+        }
+        assertTrue("The set should have been empty, but instead contained: " + s + ".", s.isEmpty());
     }
 
 }

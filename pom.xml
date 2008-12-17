@@ -505,7 +505,7 @@
 	    </executions>
 	    <configuration>
 	      <workspace>${eclipse.workspace.dir}</workspace>
-	      <workspaceCodeStylesURL>etc/eclipse/XmlSchemaCodeFormatter.xml</workspaceCodeStylesURL>
+	      <workspaceCodeStylesURL>file:${basedir}/etc/eclipse/XmlSchemaCodeFormatter.xml</workspaceCodeStylesURL>
 	    </configuration>
 	  </plugin>
 	  <plugin>
@@ -569,7 +569,7 @@
 		      <entry key="org.eclipse.jdt.ui.text.custom_code_templates" value="${eclipse.code.templates}" />
 
 		      <!-- Add import order -->
-		      <entry key="org.eclipse.jdt.ui.importorder" value="java;javax;org.w3c;org.xml;org.junit" />
+		      <entry key="org.eclipse.jdt.ui.importorder" value="java;javax;org.w3c;org.xml;org.junit;#org.junit" />
 		      <!-- Sort order -->
 		      <entry key="org.eclipse.jdt.ui.visibility.order" value="B,R,D,V," />
 		      <entry key="outlinesortoption" value="T,SF,F,SI,I,C,SM,M," />

@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -18,13 +18,15 @@
  */
 package org.apache.ws.commons.schema.extensions;
 
-import org.apache.ws.commons.schema.XmlSchemaObject;
-import org.apache.ws.commons.schema.constants.Constants;
-import org.w3c.dom.Node;
-
-import javax.xml.namespace.QName;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.xml.namespace.QName;
+
+import org.w3c.dom.Node;
+
+import org.apache.ws.commons.schema.XmlSchemaObject;
+import org.apache.ws.commons.schema.constants.Constants;
 
 /**
  * Default deserializer. The action taken when there is nothing specific to be done would be to attach the raw
@@ -42,33 +44,35 @@ public class DefaultExtensionDeserializer implements ExtensionDeserializer {
      * @param node - the raw DOM Node read from the source. This will be the extension element itself if for
      *            an element or the extension attribute object if it is an attribute
      */
+    @SuppressWarnings("unchecked")
     public void deserialize(XmlSchemaObject schemaObject, QName name, Node node) {
 
         // we just attach the raw node either to the meta map of
         // elements or the attributes
 
-        Map metaInfoMap = schemaObject.getMetaInfoMap();
+        Map<Object, Object> metaInfoMap = schemaObject.getMetaInfoMap();
         if (metaInfoMap == null) {
-            metaInfoMap = new HashMap();
+            metaInfoMap = new HashMap<Object, Object>();
         }
 
         if (node.getNodeType() == Node.ATTRIBUTE_NODE) {
 
-            Map attribMap;
+            Map<QName, Node> attribMap;
             if (metaInfoMap.containsKey(Constants.MetaDataConstants.EXTERNAL_ATTRIBUTES)) {
-                attribMap = (Map)metaInfoMap.get(Constants.MetaDataConstants.EXTERNAL_ATTRIBUTES);
+                attribMap = (Map<QName, Node>)
+                    metaInfoMap.get(Constants.MetaDataConstants.EXTERNAL_ATTRIBUTES);
             } else {
-                attribMap = new HashMap();
+                attribMap = new HashMap<QName, Node>();
                 metaInfoMap.put(Constants.MetaDataConstants.EXTERNAL_ATTRIBUTES, attribMap);
             }
             attribMap.put(name, node);
 
         } else if (node.getNodeType() == Node.ELEMENT_NODE) {
-            Map elementMap;
+            Map<QName, Node> elementMap;
             if (metaInfoMap.containsKey(Constants.MetaDataConstants.EXTERNAL_ELEMENTS)) {
-                elementMap = (Map)metaInfoMap.get(Constants.MetaDataConstants.EXTERNAL_ELEMENTS);
+                elementMap = (Map<QName, Node>)metaInfoMap.get(Constants.MetaDataConstants.EXTERNAL_ELEMENTS);
             } else {
-                elementMap = new HashMap();
+                elementMap = new HashMap<QName, Node>();
                 metaInfoMap.put(Constants.MetaDataConstants.EXTERNAL_ELEMENTS, elementMap);
             }
             elementMap.put(name, node);
@@ -76,7 +80,7 @@ public class DefaultExtensionDeserializer implements ExtensionDeserializer {
 
         // subsequent processing takes place only if this map is not empty
         if (!metaInfoMap.isEmpty()) {
-            Map metaInfoMapFromSchemaElement = schemaObject.getMetaInfoMap();
+            Map<Object, Object> metaInfoMapFromSchemaElement = schemaObject.getMetaInfoMap();
             if (metaInfoMapFromSchemaElement == null) {
                 schemaObject.setMetaInfoMap(metaInfoMap);
             } else {

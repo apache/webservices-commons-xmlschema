@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -19,11 +19,14 @@
 
 package tests;
 
-public class Resources {
+public final class Resources {
     /**
      * Location of the test resources.
      */
     public static final String TEST_RESOURCES = "src/test/test-resources";
+    
+    private Resources() {
+    }
 
     /**
      * Returns a files location as a string.
