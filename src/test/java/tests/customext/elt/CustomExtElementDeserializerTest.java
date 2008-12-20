@@ -25,20 +25,22 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
 
-import junit.framework.TestCase;
-
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.constants.Constants;
+
+import org.junit.Assert;
+import org.junit.Test;
 
 import tests.Resources;
 
 /**
  * Test class to run through the full cycle of build-check
  */
-public class CustomExtElementDeserializerTest extends TestCase {
+public class CustomExtElementDeserializerTest extends Assert {
 
+    @Test
     public void testDeserialization() throws Exception {
         // set the system property for the custom extension registry
         System.setProperty(Constants.SystemConstants.EXTENSION_REGISTRY_KEY, CustomExtensionRegistry.class
