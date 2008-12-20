@@ -30,7 +30,7 @@
                 <include>*.txt</include>
             </includes>
 			<!-- Note that we exclude these txt files and later copy them with
-				 filteres -->
+				 filters -->
  			<excludes>
                 <exclude>README.txt</exclude>
 			    <exclude>RELEASE-NOTE.txt</exclude>
