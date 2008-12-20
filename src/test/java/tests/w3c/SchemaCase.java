@@ -18,6 +18,8 @@
  */
 package tests.w3c;
 
+import java.io.File;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -25,18 +27,20 @@ import org.w3c.dom.NodeList;
 /**
  * Class representing a single schema test as described in a .testSet file.
  */
-public class SchemaTest {
+public class SchemaCase {
 
     private static final String SCHEMA_DOCUMENT = "schemaDocument";
     private static final String EXPECTED = "expected";
     private static final String CURRENT = "current";
 
-    String schemaDocumentLink;
+    private String schemaDocumentLink;
     private String expectedValidity;
     private String currentStatus;
     private String currentDate;
+    
+    private File baseFilePathname;
 
-    public SchemaTest(Element n) throws Exception {
+    public SchemaCase(Element n) throws Exception {
         NodeList nl = n.getChildNodes();
         for (int i = 0; i < nl.getLength(); i++) {
             Node c = nl.item(i);
@@ -90,4 +94,27 @@ public class SchemaTest {
     public String getCurrentStatus() {
         return currentStatus;
     }
+    
+
+    public void setSchemaDocumentLink(String schemaDocumentLink) {
+        this.schemaDocumentLink = schemaDocumentLink;
+    }
+    
+
+    public String getSchemaDocumentLink() {
+        return schemaDocumentLink;
+    }
+    
+    public File getBaseFilePathname() {
+        return baseFilePathname;
+    }
+
+    public void setBaseFilePathname(File baseFilePathname) {
+        this.baseFilePathname = baseFilePathname;
+    }
+    
+    public File getTestCaseFile() {
+        return new File(baseFilePathname, schemaDocumentLink);
+    }
+
 }

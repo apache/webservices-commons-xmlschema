@@ -121,28 +121,6 @@
             </execution>
         </executions>
       </plugin>
-      <plugin>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.1</version>
-        <executions>
-          <execution>
-            <id>prepareNistTest</id>
-            <phase>generate-test-resources</phase>
-            <goals>
-              <goal>run</goal>
-            </goals>
-            <configuration>
-              <tasks>
-                <ant inheritRefs="true" antfile="${basedir}/build.xml">
-                  <property value="${basedir}/target" name="build.dir" />
-                  <property value="${maven.test.skip}" name="maven.test.skip" />
-                  <target name="prepareNistTest" />
-                </ant>
-              </tasks>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
     <defaultGoal>install</defaultGoal>
     <pluginManagement>
@@ -225,17 +203,6 @@
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
           <configuration>
-            <includes>
-              <include>**/*Test.java</include>
-              <include>**/Test*.java</include>
-  <!--
-                              Fails in about half of the tests
-                              <include>tests/w3c/TestW3CSchemaBucket.java</include>
-                          -->
-            </includes>
-            <excludes>
-              <exclude>tests/w3c/**.java</exclude>
-            </excludes>
           </configuration>
         </plugin>
         <plugin>
@@ -385,42 +352,6 @@
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <configuration>
-              <includes>
-                <include>**/*Test.java</include>
-                <include>**/Test*.java</include>
-<!--
-									Fails in about half of the tests
-									<include>tests/w3c/TestW3CSchemaBucket.java</include>
-								-->
-              </includes>
-              <excludes>
-                <exclude>
-									tests/w3c/**.java
-        						</exclude>
-              </excludes>
-              <systemProperties>
-<!--
-									The default xalan TransformerFactory on the ibm jdk is
-									org.apache.xalan.processor.TransformerFactoryImpl which has a
-									known issue with implicit namespaces. Set this property to use
-									the xsltc TransformerFactory (which the sun jdk seems to
-									default to).
-								-->
-<!--
-									<property> <name>javax.xml.transform.TransformerFactory</name>
-									<value>com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl</value>
-									</property>
-								-->
-              </systemProperties>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
     </profile>
     <profile>
       <id>IBMTest</id>
@@ -447,18 +378,6 @@
           <plugin>
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>
-              <includes>
-                <include>**/*Test.java</include>
-<!--
-									Fails in about half of the tests
-									<include>tests/w3c/TestW3CSchemaBucket.java</include>
-								-->
-              </includes>
-              <excludes>
-                <exclude>
-									tests/w3c/SchemaTest.java
-        						</exclude>
-              </excludes>
               <systemProperties>
 <!--
 									The default xalan TransformerFactory on the ibm jdk is
