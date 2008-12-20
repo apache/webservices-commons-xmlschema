@@ -25,19 +25,21 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
 
-import junit.framework.TestCase;
-
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaElement;
+
+import org.junit.Assert;
+import org.junit.Test;
 
 import tests.Resources;
 
 /**
  * Test the custom extension deserialization without any specialized hooks
  */
-public class PlainExtensionDeserializerTest extends TestCase {
+public class PlainExtensionDeserializerTest extends Assert {
 
+    @Test
     public void testDeserialization() throws Exception {
 
         // create a DOM document
@@ -62,6 +64,7 @@ public class PlainExtensionDeserializerTest extends TestCase {
         }
     }
 
+    @Test
     public void testDeserialization1() throws Exception {
 
         // create a DOM document

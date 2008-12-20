@@ -24,18 +24,20 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
 
-import junit.framework.TestCase;
-
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
+
+import org.junit.Assert;
+import org.junit.Test;
 
 import tests.Resources;
 
 /**
  * try writing the schemas after they are built
  */
-public class PlainExtensionSerializerTest extends TestCase {
+public class PlainExtensionSerializerTest extends Assert {
 
+    @Test
     public void testSerialization() throws Exception {
 
         // create a DOM document
@@ -51,6 +53,7 @@ public class PlainExtensionSerializerTest extends TestCase {
         schema.write(new ByteArrayOutputStream());
     }
 
+    @Test
     public void testSerialization1() throws Exception {
 
         // create a DOM document
