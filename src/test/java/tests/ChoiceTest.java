@@ -28,21 +28,23 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
 
-import junit.framework.TestCase;
-
 import org.apache.ws.commons.schema.XmlSchemaChoice;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaComplexType;
 import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
 
-public class ChoiceTest extends TestCase {
+import org.junit.Assert;
+import org.junit.Test;
+
+public class ChoiceTest extends Assert {
 
     /**
      * This method will test the choice.
      * 
      * @throws Exception Any exception encountered
      */
+    @Test
     public void testChoice() throws Exception {
 
         /*

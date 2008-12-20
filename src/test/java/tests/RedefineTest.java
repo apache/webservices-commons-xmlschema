@@ -28,8 +28,6 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
 
-import junit.framework.TestCase;
-
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaAttribute;
 import org.apache.ws.commons.schema.XmlSchemaAttributeGroup;
@@ -49,13 +47,17 @@ import org.apache.ws.commons.schema.XmlSchemaSequence;
 import org.apache.ws.commons.schema.XmlSchemaSimpleType;
 import org.apache.ws.commons.schema.XmlSchemaSimpleTypeRestriction;
 
-public class RedefineTest extends TestCase {
+import org.junit.Assert;
+import org.junit.Test;
+
+public class RedefineTest extends Assert {
 
     /**
      * This method will test a complex type redefine.
      * 
      * @throws Exception Any exception encountered
      */
+    @Test
     public void testComplexTypeRedefine() throws Exception {
 
         /*
@@ -131,6 +133,7 @@ public class RedefineTest extends TestCase {
      * 
      * @throws Exception Any exception encountered
      */
+    @Test
     public void testSimpleTypeRedefine() throws Exception {
         /*
          * redefine3.xsd ----------------- <schema xmlns="http://www.w3.org/2001/XMLSchema"
@@ -206,6 +209,7 @@ public class RedefineTest extends TestCase {
      * 
      * @throws Exception Any exception encountered
      */
+    @Test
     public void testGroupRedefine() throws Exception {
 
         /*
@@ -271,6 +275,7 @@ public class RedefineTest extends TestCase {
      * 
      * @throws Exception Any exception encountered
      */
+    @Test
     public void testAttributeGroupRedefine() throws Exception {
 
         /*
@@ -327,6 +332,7 @@ public class RedefineTest extends TestCase {
      * 
      * @throws Exception Any exception encountered
      */
+    @Test
     public void testComplexTypeRedefineWithRelativeImports() throws Exception {
 
         /*

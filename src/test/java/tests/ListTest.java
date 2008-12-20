@@ -25,8 +25,6 @@ import java.io.InputStream;
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
 
-import junit.framework.TestCase;
-
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.XmlSchemaSimpleType;
@@ -35,13 +33,17 @@ import org.apache.ws.commons.schema.XmlSchemaSimpleTypeList;
 import org.apache.ws.commons.schema.XmlSchemaSimpleTypeRestriction;
 import org.apache.ws.commons.schema.XmlSchemaType;
 
-public class ListTest extends TestCase {
+import org.junit.Assert;
+import org.junit.Test;
+
+public class ListTest extends Assert {
 
     /**
      * This method will test the list.
      * 
      * @throws Exception Any exception encountered
      */
+    @Test
     public void testList() throws Exception {
 
         /*

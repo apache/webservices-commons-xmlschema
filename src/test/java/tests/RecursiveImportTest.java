@@ -24,13 +24,14 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
 
-import junit.framework.TestCase;
-
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 
-public class RecursiveImportTest extends TestCase {
+import org.junit.Assert;
+import org.junit.Test;
 
+public class RecursiveImportTest extends Assert {
+    @Test
     public void testSchemaImport() throws Exception {
         // create a DOM document
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();

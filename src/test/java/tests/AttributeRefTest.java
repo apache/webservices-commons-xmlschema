@@ -25,12 +25,13 @@ import java.util.Iterator;
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
 
-import junit.framework.TestCase;
-
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaAttribute;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaComplexType;
+
+import org.junit.Assert;
+import org.junit.Test;
 
 /*
  * Copyright 2004,2007 The Apache Software Foundation.
@@ -49,8 +50,8 @@ import org.apache.ws.commons.schema.XmlSchemaComplexType;
  * limitations under the License.
  *
  */
-public class AttributeRefTest extends TestCase {
-
+public class AttributeRefTest extends Assert {
+    @Test
     public void testAttRefsWithNS() throws Exception {
         QName typeQName = new QName("http://tempuri.org/attribute", "TestAttributeReferenceType");
 

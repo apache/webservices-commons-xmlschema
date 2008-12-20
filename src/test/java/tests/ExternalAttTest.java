@@ -25,14 +25,15 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
 
-import junit.framework.TestCase;
-
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.constants.Constants;
 
-public class ExternalAttTest extends TestCase {
+import org.junit.Assert;
+import org.junit.Test;
 
+public class ExternalAttTest extends Assert {
+    @Test
     public void testExternalAtt() throws Exception {
         // create a DOM document
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();

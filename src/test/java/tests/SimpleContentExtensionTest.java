@@ -27,8 +27,6 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
 
-import junit.framework.TestCase;
-
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaAttribute;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
@@ -38,13 +36,17 @@ import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
 import org.apache.ws.commons.schema.XmlSchemaSimpleContent;
 import org.apache.ws.commons.schema.XmlSchemaSimpleContentExtension;
 
-public class SimpleContentExtensionTest extends TestCase {
+import org.junit.Assert;
+import org.junit.Test;
+
+public class SimpleContentExtensionTest extends Assert {
 
     /**
      * This method will test the simple content extension.
      * 
      * @throws Exception Any exception encountered
      */
+    @Test
     public void testSimpleContentExtension() throws Exception {
 
         /*

@@ -28,8 +28,6 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
 
-import junit.framework.TestCase;
-
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaChoice;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
@@ -40,13 +38,17 @@ import org.apache.ws.commons.schema.XmlSchemaGroupRef;
 import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
 import org.apache.ws.commons.schema.XmlSchemaObjectTable;
 
-public class GroupTest extends TestCase {
+import org.junit.Assert;
+import org.junit.Test;
+
+public class GroupTest extends Assert {
 
     /**
      * This method will test the group.
      * 
      * @throws Exception Any exception encountered
      */
+    @Test
     public void testGroup() throws Exception {
 
         /*

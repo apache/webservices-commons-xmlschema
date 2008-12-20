@@ -24,17 +24,18 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import junit.framework.TestCase;
-
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.constants.Constants;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 /**
  * @author alex $Revision$
  */
-public class WSCOMMONS377Test extends TestCase {
-
+public class WSCOMMONS377Test extends Assert {
+    @Test
     public void testSchemaImport() throws Exception {
         DocumentBuilderFactory fac = DocumentBuilderFactory.newInstance();
         fac.setNamespaceAware(true);

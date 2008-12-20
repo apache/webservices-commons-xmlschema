@@ -29,21 +29,23 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.xml.sax.InputSource;
 
-import junit.framework.TestCase;
-
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.XmlSchemaInclude;
 import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
 
-public class IncludeTest extends TestCase {
+import org.junit.Assert;
+import org.junit.Test;
+
+public class IncludeTest extends Assert {
 
     /**
      * This method will test the include.
      * 
      * @throws Exception Any exception encountered
      */
+    @Test
     public void testInclude() throws Exception {
 
         /*
@@ -99,6 +101,7 @@ public class IncludeTest extends TestCase {
     /**
      * Test importing a schema without namespace into a schema with namespace.
      */
+    @Test
     public void testImportSchemaWithoutNamespace() throws Exception {
         InputStream is = new FileInputStream(Resources.asURI("includingWithNamespace.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
@@ -110,6 +113,7 @@ public class IncludeTest extends TestCase {
     /**
      * Test importing a schema without namespace into a schema with namespace.
      */
+    @Test
     public void testIncludeSchemaWithoutNamespace() throws Exception {
         String uri = Resources.asURI("woden.xsd");
         InputSource is = new InputSource(new FileInputStream(uri));
@@ -132,6 +136,7 @@ public class IncludeTest extends TestCase {
      * 
      * @throws Exception
      */
+    @Test
     public void testSchemaInclude() throws Exception {
         String uri = Resources.asURI("WSCOMMONS-87/includeBase.xsd");
         InputSource isource = new InputSource(new FileInputStream(uri));
@@ -146,6 +151,7 @@ public class IncludeTest extends TestCase {
      * 
      * @throws Exception
      */
+    @Test
     public void testSchemaIncludeNoDefaultNS() throws Exception {
         String uri = Resources.asURI("WSCOMMONS-87/includeBaseNoDefaultNS.xsd");
         InputSource isource = new InputSource(new FileInputStream(uri));

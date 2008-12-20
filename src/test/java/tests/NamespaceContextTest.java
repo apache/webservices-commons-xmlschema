@@ -30,22 +30,27 @@ import org.xml.sax.InputSource;
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.utils.NamespaceMap;
-
-import org.custommonkey.xmlunit.XMLTestCase;
+import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
 
-public class NamespaceContextTest extends XMLTestCase {
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+public class NamespaceContextTest extends XMLAssert {
     protected boolean whitespace = true;
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         whitespace = XMLUnit.getIgnoreWhitespace();
         XMLUnit.setIgnoreWhitespace(true);
     }
-
-    protected void tearDown() throws java.lang.Exception {
+    @After
+    public void tearDown() throws java.lang.Exception {
         XMLUnit.setIgnoreWhitespace(whitespace);
     }
 
+    @Test
     public void testNamespaceContext() throws Exception {
         Map<String, Object> namespaceMapFromWSDL = new HashMap<String, Object>();
         namespaceMapFromWSDL.put("tns", new URI("http://example.org/getBalance/"));

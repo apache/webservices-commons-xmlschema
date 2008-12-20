@@ -26,8 +26,6 @@ import java.util.Iterator;
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
 
-import junit.framework.TestCase;
-
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaAttribute;
 import org.apache.ws.commons.schema.XmlSchemaAttributeGroup;
@@ -37,6 +35,9 @@ import org.apache.ws.commons.schema.XmlSchemaComplexType;
 import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
 import org.apache.ws.commons.schema.XmlSchemaObjectTable;
+
+import org.junit.Assert;
+import org.junit.Test;
 
 /*
  * Copyright 2004,2007 The Apache Software Foundation.
@@ -55,13 +56,14 @@ import org.apache.ws.commons.schema.XmlSchemaObjectTable;
  * limitations under the License.
  *
  */
-public class AttributeGroupTest extends TestCase {
+public class AttributeGroupTest extends Assert {
 
     /**
      * This method will test the list.
      * 
      * @throws Exception Any exception encountered
      */
+    @Test
     public void testAttributeGroup() throws Exception {
 
         /*

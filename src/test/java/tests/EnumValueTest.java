@@ -22,16 +22,17 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
 
-import junit.framework.TestCase;
-
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
+
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * Created by IntelliJ IDEA. User: ajith
  */
-public class EnumValueTest extends TestCase {
-
+public class EnumValueTest extends Assert {
+    @Test
     public void testValue() throws Exception {
         // create a DOM document
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();

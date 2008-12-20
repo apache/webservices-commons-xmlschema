@@ -27,8 +27,6 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
 
-import junit.framework.TestCase;
-
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.XmlSchemaKey;
@@ -37,13 +35,17 @@ import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
 import org.apache.ws.commons.schema.XmlSchemaUnique;
 import org.apache.ws.commons.schema.XmlSchemaXPath;
 
-public class ConstraintsTest extends TestCase {
+import org.junit.Assert;
+import org.junit.Test;
+
+public class ConstraintsTest extends Assert {
 
     /**
      * This method will test the unique, key, and keyref constaints.
      * 
      * @throws Exception Any exception encountered
      */
+    @Test
     public void testConstraints() throws Exception {
 
         /*

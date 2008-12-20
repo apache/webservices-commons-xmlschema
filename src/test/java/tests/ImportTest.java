@@ -26,13 +26,14 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
 
-import junit.framework.TestCase;
-
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 
-public class ImportTest extends TestCase {
+import org.junit.Assert;
+import org.junit.Test;
 
+public class ImportTest extends Assert {
+    @Test
     public void testSchemaImport() throws Exception {
         // create a DOM document
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -56,6 +57,7 @@ public class ImportTest extends TestCase {
      * 
      * @throws Exception
      */
+    @Test
     public void testSchemaImport2() throws Exception {
         File file = new File(Resources.asURI("importBase.xsd"));
         // create a DOM document
@@ -74,6 +76,7 @@ public class ImportTest extends TestCase {
      * 
      * @throws Exception
      */
+    @Test
     public void testSchemaImport3() throws Exception {
         File file = new File(Resources.asURI("importBase.xsd"));
         // create a DOM document

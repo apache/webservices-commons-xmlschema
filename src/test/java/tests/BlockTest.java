@@ -25,13 +25,15 @@ import java.io.InputStream;
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
 
-import junit.framework.TestCase;
-
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaElement;
 
-public class BlockTest extends TestCase {
+import org.junit.Assert;
+import org.junit.Test;
+
+public class BlockTest extends Assert {
+    @Test
     public void testMixedContent() throws Exception {
         QName elementQName = new QName("http://soapinterop.org/xsd", "complexElt");
 

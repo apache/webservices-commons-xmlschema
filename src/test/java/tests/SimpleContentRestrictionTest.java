@@ -27,8 +27,6 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
 
-import junit.framework.TestCase;
-
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaAttribute;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
@@ -37,6 +35,9 @@ import org.apache.ws.commons.schema.XmlSchemaEnumerationFacet;
 import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
 import org.apache.ws.commons.schema.XmlSchemaSimpleContent;
 import org.apache.ws.commons.schema.XmlSchemaSimpleContentRestriction;
+
+import org.junit.Assert;
+import org.junit.Test;
 
 /*
  * Copyright 2004,2007 The Apache Software Foundation.
@@ -55,13 +56,14 @@ import org.apache.ws.commons.schema.XmlSchemaSimpleContentRestriction;
  * limitations under the License.
  *
  */
-public class SimpleContentRestrictionTest extends TestCase {
+public class SimpleContentRestrictionTest extends Assert {
 
     /**
      * This method will test the simple content restriction.
      * 
      * @throws Exception Any exception encountered
      */
+    @Test
     public void testSimpleContentRestriction() throws Exception {
 
         /*

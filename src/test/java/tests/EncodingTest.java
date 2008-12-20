@@ -30,13 +30,14 @@ import javax.xml.transform.OutputKeys;
 
 import org.w3c.dom.Document;
 
-import junit.framework.TestCase;
-
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 
-public class EncodingTest extends TestCase {
+import org.junit.Assert;
+import org.junit.Test;
 
+public class EncodingTest extends Assert {
+    @Test
     public void testExternalAtt() throws Exception {
         // create a DOM document
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();

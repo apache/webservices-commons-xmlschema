@@ -25,18 +25,20 @@ import java.io.InputStream;
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
 
-import junit.framework.TestCase;
-
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaComplexType;
 import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.XmlSchemaSequence;
 import org.apache.ws.commons.schema.XmlSchemaType;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 /**
  */
-public class TestForwardRefs extends TestCase {
+public class TestForwardRefs extends Assert {
 
+    @Test
     public void testForwardRefs() throws Exception {
         QName elementQName = new QName("http://soapinterop.org/types", "attrTest");
         InputStream is = new FileInputStream(Resources.asURI("forwardRef.xsd"));

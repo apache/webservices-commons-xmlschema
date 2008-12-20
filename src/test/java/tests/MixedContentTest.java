@@ -25,8 +25,6 @@ import java.io.InputStream;
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
 
-import junit.framework.TestCase;
-
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaComplexContent;
@@ -34,7 +32,11 @@ import org.apache.ws.commons.schema.XmlSchemaComplexType;
 import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.XmlSchemaType;
 
-public class MixedContentTest extends TestCase {
+import org.junit.Assert;
+import org.junit.Test;
+
+public class MixedContentTest extends Assert {
+    @Test
     public void testMixedContent() throws Exception {
         QName elementQName = new QName("http://soapinterop.org/xsd", "complexElt");
 

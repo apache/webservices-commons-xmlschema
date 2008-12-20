@@ -25,20 +25,22 @@ import java.io.InputStream;
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
 
-import junit.framework.TestCase;
-
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaComplexType;
 import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.XmlSchemaSequence;
 
-public class SequenceTest extends TestCase {
+import org.junit.Assert;
+import org.junit.Test;
+
+public class SequenceTest extends Assert {
 
     /**
      * This method will test the sequence - the min and max occurences.
      * 
      * @throws Exception Any exception encountered
      */
+    @Test
     public void testChoice() throws Exception {
 
         /*

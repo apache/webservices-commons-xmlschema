@@ -27,8 +27,6 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
 
-import junit.framework.TestCase;
-
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaComplexContentRestriction;
 import org.apache.ws.commons.schema.XmlSchemaComplexType;
@@ -37,13 +35,17 @@ import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
 import org.apache.ws.commons.schema.XmlSchemaSequence;
 
-public class ComplexContentRestrictionTest extends TestCase {
+import org.junit.Assert;
+import org.junit.Test;
+
+public class ComplexContentRestrictionTest extends Assert {
 
     /**
      * This method will test complex content restriction.
      * 
      * @throws Exception Any exception encountered
      */
+    @Test
     public void testComplexContentRestriction() throws Exception {
 
         /*

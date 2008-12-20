@@ -27,12 +27,14 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import junit.framework.TestCase;
-
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 
-public class TwoSchemasTest extends TestCase {
+import org.junit.Assert;
+import org.junit.Test;
 
+public class TwoSchemasTest extends Assert {
+
+    @Test
     public void testTwoSchemas() throws Exception {
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         documentBuilderFactory.setNamespaceAware(true);

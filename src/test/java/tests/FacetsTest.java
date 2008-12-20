@@ -27,8 +27,6 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
 
-import junit.framework.TestCase;
-
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.XmlSchemaEnumerationFacet;
@@ -47,13 +45,17 @@ import org.apache.ws.commons.schema.XmlSchemaSimpleTypeRestriction;
 import org.apache.ws.commons.schema.XmlSchemaTotalDigitsFacet;
 import org.apache.ws.commons.schema.XmlSchemaWhiteSpaceFacet;
 
-public class FacetsTest extends TestCase {
+import org.junit.Assert;
+import org.junit.Test;
+
+public class FacetsTest extends Assert {
 
     /**
      * This method will test for the length facet.
      * 
      * @throws Exception Any exception encountered
      */
+    @Test
     public void testLengthFacet() throws Exception {
 
         /*
@@ -117,6 +119,7 @@ public class FacetsTest extends TestCase {
      * 
      * @throws Exception Any Exception encountered
      */
+    @Test
     public void testPatternFacet() throws Exception {
 
         /*
@@ -172,6 +175,7 @@ public class FacetsTest extends TestCase {
      * 
      * @throws Exception Any exception encountered
      */
+    @Test
     public void testTotalDigitsFacet() throws Exception {
 
         /*
@@ -227,6 +231,7 @@ public class FacetsTest extends TestCase {
      * 
      * @throws Exception Any Exception encountered
      */
+    @Test
     public void testMinMaxInclusiveFacets() throws Exception {
 
         /*
@@ -291,6 +296,7 @@ public class FacetsTest extends TestCase {
      * 
      * @throws Exception Any Exception encountered
      */
+    @Test
     public void testMinMaxExlusiveFacets() throws Exception {
 
         /*
@@ -354,6 +360,7 @@ public class FacetsTest extends TestCase {
      * 
      * @throws Exception Any Exception encountered
      */
+    @Test
     public void testWhiteSpaceFacet() throws Exception {
 
         /*
@@ -409,6 +416,7 @@ public class FacetsTest extends TestCase {
      * 
      * @throws Exception Any Exception encountered
      */
+    @Test
     public void testFractionDigitsFacet() throws Exception {
 
         /*
@@ -472,6 +480,7 @@ public class FacetsTest extends TestCase {
      * 
      * @throws Exception Any Exception encountered
      */
+    @Test
     public void testMinMaxLengthFacets() throws Exception {
 
         /*
@@ -537,6 +546,7 @@ public class FacetsTest extends TestCase {
      * 
      * @throws Exception Any Exception encountered
      */
+    @Test
     public void testEnumerationFacet() throws Exception {
 
         /*

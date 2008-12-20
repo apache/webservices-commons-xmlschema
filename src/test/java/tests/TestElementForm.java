@@ -24,28 +24,32 @@ import java.io.InputStream;
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
 
-import junit.framework.TestCase;
-
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaComplexType;
 import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
 import org.apache.ws.commons.schema.XmlSchemaSequence;
 
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 /**
  * TestElementForm
  */
-public class TestElementForm extends TestCase {
+public class TestElementForm extends Assert {
     static final String NS = "http://unqualified-elements.example.com";
     static final QName UNQUAL = new QName(NS, "unQualifiedLocals");
     private XmlSchemaCollection schema;
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         InputStream is = new FileInputStream(Resources.asURI("elementForm.xsd"));
         schema = new XmlSchemaCollection();
         schema.read(new StreamSource(is), null);
     }
 
+    @Test
     public void testLocalElements() throws Exception {
         XmlSchemaElement element = schema.getElementByQName(UNQUAL);
         assertNotNull("Couldn't find unQualifiedLocals element", element);

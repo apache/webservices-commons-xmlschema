@@ -27,8 +27,6 @@ import java.util.Iterator;
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
 
-import junit.framework.TestCase;
-
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaComplexType;
@@ -36,7 +34,11 @@ import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
 import org.apache.ws.commons.schema.XmlSchemaSequence;
 
-public class ElementRefsTest extends TestCase {
+import org.junit.Assert;
+import org.junit.Test;
+
+public class ElementRefsTest extends Assert {
+    @Test
     public void testElementRefs() throws Exception {
         QName elementQName = new QName("http://soapinterop.org/types", "attTests");
         InputStream is = new FileInputStream(Resources.asURI("elementreferences.xsd"));

@@ -23,14 +23,15 @@ import java.io.ByteArrayInputStream;
 
 import javax.xml.transform.stream.StreamSource;
 
-import junit.framework.TestCase;
-
 import org.apache.ws.commons.schema.XmlSchemaCollection;
+
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * TestElementForm
  */
-public class TestLocalUnnamedSimpleType extends TestCase {
+public class TestLocalUnnamedSimpleType extends Assert {
     String schemaXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                        + "<schema xmlns=\"http://www.w3.org/2001/XMLSchema\"\n"
                        + "targetNamespace=\"http://finance.example.com/CreditCardFaults/xsd\"\n"
@@ -44,6 +45,7 @@ public class TestLocalUnnamedSimpleType extends TestCase {
                        + "<enumeration value=\"MASTERCARD\" />\n" + "<enumeration value=\"VISA\" />\n"
                        + "</restriction>\n" + "</simpleType>\n" + "</element>\n" + "</schema> ";
 
+    @Test
     public void testLocalUnnamedSimpleType() throws Exception {
         XmlSchemaCollection schema = new XmlSchemaCollection();
         schema.read(new StreamSource(new ByteArrayInputStream(schemaXML.getBytes())), null);

@@ -32,12 +32,12 @@ import org.w3c.dom.Document;
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 
-import org.custommonkey.xmlunit.XMLTestCase;
+import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
 
 import org.junit.Test;
 
-public class AppInfoMarkupTest extends XMLTestCase {
+public class AppInfoMarkupTest extends XMLAssert {
     @Test
     public void testAppInfo() throws Exception {
         DocumentBuilder b = DocumentBuilderFactory.newInstance().newDocumentBuilder();

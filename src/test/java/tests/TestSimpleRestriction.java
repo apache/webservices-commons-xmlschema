@@ -24,15 +24,17 @@ import java.io.InputStream;
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
 
-import junit.framework.TestCase;
-
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.XmlSchemaSimpleType;
 import org.apache.ws.commons.schema.XmlSchemaSimpleTypeRestriction;
 import org.apache.ws.commons.schema.XmlSchemaType;
 
-public class TestSimpleRestriction extends TestCase {
+import org.junit.Assert;
+import org.junit.Test;
+
+public class TestSimpleRestriction extends Assert {
+    @Test
     public void testSimpleRestriction() throws Exception {
         QName typeQName = new QName("http://soapinterop.org/types", "layoutComponentType");
         QName elementQName = new QName("http://soapinterop.org/types", "foo");
@@ -51,6 +53,7 @@ public class TestSimpleRestriction extends TestCase {
         assertNotNull(type);
     }
 
+    @Test
     public void testSimpleTypeRestrictionWithoutNamespace() throws Exception {
         InputStream is = new FileInputStream(Resources.asURI("includedWithoutNamespace.xsd"));
         XmlSchemaCollection schema = new XmlSchemaCollection();

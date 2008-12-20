@@ -34,8 +34,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import junit.framework.TestCase;
-
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaComplexType;
@@ -43,8 +41,11 @@ import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
 import org.apache.ws.commons.schema.XmlSchemaSequence;
 
-public class ElementRefs2Test extends TestCase {
+import org.junit.Assert;
+import org.junit.Test;
 
+public class ElementRefs2Test extends Assert {
+    @Test
     public void testElementRefs() throws Exception {
         QName elementQName = new QName("http://soapinterop.org/types", "attTests");
         InputStream is = new FileInputStream(Resources.asURI("elementreferences2.xsd"));

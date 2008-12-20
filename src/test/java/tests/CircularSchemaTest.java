@@ -23,12 +23,14 @@ import java.io.FileInputStream;
 
 import org.xml.sax.InputSource;
 
-import junit.framework.TestCase;
-
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 
-public class CircularSchemaTest extends TestCase {
+import org.junit.Assert;
+import org.junit.Test;
+
+public class CircularSchemaTest extends Assert {
+    @Test
     public void testCircular() throws Exception {
         XmlSchemaCollection schemas = new XmlSchemaCollection();
         File file = new File(Resources.asURI("circular/a.xsd"));

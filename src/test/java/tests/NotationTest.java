@@ -31,8 +31,6 @@ import javax.xml.transform.stream.StreamSource;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import junit.framework.TestCase;
-
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaAnnotation;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
@@ -44,6 +42,9 @@ import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
 import org.apache.ws.commons.schema.XmlSchemaObjectTable;
 import org.apache.ws.commons.schema.XmlSchemaSimpleType;
 import org.apache.ws.commons.schema.XmlSchemaSimpleTypeRestriction;
+
+import org.junit.Assert;
+import org.junit.Test;
 
 /*
  * Copyright 2004,2007 The Apache Software Foundation.
@@ -63,13 +64,14 @@ import org.apache.ws.commons.schema.XmlSchemaSimpleTypeRestriction;
  * 
  * @author Brent Ulbricht 
  */
-public class NotationTest extends TestCase {
+public class NotationTest extends Assert {
 
     /**
      * This method will test the notation.
      * 
      * @throws Exception Any exception encountered
      */
+    @Test
     public void testNotation() throws Exception {
 
         /*
@@ -154,7 +156,7 @@ public class NotationTest extends TestCase {
         assertTrue("The set should have been empty, but instead contained: " + s + ".", s.isEmpty());
 
     }
-
+    
     private void testSimpleRestrictions(QName elementQName, QName notationName, XmlSchemaCollection schemaCol,
                                   XmlSchema schema) {
         XmlSchemaObjectTable notations = schema.getNotations();

@@ -26,8 +26,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
 
-import junit.framework.TestCase;
-
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaComplexType;
@@ -36,8 +34,12 @@ import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
 import org.apache.ws.commons.schema.XmlSchemaSequence;
 import org.apache.ws.commons.schema.XmlSchemaType;
 
-public class TestUnqualifiedSchema extends TestCase {
+import org.junit.Assert;
+import org.junit.Test;
 
+public class TestUnqualifiedSchema extends Assert {
+
+    @Test
     public void testUnqualifiedSchemas() throws Exception {
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         documentBuilderFactory.setNamespaceAware(true);
@@ -58,7 +60,6 @@ public class TestUnqualifiedSchema extends TestCase {
         Iterator iterator = items.getIterator();
         while (iterator.hasNext()) {
             XmlSchemaElement elt2 = (XmlSchemaElement)iterator.next();
-            System.out.println(elt2.getQName());
             XmlSchemaType schemaType2 = elt2.getSchemaType();
 
             assertNotNull(schemaType2);
