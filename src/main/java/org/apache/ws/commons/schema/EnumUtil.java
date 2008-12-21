@@ -22,7 +22,7 @@ package org.apache.ws.commons.schema;
 /**
  * 
  */
-public final class EnumUtil {
+final class EnumUtil {
     private EnumUtil() {
         
     }
