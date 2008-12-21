@@ -144,36 +144,28 @@ public class SchemaBuilder {
         return xmlSchema;
     }
 
-    // Check value entered by user and change according to .net spec,
-    // according to w3c spec have to be "#all"
-    // but in .net the valid enum value is "all".
     XmlSchemaDerivationMethod getDerivation(Element el, String attrName) {
         if (el.hasAttribute(attrName) && !el.getAttribute(attrName).equals("")) {
-            // #all | List of (extension | restriction | substitution
+            // #all | List of (extension | restriction | substitution)
             String derivationMethod = el.getAttribute(attrName).trim();
-            if ("#all".equals(derivationMethod)) {
-                return new XmlSchemaDerivationMethod(Constants.BlockConstants.ALL);
-            } else {
-                return new XmlSchemaDerivationMethod(derivationMethod);
-            }
+            return XmlSchemaDerivationMethod.schemaValueOf(derivationMethod);
         }
-        return new XmlSchemaDerivationMethod(Constants.BlockConstants.NONE);
+        return XmlSchemaDerivationMethod.NONE;
     }
 
-    // Check value entered by user and change according to .net spec, user
     String getEnumString(Element el, String attrName) {
         if (el.hasAttribute(attrName)) {
             return el.getAttribute(attrName).trim();
         }
-        return Constants.BlockConstants.NONE;
+        return "none"; // local convention for empty value.
     }
 
     XmlSchemaForm getFormDefault(Element el, String attrName) {
         if (el.getAttributeNode(attrName) != null) {
             String value = el.getAttribute(attrName);
-            return new XmlSchemaForm(value);
+            return XmlSchemaForm.schemaValueOf(value);
         } else {
-            return new XmlSchemaForm("unqualified");
+            return XmlSchemaForm.UNQUALIFIED;
         }
     }
 
@@ -325,22 +317,12 @@ public class SchemaBuilder {
         }
         if (complexEl.hasAttribute("block")) {
             String blockStr = complexEl.getAttribute("block");
-            if (blockStr.equalsIgnoreCase("all") | blockStr.equalsIgnoreCase("#all")) {
-
-                ct.setBlock(new XmlSchemaDerivationMethod(Constants.BlockConstants.ALL));
-            } else {
-                ct.setBlock(new XmlSchemaDerivationMethod(blockStr));
-                // ct.setBlock(new XmlSchemaDerivationMethod(block));
-            }
+            ct.setBlock(XmlSchemaDerivationMethod.schemaValueOf(blockStr));
+            // ct.setBlock(new XmlSchemaDerivationMethod(block));
         }
         if (complexEl.hasAttribute("final")) {
             String finalstr = complexEl.getAttribute("final");
-            if (finalstr.equalsIgnoreCase("all") | finalstr.equalsIgnoreCase("#all")) {
-
-                ct.setFinal(new XmlSchemaDerivationMethod(Constants.BlockConstants.ALL));
-            } else {
-                ct.setFinal(new XmlSchemaDerivationMethod(finalstr));
-            }
+            ct.setFinal(XmlSchemaDerivationMethod.schemaValueOf(finalstr));
         }
         if (complexEl.hasAttribute("abstract")) {
             String abs = complexEl.getAttribute("abstract");
@@ -403,7 +385,7 @@ public class SchemaBuilder {
         // String namespace = (schema.targetNamespace==null)?
         // "" : schema.targetNamespace;
 
-        boolean isQualified = schema.getElementFormDefault().getValue().equals(XmlSchemaForm.QUALIFIED);
+        boolean isQualified = schema.getElementFormDefault() == XmlSchemaForm.QUALIFIED;
         isQualified = handleElementForm(el, element, isQualified);
 
         handleElementName(isGlobal, element, isQualified);
@@ -540,8 +522,8 @@ public class SchemaBuilder {
     private boolean handleElementForm(Element el, XmlSchemaElement element, boolean isQualified) {
         if (el.hasAttribute("form")) {
             String formDef = el.getAttribute("form");
-            element.form = new XmlSchemaForm(formDef);
-            isQualified = formDef.equals(XmlSchemaForm.QUALIFIED);
+            element.form = XmlSchemaForm.schemaValueOf(formDef);
+            isQualified = element.form == XmlSchemaForm.QUALIFIED;
         }
         return isQualified;
     }
@@ -819,12 +801,7 @@ public class SchemaBuilder {
     private void handleSimpleTypeFinal(Element simpleEl, XmlSchemaSimpleType simpleType) {
         if (simpleEl.hasAttribute("final")) {
             String finalstr = simpleEl.getAttribute("final");
-
-            if (finalstr.equalsIgnoreCase("all") | finalstr.equalsIgnoreCase("#all")) {
-                simpleType.setFinal(new XmlSchemaDerivationMethod(Constants.BlockConstants.ALL));
-            } else {
-                simpleType.setFinal(new XmlSchemaDerivationMethod(finalstr));
-            }
+            simpleType.setFinal(XmlSchemaDerivationMethod.schemaValueOf(finalstr));
         }
     }
 
@@ -1125,7 +1102,7 @@ public class SchemaBuilder {
         if (anyEl.hasAttribute("processContents")) {
             String processContent = getEnumString(anyEl, "processContents");
 
-            any.processContent = new XmlSchemaContentProcessing(processContent);
+            any.processContent = XmlSchemaContentProcessing.schemaValueOf(processContent);
         }
 
         Element annotationEl = XDOMUtil.getFirstChildElementNS(anyEl, XmlSchema.SCHEMA_NS, "annotation");
@@ -1153,7 +1130,7 @@ public class SchemaBuilder {
 
             String contentProcessing = getEnumString(anyAttrEl, "processContents");
 
-            anyAttr.processContent = new XmlSchemaContentProcessing(contentProcessing);
+            anyAttr.processContent = XmlSchemaContentProcessing.schemaValueOf(contentProcessing);
         }
         if (anyAttrEl.hasAttribute("id")) {
             anyAttr.id = anyAttrEl.getAttribute("id");
@@ -1205,7 +1182,7 @@ public class SchemaBuilder {
             attr.name = name;
         }
 
-        boolean isQualified = schema.getAttributeFormDefault().getValue().equals(XmlSchemaForm.QUALIFIED);
+        boolean isQualified = schema.getAttributeFormDefault() == XmlSchemaForm.QUALIFIED;
         if (attr.name != null) {
             final String name = attr.name;
             if (topLevel) {
@@ -1230,15 +1207,16 @@ public class SchemaBuilder {
 
         if (attrEl.hasAttribute("form")) {
             String formValue = getEnumString(attrEl, "form");
-            attr.form = new XmlSchemaForm(formValue);
+            attr.form = XmlSchemaForm.schemaValueOf(formValue);
         }
+        
         if (attrEl.hasAttribute("id")) {
             attr.id = attrEl.getAttribute("id");
         }
 
         if (attrEl.hasAttribute("use")) {
             String useType = getEnumString(attrEl, "use");
-            attr.use = new XmlSchemaUse(useType);
+            attr.use = XmlSchemaUse.schemaValueOf(useType);
         }
         if (attrEl.hasAttribute("ref")) {
             String name = attrEl.getAttribute("ref");

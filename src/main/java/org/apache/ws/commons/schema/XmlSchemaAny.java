@@ -19,8 +19,6 @@
 
 package org.apache.ws.commons.schema;
 
-import org.apache.ws.commons.schema.constants.Constants;
-
 /**
  * Enables any element from the specified namespace or namespaces to appear in the containing complexType
  * element. Represents the World Wide Web Consortium (W3C) any element.
@@ -39,7 +37,7 @@ public class XmlSchemaAny extends XmlSchemaParticle {
      * Creates new XmlSchemaAny
      */
     public XmlSchemaAny() {
-        processContent = new XmlSchemaContentProcessing(Constants.BlockConstants.NONE);
+        processContent = XmlSchemaContentProcessing.NONE;
     }
 
 

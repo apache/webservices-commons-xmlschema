@@ -21,8 +21,6 @@ package org.apache.ws.commons.schema;
 
 import javax.xml.namespace.QName;
 
-import org.apache.ws.commons.schema.constants.Constants;
-
 /**
  * Class for attribute types. Represents the World Wide Web Consortium (W3C) attribute element.
  */
@@ -45,8 +43,8 @@ public class XmlSchemaAttribute extends XmlSchemaAnnotated {
      * Creates new XmlSchemaAttribute
      */
     public XmlSchemaAttribute() {
-        form = new XmlSchemaForm(XmlSchemaForm.NONE);
-        use = new XmlSchemaUse(Constants.BlockConstants.NONE);
+        form = XmlSchemaForm.NONE;
+        use = XmlSchemaUse.NONE;
     }
 
     public Object getAttributeType() {

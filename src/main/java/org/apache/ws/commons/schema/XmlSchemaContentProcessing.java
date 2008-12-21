@@ -19,32 +19,19 @@
 
 package org.apache.ws.commons.schema;
 
-import org.apache.ws.commons.schema.constants.Constants;
-
 /**
  * Provides information about the validation mode of any and anyAttribute element replacements.
  */
 
-public class XmlSchemaContentProcessing extends org.apache.ws.commons.schema.constants.Enum {
-
-    static String[] members = new String[] {
-        Constants.BlockConstants.LAX, Constants.BlockConstants.NONE, Constants.BlockConstants.SKIP,
-        Constants.BlockConstants.STRICT
-    };
-
-    /**
-     * Creates new XmlSeverityType
-     */
-    public XmlSchemaContentProcessing() {
-        super();
+public enum XmlSchemaContentProcessing {
+    LAX, NONE, SKIP, STRICT;
+    
+    public static XmlSchemaContentProcessing schemaValueOf(String name) {
+        return EnumUtil.valueOf(XmlSchemaContentProcessing.class, name);
     }
 
-    public XmlSchemaContentProcessing(String value) {
-        super(value);
+    @Override
+    public String toString() {
+        return super.toString().toLowerCase();
     }
-
-    public String[] getValues() {
-        return members;
-    }
-
 }

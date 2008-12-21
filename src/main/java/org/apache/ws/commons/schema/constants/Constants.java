@@ -27,34 +27,6 @@ import javax.xml.namespace.QName;
 public final class Constants {
     
     /**
-     * All constants that are relevant to the names of the schema elements
-     */
-    public static final class BlockConstants {
-        public static final String ALL = "all";
-        public static final String ELEMENT_ONLY = "elementOnly";
-        public static final String EMPTY = "empty";
-        public static final String ERROR = "error";
-        public static final String EXTENSION = "extension";
-        public static final String LAX = "lax";
-        public static final String LIST = "list";
-        public static final String MIXED = "mixed";
-        public static final String NONE = "none";
-        public static final String OPTIONAL = "optional";
-        public static final String PROHIBITED = "prohibited";
-        public static final String REQUIRED = "required";
-        public static final String RESTRICTION = "restriction";
-        public static final String SKIP = "skip";
-        public static final String STRICT = "strict";
-        public static final String SUBSITUTION = "substitution";
-        public static final String TEXT_ONLY = "textOnly";
-        public static final String UNION = "union";
-        public static final String WARNING = "warning";
-        
-        private BlockConstants() {
-        }
-    }
-    
-    /**
      * class holding the the constants for meta data storage
      */
     public static final class MetaDataConstants {

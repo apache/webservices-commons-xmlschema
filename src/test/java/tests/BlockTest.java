@@ -44,7 +44,7 @@ public class BlockTest extends Assert {
         XmlSchemaElement elementByName = s.getElementByName(elementQName);
         assertNotNull(elementByName);
 
-        String value = elementByName.getBlock().getValue();
+        String value = elementByName.getBlock().toString();
         assertEquals("restriction", value);
 
     }

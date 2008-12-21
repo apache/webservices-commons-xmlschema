@@ -255,13 +255,10 @@ public class XmlSchemaSerializer {
             anyEl.setAttribute("namespace", anyObj.namespace);
         }
 
-        if (anyObj.processContent != null) {
-            String value = anyObj.processContent.getValue();
-            if (!value.equals(Constants.BlockConstants.NONE)) {
-                String processContent = convertString(value);
-                anyEl.setAttribute("processContents", processContent);
-            }
+        if (anyObj.processContent != null && anyObj.processContent != XmlSchemaContentProcessing.NONE) {
+            anyEl.setAttribute("processContents", anyObj.processContent.toString());
         }
+        
         if (anyObj.annotation != null) {
             Element annotation = serializeAnnotation(doc, anyObj.annotation, schema);
             anyEl.appendChild(annotation);
@@ -299,12 +296,9 @@ public class XmlSchemaSerializer {
             anyAttribute.setAttribute("id", anyAttributeObj.id);
         }
 
-        if (anyAttributeObj.processContent != null) {
-            String processContent = anyAttributeObj.processContent.getValue();
-            if (!Constants.BlockConstants.NONE.equals(processContent)) {
-                processContent = convertString(processContent);
-                anyAttribute.setAttribute("processContents", processContent);
-            }
+        if (anyAttributeObj.processContent != null
+            && anyAttributeObj.processContent != XmlSchemaContentProcessing.NONE) {
+            anyAttribute.setAttribute("processContents", anyAttributeObj.processContent.toString());
         }
         if (anyAttributeObj.annotation != null) {
             Element annotation = serializeAnnotation(doc, anyAttributeObj.annotation, schema);
@@ -390,20 +384,18 @@ public class XmlSchemaSerializer {
             attribute.setAttribute("fixed", attributeObj.fixedValue);
         }
 
-        String formType = attributeObj.form.getValue();
-        if (!formType.equals(XmlSchemaForm.NONE)) {
-            formType = convertString(formType);
-            attribute.setAttribute("form", formType);
+        if (attributeObj.form != XmlSchemaForm.NONE) {
+            attribute.setAttribute("form", attributeObj.form.toString());
         }
+        
         if (attributeObj.id != null) {
             attribute.setAttribute("id", attributeObj.id);
         }
 
-        String useType = attributeObj.use.getValue();
-        if (!useType.equals(Constants.BlockConstants.NONE)) {
-            useType = convertString(useType);
-            attribute.setAttribute("use", useType);
+        if (attributeObj.use != null && attributeObj.use != XmlSchemaUse.NONE) {
+            attribute.setAttribute("use", attributeObj.use.toString());
         }
+        
         if (attributeObj.annotation != null) {
             Element annotation = serializeAnnotation(doc, attributeObj.annotation, schema);
             attribute.appendChild(annotation);
@@ -919,15 +911,13 @@ public class XmlSchemaSerializer {
             serializedComplexType.appendChild(group);
         }
 
-        String block = complexTypeObj.block.getValue();
-        if (!block.equals(Constants.BlockConstants.NONE)) {
-            block = convertString(block);
-            serializedComplexType.setAttribute("block", block);
+        if (complexTypeObj.block != null && complexTypeObj.block != XmlSchemaDerivationMethod.NONE) {
+            serializedComplexType.setAttribute("block", complexTypeObj.toString());
         }
-        String finalDerivation = complexTypeObj.finalDerivation.getValue();
-        if (!finalDerivation.equals(Constants.BlockConstants.NONE)) {
-            finalDerivation = convertString(finalDerivation);
-            serializedComplexType.setAttribute("final", finalDerivation);
+        
+        if (complexTypeObj.finalDerivation != null 
+            && complexTypeObj.finalDerivation != XmlSchemaDerivationMethod.NONE) {
+            serializedComplexType.setAttribute("final", complexTypeObj.finalDerivation.toString());
         }
 
         XmlSchemaObjectCollection attrColl = complexTypeObj.attributes;
@@ -1034,29 +1024,25 @@ public class XmlSchemaSerializer {
             serializedEl.setAttribute("abstract", "true");
         }
 
-        String block = elementObj.block.getValue();
-        if (!block.equals(Constants.BlockConstants.NONE)) {
-            block = convertString(block);
-            serializedEl.setAttribute("block", block);
+        if (elementObj.block != null && elementObj.block != XmlSchemaDerivationMethod.NONE) {
+            serializedEl.setAttribute("block", elementObj.block.toString());
         }
         if (elementObj.defaultValue != null) {
             serializedEl.setAttribute("default", elementObj.defaultValue);
         }
 
-        String finalDerivation = elementObj.finalDerivation.getValue();
-        if (!finalDerivation.equals(Constants.BlockConstants.NONE)) {
-            finalDerivation = convertString(finalDerivation);
-            serializedEl.setAttribute("final", finalDerivation);
+        if (elementObj.finalDerivation != null 
+            && elementObj.finalDerivation != XmlSchemaDerivationMethod.NONE) {
+            serializedEl.setAttribute("final", elementObj.finalDerivation.toString());
         }
         if (elementObj.fixedValue != null) {
             serializedEl.setAttribute("fixed", elementObj.fixedValue);
         }
 
-        String formDef = elementObj.form.getValue();
-        if (!formDef.equals(XmlSchemaForm.NONE)) {
-            formDef = convertString(formDef);
-            serializedEl.setAttribute("form", formDef);
+        if (elementObj.form != XmlSchemaForm.NONE) {
+            serializedEl.setAttribute("form", elementObj.form.toString());
         }
+        
         if (elementObj.id != null) {
             serializedEl.setAttribute("id", elementObj.id);
         }
@@ -1574,49 +1560,37 @@ public class XmlSchemaSerializer {
         }
 
         // todo: implement xml:lang,
-        if (schemaObj.attributeFormDefault != null) {
-            String formQualified = schemaObj.attributeFormDefault.getValue();
-
-            if (!formQualified.equals(XmlSchemaForm.NONE)) {
-                serializedSchema.setAttribute("attributeFormDefault", convertString(formQualified));
-            }
+        if (schemaObj.attributeFormDefault != null && schemaObj.attributeFormDefault != XmlSchemaForm.NONE) {
+            serializedSchema.setAttribute("attributeFormDefault", 
+                                          schemaObj.attributeFormDefault.toString());
         }
 
-        if (schemaObj.elementFormDefault != null) {
-            String formQualified = schemaObj.elementFormDefault.getValue();
-
-            if (!formQualified.equals(XmlSchemaForm.NONE)) {
-                serializedSchema.setAttribute("elementFormDefault", convertString(formQualified));
-            }
+        if (schemaObj.elementFormDefault != null && schemaObj.elementFormDefault != XmlSchemaForm.NONE) {
+            serializedSchema.setAttribute("elementFormDefault", schemaObj.elementFormDefault.toString());
         }
 
         if (schemaObj.annotation != null) {
             Element annotation = serializeAnnotation(serializedSchemaDocs, schemaObj.annotation, schemaObj);
             serializedSchema.appendChild(annotation);
         }
+        
         if (schemaObj.id != null) {
             serializedSchema.setAttribute("id", schemaObj.id);
         }
-        if (schemaObj.blockDefault != null) {
-            String blockDefault = schemaObj.blockDefault.getValue();
-            if (!blockDefault.equals(Constants.BlockConstants.NONE)) {
-                blockDefault = convertString(blockDefault);
-                serializedSchema.setAttribute("blockDefault", blockDefault);
-            }
+        
+        if (schemaObj.blockDefault != null && schemaObj.blockDefault != XmlSchemaDerivationMethod.NONE) {
+            serializedSchema.setAttribute("blockDefault", schemaObj.blockDefault.toString());
         }
-        if (schemaObj.finalDefault != null) {
-            String finalDefault = schemaObj.finalDefault.getValue();
-            if (!finalDefault.equals(Constants.BlockConstants.NONE)) {
-                finalDefault = convertString(finalDefault);
-                serializedSchema.setAttribute("finalDefault", finalDefault);
-            }
+        
+        if (schemaObj.finalDefault != null && schemaObj.finalDefault != XmlSchemaDerivationMethod.NONE) {
+            serializedSchema.setAttribute("finalDefault", schemaObj.finalDefault.toString());
         }
 
         if (schemaObj.version != null) {
             serializedSchema.setAttribute("version", schemaObj.version);
         }
 
-        // add the extra namespace decalarations if any are available
+        // add the extra namespace declarations if any are available
         NamespacePrefixList ctx = schemaObj.getNamespaceContext();
         String[] prefixes = ctx.getDeclaredPrefixes();
         for (String prefix : prefixes) {
@@ -1937,12 +1911,9 @@ public class XmlSchemaSerializer {
         Element serializedSimpleType = createNewElement(doc, "simpleType", schema.schemaNamespacePrefix,
                                                         XmlSchema.SCHEMA_NS);
 
-        String tmp;
-        tmp = simpleTypeObj.finalDerivation.getValue();
-        if (!tmp.equals(Constants.BlockConstants.NONE)) {
-
-            tmp = convertString(tmp);
-            serializedSimpleType.setAttribute("final", tmp);
+        if (simpleTypeObj.finalDerivation != null 
+            && simpleTypeObj.finalDerivation != XmlSchemaDerivationMethod.NONE) {
+            serializedSimpleType.setAttribute("final", simpleTypeObj.finalDerivation.toString());
         }
         if (simpleTypeObj.id != null) {
             serializedSimpleType.setAttribute("id", simpleTypeObj.id);
@@ -2207,16 +2178,6 @@ public class XmlSchemaSerializer {
             facetEl.appendChild(annotation);
         }
         return facetEl;
-    }
-
-    // Convert given string to lower case or w3c standard
-    private String convertString(String convert) {
-        String input = convert.trim();
-        if (input.equals(Constants.BlockConstants.ALL)) {
-            return "#all";
-        } else {
-            return input.toLowerCase();
-        }
     }
 
     // Create new element with given local name and namespaces check whether

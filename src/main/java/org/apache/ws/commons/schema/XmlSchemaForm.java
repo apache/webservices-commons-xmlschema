@@ -19,35 +19,22 @@
 
 package org.apache.ws.commons.schema;
 
-import org.apache.ws.commons.schema.constants.Enum;
-
 /**
  * Indicates if attributes or elements need to be qualified or left unqualified.
  */
 
-public class XmlSchemaForm extends Enum {
-
-    public static final String NONE = "none";
-    public static final String QUALIFIED = "qualified";
-    public static final String UNQUALIFIED = "unqualified";
-
-    static String[] members = new String[] {
-        NONE, QUALIFIED, UNQUALIFIED
-    };
-
-    /**
-     * Creates new XmlSchemaForm
-     */
-    public XmlSchemaForm() {
-        super();
+public enum XmlSchemaForm {
+    NONE,
+    QUALIFIED,
+    UNQUALIFIED;
+    
+    public static XmlSchemaForm schemaValueOf(String name) {
+        return EnumUtil.valueOf(XmlSchemaForm.class, name);
     }
 
-    public XmlSchemaForm(String value) {
-        super(value);
-    }
-
-    public String[] getValues() {
-        return members;
+    @Override
+    public String toString() {
+        return super.toString().toLowerCase();
     }
 
 }

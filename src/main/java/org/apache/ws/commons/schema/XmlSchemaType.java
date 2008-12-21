@@ -20,7 +20,6 @@
 package org.apache.ws.commons.schema;
 
 import javax.xml.namespace.QName;
-import org.apache.ws.commons.schema.constants.Constants;
 
 
 /**
@@ -30,7 +29,6 @@ import org.apache.ws.commons.schema.constants.Constants;
 public class XmlSchemaType extends XmlSchemaAnnotated {
 
     Object baseSchemaType;
-    XmlSchemaDatatype dataType;
     XmlSchemaDerivationMethod deriveBy;
     XmlSchemaDerivationMethod finalDerivation;
     XmlSchemaDerivationMethod finalResolved;
@@ -46,7 +44,7 @@ public class XmlSchemaType extends XmlSchemaAnnotated {
      */
     public XmlSchemaType(XmlSchema schema) {
         this.schema = schema;
-        finalDerivation = new XmlSchemaDerivationMethod(Constants.BlockConstants.NONE);
+        finalDerivation = XmlSchemaDerivationMethod.NONE;
     }
 
     /**
@@ -67,10 +65,6 @@ public class XmlSchemaType extends XmlSchemaAnnotated {
      */
     public QName getBaseSchemaTypeName() {
         return null;
-    }
-
-    public XmlSchemaDatatype getDataType() {
-        return dataType;
     }
 
     public XmlSchemaDerivationMethod getDeriveBy() {

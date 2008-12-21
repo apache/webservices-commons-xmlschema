@@ -19,31 +19,24 @@
 
 package org.apache.ws.commons.schema;
 
-import org.apache.ws.commons.schema.constants.Constants;
 
 /**
- * Indicator of how the attribute is used.
+ * use= values.
  */
-public class XmlSchemaUse extends org.apache.ws.commons.schema.constants.Enum {
-
-    static String[] members = new String[] {
-        Constants.BlockConstants.NONE, Constants.BlockConstants.OPTIONAL,
-        Constants.BlockConstants.PROHIBITED, Constants.BlockConstants.REQUIRED
-    };
-
-    /**
-     * Creates new XmlSchemaUse
-     */
-    public XmlSchemaUse() {
-        super();
+public enum XmlSchemaUse {
+    NONE,
+    OPTIONAL,
+    PROHIBITED,
+    REQUIRED;
+    
+    public static XmlSchemaUse schemaValueOf(String name) {
+        return EnumUtil.valueOf(XmlSchemaUse.class, name);
     }
 
-    public XmlSchemaUse(String value) {
-        super(value);
+    @Override
+    public String toString() {
+        return super.toString().toLowerCase();
     }
 
-    public String[] getValues() {
-        return members;
-    }
 
 }

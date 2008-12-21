@@ -21,8 +21,6 @@ package org.apache.ws.commons.schema;
 
 import javax.xml.namespace.QName;
 
-import org.apache.ws.commons.schema.constants.Constants;
-
 /**
  * Class for elements. Represents the World Wide Web Consortium (W3C) element element.
  */
@@ -90,9 +88,9 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver 
         constraints = new XmlSchemaObjectCollection();
         abstractElement = false;
         nillable = false;
-        form = new XmlSchemaForm(XmlSchemaForm.NONE);
-        finalDerivation = new XmlSchemaDerivationMethod(Constants.BlockConstants.NONE);
-        block = new XmlSchemaDerivationMethod(Constants.BlockConstants.NONE);
+        form = XmlSchemaForm.NONE;
+        finalDerivation = XmlSchemaDerivationMethod.NONE;
+        block = XmlSchemaDerivationMethod.NONE;
     }
 
     /**

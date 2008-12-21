@@ -106,14 +106,14 @@ public class SimpleContentRestrictionTest extends Assert {
                 assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "string"), 
                              xsa.getSchemaTypeName());
                 assertNull(xsa.getDefaultValue());
-                assertEquals("required", xsa.getUse().getValue());
+                assertEquals("required", xsa.getUse().toString());
                 assertNull(xsa.getFixedValue());
             } else if ("id".equals(name)) {
                 assertEquals(new QName("http://soapinterop.org/types", "id"), xsa.getQName());
                 assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "integer"), xsa
                     .getSchemaTypeName());
                 assertEquals("001", xsa.getDefaultValue());
-                assertEquals("required", xsa.getUse().getValue());
+                assertEquals("required", xsa.getUse().toString());
                 assertNull(xsa.getFixedValue());
             } else {
                 fail("The name \"" + name + "\" was not expected.");

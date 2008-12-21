@@ -21,8 +21,6 @@ package org.apache.ws.commons.schema;
 
 import javax.xml.namespace.QName;
 
-import org.apache.ws.commons.schema.constants.Constants;
-
 /**
  * Class for complex types. Defines a complex type that determines the set of attributes and content of an
  * element. Represents the World Wide Web Consortium (W3C) complexType element.
@@ -48,7 +46,7 @@ public class XmlSchemaComplexType extends XmlSchemaType {
     public XmlSchemaComplexType(XmlSchema schema) {
         super(schema);
         attributes = new XmlSchemaObjectCollection();
-        block = new XmlSchemaDerivationMethod(Constants.BlockConstants.NONE);
+        block = XmlSchemaDerivationMethod.NONE;
         isAbstract = false;
         isMixed = false;
     }

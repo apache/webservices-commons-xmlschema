@@ -42,7 +42,6 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 
 import org.apache.ws.commons.schema.XmlSchemaSerializer.XmlSchemaSerializerException;
-import org.apache.ws.commons.schema.constants.Constants;
 import org.apache.ws.commons.schema.utils.NamespaceContextOwner;
 import org.apache.ws.commons.schema.utils.NamespacePrefixList;
 
@@ -108,10 +107,10 @@ public class XmlSchema
      */
     public XmlSchema(String namespace, String systemId, XmlSchemaCollection parent) {
         this.parent = parent;
-        attributeFormDefault = new XmlSchemaForm(XmlSchemaForm.UNQUALIFIED);
-        elementFormDefault = new XmlSchemaForm(XmlSchemaForm.UNQUALIFIED);
-        blockDefault = new XmlSchemaDerivationMethod(Constants.BlockConstants.NONE);
-        finalDefault = new XmlSchemaDerivationMethod(Constants.BlockConstants.NONE);
+        attributeFormDefault = XmlSchemaForm.UNQUALIFIED;
+        elementFormDefault = XmlSchemaForm.UNQUALIFIED;
+        blockDefault = XmlSchemaDerivationMethod.NONE;
+        finalDefault = XmlSchemaDerivationMethod.NONE;
         items = new XmlSchemaObjectCollection();
         includes = new XmlSchemaObjectCollection();
         elements = new XmlSchemaObjectTable();

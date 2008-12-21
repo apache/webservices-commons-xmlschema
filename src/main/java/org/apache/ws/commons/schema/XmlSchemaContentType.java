@@ -19,33 +19,23 @@
 
 package org.apache.ws.commons.schema;
 
-import org.apache.ws.commons.schema.constants.Constants;
-import org.apache.ws.commons.schema.constants.Enum;
-
 /**
  * Enumerations for the content model of the complex type. This represents the content in the
  * post-schema-validation infoset.
  */
 
-public class XmlSchemaContentType extends Enum {
+public enum XmlSchemaContentType {
+    ELEMENT_ONLY,
+    EMPTY,
+    MIXED,
+    TEXT_ONLY;
 
-    static String[] members = new String[] {
-        Constants.BlockConstants.ELEMENT_ONLY, Constants.BlockConstants.EMPTY,
-        Constants.BlockConstants.MIXED, Constants.BlockConstants.TEXT_ONLY
-    };
-
-    /**
-     * Creates new XmlSchemaContentType
-     */
-    public XmlSchemaContentType() {
-        super();
+    public static XmlSchemaContentProcessing schemaValueOf(String name) {
+        return EnumUtil.valueOf(XmlSchemaContentProcessing.class, name);
     }
 
-    public XmlSchemaContentType(String value) {
-        super(value);
-    }
-
-    public String[] getValues() {
-        return members;
+    @Override
+    public String toString() {
+        return super.toString().toLowerCase();
     }
 }
