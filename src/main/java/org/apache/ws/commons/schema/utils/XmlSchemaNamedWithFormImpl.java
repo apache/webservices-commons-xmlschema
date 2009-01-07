@@ -87,6 +87,12 @@ public class XmlSchemaNamedWithFormImpl extends XmlSchemaNamedImpl implements Xm
      * {@inheritDoc}
      */
     public QName getWireName() {
-        return wireName;
+        // If this is a ref= case, then we take the name from the ref=, not from the QName.
+        // what about ref='foo' form='unqualified'? Is that possible?
+        if (refTwin != null && refTwin.getTargetQName() != null) {
+            return refTwin.getTargetQName();
+        } else {
+            return wireName;
+        }
     }
 }

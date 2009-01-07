@@ -55,7 +55,7 @@ public class ElementRefsTest extends Assert {
         Iterator it = items.getIterator();
         while (it.hasNext()) {
             XmlSchemaElement innerElement = (XmlSchemaElement)it.next();
-            assertNotNull(innerElement.getRefName());
+            assertNotNull(innerElement.getRef().getTargetQName());
         }
 
         // test writing

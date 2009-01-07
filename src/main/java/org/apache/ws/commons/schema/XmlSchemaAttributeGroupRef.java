@@ -19,27 +19,29 @@
 
 package org.apache.ws.commons.schema;
 
-import javax.xml.namespace.QName;
+import org.apache.ws.commons.schema.utils.XmlSchemaRef;
 
 /**
- * Class for the attribute group reference. Represents the World Wide Web Consortium (W3C) attributeGroup
+ * Class for the attribute group reference. 
+ * Represents the World Wide Web Consortium (W3C) attributeGroup
  * element with the ref attribute.
  */
 public class XmlSchemaAttributeGroupRef extends XmlSchemaAnnotated {
-    QName refName;
+    private XmlSchemaRef<XmlSchemaAttributeGroup> ref;
     
     /**
-     * Creates new XmlSchemaAttributeGroupRef
+     * Create an attribute group reference.
+     * @param parent containing schema.
      */
-    public XmlSchemaAttributeGroupRef() {
+    public XmlSchemaAttributeGroupRef(XmlSchema parent) {
+        ref = new XmlSchemaRef<XmlSchemaAttributeGroup>(parent, XmlSchemaAttributeGroup.class);
     }
 
-    public QName getRefName() {
-        return this.refName;
+    /**
+     * Return the reference object.
+     * @return
+     */
+    public XmlSchemaRef<XmlSchemaAttributeGroup> getRef() {
+        return ref;
     }
-
-    public void setRefName(QName refName) {
-        this.refName = refName;
-    }
-
 }

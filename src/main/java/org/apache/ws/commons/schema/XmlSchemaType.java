@@ -46,15 +46,6 @@ public abstract class XmlSchemaType extends XmlSchemaAnnotated implements XmlSch
         finalDerivation = XmlSchemaDerivationMethod.NONE;
     }
 
-    /**
-     * If there is a base schema type, which by definition has to have a global name, return it.
-     * 
-     * @return the qualified name of the base schema type. Return null if none (e.g. for simple types).
-     */
-    public QName getBaseSchemaTypeName() {
-        return null;
-    }
-
     public XmlSchemaDerivationMethod getDeriveBy() {
         return deriveBy;
     }

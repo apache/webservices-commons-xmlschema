@@ -546,9 +546,8 @@ public class XmlSchemaSerializer {
 
         Element attributeGroupRef = createNewElement(doc, "attributeGroup", schema.schemaNamespacePrefix,
                                                      XmlSchema.SCHEMA_NS);
-
-        if (attributeGroupObj.refName != null) {
-            String refName = resolveQName(attributeGroupObj.refName, schema);
+        if (attributeGroupObj.getRef().getTarget() != null) {
+            String refName = resolveQName(attributeGroupObj.getRef().getTargetQName(), schema);
             attributeGroupRef.setAttribute("ref", refName);
         } else {
             throw new XmlSchemaSerializerException("Attribute group must have " + "ref name set");
@@ -1011,9 +1010,9 @@ public class XmlSchemaSerializer {
         Element serializedEl = createNewElement(doc, "element", schema.schemaNamespacePrefix,
                                                 XmlSchema.SCHEMA_NS);
 
-        if (elementObj.getRefName() != null) {
+        if (elementObj.getRef().getTargetQName() != null) {
 
-            String resolvedName = resolveQName(elementObj.getRefName(), schema);
+            String resolvedName = resolveQName(elementObj.getRef().getTargetQName(), schema);
             serializedEl.setAttribute("ref", resolvedName);
         } else if (!elementObj.isAnonymous()) {
             serializedEl.setAttribute("name", elementObj.getName());

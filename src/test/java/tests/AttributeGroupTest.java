@@ -90,7 +90,8 @@ public class AttributeGroupTest extends Assert {
         XmlSchemaObjectCollection c = t.getAttributes();
         for (Iterator i = c.getIterator(); i.hasNext();) {
             XmlSchemaAttributeGroupRef agrn = (XmlSchemaAttributeGroupRef)i.next();
-            assertEquals(new QName("http://soapinterop.org/types", "department"), agrn.getRefName());
+            assertEquals(new QName("http://soapinterop.org/types", "department"), 
+                         agrn.getRef().getTargetQName());
         }
 
         XmlSchemaObjectTable attG = schema.getAttributeGroups();

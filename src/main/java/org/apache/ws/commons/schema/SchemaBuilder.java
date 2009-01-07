@@ -291,7 +291,7 @@ public class SchemaBuilder {
             } else if (el.getLocalName().equals("attribute")) {
                 ct.attributes.add(handleAttribute(schema, el, schemaEl));
             } else if (el.getLocalName().equals("attributeGroup")) {
-                ct.attributes.add(handleAttributeGroupRef(el));
+                ct.attributes.add(handleAttributeGroupRef(schema, el));
             } else if (el.getLocalName().equals("group")) {
                 XmlSchemaGroupRef group = handleGroupRef(schema, el, schemaEl);
                 ct.particle = group.particle == null ? (XmlSchemaParticle)group : group.particle;
@@ -487,8 +487,7 @@ public class SchemaBuilder {
         } else if (el.getAttributeNode("ref") != null) {
             String refName = el.getAttribute("ref");
             QName refQName = getRefQName(refName, el);
-            element.setRefName(refQName);
-            element.setName(refQName.getLocalPart());
+            element.getRef().setTargetQName(refQName);
         }
     }
 
@@ -844,8 +843,8 @@ public class SchemaBuilder {
             XmlSchemaElement element = handleElement(currentSchema, el, schemaEl, true);
             if (element.isTopLevel()) {
                 currentSchema.elements.collection.put(element.getQName(), element);
-            } else if (element.getRefName() != null) {
-                currentSchema.elements.collection.put(element.getRefName(), element);
+            } else if (element.getRef().getTargetQName() != null) {
+                currentSchema.elements.collection.put(element.getRef().getTargetQName(), element);
             }
             currentSchema.items.add(element);
         } else if (el.getLocalName().equals("include")) {
@@ -1277,7 +1276,7 @@ public class SchemaBuilder {
                 XmlSchemaAttribute attr = handleAttribute(schema, el, schemaEl);
                 attrGroup.getAttributes().add(attr);
             } else if (el.getLocalName().equals("attributeGroup")) {
-                XmlSchemaAttributeGroupRef attrGroupRef = handleAttributeGroupRef(el);
+                XmlSchemaAttributeGroupRef attrGroupRef = handleAttributeGroupRef(schema, el);
                 attrGroup.getAttributes().add(attrGroupRef);
             } else if (el.getLocalName().equals("anyAttribute")) {
                 attrGroup.setAnyAttribute(handleAnyAttribute(schema, el, schemaEl));
@@ -1289,13 +1288,13 @@ public class SchemaBuilder {
         return attrGroup;
     }
 
-    private XmlSchemaAttributeGroupRef handleAttributeGroupRef(Element attrGroupEl) {
+    private XmlSchemaAttributeGroupRef handleAttributeGroupRef(XmlSchema schema, Element attrGroupEl) {
 
-        XmlSchemaAttributeGroupRef attrGroup = new XmlSchemaAttributeGroupRef();
+        XmlSchemaAttributeGroupRef attrGroup = new XmlSchemaAttributeGroupRef(schema);
 
         if (attrGroupEl.hasAttribute("ref")) {
             String ref = attrGroupEl.getAttribute("ref");
-            attrGroup.refName = getRefQName(ref, attrGroupEl);
+            attrGroup.getRef().setTargetQName(getRefQName(ref, attrGroupEl));
         }
 
         if (attrGroupEl.hasAttribute("id")) {
@@ -1402,7 +1401,7 @@ public class SchemaBuilder {
             } else if (el.getLocalName().equals("attribute")) {
                 ext.attributes.add(handleAttribute(schema, el, schemaEl));
             } else if (el.getLocalName().equals("attributeGroup")) {
-                ext.attributes.add(handleAttributeGroupRef(el));
+                ext.attributes.add(handleAttributeGroupRef(schema, el));
             } else if (el.getLocalName().equals("group")) {
                 ext.particle = handleGroupRef(schema, el, schemaEl);
             } else if (el.getLocalName().equals("anyAttribute")) {
@@ -1437,7 +1436,7 @@ public class SchemaBuilder {
             } else if (el.getLocalName().equals("attribute")) {
                 restriction.attributes.add(handleAttribute(schema, el, schemaEl));
             } else if (el.getLocalName().equals("attributeGroup")) {
-                restriction.attributes.add(handleAttributeGroupRef(el));
+                restriction.attributes.add(handleAttributeGroupRef(schema, el));
             } else if (el.getLocalName().equals("group")) {
                 restriction.particle = handleGroupRef(schema, el, schemaEl);
             } else if (el.getLocalName().equals("anyAttribute")) {
@@ -1731,7 +1730,7 @@ public class SchemaBuilder {
                 XmlSchemaAttribute attr = handleAttribute(schema, el, schemaEl);
                 ext.attributes.add(attr);
             } else if (el.getLocalName().equals("attributeGroup")) {
-                XmlSchemaAttributeGroupRef attrGroup = handleAttributeGroupRef(el);
+                XmlSchemaAttributeGroupRef attrGroup = handleAttributeGroupRef(schema, el);
                 ext.attributes.add(attrGroup);
             } else if (el.getLocalName().equals("anyAttribute")) {
                 ext.anyAttribute = handleAnyAttribute(schema, el, schemaEl);
@@ -1767,7 +1766,7 @@ public class SchemaBuilder {
                 XmlSchemaAttribute attr = handleAttribute(schema, el, schemaEl);
                 restriction.attributes.add(attr);
             } else if (el.getLocalName().equals("attributeGroup")) {
-                XmlSchemaAttributeGroupRef attrGroup = handleAttributeGroupRef(el);
+                XmlSchemaAttributeGroupRef attrGroup = handleAttributeGroupRef(schema, el);
                 restriction.attributes.add(attrGroup);
             } else if (el.getLocalName().equals("simpleType")) {
                 restriction.baseType = handleSimpleType(schema, el, schemaEl, false);

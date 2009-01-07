@@ -40,6 +40,11 @@ import org.apache.ws.commons.schema.XmlSchemaException;
 public class XmlSchemaNamedImpl implements XmlSchemaNamed {
     
     protected XmlSchema parentSchema;
+    /*
+     * Some objects implement both name= and ref=. This reference allows us some error
+     * checking.
+     */
+    protected XmlSchemaRefBase refTwin;
     // Store the name as a QName for the convenience of QName fans.
     private QName qname;
     private boolean topLevel;
@@ -51,6 +56,15 @@ public class XmlSchemaNamedImpl implements XmlSchemaNamed {
     public XmlSchemaNamedImpl(XmlSchema parent, boolean topLevel) {
         this.parentSchema = parent;
         this.topLevel = topLevel;
+    }
+    
+    /**
+     * If the named object also implements ref=, it should pass the reference object
+     * here for some error checking.
+     * @param refBase
+     */
+    public void setRefObject(XmlSchemaRefBase refBase) {
+        refTwin = refBase;
     }
 
     /** {@inheritDoc}*/
@@ -69,10 +83,16 @@ public class XmlSchemaNamedImpl implements XmlSchemaNamed {
 
     /** {@inheritDoc}*/
     public void setName(String name) {
-        if ("".equals(name)) {
+        if (name == null) {
+            this.qname = null;
+        } else if ("".equals(name)) {
             throw new XmlSchemaException("Attempt to set empty name.");
+        } else {
+            if (refTwin != null && refTwin.getTargetQName() != null) {
+                throw new XmlSchemaException("Attempt to set name on object with ref='xxx'");
+            }
+            qname = new QName(parentSchema.getLogicalTargetNamespace(), name);
         }
-        qname = new QName(parentSchema.getLogicalTargetNamespace(), name);
     }
     
     /** {@inheritDoc}*/

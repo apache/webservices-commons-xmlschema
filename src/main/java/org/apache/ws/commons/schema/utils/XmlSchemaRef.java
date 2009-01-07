@@ -19,7 +19,6 @@
 
 package org.apache.ws.commons.schema.utils;
 
-import javax.xml.namespace.QName;
 
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaAttribute;
@@ -33,15 +32,16 @@ import org.apache.ws.commons.schema.XmlSchemaType;
 /**
  * Implementation for ref='QName', a common construct in the schema.
  */
-public class XmlSchemaRef<T extends XmlSchemaNamed> {
+public class XmlSchemaRef<T extends XmlSchemaNamed> extends XmlSchemaRefBase {
     private Class<? extends T> targetClass;
-    private XmlSchema parent;
-    private QName targetQName;
     private T targetObject;
-    
     public XmlSchemaRef(XmlSchema parent, Class<T> targetClass) {
         this.parent = parent;
         this.targetClass = targetClass;
+    }
+    
+    protected void forgetTargetObject() {
+        targetObject = null;
     }
     
     public T getTarget() {
@@ -65,13 +65,4 @@ public class XmlSchemaRef<T extends XmlSchemaNamed> {
         }
         return targetObject;
     }
-
-    public QName getTargetQName() {
-        return targetQName;
-    }
-
-    public void setTargetQName(QName targetQName) {
-        this.targetQName = targetQName;
-    }
-
 }

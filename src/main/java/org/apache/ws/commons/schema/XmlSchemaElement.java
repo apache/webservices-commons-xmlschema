@@ -23,6 +23,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.ws.commons.schema.utils.XmlSchemaNamedWithForm;
 import org.apache.ws.commons.schema.utils.XmlSchemaNamedWithFormImpl;
+import org.apache.ws.commons.schema.utils.XmlSchemaRef;
 
 /**
  * Class for elements. Represents the World Wide Web Consortium (W3C) element element.
@@ -35,12 +36,6 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver,
      */
     private XmlSchemaDerivationMethod block;
 
-    /**
-     * The value after an element has been compiled to post-schema infoset.
-     *  This value is either from the type
-     * itself or, if not defined on the type, taken from the schema element.
-     */
-    private XmlSchemaDerivationMethod blockResolved;
     private XmlSchemaObjectCollection constraints;
 
     /**
@@ -55,7 +50,7 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver,
 
     private boolean abstractElement;
     private boolean nillable;
-    private QName refName;
+    private XmlSchemaRef<XmlSchemaElement> ref;
 
     /**
      * Returns the type of the element. This can either be a complex type or a simple type.
@@ -80,6 +75,10 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver,
      */
     public XmlSchemaElement(XmlSchema parentSchema, boolean topLevel) {
         namedDelegate = new XmlSchemaNamedWithFormImpl(parentSchema, topLevel, true);
+        ref = new XmlSchemaRef<XmlSchemaElement>(parentSchema, XmlSchemaElement.class);
+        namedDelegate.setRefObject(ref);
+        ref.setNamedObject(namedDelegate);
+
         constraints = new XmlSchemaObjectCollection();
         abstractElement = false;
         nillable = false;
@@ -118,10 +117,6 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver,
         this.finalDerivation = finalDerivationValue;
     }
 
-    public XmlSchemaDerivationMethod getBlockResolved() {
-        return blockResolved;
-    }
-
     public String getFixedValue() {
         return fixedValue;
     }
@@ -146,14 +141,11 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver,
         this.nillable = isNillable;
     }
 
-    public QName getRefName() {
-        return refName;
+  
+    public XmlSchemaRef<XmlSchemaElement> getRef() {
+        return ref;
     }
-
-    public void setRefName(QName refName) {
-        this.refName = refName;
-    }
-
+ 
     public XmlSchemaType getSchemaType() {
         return schemaType;
     }
@@ -199,8 +191,8 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver,
             xml += "type=\"" + schemaTypeName + "\"";
         }
 
-        if (refName != null) {
-            xml += "ref=\"" + refName + "\" ";
+        if (ref.getTargetQName() != null) {
+            xml += "ref=\"" + ref.getTargetQName() + "\" ";
         }
 
         if (getMinOccurs() != 1) {
@@ -281,13 +273,6 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver,
 
     public QName getWireName() {
         return namedDelegate.getWireName();
-    }
-
-    /**
-     * @param blockResolved The blockResolved to set.
-     */
-    public void setBlockResolved(XmlSchemaDerivationMethod blockResolved) {
-        this.blockResolved = blockResolved;
     }
 
     /**
