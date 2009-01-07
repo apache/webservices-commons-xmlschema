@@ -883,7 +883,7 @@ public class SchemaBuilder {
             XmlSchemaRedefine redefine = handleRedefine(currentSchema, el, schemaEl);
             currentSchema.includes.add(redefine);
         } else if (el.getLocalName().equals("notation")) {
-            XmlSchemaNotation notation = handleNotation(el);
+            XmlSchemaNotation notation = handleNotation(currentSchema, el);
             currentSchema.notations.
                 collection.put(new QName(currentSchema.getTargetNamespace(), notation.name),
                                             notation);
@@ -1575,9 +1575,9 @@ public class SchemaBuilder {
         return group;
     }
 
-    private XmlSchemaNotation handleNotation(Element notationEl) {
+    private XmlSchemaNotation handleNotation(XmlSchema schema, Element notationEl) {
 
-        XmlSchemaNotation notation = new XmlSchemaNotation();
+        XmlSchemaNotation notation = new XmlSchemaNotation(schema);
 
         if (notationEl.hasAttribute("id")) {
             notation.setId(notationEl.getAttribute("id"));

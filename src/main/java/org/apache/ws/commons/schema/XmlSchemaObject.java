@@ -22,7 +22,9 @@ package org.apache.ws.commons.schema;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public abstract class XmlSchemaObject {
+import org.apache.ws.commons.schema.utils.XmlSchemaObjectBase;
+
+public abstract class XmlSchemaObject implements XmlSchemaObjectBase {
     int lineNumber;
     int linePosition;
     String sourceURI;

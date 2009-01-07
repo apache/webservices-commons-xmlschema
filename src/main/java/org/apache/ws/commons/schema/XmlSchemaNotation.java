@@ -19,22 +19,29 @@
 
 package org.apache.ws.commons.schema;
 
+import javax.xml.namespace.QName;
+
+import org.apache.ws.commons.schema.utils.XmlSchemaNamed;
+import org.apache.ws.commons.schema.utils.XmlSchemaNamedImpl;
+
 /**
  * Class represents a notation. An XML Schema definition language (XSD) notation declaration is a
  * reconstruction of XML 1.0 NOTATION declarations. The purpose of notations is to describe the format of
  * non-XML data within an XML document. Represents the World Wide Web Consortium (W3C) notation element.
  */
 
-public class XmlSchemaNotation extends XmlSchemaAnnotated {
+public class XmlSchemaNotation extends XmlSchemaAnnotated implements XmlSchemaNamed {
 
     String name;
     String system;
     String publicNotation;
+    private XmlSchemaNamedImpl namedDelegate;
 
     /**
      * Creates new XmlSchemaNotation
      */
-    public XmlSchemaNotation() {
+    public XmlSchemaNotation(XmlSchema parent) {
+        namedDelegate = new XmlSchemaNamedImpl(parent, true);
     }
 
     public String getName() {
@@ -59,6 +66,26 @@ public class XmlSchemaNotation extends XmlSchemaAnnotated {
 
     public void setSystem(String system) {
         this.system = system;
+    }
+
+    public XmlSchema getParent() {
+        return namedDelegate.getParent();
+    }
+
+    public QName getQName() {
+        return namedDelegate.getQName();
+    }
+
+    public boolean isAnonymous() {
+        return namedDelegate.isAnonymous();
+    }
+
+    public boolean isTopLevel() {
+        return namedDelegate.isTopLevel();
+    }
+
+    public String toString() {
+        return namedDelegate.toString();
     }
 
 }

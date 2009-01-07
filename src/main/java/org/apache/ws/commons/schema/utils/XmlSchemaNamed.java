@@ -28,7 +28,7 @@ import org.apache.ws.commons.schema.XmlSchema;
  * name is <i>not</i> the on-the-wire name for attributes and elements. Those
  * names depend on the form, and are managed by {@link XmlSchemaNamedWithForm}.
  */
-public interface XmlSchemaNamed {
+public interface XmlSchemaNamed extends XmlSchemaObjectBase {
 
     /**
      * Retrieve the name.
