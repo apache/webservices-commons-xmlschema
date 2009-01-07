@@ -133,14 +133,4 @@ public abstract class XmlSchemaObject implements XmlSchemaObjectBase {
     public void setSourceURI(String sourceURI) {
         this.sourceURI = sourceURI;
     }
-
-    public String toString(String prefix, int tab) {
-        String xml = new String();
-        for (int i = 0; i < tab; i++) {
-            xml += "\t";
-        }
-
-        xml += this.getClass().toString() + "\n";
-        return xml;
-    }
 }

@@ -35,14 +35,4 @@ public class XmlSchemaMinInclusiveFacet extends XmlSchemaFacet {
         super(value, fixed);
     }
 
-    public String toString(String prefix, int tab) {
-        StringBuffer xml = new StringBuffer();
-        for (int i = 0; i < tab; i++) {
-            xml.append("\t");
-        }
-        xml.append("<minInclusive value=\"").append(super.getValue()).append("\" ");
-        xml.append("fixed=\"" + super.isFixed() + "\"/>\n");
-        return xml.toString();
-    }
-
 }

@@ -170,61 +170,6 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver,
         this.substitutionGroup = substitutionGroup;
     }
 
-    public String toString(String prefix, int tab) {
-        String xml = new String();
-
-        if (!"".equals(prefix) && prefix.indexOf(":") == -1) {
-            prefix += ":";
-        }
-
-        for (int i = 0; i < tab; i++) {
-            xml += "\t";
-        }
-
-        xml += "<" + prefix + "element ";
-
-        if (!isAnonymous()) {
-            xml += "name=\"" + getName() + "\" ";
-        }
-
-        if (schemaTypeName != null) {
-            xml += "type=\"" + schemaTypeName + "\"";
-        }
-
-        if (ref.getTargetQName() != null) {
-            xml += "ref=\"" + ref.getTargetQName() + "\" ";
-        }
-
-        if (getMinOccurs() != 1) {
-            xml += "minOccurs=\"" + getMinOccurs() + "\" ";
-        }
-
-        if (getMaxOccurs() != 1) {
-            xml += "maxOccurs=\"" + getMaxOccurs() + "\" ";
-        }
-
-        if (nillable) {
-            xml += "nillable=\"" + nillable + "\" ";
-        }
-
-        xml += ">\n";
-
-        if (constraints != null) {
-            xml += constraints.toString(prefix, tab + 1);
-        }
-
-        if (schemaType != null) {
-            xml += schemaType.toString(prefix, tab + 1);
-        }
-        for (int i = 0; i < tab; i++) {
-            xml += "\t";
-        }
-
-        xml += "</" + prefix + "element>\n";
-
-        return xml;
-    }
-
     public void setType(XmlSchemaType type) {
         this.schemaType = type;
     }

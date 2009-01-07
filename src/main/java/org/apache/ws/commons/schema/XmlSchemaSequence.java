@@ -39,26 +39,4 @@ public class XmlSchemaSequence extends XmlSchemaGroupBase {
     public XmlSchemaObjectCollection getItems() {
         return items;
     }
-
-    public String toString(String prefix, int tab) {
-        String xml = new String();
-        for (int i = 0; i < tab; i++) {
-            xml += "\t";
-        }
-        if (!"".equals(prefix) && prefix.indexOf(":") == -1) {
-            prefix += ":";
-        }
-
-        xml += "<" + prefix + "sequence>\n";
-        for (int i = 0; i < items.getCount(); i++) {
-            xml += items.getItem(i).toString(prefix, tab + 1);
-        }
-
-        for (int i = 0; i < tab; i++) {
-            xml += "\t";
-        }
-
-        xml += "</" + prefix + "sequence>\n";
-        return xml;
-    }
 }

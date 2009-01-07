@@ -34,15 +34,4 @@ public class XmlSchemaPatternFacet extends XmlSchemaFacet {
     public XmlSchemaPatternFacet(Object value, boolean fixed) {
         super(value, fixed);
     }
-
-    public String toString(String prefix, int tab) {
-        StringBuffer xml = new StringBuffer();
-        for (int i = 0; i < tab; i++) {
-            xml.append("\t");
-        }
-        xml.append("<pattern value=\"").append(super.getValue()).append("\" ");
-        xml.append("fixed=\"").append(super.isFixed()).append("\"/>\n");
-        return xml.toString();
-    }
-
 }

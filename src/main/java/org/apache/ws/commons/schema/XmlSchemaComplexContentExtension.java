@@ -77,27 +77,4 @@ public class XmlSchemaComplexContentExtension extends XmlSchemaContent {
     public void setParticle(XmlSchemaParticle particle) {
         this.particle = particle;
     }
-
-    public String toString(String prefix, int tab) {
-        String xml = new String();
-        for (int i = 0; i < tab; i++) {
-            xml += "\t";
-        }
-        if (!"".equals(prefix) && prefix.indexOf(":") == -1) {
-            prefix += ":";
-        }
-
-        xml += "<" + prefix + "extension>\n";
-
-        if (particle != null) {
-            xml += particle.toString(prefix, tab + 1);
-        }
-
-        for (int i = 0; i < tab; i++) {
-            xml += "\t";
-        }
-
-        xml += "</" + prefix + "extension>\n";
-        return xml;
-    }
 }

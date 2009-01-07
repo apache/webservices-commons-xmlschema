@@ -58,36 +58,4 @@ public class XmlSchemaSimpleTypeRestriction extends XmlSchemaSimpleTypeContent {
     public XmlSchemaObjectCollection getFacets() {
         return this.facets;
     }
-
-    public String toString(String prefix, int tab) {
-        String xml = new String();
-
-        if (!"".equals(prefix) && prefix.indexOf(":") == -1) {
-            prefix += ":";
-        }
-
-        for (int i = 0; i < tab; i++) {
-            xml += "\t";
-        }
-
-        xml += "<" + prefix + "restriction ";
-
-        if (baseTypeName != null) {
-            xml += "base =\"" + baseTypeName + "\">\n";
-        } else {
-            xml += ">\n";
-            // inline def
-            xml += baseType.toString(prefix, tab + 1);
-        }
-
-        xml += facets.toString(prefix, tab + 1);
-        for (int i = 0; i < tab; i++) {
-            xml += "\t";
-        }
-        xml += "</" + prefix + "restriction>\n";
-
-        return xml;
-
-    }
-
 }

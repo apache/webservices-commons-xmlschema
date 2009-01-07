@@ -73,15 +73,4 @@ public class XmlSchemaObjectCollection {
     public Iterator getIterator() {
         return objects.iterator();
     }
-
-    public String toString(String prefix, int tab) {
-        String xml = new String();
-
-        for (int i = 0; i < getCount(); i++) {
-            xml += getItem(i).toString(prefix, tab);
-        }
-
-        return xml;
-
-    }
 }

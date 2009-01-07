@@ -126,42 +126,6 @@ public class XmlSchemaComplexType extends XmlSchemaType {
     public void setParticle(XmlSchemaParticle particle) {
         this.particle = particle;
     }
-
-    public String toString(String prefix, int tab) {
-        String xml = new String();
-
-        for (int i = 0; i < tab; i++) {
-            xml += "\t";
-        }
-
-        if (!"".equals(prefix) && prefix.indexOf(":") == -1) {
-            prefix += ":";
-        }
-
-        String typeName = !isAnonymous() ? getName() : "";
-
-        xml += "<" + prefix + "complexType name=\"" + typeName + "\">\n";
-
-        if (particle != null) {
-            xml += particle.toString(prefix, tab + 1);
-        }
-
-        if (contentModel != null) {
-            xml += contentModel.toString(prefix, tab + 1);
-        }
-
-        for (int i = 0; i < attributes.getCount(); i++) {
-            xml += attributes.getItem(i).toString(prefix, tab + 1);
-        }
-
-        for (int i = 0; i < tab; i++) {
-            xml += "\t";
-        }
-
-        xml += "</" + prefix + "complexType>\n";
-        return xml;
-    }
-
     /**
      * Return the QName of the base schema type, if any, as defined in the content model.
      */

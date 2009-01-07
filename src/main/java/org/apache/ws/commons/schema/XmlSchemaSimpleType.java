@@ -42,30 +42,4 @@ public class XmlSchemaSimpleType extends XmlSchemaType {
     public void setContent(XmlSchemaSimpleTypeContent content) {
         this.content = content;
     }
-
-    public String toString(String prefix, int tab) {
-        String xml = new String();
-
-        for (int i = 0; i < tab; i++) {
-            xml += "\t";
-        }
-
-        if (!"".equals(prefix) && prefix.indexOf(":") == -1) {
-            prefix += ":";
-        }
-
-        xml += "<" + prefix + "simpleType>\n";
-
-        if (content != null) {
-            xml += content.toString(prefix, tab + 1);
-        }
-
-        for (int i = 0; i < tab; i++) {
-            xml += "\t";
-        }
-
-        xml += "</" + prefix + "simpleType>\n";
-        return xml;
-    }
-
 }

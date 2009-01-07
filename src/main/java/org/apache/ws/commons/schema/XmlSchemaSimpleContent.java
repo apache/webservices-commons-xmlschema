@@ -42,13 +42,4 @@ public class XmlSchemaSimpleContent extends XmlSchemaContentModel {
     public void setContent(XmlSchemaContent content) {
         this.content = content;
     }
-
-    public String toString(String prefix, int tab) {
-        String xml = new String();
-
-        if (!"".equals(prefix) && prefix.indexOf(":") == -1) {
-            prefix += ":";
-        }
-        return xml;
-    }
 }

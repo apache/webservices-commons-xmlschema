@@ -58,25 +58,4 @@ public class XmlSchemaComplexContent extends XmlSchemaContentModel {
     public void setMixed(boolean mixed) {
         this.mixed = mixed;
     }
-
-    public String toString(String prefix, int tab) {
-        String xml = new String();
-        for (int i = 0; i < tab; i++) {
-            xml += "\t";
-        }
-
-        if (!"".equals(prefix) && prefix.indexOf(":") == -1) {
-            prefix += ":";
-        }
-
-        xml += "<" + prefix + "complexContent>\n";
-
-        xml += content.toString(prefix, tab + 1);
-
-        for (int i = 0; i < tab; i++) {
-            xml += "\t";
-        }
-        xml += "<" + prefix + "complexContent>\n";
-        return xml;
-    }
 }
