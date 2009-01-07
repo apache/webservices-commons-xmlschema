@@ -21,35 +21,34 @@ package org.apache.ws.commons.schema;
 
 import javax.xml.namespace.QName;
 
+import org.apache.ws.commons.schema.utils.XmlSchemaNamed;
+import org.apache.ws.commons.schema.utils.XmlSchemaNamedImpl;
+
 /**
  * Class for attribute types. Represents the World Wide Web Consortium (W3C) attribute element.
  */
 
 // October 15th - momo - initial implementation
-public class XmlSchemaAttribute extends XmlSchemaNamed {
+public class XmlSchemaAttribute extends XmlSchemaAnnotated implements XmlSchemaNamed {
 
-    Object attributeType;
-    String defaultValue;
-    String fixedValue;
-    XmlSchemaForm form;
-    XmlSchemaSimpleType schemaType;
-    QName schemaTypeName;
-    QName refName;
-    XmlSchemaUse use;
-
+    private String defaultValue;
+    private String fixedValue;
+    private XmlSchemaForm form;
+    private XmlSchemaSimpleType schemaType;
+    private QName schemaTypeName;
+    private QName refName;
+    private XmlSchemaUse use;
+    private XmlSchemaNamed namedDelegate;
+    
     /**
      * Create a new attribute.
      * @param schema containing scheme.
      * @param topLevel true if a global attribute.
      */
     public XmlSchemaAttribute(XmlSchema schema, boolean topLevel) {
-        super(schema, topLevel);
+        namedDelegate = new XmlSchemaNamedImpl(schema, topLevel);
         form = XmlSchemaForm.NONE;
         use = XmlSchemaUse.NONE;
-    }
-
-    public Object getAttributeType() {
-        return attributeType;
     }
 
     public String getDefaultValue() {
@@ -124,5 +123,39 @@ public class XmlSchemaAttribute extends XmlSchemaNamed {
             + getName() + "\" type=\"" + schemaTypeName + "\"/>\n";
 
         return xml;
+    }
+    
+
+    public String getName() {
+        return namedDelegate.getName();
+    }
+    
+
+    public XmlSchema getParent() {
+        return namedDelegate.getParent();
+    }
+    
+
+    public QName getQName() {
+        return namedDelegate.getQName();
+    }
+    
+
+    public boolean isAnonymous() {
+        return namedDelegate.isAnonymous();
+    }
+    
+
+    public boolean isTopLevel() {
+        return namedDelegate.isTopLevel();
+    }
+    
+
+    public void setName(String name) {
+        namedDelegate.setName(name);
+    }
+
+    public void setForm(XmlSchemaForm form) {
+        this.form = form;
     }
 }

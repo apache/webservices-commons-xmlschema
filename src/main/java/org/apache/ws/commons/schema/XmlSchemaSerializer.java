@@ -365,35 +365,35 @@ public class XmlSchemaSerializer {
 
         Element attribute = createNewElement(doc, "attribute", schema.schemaNamespacePrefix,
                                              XmlSchema.SCHEMA_NS);
-        if (attributeObj.refName != null) {
-            String refName = resolveQName(attributeObj.refName, schema);
+        if (attributeObj.getRefName() != null) {
+            String refName = resolveQName(attributeObj.getRefName(), schema);
             attribute.setAttribute("ref", refName);
         } else if (!attributeObj.isAnonymous()) {
             attribute.setAttribute("name", attributeObj.getName());
         }
 
-        if (attributeObj.schemaTypeName != null) {
-            String typeName = resolveQName(attributeObj.schemaTypeName, schema);
+        if (attributeObj.getSchemaTypeName() != null) {
+            String typeName = resolveQName(attributeObj.getSchemaTypeName(), schema);
             attribute.setAttribute("type", typeName);
         }
 
-        if (attributeObj.defaultValue != null) {
-            attribute.setAttribute("default", attributeObj.defaultValue);
+        if (attributeObj.getDefaultValue() != null) {
+            attribute.setAttribute("default", attributeObj.getDefaultValue());
         }
-        if (attributeObj.fixedValue != null) {
-            attribute.setAttribute("fixed", attributeObj.fixedValue);
+        if (attributeObj.getFixedValue() != null) {
+            attribute.setAttribute("fixed", attributeObj.getFixedValue());
         }
 
-        if (attributeObj.form != XmlSchemaForm.NONE) {
-            attribute.setAttribute("form", attributeObj.form.toString());
+        if (attributeObj.getForm() != XmlSchemaForm.NONE) {
+            attribute.setAttribute("form", attributeObj.getForm().toString());
         }
         
         if (attributeObj.getId() != null) {
             attribute.setAttribute("id", attributeObj.getId());
         }
 
-        if (attributeObj.use != null && attributeObj.use != XmlSchemaUse.NONE) {
-            attribute.setAttribute("use", attributeObj.use.toString());
+        if (attributeObj.getUse() != null && attributeObj.getUse() != XmlSchemaUse.NONE) {
+            attribute.setAttribute("use", attributeObj.getUse().toString());
         }
         
         if (attributeObj.getAnnotation() != null) {
@@ -401,9 +401,9 @@ public class XmlSchemaSerializer {
             attribute.appendChild(annotation);
         }
 
-        if (attributeObj.schemaType != null) {
+        if (attributeObj.getSchemaType() != null) {
             try {
-                XmlSchemaSimpleType simpleType = attributeObj.schemaType;
+                XmlSchemaSimpleType simpleType = attributeObj.getSchemaType();
                 Element simpleTypeEl = serializeSimpleType(doc, simpleType, schema);
                 attribute.appendChild(simpleTypeEl);
             } catch (ClassCastException e) {

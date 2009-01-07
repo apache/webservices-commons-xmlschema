@@ -17,14 +17,17 @@
  * under the License.
  */
 
-package org.apache.ws.commons.schema;
+package org.apache.ws.commons.schema.utils;
 
 import javax.xml.namespace.QName;
 
+import org.apache.ws.commons.schema.XmlSchema;
+import org.apache.ws.commons.schema.XmlSchemaException;
+
 /**
- * Common base class of all of the named objects in the XML Schema model.
- * Note that several of these come in both 'named' and anonymous flavors.
- * This class provides an API that keeps track.
+ * Common class of all of the named objects in the XML Schema model.
+ * Because 'being named' is not part of the XML Schema logical
+ * object hierarchy, this is used as a delegate, not as a base class.
  *
  * By definition, all of these objects live in some particular (parent)
  * schema.
@@ -34,7 +37,7 @@ import javax.xml.namespace.QName;
  * book-keeping.
  * 
  */
-public abstract class XmlSchemaNamed extends XmlSchemaAnnotated {
+public class XmlSchemaNamedImpl implements XmlSchemaNamed {
     
     protected XmlSchema parentSchema;
     // Store the name as a QName for the convenience of QName fans.
@@ -45,15 +48,12 @@ public abstract class XmlSchemaNamed extends XmlSchemaAnnotated {
      * Create a new named object.
      * @param parent the parent schema.
      */
-    protected XmlSchemaNamed(XmlSchema parent, boolean topLevel) {
+    public XmlSchemaNamedImpl(XmlSchema parent, boolean topLevel) {
         this.parentSchema = parent;
         this.topLevel = topLevel;
     }
 
-    /**
-     * Retrieve the name.
-     * @return
-     */
+    /** {@inheritDoc}*/
     public String getName() {
         if (qname == null) {
             return null;
@@ -62,14 +62,12 @@ public abstract class XmlSchemaNamed extends XmlSchemaAnnotated {
         }
     }
     
+    /** {@inheritDoc}*/
     public boolean isAnonymous() {
         return qname == null;
     }
 
-    /**
-     * Set the name. Set to null to render the object anonymous.
-     * @param name
-     */
+    /** {@inheritDoc}*/
     public void setName(String name) {
         if ("".equals(name)) {
             throw new XmlSchemaException("Attempt to set empty name.");
@@ -79,18 +77,17 @@ public abstract class XmlSchemaNamed extends XmlSchemaAnnotated {
         qname = new QName(parentSchema.getLogicalTargetNamespace(), name);
     }
 
-    /**
-     * Retrieve the parent schema.
-     * @return
-     */
+    /** {@inheritDoc}*/
     public XmlSchema getParent() {
         return parentSchema;
     }
     
+    /** {@inheritDoc}*/
     public QName getQName() {
         return qname; 
     }
 
+    /** {@inheritDoc}*/
     public boolean isTopLevel() {
         return topLevel;
     }

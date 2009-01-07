@@ -1178,20 +1178,20 @@ public class SchemaBuilder {
 
         if (attrEl.hasAttribute("type")) {
             String name = attrEl.getAttribute("type");
-            attr.schemaTypeName = getRefQName(name, attrEl);
+            attr.setSchemaTypeName(getRefQName(name, attrEl));
         }
 
         if (attrEl.hasAttribute("default")) {
-            attr.defaultValue = attrEl.getAttribute("default");
+            attr.setDefaultValue(attrEl.getAttribute("default"));
         }
 
         if (attrEl.hasAttribute("fixed")) {
-            attr.fixedValue = attrEl.getAttribute("fixed");
+            attr.setFixedValue(attrEl.getAttribute("fixed"));
         }
 
         if (attrEl.hasAttribute("form")) {
             String formValue = getEnumString(attrEl, "form");
-            attr.form = XmlSchemaForm.schemaValueOf(formValue);
+            attr.setForm(XmlSchemaForm.schemaValueOf(formValue));
         }
         
         if (attrEl.hasAttribute("id")) {
@@ -1200,18 +1200,18 @@ public class SchemaBuilder {
 
         if (attrEl.hasAttribute("use")) {
             String useType = getEnumString(attrEl, "use");
-            attr.use = XmlSchemaUse.schemaValueOf(useType);
+            attr.setUse(XmlSchemaUse.schemaValueOf(useType));
         }
         if (attrEl.hasAttribute("ref")) {
             String name = attrEl.getAttribute("ref");
-            attr.refName = getRefQName(name, attrEl);
+            attr.setRefName(getRefQName(name, attrEl));
             attr.setName(name);
         }
 
         Element simpleTypeEl = XDOMUtil.getFirstChildElementNS(attrEl, XmlSchema.SCHEMA_NS, "simpleType");
 
         if (simpleTypeEl != null) {
-            attr.schemaType = handleSimpleType(schema, simpleTypeEl, schemaEl);
+            attr.setSchemaType(handleSimpleType(schema, simpleTypeEl, schemaEl));
         }
 
         Element annotationEl = XDOMUtil.getFirstChildElementNS(attrEl, XmlSchema.SCHEMA_NS, "annotation");
