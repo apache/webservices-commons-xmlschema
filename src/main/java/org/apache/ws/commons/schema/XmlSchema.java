@@ -606,12 +606,12 @@ public class XmlSchema
 
         XmlSchema xs = (XmlSchema)what;
 
-        if (this.id != null) {
-            if (!this.id.equals(xs.id)) {
+        if (this.getId() != null) {
+            if (!this.getId().equals(xs.getId())) {
                 return false;
             }
         } else {
-            if (xs.id != null) {
+            if (xs.getId() != null) {
                 return false;
             }
         }
@@ -652,7 +652,13 @@ public class XmlSchema
         return inputEncoding;
     }
 
+    public String getLogicalTargetNamespace() {
+        return logicalTargetNamespace;
+    }
+    
     public String toString() {
         return super.toString() + "[" + logicalTargetNamespace + "]";
     }
+
+    
 }

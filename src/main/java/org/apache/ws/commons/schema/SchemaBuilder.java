@@ -460,7 +460,7 @@ public class SchemaBuilder {
         }
 
         if (el.hasAttribute("id")) {
-            element.id = el.getAttribute("id");
+            element.setId(el.getAttribute("id"));
         }
 
         if (el.hasAttribute("nillable")) {
@@ -881,7 +881,7 @@ public class SchemaBuilder {
             XmlSchemaAttribute attr = handleAttribute(currentSchema, el, schemaEl, true); // pass true to
             // indicate that it is
             // a top level child
-            currentSchema.attributes.collection.put(attr.qualifiedName, attr);
+            currentSchema.attributes.collection.put(attr.getQName(), attr);
             currentSchema.items.add(attr);
         } else if (el.getLocalName().equals("redefine")) {
             XmlSchemaRedefine redefine = handleRedefine(currentSchema, el, schemaEl);
@@ -914,7 +914,7 @@ public class SchemaBuilder {
         currentSchema.setFinalDefault(this.getDerivation(schemaEl, "finalDefault"));
         /* set id attribute */
         if (schemaEl.hasAttribute("id")) {
-            currentSchema.id = schemaEl.getAttribute("id");
+            currentSchema.setId(schemaEl.getAttribute("id"));
         }
 
         currentSchema.setSourceURI(systemId);
@@ -1133,7 +1133,7 @@ public class SchemaBuilder {
             anyAttr.processContent = XmlSchemaContentProcessing.schemaValueOf(contentProcessing);
         }
         if (anyAttrEl.hasAttribute("id")) {
-            anyAttr.id = anyAttrEl.getAttribute("id");
+            anyAttr.setId(anyAttrEl.getAttribute("id"));
         }
 
         Element annotationEl = XDOMUtil.getFirstChildElementNS(anyAttrEl, XmlSchema.SCHEMA_NS, "annotation");
@@ -1169,27 +1169,11 @@ public class SchemaBuilder {
      */
     private XmlSchemaAttribute handleAttribute(XmlSchema schema, Element attrEl, Element schemaEl,
                                                boolean topLevel) {
-        // todo: need to implement different rule of attribute such as
-        // restriction between ref and name. This can be implemented
-        // in the compile function
-        XmlSchemaAttribute attr = new XmlSchemaAttribute();
+        XmlSchemaAttribute attr = new XmlSchemaAttribute(schema, topLevel);
 
         if (attrEl.hasAttribute("name")) {
             String name = attrEl.getAttribute("name");
-            // String namespace = (schema.targetNamespace==null)?
-            // "" :schema.targetNamespace;
-
-            attr.name = name;
-        }
-
-        boolean isQualified = schema.getAttributeFormDefault() == XmlSchemaForm.QUALIFIED;
-        if (attr.name != null) {
-            final String name = attr.name;
-            if (topLevel) {
-                attr.qualifiedName = newLocalQName(name);
-            } else {
-                attr.qualifiedName = isQualified ? newLocalQName(name) : new QName(name);
-            }
+            attr.setName(name);
         }
 
         if (attrEl.hasAttribute("type")) {
@@ -1211,7 +1195,7 @@ public class SchemaBuilder {
         }
         
         if (attrEl.hasAttribute("id")) {
-            attr.id = attrEl.getAttribute("id");
+            attr.setId(attrEl.getAttribute("id"));
         }
 
         if (attrEl.hasAttribute("use")) {
@@ -1221,7 +1205,7 @@ public class SchemaBuilder {
         if (attrEl.hasAttribute("ref")) {
             String name = attrEl.getAttribute("ref");
             attr.refName = getRefQName(name, attrEl);
-            attr.name = name;
+            attr.setName(name);
         }
 
         Element simpleTypeEl = XDOMUtil.getFirstChildElementNS(attrEl, XmlSchema.SCHEMA_NS, "simpleType");
@@ -1294,7 +1278,7 @@ public class SchemaBuilder {
             attrGroup.name = new QName(schema.getTargetNamespace(), groupEl.getAttribute("name"));
         }
         if (groupEl.hasAttribute("id")) {
-            attrGroup.id = groupEl.getAttribute("id");
+            attrGroup.setId(groupEl.getAttribute("id"));
         }
 
         for (Element el = XDOMUtil.getFirstChildElementNS(groupEl, XmlSchema.SCHEMA_NS); 
@@ -1327,7 +1311,7 @@ public class SchemaBuilder {
         }
 
         if (attrGroupEl.hasAttribute("id")) {
-            attrGroup.id = attrGroupEl.getAttribute("id");
+            attrGroup.setId(attrGroupEl.getAttribute("id"));
         }
 
         Element annotationEl = XDOMUtil
@@ -1344,7 +1328,7 @@ public class SchemaBuilder {
         XmlSchemaChoice choice = new XmlSchemaChoice();
 
         if (choiceEl.hasAttribute("id")) {
-            choice.id = choiceEl.getAttribute("id");
+            choice.setId(choiceEl.getAttribute("id"));
         }
 
         choice.minOccurs = getMinOccurs(choiceEl);
@@ -1600,7 +1584,7 @@ public class SchemaBuilder {
         XmlSchemaNotation notation = new XmlSchemaNotation();
 
         if (notationEl.hasAttribute("id")) {
-            notation.id = notationEl.getAttribute("id");
+            notation.setId(notationEl.getAttribute("id"));
         }
 
         if (notationEl.hasAttribute("name")) {
@@ -1783,7 +1767,7 @@ public class SchemaBuilder {
         }
 
         if (restrictionEl.hasAttribute("id")) {
-            restriction.id = restrictionEl.getAttribute("id");
+            restriction.setId(restrictionEl.getAttribute("id"));
         }
 
         // check back simpleContent tag children to add attributes and simpleType if any occur

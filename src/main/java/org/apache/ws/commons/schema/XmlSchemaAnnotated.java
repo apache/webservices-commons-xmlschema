@@ -22,26 +22,17 @@ package org.apache.ws.commons.schema;
 import org.w3c.dom.Attr;
 
 /**
- * The base class for any element that can contain annotation elements.
+ * The base class for any element that can contain an annotation element.
+ * This class also provides storage for an id and a set of non-XML-schema
+ *  XML attributes.
  */
 
-public class XmlSchemaAnnotated extends XmlSchemaObject {
+public abstract class XmlSchemaAnnotated extends XmlSchemaObject {
     
-    /**
-     * Defines an annotation. Creates an annotation element. Represents the W3C annotation element.
-     */
-    XmlSchemaAnnotation annotation;
-    String id;
-
-    // Stores qualified attributes that do not belong to the schema target namespace.
+    private XmlSchemaAnnotation annotation;
+    private String id;
     private Attr[] unhandledAttributes;
 
-
-    /**
-     * Creates new XmlSchemaAnnotated
-     */
-    public XmlSchemaAnnotated() {
-    }
 
     public String getId() {
         return id;

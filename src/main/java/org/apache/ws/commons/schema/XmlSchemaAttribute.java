@@ -26,23 +26,24 @@ import javax.xml.namespace.QName;
  */
 
 // October 15th - momo - initial implementation
-public class XmlSchemaAttribute extends XmlSchemaAnnotated {
+public class XmlSchemaAttribute extends XmlSchemaNamed {
 
     Object attributeType;
     String defaultValue;
     String fixedValue;
-    String name;
     XmlSchemaForm form;
     XmlSchemaSimpleType schemaType;
     QName schemaTypeName;
-    QName qualifiedName;
     QName refName;
     XmlSchemaUse use;
 
     /**
-     * Creates new XmlSchemaAttribute
+     * Create a new attribute.
+     * @param schema containing scheme.
+     * @param topLevel true if a global attribute.
      */
-    public XmlSchemaAttribute() {
+    public XmlSchemaAttribute(XmlSchema schema, boolean topLevel) {
+        super(schema, topLevel);
         form = XmlSchemaForm.NONE;
         use = XmlSchemaUse.NONE;
     }
@@ -73,22 +74,6 @@ public class XmlSchemaAttribute extends XmlSchemaAnnotated {
 
     public void setSchemaForm(XmlSchemaForm formValue) {
         this.form = formValue;
-    }
-
-    public QName getQName() {
-        return qualifiedName;
-    }
-
-    public void setQName(QName qualifiedNameValue) {
-        this.qualifiedName = qualifiedNameValue;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public QName getRefName() {
@@ -135,7 +120,8 @@ public class XmlSchemaAttribute extends XmlSchemaAnnotated {
             xml += "\t";
         }
 
-        xml += "<" + prefix + "attribute name=\"" + name + "\" type=\"" + schemaTypeName + "\"/>\n";
+        xml += "<" + prefix + "attribute name=\"" 
+            + getName() + "\" type=\"" + schemaTypeName + "\"/>\n";
 
         return xml;
     }
