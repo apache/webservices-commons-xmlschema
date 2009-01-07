@@ -23,7 +23,6 @@
     <xsl:strip-space elements="*"/>
     
     <xsl:param name="checkstyleconfig"/>
-    <xsl:param name="checkstyleconfigcorba"/>
 
     <xsl:template match="*">
         <xsl:copy>
@@ -38,12 +37,9 @@
             <xsl:apply-templates/>
 
             <xsl:choose>
-                <xsl:when test="not(check-configuration/@name='CXF CORBA Checks')">
-                    <check-configuration name="CXF Checks" type="external" description="">
+                <xsl:when test="not(check-configuration/@name='XmlSchema Checks')">
+                    <check-configuration name="XmlSchema Checks" type="external" description="">
                         <xsl:attribute name="location"><xsl:value-of select="$checkstyleconfig"/></xsl:attribute>
-                    </check-configuration>
-                    <check-configuration name="CXF CORBA Checks" type="external" description="">
-                        <xsl:attribute name="location"><xsl:value-of select="$checkstyleconfigcorba"/></xsl:attribute>
                     </check-configuration>
                 </xsl:when>
             </xsl:choose>

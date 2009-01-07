@@ -34,7 +34,7 @@ import org.apache.ws.commons.schema.XmlSchemaType;
  * Implementation for ref='QName', a common construct in the schema.
  */
 public class XmlSchemaRef<T extends XmlSchemaNamed> {
-    private Class<T> targetClass;
+    private Class<? extends T> targetClass;
     private XmlSchema parent;
     private QName targetQName;
     private T targetObject;
@@ -46,18 +46,19 @@ public class XmlSchemaRef<T extends XmlSchemaNamed> {
     
     public T getTarget() {
         if (targetObject == null) {
+            Class<?> cls = targetClass;
             XmlSchemaCollection parentCollection = parent.getParent();
-            if (targetClass == XmlSchemaElement.class) {
+            if (cls == XmlSchemaElement.class) {
                 targetObject = targetClass.cast(parentCollection.getElementByQName(targetQName));
-            } else if (targetClass == XmlSchemaAttribute.class) {
+            } else if (cls == XmlSchemaAttribute.class) {
                 targetObject = targetClass.cast(parentCollection.getAttributeByQName(targetQName));
-            } else if (targetClass == XmlSchemaType.class) {
+            } else if (cls == XmlSchemaType.class) {
                 targetObject = targetClass.cast(parentCollection.getTypeByQName(targetQName));
-            } else if (targetClass == XmlSchemaAttributeGroup.class) {
+            } else if (cls == XmlSchemaAttributeGroup.class) {
                 targetObject = targetClass.cast(parentCollection.getAttributeGroupByQName(targetQName));
-            } else if (targetClass == XmlSchemaGroup.class) {
+            } else if (cls == XmlSchemaGroup.class) {
                 targetObject = targetClass.cast(parentCollection.getGroupByQName(targetQName));
-            } else if (targetClass == XmlSchemaNotation.class) {
+            } else if (cls == XmlSchemaNotation.class) {
                 targetObject = targetClass.cast(parentCollection.getNotationByQName(targetQName));
             }
         }
