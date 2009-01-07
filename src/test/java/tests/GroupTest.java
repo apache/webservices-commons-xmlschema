@@ -117,13 +117,13 @@ public class GroupTest extends Assert {
             XmlSchemaElement e = (XmlSchemaElement)iterator.next();
             String eName = e.getName();
             if ("fullPrice".equals(eName)) {
-                assertEquals(new QName("", "fullPrice"), e.getQName());
+                assertEquals(new QName("", "fullPrice"), e.getWireName());
             } else if ("salePrice".equals(eName)) {
-                assertEquals(new QName("", "salePrice"), e.getQName());
+                assertEquals(new QName("", "salePrice"), e.getWireName());
             } else if ("clearancePrice".equals(eName)) {
-                assertEquals(new QName("", "clearancePrice"), e.getQName());
+                assertEquals(new QName("", "clearancePrice"), e.getWireName());
             } else if ("freePrice".equals(eName)) {
-                assertEquals(new QName("", "freePrice"), e.getQName());
+                assertEquals(new QName("", "freePrice"), e.getWireName());
             } else {
                 fail("The name \"" + eName + "\" was found but shouldn't " + "have been found.");
             }

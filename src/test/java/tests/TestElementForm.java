@@ -58,10 +58,10 @@ public class TestElementForm extends Assert {
         XmlSchemaObjectCollection items = seq.getItems();
         XmlSchemaElement subElement;
         subElement = (XmlSchemaElement)items.getItem(0);
-        QName qname = subElement.getQName();
+        QName qname = subElement.getWireName();
         assertEquals("Namespace on unqualified element", "", qname.getNamespaceURI());
         subElement = (XmlSchemaElement)items.getItem(1);
-        qname = subElement.getQName();
+        qname = subElement.getWireName();
         assertEquals("Bad namespace on qualified element", NS, qname.getNamespaceURI());
     }
 }

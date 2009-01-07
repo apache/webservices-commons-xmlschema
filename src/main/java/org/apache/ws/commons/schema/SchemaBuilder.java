@@ -376,10 +376,10 @@ public class SchemaBuilder {
      */
     XmlSchemaElement handleElement(XmlSchema schema, Element el, Element schemaEl, boolean isGlobal) {
 
-        XmlSchemaElement element = new XmlSchemaElement();
+        XmlSchemaElement element = new XmlSchemaElement(schema, isGlobal);
 
         if (el.getAttributeNode("name") != null) {
-            element.name = el.getAttribute("name");
+            element.setName(el.getAttribute("name"));
         }
 
         // String namespace = (schema.targetNamespace==null)?
@@ -401,19 +401,19 @@ public class SchemaBuilder {
         if (simpleTypeEl != null) {
 
             XmlSchemaSimpleType simpleType = handleSimpleType(schema, simpleTypeEl, schemaEl);
-            element.schemaType = simpleType;
-            element.schemaTypeName = simpleType.getQName();
+            element.setSchemaType(simpleType);
+            element.setSchemaTypeName(simpleType.getQName());
         } else {
             complexTypeEl = XDOMUtil.getFirstChildElementNS(el, XmlSchema.SCHEMA_NS, "complexType");
             if (complexTypeEl != null) {
-                element.schemaType = handleComplexType(schema, complexTypeEl, schemaEl);
+                element.setSchemaType(handleComplexType(schema, complexTypeEl, schemaEl));
             }
         }
 
         keyEl = XDOMUtil.getFirstChildElementNS(el, XmlSchema.SCHEMA_NS, "key");
         if (keyEl != null) {
             while (keyEl != null) {
-                element.constraints.add(handleConstraint(keyEl, XmlSchemaKey.class));
+                element.getConstraints().add(handleConstraint(keyEl, XmlSchemaKey.class));
                 keyEl = XDOMUtil.getNextSiblingElement(keyEl, "key");
             }
         }
@@ -426,7 +426,7 @@ public class SchemaBuilder {
                     String name = keyrefEl.getAttribute("refer");
                     keyRef.refer = getRefQName(name, el);
                 }
-                element.constraints.add(keyRef);
+                element.getConstraints().add(keyRef);
                 keyrefEl = XDOMUtil.getNextSiblingElement(keyrefEl, "keyref");
             }
         }
@@ -434,29 +434,29 @@ public class SchemaBuilder {
         uniqueEl = XDOMUtil.getFirstChildElementNS(el, XmlSchema.SCHEMA_NS, "unique");
         if (uniqueEl != null) {
             while (uniqueEl != null) {
-                element.constraints.add(handleConstraint(uniqueEl, XmlSchemaUnique.class));
+                element.getConstraints().add(handleConstraint(uniqueEl, XmlSchemaUnique.class));
                 uniqueEl = XDOMUtil.getNextSiblingElement(uniqueEl, "unique");
             }
         }
 
         if (el.hasAttribute("abstract")) {
-            element.abstractElement = Boolean.valueOf(el.getAttribute("abstract")).booleanValue();
+            element.setAbstractElement(Boolean.valueOf(el.getAttribute("abstract")).booleanValue());
         }
 
         if (el.hasAttribute("block")) {
-            element.block = getDerivation(el, "block");
+            element.setBlock(getDerivation(el, "block"));
         }
 
         if (el.hasAttribute("default")) {
-            element.defaultValue = el.getAttribute("default");
+            element.setDefaultValue(el.getAttribute("default"));
         }
 
         if (el.hasAttribute("final")) {
-            element.finalDerivation = getDerivation(el, "final");
+            element.setFinalDerivation(getDerivation(el, "final"));
         }
 
         if (el.hasAttribute("fixed")) {
-            element.fixedValue = el.getAttribute("fixed");
+            element.setFixedValue(el.getAttribute("fixed"));
         }
 
         if (el.hasAttribute("id")) {
@@ -464,7 +464,7 @@ public class SchemaBuilder {
         }
 
         if (el.hasAttribute("nillable")) {
-            element.nillable = Boolean.valueOf(el.getAttribute("nillable")).booleanValue();
+            element.setNillable(Boolean.valueOf(el.getAttribute("nillable")).booleanValue());
         }
 
         if (el.hasAttribute("substitutionGroup")) {
@@ -472,8 +472,8 @@ public class SchemaBuilder {
             element.setSubstitutionGroup(getRefQName(substitutionGroup, el));
         }
 
-        element.minOccurs = getMinOccurs(el);
-        element.maxOccurs = getMaxOccurs(el);
+        element.setMinOccurs(getMinOccurs(el));
+        element.setMaxOccurs(getMaxOccurs(el));
 
         // process extra attributes and elements
         processExtensibilityComponents(element, el);
@@ -484,20 +484,20 @@ public class SchemaBuilder {
     private void handleElementGlobalType(Element el, XmlSchemaElement element) {
         if (el.getAttributeNode("type") != null) {
             String typeName = el.getAttribute("type");
-            element.schemaTypeName = getRefQName(typeName, el);
-            QName typeQName = element.schemaTypeName;
+            element.setSchemaTypeName(getRefQName(typeName, el));
+            QName typeQName = element.getSchemaTypeName();
 
             XmlSchemaType type = collection.getTypeByQName(typeQName);
             if (type == null) {
                 // Could be a forward reference...
                 collection.addUnresolvedType(typeQName, element);
             }
-            element.schemaType = type;
+            element.setSchemaType(type);
         } else if (el.getAttributeNode("ref") != null) {
             String refName = el.getAttribute("ref");
             QName refQName = getRefQName(refName, el);
             element.setRefName(refQName);
-            element.name = refQName.getLocalPart();
+            element.setName(refQName.getLocalPart());
         }
     }
 
@@ -512,19 +512,15 @@ public class SchemaBuilder {
     }
 
     private void handleElementName(boolean isGlobal, XmlSchemaElement element, boolean isQualified) {
-        if (element.name != null) {
-            final String name = element.name;
-            element.qualifiedName = isQualified || isGlobal
-                ? newLocalQName(name) : new QName(Constants.NULL_NS_URI, name);
-        }
     }
 
     private boolean handleElementForm(Element el, XmlSchemaElement element, boolean isQualified) {
         if (el.hasAttribute("form")) {
             String formDef = el.getAttribute("form");
-            element.form = XmlSchemaForm.schemaValueOf(formDef);
-            isQualified = element.form == XmlSchemaForm.QUALIFIED;
+            element.setForm(XmlSchemaForm.schemaValueOf(formDef));
         }
+        isQualified = element.getForm() == XmlSchemaForm.QUALIFIED;
+
         return isQualified;
     }
 
@@ -853,10 +849,10 @@ public class SchemaBuilder {
             collection.resolveType(type.getQName(), type);
         } else if (el.getLocalName().equals("element")) {
             XmlSchemaElement element = handleElement(currentSchema, el, schemaEl, true);
-            if (element.qualifiedName != null) {
-                currentSchema.elements.collection.put(element.qualifiedName, element);
-            } else if (element.refName != null) {
-                currentSchema.elements.collection.put(element.refName, element);
+            if (element.isTopLevel()) {
+                currentSchema.elements.collection.put(element.getQName(), element);
+            } else if (element.getRefName() != null) {
+                currentSchema.elements.collection.put(element.getRefName(), element);
             }
             currentSchema.items.add(element);
         } else if (el.getLocalName().equals("include")) {
@@ -1072,8 +1068,8 @@ public class SchemaBuilder {
         XmlSchemaAll all = new XmlSchemaAll();
 
         // handle min and max occurences
-        all.minOccurs = getMinOccurs(allEl);
-        all.maxOccurs = getMaxOccurs(allEl);
+        all.setMinOccurs(getMinOccurs(allEl));
+        all.setMaxOccurs(getMaxOccurs(allEl));
 
         for (Element el = XDOMUtil.getFirstChildElementNS(allEl, XmlSchema.SCHEMA_NS); 
             el != null; 
@@ -1111,8 +1107,8 @@ public class SchemaBuilder {
             XmlSchemaAnnotation annotation = handleAnnotation(annotationEl);
             any.setAnnotation(annotation);
         }
-        any.minOccurs = getMinOccurs(anyEl);
-        any.maxOccurs = getMaxOccurs(anyEl);
+        any.setMinOccurs(getMinOccurs(anyEl));
+        any.setMaxOccurs(getMaxOccurs(anyEl));
 
         return any;
     }
@@ -1331,8 +1327,8 @@ public class SchemaBuilder {
             choice.setId(choiceEl.getAttribute("id"));
         }
 
-        choice.minOccurs = getMinOccurs(choiceEl);
-        choice.maxOccurs = getMaxOccurs(choiceEl);
+        choice.setMinOccurs(getMinOccurs(choiceEl));
+        choice.setMaxOccurs(getMaxOccurs(choiceEl));
 
         for (Element el = XDOMUtil.getFirstChildElementNS(choiceEl, XmlSchema.SCHEMA_NS); 
              el != null; 
@@ -1548,8 +1544,8 @@ public class SchemaBuilder {
 
         XmlSchemaGroupRef group = new XmlSchemaGroupRef();
 
-        group.maxOccurs = getMaxOccurs(groupEl);
-        group.minOccurs = getMinOccurs(groupEl);
+        group.setMaxOccurs(getMaxOccurs(groupEl));
+        group.setMinOccurs(getMinOccurs(groupEl));
 
         Element annotationEl = XDOMUtil.getFirstChildElementNS(groupEl, XmlSchema.SCHEMA_NS, "annotation");
 
@@ -1677,8 +1673,8 @@ public class SchemaBuilder {
         XmlSchemaSequence sequence = new XmlSchemaSequence();
 
         // handle min and max occurences
-        sequence.minOccurs = getMinOccurs(sequenceEl);
-        sequence.maxOccurs = getMaxOccurs(sequenceEl);
+        sequence.setMinOccurs(getMinOccurs(sequenceEl));
+        sequence.setMaxOccurs(getMaxOccurs(sequenceEl));
 
         for (Element el = XDOMUtil.getFirstChildElementNS(sequenceEl, XmlSchema.SCHEMA_NS); 
              el != null; 
@@ -1820,14 +1816,6 @@ public class SchemaBuilder {
                 return pValue == null || Constants.NULL_NS_URI.equals(pValue);
             }
         };
-    }
-
-    private QName newLocalQName(String pLocalName) {
-        String uri = currentSchema.logicalTargetNamespace;
-        if (uri == null) {
-            uri = Constants.NULL_NS_URI;
-        }
-        return new QName(uri, pLocalName);
     }
 
     /**

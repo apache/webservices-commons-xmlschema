@@ -1012,35 +1012,35 @@ public class XmlSchemaSerializer {
         Element serializedEl = createNewElement(doc, "element", schema.schemaNamespacePrefix,
                                                 XmlSchema.SCHEMA_NS);
 
-        if (elementObj.refName != null) {
+        if (elementObj.getRefName() != null) {
 
-            String resolvedName = resolveQName(elementObj.refName, schema);
+            String resolvedName = resolveQName(elementObj.getRefName(), schema);
             serializedEl.setAttribute("ref", resolvedName);
-        } else if (elementObj.name != null && elementObj.name.length() > 0) {
-            serializedEl.setAttribute("name", elementObj.name);
+        } else if (!elementObj.isAnonymous()) {
+            serializedEl.setAttribute("name", elementObj.getName());
         }
 
-        if (elementObj.abstractElement) {
+        if (elementObj.isAbstractElement()) {
             serializedEl.setAttribute("abstract", "true");
         }
 
-        if (elementObj.block != null && elementObj.block != XmlSchemaDerivationMethod.NONE) {
-            serializedEl.setAttribute("block", elementObj.block.toString());
+        if (elementObj.getBlock() != null && elementObj.getBlock() != XmlSchemaDerivationMethod.NONE) {
+            serializedEl.setAttribute("block", elementObj.getBlock().toString());
         }
-        if (elementObj.defaultValue != null) {
-            serializedEl.setAttribute("default", elementObj.defaultValue);
-        }
-
-        if (elementObj.finalDerivation != null 
-            && elementObj.finalDerivation != XmlSchemaDerivationMethod.NONE) {
-            serializedEl.setAttribute("final", elementObj.finalDerivation.toString());
-        }
-        if (elementObj.fixedValue != null) {
-            serializedEl.setAttribute("fixed", elementObj.fixedValue);
+        if (elementObj.getDefaultValue() != null) {
+            serializedEl.setAttribute("default", elementObj.getDefaultValue());
         }
 
-        if (elementObj.form != XmlSchemaForm.NONE) {
-            serializedEl.setAttribute("form", elementObj.form.toString());
+        if (elementObj.getFinalDerivation() != null 
+            && elementObj.getFinalDerivation() != XmlSchemaDerivationMethod.NONE) {
+            serializedEl.setAttribute("final", elementObj.getFinalDerivation().toString());
+        }
+        if (elementObj.getFixedValue() != null) {
+            serializedEl.setAttribute("fixed", elementObj.getFixedValue());
+        }
+
+        if (elementObj.isFormSpecified()) {
+            serializedEl.setAttribute("form", elementObj.getForm().toString());
         }
         
         if (elementObj.getId() != null) {
@@ -1049,41 +1049,43 @@ public class XmlSchemaSerializer {
 
         serializeMaxMinOccurs(elementObj, serializedEl);
 
-        if (elementObj.substitutionGroup != null) {
-            String resolvedQName = resolveQName(elementObj.substitutionGroup, schema);
+        if (elementObj.getSubstitutionGroup() != null) {
+            String resolvedQName = resolveQName(elementObj.getSubstitutionGroup(), schema);
             serializedEl.setAttribute("substitutionGroup", resolvedQName);
         }
-        if (elementObj.schemaTypeName != null) {
-            String resolvedName = resolveQName(elementObj.schemaTypeName, schema);
+        if (elementObj.getSchemaTypeName() != null) {
+            String resolvedName = resolveQName(elementObj.getSchemaTypeName(), schema);
             serializedEl.setAttribute("type", resolvedName);
         }
         if (elementObj.getAnnotation() != null) {
             Element annotationEl = serializeAnnotation(doc, elementObj.getAnnotation(), schema);
             serializedEl.appendChild(annotationEl);
         }
-        if (elementObj.schemaType != null && elementObj.schemaTypeName == null) {
-            if (elementObj.schemaType instanceof XmlSchemaComplexType) {
+        if (elementObj.getSchemaType() != null && elementObj.getSchemaTypeName() == null) {
+            if (elementObj.getSchemaType() instanceof XmlSchemaComplexType) {
 
-                Element complexType = serializeComplexType(doc, (XmlSchemaComplexType)elementObj.schemaType,
-                                                           schema);
+                Element complexType = 
+                    serializeComplexType(doc, 
+                                         (XmlSchemaComplexType)elementObj.getSchemaType(),
+                                         schema);
                 serializedEl.appendChild(complexType);
-            } else if (elementObj.schemaType instanceof XmlSchemaSimpleType) {
-                Element simpleType = serializeSimpleType(doc, (XmlSchemaSimpleType)elementObj.schemaType,
+            } else if (elementObj.getSchemaType() instanceof XmlSchemaSimpleType) {
+                Element simpleType = serializeSimpleType(doc, (XmlSchemaSimpleType)elementObj.getSchemaType(),
                                                          schema);
                 serializedEl.appendChild(simpleType);
             }
         }
-        if (elementObj.constraints.getCount() > 0) {
-            for (int i = 0; i < elementObj.constraints.getCount(); i++) {
+        if (elementObj.getConstraints().getCount() > 0) {
+            for (int i = 0; i < elementObj.getConstraints().getCount(); i++) {
                 Element constraint = serializeIdentityConstraint(
                                                                  doc,
                                                                  (XmlSchemaIdentityConstraint)
-                                                                 elementObj.constraints
+                                                                 elementObj.getConstraints()
                                                                      .getItem(i), schema);
                 serializedEl.appendChild(constraint);
             }
         }
-        if (elementObj.nillable) {
+        if (elementObj.isNillable()) {
             serializedEl.setAttribute("nillable", "true");
         }
 
@@ -2268,17 +2270,18 @@ public class XmlSchemaSerializer {
      * @param element
      */
     private void serializeMaxMinOccurs(XmlSchemaParticle particle, Element element) {
-        if (particle.maxOccurs < Long.MAX_VALUE && (particle.maxOccurs > 1 || particle.maxOccurs == 0)) {
-            element.setAttribute("maxOccurs", particle.maxOccurs + "");
-        } else if (particle.maxOccurs == Long.MAX_VALUE) {
+        if (particle.getMaxOccurs() < Long.MAX_VALUE 
+            && (particle.getMaxOccurs() > 1 || particle.getMaxOccurs() == 0)) {
+            element.setAttribute("maxOccurs", particle.getMaxOccurs() + "");
+        } else if (particle.getMaxOccurs() == Long.MAX_VALUE) {
             element.setAttribute("maxOccurs", "unbounded");
             // else not serialized
         }
 
         // 1 is the default and hence not serialized
         // there is no valid case where min occurs can be unbounded!
-        if (particle.minOccurs > 1 || particle.minOccurs == 0) {
-            element.setAttribute("minOccurs", particle.minOccurs + "");
+        if (particle.getMinOccurs() > 1 || particle.getMinOccurs() == 0) {
+            element.setAttribute("minOccurs", particle.getMinOccurs() + "");
         }
     }
 

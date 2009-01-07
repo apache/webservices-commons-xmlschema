@@ -178,47 +178,6 @@ public final class XmlSchemaCollection {
         return stack.indexOf(pKey) == -1;
     }
 
-    /**
-     * Find a global attribute by QName in this collection of schemas.
-     * 
-     * @param schemaAttributeName the name of the attribute.
-     * @return the attribute or null.
-     */
-    public XmlSchemaAttribute getAttributeByQName(QName schemaAttributeName) {
-        String uri = schemaAttributeName.getNamespaceURI();
-        for (Iterator iter = schemas.entrySet().iterator(); iter.hasNext();) {
-            Map.Entry entry = (Map.Entry)iter.next();
-            if (((SchemaKey)entry.getKey()).getNamespace().equals(uri)) {
-                XmlSchemaAttribute attribute = ((XmlSchema)entry.getValue())
-                    .getAttributeByName(schemaAttributeName);
-                if (attribute != null) {
-                    return attribute;
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Retrieve a global element from the schema collection.
-     * 
-     * @param qname the element QName.
-     * @return the element object, or null.
-     */
-    public XmlSchemaElement getElementByQName(QName qname) {
-        String uri = qname.getNamespaceURI();
-        for (Iterator iter = schemas.entrySet().iterator(); iter.hasNext();) {
-            Map.Entry entry = (Map.Entry)iter.next();
-            if (((SchemaKey)entry.getKey()).getNamespace().equals(uri)) {
-                XmlSchemaElement element = ((XmlSchema)entry.getValue()).getElementByName(qname);
-                if (element != null) {
-                    return element;
-                }
-            }
-        }
-        return null;
-    }
-
     public ExtensionRegistry getExtReg() {
         return extReg;
     }
@@ -713,4 +672,92 @@ public final class XmlSchemaCollection {
         }
         return doc;
     }
+    
+    /**
+     * Find a global attribute by QName in this collection of schemas.
+     * 
+     * @param schemaAttributeName the name of the attribute.
+     * @return the attribute or null.
+     */
+    public XmlSchemaAttribute getAttributeByQName(QName schemaAttributeName) {
+        String uri = schemaAttributeName.getNamespaceURI();
+        for (Iterator iter = schemas.entrySet().iterator(); iter.hasNext();) {
+            Map.Entry entry = (Map.Entry)iter.next();
+            if (((SchemaKey)entry.getKey()).getNamespace().equals(uri)) {
+                XmlSchemaAttribute attribute = ((XmlSchema)entry.getValue())
+                    .getAttributeByName(schemaAttributeName);
+                if (attribute != null) {
+                    return attribute;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Retrieve a global element from the schema collection.
+     * 
+     * @param qname the element QName.
+     * @return the element object, or null.
+     */
+    public XmlSchemaElement getElementByQName(QName qname) {
+        String uri = qname.getNamespaceURI();
+        for (Iterator iter = schemas.entrySet().iterator(); iter.hasNext();) {
+            Map.Entry entry = (Map.Entry)iter.next();
+            if (((SchemaKey)entry.getKey()).getNamespace().equals(uri)) {
+                XmlSchemaElement element = ((XmlSchema)entry.getValue()).getElementByName(qname);
+                if (element != null) {
+                    return element;
+                }
+            }
+        }
+        return null;
+    }
+
+    
+    public XmlSchemaAttributeGroup getAttributeGroupByQName(QName name) {
+        String uri = name.getNamespaceURI();
+        for (Iterator iter = schemas.entrySet().iterator(); iter.hasNext();) {
+            Map.Entry entry = (Map.Entry)iter.next();
+            if (((SchemaKey)entry.getKey()).getNamespace().equals(uri)) {
+                XmlSchemaAttributeGroup group = ((XmlSchema)entry.getValue())
+                    .getAttributeGroupByName(name);
+                if (group != null) {
+                    return group;
+                }
+            }
+        }
+        return null;
+    }
+    
+    public XmlSchemaGroup getGroupByQName(QName name) {
+        String uri = name.getNamespaceURI();
+        for (Iterator iter = schemas.entrySet().iterator(); iter.hasNext();) {
+            Map.Entry entry = (Map.Entry)iter.next();
+            if (((SchemaKey)entry.getKey()).getNamespace().equals(uri)) {
+                XmlSchemaGroup group = ((XmlSchema)entry.getValue())
+                    .getGroupByName(name);
+                if (group != null) {
+                    return group;
+                }
+            }
+        }
+        return null;
+    }
+    
+    public XmlSchemaNotation getNotationByQName(QName name) {
+        String uri = name.getNamespaceURI();
+        for (Iterator iter = schemas.entrySet().iterator(); iter.hasNext();) {
+            Map.Entry entry = (Map.Entry)iter.next();
+            if (((SchemaKey)entry.getKey()).getNamespace().equals(uri)) {
+                XmlSchemaNotation notation = ((XmlSchema)entry.getValue())
+                    .getNotationByName(name);
+                if (notation != null) {
+                    return notation;
+                }
+            }
+        }
+        return null;
+    }
+
 }

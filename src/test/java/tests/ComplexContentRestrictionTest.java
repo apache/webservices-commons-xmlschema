@@ -87,19 +87,19 @@ public class ComplexContentRestrictionTest extends Assert {
             XmlSchemaElement xse = (XmlSchemaElement)col.getItem(i);
             String name = xse.getName();
             if ("Name".equals(name)) {
-                assertEquals(new QName("", "Name"), xse.getQName());
+                assertEquals(new QName("", "Name"), xse.getWireName());
                 assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "string"), 
                              xse.getSchemaTypeName());
                 assertTrue(!xse.isAbstract());
                 assertTrue(!xse.isNillable());
             } else if ("Description".equals(name)) {
-                assertEquals(new QName("", "Description"), xse.getQName());
+                assertEquals(new QName("", "Description"), xse.getWireName());
                 assertEquals(new QName("http://www.w3.org/2001/XMLSchema", 
                                        "string"), xse.getSchemaTypeName());
                 assertTrue(!xse.isAbstract());
                 assertTrue(xse.isNillable());
             } else if ("Parts".equals(name)) {
-                assertEquals(new QName("", "Parts"), xse.getQName());
+                assertEquals(new QName("", "Parts"), xse.getWireName());
                 assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "string"), 
                              xse.getSchemaTypeName());
             } else {

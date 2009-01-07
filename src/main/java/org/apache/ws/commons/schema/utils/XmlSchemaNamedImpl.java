@@ -72,11 +72,9 @@ public class XmlSchemaNamedImpl implements XmlSchemaNamed {
         if ("".equals(name)) {
             throw new XmlSchemaException("Attempt to set empty name.");
         }
-        // even non-top-level named items have a full qname. After all, 
-        // if form='qualified', we need to serialize it.
         qname = new QName(parentSchema.getLogicalTargetNamespace(), name);
     }
-
+    
     /** {@inheritDoc}*/
     public XmlSchema getParent() {
         return parentSchema;

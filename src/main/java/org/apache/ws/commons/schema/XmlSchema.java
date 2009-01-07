@@ -216,6 +216,42 @@ public class XmlSchema
         }
         return element;
     }
+    
+    protected XmlSchemaAttributeGroup getAttributeGroupByName(QName name, 
+                                                              boolean deep, Stack<XmlSchema> schemaStack) {
+        if (schemaStack != null && schemaStack.contains(this)) {
+            // recursive schema - just return null
+            return null;
+        }
+
+        XmlSchemaAttributeGroup group = (XmlSchemaAttributeGroup)attributeGroups.getItem(name);
+        if (deep) {
+            if (group == null) {
+                // search the imports
+                for (Iterator includedItems = includes.getIterator(); includedItems.hasNext();) {
+
+                    XmlSchema schema = getSchema(includedItems.next());
+
+                    if (schema != null) {
+                        // create an empty stack - push the current parent in
+                        // and
+                        // use the protected method to process the schema
+                        if (schemaStack == null) {
+                            schemaStack = new Stack<XmlSchema>();
+                        }
+                        schemaStack.push(this);
+                        group = schema.getAttributeGroupByName(name, deep, schemaStack);
+                        if (group != null) {
+                            return group;
+                        }
+                    }
+                }
+            } else {
+                return group;
+            }
+        }
+        return group;
+    }
 
     protected XmlSchemaAttribute getAttributeByName(QName name, boolean deep, Stack<XmlSchema> schemaStack) {
         if (schemaStack != null && schemaStack.contains(this)) {
@@ -250,6 +286,78 @@ public class XmlSchema
         }
 
         return attribute;
+
+    }
+    
+    protected XmlSchemaGroup getGroupByName(QName name, boolean deep, Stack<XmlSchema> schemaStack) {
+        if (schemaStack != null && schemaStack.contains(this)) {
+            // recursive schema - just return null
+            return null;
+        }
+        XmlSchemaGroup group = (XmlSchemaGroup)groups.getItem(name);
+        if (deep) {
+            if (group == null) {
+                // search the imports
+                for (Iterator includedItems = includes.getIterator(); includedItems.hasNext();) {
+
+                    XmlSchema schema = getSchema(includedItems.next());
+
+                    if (schema != null) {
+                        // create an empty stack - push the current parent in
+                        // and
+                        // use the protected method to process the schema
+                        if (schemaStack == null) {
+                            schemaStack = new Stack<XmlSchema>();
+                        }
+                        schemaStack.push(this);
+                        group = schema.getGroupByName(name, deep, schemaStack);
+                        if (group != null) {
+                            return group;
+                        }
+                    }
+                }
+            } else {
+                return group;
+            }
+        }
+
+        return group;
+
+    }
+    
+    protected XmlSchemaNotation getNotationByName(QName name, boolean deep, Stack<XmlSchema> schemaStack) {
+        if (schemaStack != null && schemaStack.contains(this)) {
+            // recursive schema - just return null
+            return null;
+        }
+        XmlSchemaNotation notation = (XmlSchemaNotation)notations.getItem(name);
+        if (deep) {
+            if (notation == null) {
+                // search the imports
+                for (Iterator includedItems = includes.getIterator(); includedItems.hasNext();) {
+
+                    XmlSchema schema = getSchema(includedItems.next());
+
+                    if (schema != null) {
+                        // create an empty stack - push the current parent in
+                        // and
+                        // use the protected method to process the schema
+                        if (schemaStack == null) {
+                            schemaStack = new Stack<XmlSchema>();
+                        }
+                        schemaStack.push(this);
+                        notation = schema.getNotationByName(name, deep, schemaStack);
+                        if (notation != null) {
+                            return notation;
+                        }
+                    }
+                }
+            } else {
+                return notation;
+            }
+        }
+
+        return notation;
 
     }
 
@@ -338,7 +446,7 @@ public class XmlSchema
     }
 
     /**
-     * Search this schema for a type by qname.
+     * Retrieve a type by QName.
      * 
      * @param name
      * @return the type.
@@ -347,7 +455,35 @@ public class XmlSchema
         QName nameToSearchFor = new QName(this.getTargetNamespace(), name);
         return getTypeByName(nameToSearchFor, false, null);
     }
+    
+    /**
+     * Retrieve an attribute group by QName.
+     * @param name
+     * @return
+     */
+    public XmlSchemaAttributeGroup getAttributeGroupByName(QName name) {
+        return getAttributeGroupByName(name, true, null);
+    }
+    
+    /**
+     * Retrieve a group by QName.
+     * @param name
+     * @return
+     */
+    public XmlSchemaGroup getGroupByName(QName name) {
+        return getGroupByName(name, true, null);
+    }
 
+    /**
+     * Retrieve a notation by QName.
+     * @param name
+     * @return
+     */
+    public XmlSchemaNotation getNotationByName(QName name) {
+        return getNotationByName(name, true, null);
+    }
+
+    
     /**
      * Get a schema from an import
      * 
@@ -658,6 +794,10 @@ public class XmlSchema
     
     public String toString() {
         return super.toString() + "[" + logicalTargetNamespace + "]";
+    }
+
+    public XmlSchemaCollection getParent() {
+        return parent;
     }
 
     

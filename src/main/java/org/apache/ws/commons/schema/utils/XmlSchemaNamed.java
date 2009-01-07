@@ -22,6 +22,12 @@ import javax.xml.namespace.QName;
 
 import org.apache.ws.commons.schema.XmlSchema;
 
+/**
+ * A named item. Named items have two names; their schema-local name (a string)
+ * and a QName qualified by their schema's target namespace. Note that the qualified
+ * name is <i>not</i> the on-the-wire name for attributes and elements. Those
+ * names depend on the form, and are managed by {@link XmlSchemaNamedWithForm}.
+ */
 public interface XmlSchemaNamed {
 
     /**

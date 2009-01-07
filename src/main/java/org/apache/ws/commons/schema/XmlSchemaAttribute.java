@@ -21,24 +21,21 @@ package org.apache.ws.commons.schema;
 
 import javax.xml.namespace.QName;
 
-import org.apache.ws.commons.schema.utils.XmlSchemaNamed;
-import org.apache.ws.commons.schema.utils.XmlSchemaNamedImpl;
+import org.apache.ws.commons.schema.utils.XmlSchemaNamedWithForm;
+import org.apache.ws.commons.schema.utils.XmlSchemaNamedWithFormImpl;
 
 /**
  * Class for attribute types. Represents the World Wide Web Consortium (W3C) attribute element.
  */
-
-// October 15th - momo - initial implementation
-public class XmlSchemaAttribute extends XmlSchemaAnnotated implements XmlSchemaNamed {
+public class XmlSchemaAttribute extends XmlSchemaAnnotated implements XmlSchemaNamedWithForm {
 
     private String defaultValue;
     private String fixedValue;
-    private XmlSchemaForm form;
     private XmlSchemaSimpleType schemaType;
     private QName schemaTypeName;
     private QName refName;
     private XmlSchemaUse use;
-    private XmlSchemaNamed namedDelegate;
+    private XmlSchemaNamedWithForm namedDelegate;
     
     /**
      * Create a new attribute.
@@ -46,8 +43,7 @@ public class XmlSchemaAttribute extends XmlSchemaAnnotated implements XmlSchemaN
      * @param topLevel true if a global attribute.
      */
     public XmlSchemaAttribute(XmlSchema schema, boolean topLevel) {
-        namedDelegate = new XmlSchemaNamedImpl(schema, topLevel);
-        form = XmlSchemaForm.NONE;
+        namedDelegate = new XmlSchemaNamedWithFormImpl(schema, topLevel, false);
         use = XmlSchemaUse.NONE;
     }
 
@@ -65,14 +61,6 @@ public class XmlSchemaAttribute extends XmlSchemaAnnotated implements XmlSchemaN
 
     public void setFixedValue(String fixedValue) {
         this.fixedValue = fixedValue;
-    }
-
-    public XmlSchemaForm getForm() {
-        return form;
-    }
-
-    public void setSchemaForm(XmlSchemaForm formValue) {
-        this.form = formValue;
     }
 
     public QName getRefName() {
@@ -155,7 +143,19 @@ public class XmlSchemaAttribute extends XmlSchemaAnnotated implements XmlSchemaN
         namedDelegate.setName(name);
     }
 
+    public boolean isFormSpecified() {
+        return namedDelegate.isFormSpecified();
+    }
+
+    public XmlSchemaForm getForm() {
+        return namedDelegate.getForm();
+    }
+
     public void setForm(XmlSchemaForm form) {
-        this.form = form;
+        namedDelegate.setForm(form);
+    }
+
+    public QName getWireName() {
+        return namedDelegate.getWireName();
     }
 }

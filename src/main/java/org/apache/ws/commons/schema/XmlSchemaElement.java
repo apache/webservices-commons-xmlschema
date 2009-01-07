@@ -21,74 +21,68 @@ package org.apache.ws.commons.schema;
 
 import javax.xml.namespace.QName;
 
+import org.apache.ws.commons.schema.utils.XmlSchemaNamedWithForm;
+import org.apache.ws.commons.schema.utils.XmlSchemaNamedWithFormImpl;
+
 /**
  * Class for elements. Represents the World Wide Web Consortium (W3C) element element.
  */
 
-public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver {
+public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver, XmlSchemaNamedWithForm {
 
     /**
      * Attribute used to block a type derivation.
      */
-    XmlSchemaDerivationMethod block;
+    private XmlSchemaDerivationMethod block;
 
     /**
-     * The value after an element has been compiled to post-schema infoset. This value is either from the type
+     * The value after an element has been compiled to post-schema infoset.
+     *  This value is either from the type
      * itself or, if not defined on the type, taken from the schema element.
      */
-    XmlSchemaDerivationMethod blockResolved;
-    XmlSchemaObjectCollection constraints;
+    private XmlSchemaDerivationMethod blockResolved;
+    private XmlSchemaObjectCollection constraints;
 
     /**
      * Provides the default value of the element if its content is a simple type or the element's content is
      * textOnly.
      */
-    String defaultValue;
-    String fixedValue;
+    private String defaultValue;
+    private String fixedValue;
 
-    /**
-     * Returns the correct common runtime library object based upon the SchemaType for the element.
-     */
-    Object elementType;
+    private XmlSchemaDerivationMethod finalDerivation;
+    private XmlSchemaDerivationMethod finalDerivationResolved;
 
-    XmlSchemaDerivationMethod finalDerivation;
-    XmlSchemaDerivationMethod finalDerivationResolved;
-
-    /**
-     * The default value is the value of the elementFormDefault attribute for the schema element containing
-     * the attribute. The default is Unqualified.
-     */
-    XmlSchemaForm form;
-    boolean abstractElement;
-    boolean nillable;
-    String name;
-    QName qualifiedName;
-    QName refName;
+    private boolean abstractElement;
+    private boolean nillable;
+    private QName refName;
 
     /**
      * Returns the type of the element. This can either be a complex type or a simple type.
      */
-    XmlSchemaType schemaType;
+    private XmlSchemaType schemaType;
 
     /**
      * QName of a built-in data type defined in this schema or another schema indicated by the specified
      * namespace.
      */
-    QName schemaTypeName;
+    private QName schemaTypeName;
 
     /**
      * QName of an element that can be a substitute for this element.
      */
-    QName substitutionGroup;
+    private QName substitutionGroup;
+    
+    private XmlSchemaNamedWithFormImpl namedDelegate;
 
     /**
      * Creates new XmlSchemaElement
      */
-    public XmlSchemaElement() {
+    public XmlSchemaElement(XmlSchema parentSchema, boolean topLevel) {
+        namedDelegate = new XmlSchemaNamedWithFormImpl(parentSchema, topLevel, true);
         constraints = new XmlSchemaObjectCollection();
         abstractElement = false;
         nillable = false;
-        form = XmlSchemaForm.NONE;
         finalDerivation = XmlSchemaDerivationMethod.NONE;
         block = XmlSchemaDerivationMethod.NONE;
     }
@@ -136,18 +130,6 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver 
         this.fixedValue = fixedValue;
     }
 
-    public Object getElementType() {
-        return elementType;
-    }
-
-    public XmlSchemaForm getForm() {
-        return form;
-    }
-
-    public void setForm(XmlSchemaForm form) {
-        this.form = form;
-    }
-
     public boolean isAbstract() {
         return abstractElement;
     }
@@ -164,28 +146,12 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver 
         this.nillable = isNillable;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public QName getRefName() {
         return refName;
     }
 
     public void setRefName(QName refName) {
         this.refName = refName;
-    }
-
-    public QName getQName() {
-        return qualifiedName;
-    }
-
-    public void setQName(QName qname) {
-        this.qualifiedName = qname;
     }
 
     public XmlSchemaType getSchemaType() {
@@ -225,8 +191,8 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver 
 
         xml += "<" + prefix + "element ";
 
-        if (!"".equals(name)) {
-            xml += "name=\"" + name + "\" ";
+        if (!isAnonymous()) {
+            xml += "name=\"" + getName() + "\" ";
         }
 
         if (schemaTypeName != null) {
@@ -237,12 +203,12 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver 
             xml += "ref=\"" + refName + "\" ";
         }
 
-        if (minOccurs != 1) {
-            xml += "minOccurs=\"" + minOccurs + "\" ";
+        if (getMinOccurs() != 1) {
+            xml += "minOccurs=\"" + getMinOccurs() + "\" ";
         }
 
-        if (maxOccurs != 1) {
-            xml += "maxOccurs=\"" + maxOccurs + "\" ";
+        if (getMaxOccurs() != 1) {
+            xml += "maxOccurs=\"" + getMaxOccurs() + "\" ";
         }
 
         if (nillable) {
@@ -269,5 +235,104 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver 
 
     public void setType(XmlSchemaType type) {
         this.schemaType = type;
+    }
+    
+
+    public String getName() {
+        return namedDelegate.getName();
+    }
+    
+
+    public XmlSchema getParent() {
+        return namedDelegate.getParent();
+    }
+    
+
+    public QName getQName() {
+        return namedDelegate.getQName();
+    }
+    
+
+    public boolean isAnonymous() {
+        return namedDelegate.isAnonymous();
+    }
+    
+
+    public boolean isTopLevel() {
+        return namedDelegate.isTopLevel();
+    }
+    
+
+    public void setName(String name) {
+        namedDelegate.setName(name);
+    }
+
+    public XmlSchemaForm getForm() {
+        return namedDelegate.getForm();
+    }
+
+    public boolean isFormSpecified() {
+        return namedDelegate.isFormSpecified();
+    }
+
+    public void setForm(XmlSchemaForm form) {
+        namedDelegate.setForm(form);
+    }
+
+    public QName getWireName() {
+        return namedDelegate.getWireName();
+    }
+
+    /**
+     * @param blockResolved The blockResolved to set.
+     */
+    public void setBlockResolved(XmlSchemaDerivationMethod blockResolved) {
+        this.blockResolved = blockResolved;
+    }
+
+    /**
+     * @param constraints The constraints to set.
+     */
+    public void setConstraints(XmlSchemaObjectCollection constraints) {
+        this.constraints = constraints;
+    }
+
+    /**
+     * @param finalDerivation The finalDerivation to set.
+     */
+    public void setFinalDerivation(XmlSchemaDerivationMethod finalDerivation) {
+        this.finalDerivation = finalDerivation;
+    }
+
+    /** * @return Returns the finalDerivation.
+     */
+    public XmlSchemaDerivationMethod getFinalDerivation() {
+        return finalDerivation;
+    }
+
+    /**
+     * @param abstractElement The abstractElement to set.
+     */
+    public void setAbstractElement(boolean abstractElement) {
+        this.abstractElement = abstractElement;
+    }
+
+    /** * @return Returns the abstractElement.
+     */
+    public boolean isAbstractElement() {
+        return abstractElement;
+    }
+
+    /**
+     * @param finalDerivationResolved The finalDerivationResolved to set.
+     */
+    public void setFinalDerivationResolved(XmlSchemaDerivationMethod finalDerivationResolved) {
+        this.finalDerivationResolved = finalDerivationResolved;
+    }
+
+    /** * @return Returns the finalDerivationResolved.
+     */
+    public XmlSchemaDerivationMethod getFinalDerivationResolved() {
+        return finalDerivationResolved;
     }
 }

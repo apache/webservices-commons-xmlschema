@@ -20,23 +20,16 @@
 package org.apache.ws.commons.schema;
 
 /**
- * Base class for all particle types.
+ * Schema particles. A local element declaration or
+ * reference to a global element declaration (element), a compositor ( sequence, choice, or all), a reference
+ * to a named content model group (group), or an element wildcard (any).
  */
+public abstract class XmlSchemaParticle extends XmlSchemaAnnotated {
+    public static final int DEFAULT_MAX_OCCURS = 1;
+    public static final int DEFAULT_MIN_OCCURS = 1;
 
-public class XmlSchemaParticle extends XmlSchemaAnnotated {
-
-    long maxOccurs = 1;
-    String maxOccursString;
-    long minOccurs = 1;
-    String minOccursString;
-
-    /**
-     * Creates new XmlSchemaParticle Particle types are usually interchangeable. A local element declaration
-     * or reference to a global element declaration (element), a compositor ( sequence, choice, or all), a
-     * reference to a named content model group (group), or an element wildcard (any).
-     */
-    public XmlSchemaParticle() {
-    }
+    private long maxOccurs = DEFAULT_MAX_OCCURS;
+    private long minOccurs = DEFAULT_MIN_OCCURS;
 
     public void setMaxOccurs(long maxOccurs) {
         this.maxOccurs = maxOccurs;
@@ -53,4 +46,5 @@ public class XmlSchemaParticle extends XmlSchemaAnnotated {
     public long getMinOccurs() {
         return minOccurs;
     }
+
 }

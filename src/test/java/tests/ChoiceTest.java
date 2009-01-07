@@ -83,10 +83,10 @@ public class ChoiceTest extends Assert {
             XmlSchemaElement e = (XmlSchemaElement)iterator.next();
             String eName = e.getName();
             if ("desktop".equals(eName)) {
-                assertEquals(new QName("", "desktop"), e.getQName());
+                assertEquals(new QName("", "desktop"), e.getWireName());
                 assertEquals(e.getName(), "desktop");
             } else if ("laptop".equals(eName)) {
-                assertEquals(new QName("", "laptop"), e.getQName());
+                assertEquals(new QName("", "laptop"), e.getWireName());
                 assertEquals(e.getName(), "laptop");
             } else {
                 fail("Should have had a name of desktop or laptop, but" + " instead had " + eName);
