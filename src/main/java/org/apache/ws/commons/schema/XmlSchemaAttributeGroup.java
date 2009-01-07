@@ -33,9 +33,9 @@ import org.apache.ws.commons.schema.utils.XmlSchemaNamedImpl;
  */
 
 public class XmlSchemaAttributeGroup extends XmlSchemaAnnotated implements XmlSchemaNamed {
-    XmlSchemaAnyAttribute anyAttribute;
-    XmlSchemaObjectCollection attributes;
-    XmlSchemaNamedImpl namedDelegate;
+    private XmlSchemaAnyAttribute anyAttribute;
+    private XmlSchemaObjectCollection attributes;
+    private XmlSchemaNamedImpl namedDelegate;
 
     /**
      * Creates new XmlSchemaAttributeGroup

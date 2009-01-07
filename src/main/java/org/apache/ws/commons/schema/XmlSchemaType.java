@@ -31,11 +31,10 @@ import org.apache.ws.commons.schema.utils.XmlSchemaNamedImpl;
 
 public abstract class XmlSchemaType extends XmlSchemaAnnotated implements XmlSchemaNamed {
 
-    Object baseSchemaType;
-    XmlSchemaDerivationMethod deriveBy;
-    XmlSchemaDerivationMethod finalDerivation;
-    XmlSchemaDerivationMethod finalResolved;
-    boolean isMixed;
+    private XmlSchemaDerivationMethod deriveBy;
+    private XmlSchemaDerivationMethod finalDerivation;
+    private XmlSchemaDerivationMethod finalResolved;
+    private boolean isMixed;
 
     private XmlSchemaNamedImpl namedDelegate;
 
@@ -45,17 +44,6 @@ public abstract class XmlSchemaType extends XmlSchemaAnnotated implements XmlSch
     protected XmlSchemaType(XmlSchema schema, boolean topLevel) {
         namedDelegate = new XmlSchemaNamedImpl(schema, topLevel);
         finalDerivation = XmlSchemaDerivationMethod.NONE;
-    }
-
-    /**
-     * This function returns null. It is intended at some point to return the base type in the event of a
-     * restriction, but that functionality is not implemented.
-     * 
-     * @see #getBaseSchemaTypeName()
-     * @return null
-     */
-    public Object getBaseSchemaType() {
-        return baseSchemaType;
     }
 
     /**
@@ -126,5 +114,21 @@ public abstract class XmlSchemaType extends XmlSchemaAnnotated implements XmlSch
 
     public void setName(String name) {
         namedDelegate.setName(name);
+    }
+
+    void setFinalResolved(XmlSchemaDerivationMethod finalResolved) {
+        this.finalResolved = finalResolved;
+    }
+
+    public void setFinalDerivation(XmlSchemaDerivationMethod finalDerivation) {
+        this.finalDerivation = finalDerivation;
+    }
+
+    public XmlSchemaDerivationMethod getFinalDerivation() {
+        return finalDerivation;
+    }
+
+    public void setDeriveBy(XmlSchemaDerivationMethod deriveBy) {
+        this.deriveBy = deriveBy;
     }
 }

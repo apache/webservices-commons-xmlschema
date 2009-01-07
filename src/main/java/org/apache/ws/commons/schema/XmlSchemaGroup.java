@@ -34,7 +34,7 @@ import org.apache.ws.commons.schema.utils.XmlSchemaNamedImpl;
 public class XmlSchemaGroup extends XmlSchemaAnnotated implements XmlSchemaNamed {
 
 
-    XmlSchemaGroupBase particle;
+    private XmlSchemaGroupBase particle;
     private XmlSchemaNamedImpl namedDelegate;
     
     public XmlSchemaGroup(XmlSchema parent) {

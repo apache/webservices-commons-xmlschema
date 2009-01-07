@@ -32,9 +32,8 @@ import org.apache.ws.commons.schema.utils.XmlSchemaNamedImpl;
 
 public class XmlSchemaNotation extends XmlSchemaAnnotated implements XmlSchemaNamed {
 
-    String name;
-    String system;
-    String publicNotation;
+    private String system;
+    private String publicNotation;
     private XmlSchemaNamedImpl namedDelegate;
 
     /**
@@ -42,14 +41,6 @@ public class XmlSchemaNotation extends XmlSchemaAnnotated implements XmlSchemaNa
      */
     public XmlSchemaNotation(XmlSchema parent) {
         namedDelegate = new XmlSchemaNamedImpl(parent, true);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getPublic() {
@@ -86,6 +77,22 @@ public class XmlSchemaNotation extends XmlSchemaAnnotated implements XmlSchemaNa
 
     public String toString() {
         return namedDelegate.toString();
+    }
+
+    void setPublicNotation(String publicNotation) {
+        this.publicNotation = publicNotation;
+    }
+
+    String getPublicNotation() {
+        return publicNotation;
+    }
+
+    public String getName() {
+        return namedDelegate.getName();
+    }
+
+    public void setName(String name) {
+        namedDelegate.setName(name);
     }
 
 }

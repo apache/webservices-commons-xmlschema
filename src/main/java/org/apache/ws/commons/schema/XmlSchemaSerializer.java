@@ -503,9 +503,9 @@ public class XmlSchemaSerializer {
             Element annotation = serializeAnnotation(doc, attributeGroupObj.getAnnotation(), schema);
             attributeGroup.appendChild(annotation);
         }
-        int attributesLength = attributeGroupObj.attributes.getCount();
+        int attributesLength = attributeGroupObj.getAttributes().getCount();
         for (int i = 0; i < attributesLength; i++) {
-            XmlSchemaObject obj = attributeGroupObj.attributes.getItem(i);
+            XmlSchemaObject obj = attributeGroupObj.getAttributes().getItem(i);
 
             if (obj instanceof XmlSchemaAttribute) {
                 Element attr = serializeAttribute(doc, (XmlSchemaAttribute)obj, schema);
@@ -516,8 +516,8 @@ public class XmlSchemaSerializer {
             }
         }
 
-        if (attributeGroupObj.anyAttribute != null) {
-            Element anyAttribute = serializeAnyAttribute(doc, attributeGroupObj.anyAttribute, schema);
+        if (attributeGroupObj.getAnyAttribute() != null) {
+            Element anyAttribute = serializeAnyAttribute(doc, attributeGroupObj.getAnyAttribute(), schema);
             attributeGroup.appendChild(anyAttribute);
         }
 
@@ -914,9 +914,9 @@ public class XmlSchemaSerializer {
             serializedComplexType.setAttribute("block", complexTypeObj.toString());
         }
         
-        if (complexTypeObj.finalDerivation != null 
-            && complexTypeObj.finalDerivation != XmlSchemaDerivationMethod.NONE) {
-            serializedComplexType.setAttribute("final", complexTypeObj.finalDerivation.toString());
+        if (complexTypeObj.getFinalDerivation() != null 
+            && complexTypeObj.getFinalDerivation() != XmlSchemaDerivationMethod.NONE) {
+            serializedComplexType.setAttribute("final", complexTypeObj.getFinalDerivation().toString());
         }
 
         XmlSchemaObjectCollection attrColl = complexTypeObj.attributes;
@@ -1222,14 +1222,14 @@ public class XmlSchemaSerializer {
             group.appendChild(annotation);
         }
 
-        if (groupObj.particle instanceof XmlSchemaSequence) {
-            Element sequence = serializeSequence(doc, (XmlSchemaSequence)groupObj.particle, schema);
+        if (groupObj.getParticle() instanceof XmlSchemaSequence) {
+            Element sequence = serializeSequence(doc, (XmlSchemaSequence)groupObj.getParticle(), schema);
             group.appendChild(sequence);
-        } else if (groupObj.particle instanceof XmlSchemaChoice) {
-            Element choice = serializeChoice(doc, (XmlSchemaChoice)groupObj.particle, schema);
+        } else if (groupObj.getParticle() instanceof XmlSchemaChoice) {
+            Element choice = serializeChoice(doc, (XmlSchemaChoice)groupObj.getParticle(), schema);
             group.appendChild(choice);
-        } else if (groupObj.particle instanceof XmlSchemaAll) {
-            Element all = serializeAll(doc, (XmlSchemaAll)groupObj.particle, schema);
+        } else if (groupObj.getParticle() instanceof XmlSchemaAll) {
+            Element all = serializeAll(doc, (XmlSchemaAll)groupObj.getParticle(), schema);
             group.appendChild(all);
         }
 
@@ -1913,9 +1913,9 @@ public class XmlSchemaSerializer {
         Element serializedSimpleType = createNewElement(doc, "simpleType", schema.schemaNamespacePrefix,
                                                         XmlSchema.SCHEMA_NS);
 
-        if (simpleTypeObj.finalDerivation != null 
-            && simpleTypeObj.finalDerivation != XmlSchemaDerivationMethod.NONE) {
-            serializedSimpleType.setAttribute("final", simpleTypeObj.finalDerivation.toString());
+        if (simpleTypeObj.getFinalDerivation() != null 
+            && simpleTypeObj.getFinalDerivation() != XmlSchemaDerivationMethod.NONE) {
+            serializedSimpleType.setAttribute("final", simpleTypeObj.getFinalDerivation().toString());
         }
         if (simpleTypeObj.getId() != null) {
             serializedSimpleType.setAttribute("id", simpleTypeObj.getId());
