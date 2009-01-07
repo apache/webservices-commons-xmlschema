@@ -63,7 +63,7 @@ public class AttributeRefTest extends Assert {
         assertNotNull(typeByName);
 
         XmlSchemaAttribute item = (XmlSchemaAttribute)typeByName.getAttributes().getItem(0);
-        QName qName = item.getRefName();
+        QName qName = item.getRef().getTargetQName();
         assertNotNull(qName);
 
         String namspace = qName.getNamespaceURI();

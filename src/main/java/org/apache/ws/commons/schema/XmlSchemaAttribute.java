@@ -23,6 +23,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.ws.commons.schema.utils.XmlSchemaNamedWithForm;
 import org.apache.ws.commons.schema.utils.XmlSchemaNamedWithFormImpl;
+import org.apache.ws.commons.schema.utils.XmlSchemaRef;
 
 /**
  * Class for attribute types. Represents the World Wide Web Consortium (W3C) attribute element.
@@ -33,9 +34,9 @@ public class XmlSchemaAttribute extends XmlSchemaAnnotated implements XmlSchemaN
     private String fixedValue;
     private XmlSchemaSimpleType schemaType;
     private QName schemaTypeName;
-    private QName refName;
     private XmlSchemaUse use;
-    private XmlSchemaNamedWithForm namedDelegate;
+    private XmlSchemaNamedWithFormImpl namedDelegate;
+    private XmlSchemaRef<XmlSchemaAttribute> ref;
     
     /**
      * Create a new attribute.
@@ -44,6 +45,9 @@ public class XmlSchemaAttribute extends XmlSchemaAnnotated implements XmlSchemaN
      */
     public XmlSchemaAttribute(XmlSchema schema, boolean topLevel) {
         namedDelegate = new XmlSchemaNamedWithFormImpl(schema, topLevel, false);
+        ref = new XmlSchemaRef<XmlSchemaAttribute>(schema, XmlSchemaAttribute.class);
+        namedDelegate.setRefObject(ref);
+        ref.setNamedObject(namedDelegate);
         use = XmlSchemaUse.NONE;
     }
 
@@ -63,12 +67,8 @@ public class XmlSchemaAttribute extends XmlSchemaAnnotated implements XmlSchemaN
         this.fixedValue = fixedValue;
     }
 
-    public QName getRefName() {
-        return refName;
-    }
-
-    public void setRefName(QName refName) {
-        this.refName = refName;
+    public XmlSchemaRef<XmlSchemaAttribute> getRef() {
+        return ref;
     }
 
     public XmlSchemaSimpleType getSchemaType() {
@@ -94,25 +94,6 @@ public class XmlSchemaAttribute extends XmlSchemaAnnotated implements XmlSchemaN
     public void setUse(XmlSchemaUse use) {
         this.use = use;
     }
-
-    public String toString(String aprefix, int tab) {
-        String prefix = aprefix;
-        String xml = new String();
-
-        if (!"".equals(prefix) && prefix.indexOf(":") == -1) {
-            prefix += ":";
-        }
-
-        for (int i = 0; i < tab; i++) {
-            xml += "\t";
-        }
-
-        xml += "<" + prefix + "attribute name=\"" 
-            + getName() + "\" type=\"" + schemaTypeName + "\"/>\n";
-
-        return xml;
-    }
-    
 
     public String getName() {
         return namedDelegate.getName();

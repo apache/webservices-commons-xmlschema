@@ -365,8 +365,8 @@ public class XmlSchemaSerializer {
 
         Element attribute = createNewElement(doc, "attribute", schema.schemaNamespacePrefix,
                                              XmlSchema.SCHEMA_NS);
-        if (attributeObj.getRefName() != null) {
-            String refName = resolveQName(attributeObj.getRefName(), schema);
+        if (attributeObj.getRef().getTargetQName() != null) {
+            String refName = resolveQName(attributeObj.getRef().getTargetQName(), schema);
             attribute.setAttribute("ref", refName);
         } else if (!attributeObj.isAnonymous()) {
             attribute.setAttribute("name", attributeObj.getName());

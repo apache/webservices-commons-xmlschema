@@ -1191,8 +1191,7 @@ public class SchemaBuilder {
         }
         if (attrEl.hasAttribute("ref")) {
             String name = attrEl.getAttribute("ref");
-            attr.setRefName(getRefQName(name, attrEl));
-            attr.setName(name);
+            attr.getRef().setTargetQName(getRefQName(name, attrEl));
         }
 
         Element simpleTypeEl = XDOMUtil.getFirstChildElementNS(attrEl, XmlSchema.SCHEMA_NS, "simpleType");
