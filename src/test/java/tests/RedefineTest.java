@@ -311,7 +311,7 @@ public class RedefineTest extends Assert {
         }
 
         assertNotNull(xsag);
-        assertEquals("AttribGroup", xsag.getName().getLocalPart());
+        assertEquals("AttribGroup", xsag.getName());
         xsoc = xsag.getAttributes();
 
         Set<String> s = new HashSet<String>();

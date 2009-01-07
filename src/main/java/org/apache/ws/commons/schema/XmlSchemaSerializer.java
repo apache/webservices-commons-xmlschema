@@ -489,8 +489,8 @@ public class XmlSchemaSerializer {
         Element attributeGroup = createNewElement(doc, "attributeGroup", schema.schemaNamespacePrefix,
                                                   XmlSchema.SCHEMA_NS);
 
-        if (attributeGroupObj.name != null) {
-            String attGroupName = attributeGroupObj.name.getLocalPart();
+        if (!attributeGroupObj.isAnonymous()) {
+            String attGroupName = attributeGroupObj.getName();
             attributeGroup.setAttribute("name", attGroupName);
         } else {
             throw new XmlSchemaSerializerException("Attribute group must" + "have name");
@@ -853,12 +853,11 @@ public class XmlSchemaSerializer {
     Element serializeComplexType(Document doc, XmlSchemaComplexType complexTypeObj, XmlSchema schema)
         throws XmlSchemaSerializerException {
 
-        // todo: need to implement abstract, id, mixed
         Element serializedComplexType = createNewElement(doc, "complexType", schema.schemaNamespacePrefix,
                                                          XmlSchema.SCHEMA_NS);
 
-        if (complexTypeObj.name != null && !complexTypeObj.name.equals("")) {
-            serializedComplexType.setAttribute("name", complexTypeObj.name);
+        if (!complexTypeObj.isAnonymous()) {
+            serializedComplexType.setAttribute("name", complexTypeObj.getName());
             /*
              * if(complexTypeObj.annotation != null){ Element annotationEl = serializeAnnotation(doc,
              * complexTypeObj.annotation, schema); serializedComplexType.appendChild(annotationEl); }
@@ -1208,8 +1207,8 @@ public class XmlSchemaSerializer {
 
         Element group = createNewElement(doc, "group", schema.schemaNamespacePrefix, XmlSchema.SCHEMA_NS);
 
-        if (groupObj.name != null) {
-            String grpName = groupObj.name.getLocalPart();
+        if (!groupObj.isAnonymous()) {
+            String grpName = groupObj.getName();
             if (grpName.length() > 0) {
                 group.setAttribute("name", grpName);
             }
@@ -1921,8 +1920,8 @@ public class XmlSchemaSerializer {
         if (simpleTypeObj.getId() != null) {
             serializedSimpleType.setAttribute("id", simpleTypeObj.getId());
         }
-        if (simpleTypeObj.name != null && !simpleTypeObj.name.equals("")) {
-            serializedSimpleType.setAttribute("name", simpleTypeObj.name);
+        if (!simpleTypeObj.isAnonymous()) {
+            serializedSimpleType.setAttribute("name", simpleTypeObj.getName());
         }
         if (simpleTypeObj.getAnnotation() != null) {
             Element annotationEl = serializeAnnotation(doc, simpleTypeObj.getAnnotation(), schema);

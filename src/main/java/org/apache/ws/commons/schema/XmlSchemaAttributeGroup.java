@@ -21,20 +21,27 @@ package org.apache.ws.commons.schema;
 
 import javax.xml.namespace.QName;
 
+import org.apache.ws.commons.schema.utils.XmlSchemaNamed;
+import org.apache.ws.commons.schema.utils.XmlSchemaNamedImpl;
+
 /**
- * Class for attribute groups. Groups a set of attribute declarations so that they can be incorporated as a
- * group into complex type definitions. Represents the World Wide Web Consortium (W3C) attributeGroup element.
+ * Class for attribute groups. Groups a set of attribute declarations so that 
+ * they can be incorporated as a
+ * group into complex type definitions. Represents the World Wide Web 
+ * consortium (W3C) attributeGroup element when it does <i>not</i> have a 'ref='
+ * attribute. 
  */
 
-public class XmlSchemaAttributeGroup extends XmlSchemaAnnotated {
+public class XmlSchemaAttributeGroup extends XmlSchemaAnnotated implements XmlSchemaNamed {
     XmlSchemaAnyAttribute anyAttribute;
     XmlSchemaObjectCollection attributes;
-    QName name;
+    XmlSchemaNamedImpl namedDelegate;
 
     /**
      * Creates new XmlSchemaAttributeGroup
      */
-    public XmlSchemaAttributeGroup() {
+    public XmlSchemaAttributeGroup(XmlSchema parent) {
+        namedDelegate = new XmlSchemaNamedImpl(parent, true);
         attributes = new XmlSchemaObjectCollection();
     }
 
@@ -54,11 +61,27 @@ public class XmlSchemaAttributeGroup extends XmlSchemaAnnotated {
         this.attributes = attributes;
     }
 
-    public QName getName() {
-        return this.name;
+    public String getName() {
+        return namedDelegate.getName();
     }
 
-    public void setName(QName name) {
-        this.name = name;
+    public XmlSchema getParent() {
+        return namedDelegate.getParent();
+    }
+
+    public QName getQName() {
+        return namedDelegate.getQName();
+    }
+
+    public boolean isAnonymous() {
+        return namedDelegate.isAnonymous();
+    }
+
+    public boolean isTopLevel() {
+        return namedDelegate.isTopLevel();
+    }
+
+    public void setName(String name) {
+        namedDelegate.setName(name);
     }
 }

@@ -101,7 +101,7 @@ public class GroupTest extends Assert {
         assertTrue("The set should have been empty, but instead contained: " + s + ".", s.isEmpty());
 
         assertNotNull(xsg);
-        assertEquals("priceGroup", xsg.getName().getLocalPart());
+        assertEquals("priceGroup", xsg.getName());
 
         XmlSchemaChoice xsc = (XmlSchemaChoice)xsg.getParticle();
         assertNotNull(xsc);

@@ -648,7 +648,7 @@ public final class XmlSchemaCollection {
 
     private void addSimpleType(XmlSchema schema, String typeName) {
         XmlSchemaSimpleType type;
-        type = new XmlSchemaSimpleType(schema);
+        type = new XmlSchemaSimpleType(schema, true);
         type.setName(typeName);
         schema.addType(type);
     }

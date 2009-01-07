@@ -45,6 +45,7 @@ public class XmlSchemaRef<T extends XmlSchemaNamed> {
     }
     
     public T getTarget() {
+        
         if (targetObject == null) {
             Class<?> cls = targetClass;
             XmlSchemaCollection parentCollection = parent.getParent();

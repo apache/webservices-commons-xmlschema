@@ -31,8 +31,8 @@ public class XmlSchemaSimpleType extends XmlSchemaType {
     /**
      * Creates new XmlSchemaSimpleType
      */
-    public XmlSchemaSimpleType(XmlSchema schema) {
-        super(schema);
+    public XmlSchemaSimpleType(XmlSchema schema, boolean topLevel) {
+        super(schema, topLevel);
     }
 
     public XmlSchemaSimpleTypeContent getContent() {

@@ -104,7 +104,7 @@ public class AttributeGroupTest extends Assert {
         for (Iterator i = attG.getValues(); i.hasNext();) {
             Object obj1 = i.next();
             if (obj1 instanceof XmlSchemaAttributeGroup) {
-                assertEquals("department", ((XmlSchemaAttributeGroup)obj1).getName().getLocalPart());
+                assertEquals("department", ((XmlSchemaAttributeGroup)obj1).getName());
                 XmlSchemaObjectCollection attributes = ((XmlSchemaAttributeGroup)obj1).getAttributes();
                 assertNotNull(attributes);
                 assertEquals(2, attributes.getCount());

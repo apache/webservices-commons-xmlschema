@@ -19,7 +19,11 @@
 
 package org.apache.ws.commons.schema;
 
+
 import javax.xml.namespace.QName;
+
+import org.apache.ws.commons.schema.utils.XmlSchemaNamed;
+import org.apache.ws.commons.schema.utils.XmlSchemaNamedImpl;
 
 /**
  * Class that defines groups at the schema level that are referenced from the complex types. Groups a set of
@@ -27,31 +31,47 @@ import javax.xml.namespace.QName;
  * the World Wide Web Consortium (W3C) group element.
  */
 
-public class XmlSchemaGroup extends XmlSchemaAnnotated {
+public class XmlSchemaGroup extends XmlSchemaAnnotated implements XmlSchemaNamed {
 
-    QName name;
 
     XmlSchemaGroupBase particle;
-    /**
-     * Creates new XmlSchemaGroup
-     */
-    public XmlSchemaGroup() {
+    private XmlSchemaNamedImpl namedDelegate;
+    
+    public XmlSchemaGroup(XmlSchema parent) {
+        namedDelegate = new XmlSchemaNamedImpl(parent, true);
     }
-
-    public QName getName() {
-        return name;
-    }
+    
 
     public XmlSchemaGroupBase getParticle() {
         return particle;
     }
 
-    public void setName(QName name) {
-        this.name = name;
-    }
-
     public void setParticle(XmlSchemaGroupBase particle) {
         this.particle = particle;
+    }
+
+    public String getName() {
+        return namedDelegate.getName();
+    }
+
+    public XmlSchema getParent() {
+        return namedDelegate.getParent();
+    }
+
+    public QName getQName() {
+        return namedDelegate.getQName();
+    }
+
+    public boolean isAnonymous() {
+        return namedDelegate.isAnonymous();
+    }
+
+    public boolean isTopLevel() {
+        return namedDelegate.isTopLevel();
+    }
+
+    public void setName(String name) {
+        namedDelegate.setName(name);
     }
 
 }

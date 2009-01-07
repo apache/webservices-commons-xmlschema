@@ -21,12 +21,15 @@ package org.apache.ws.commons.schema;
 
 import javax.xml.namespace.QName;
 
+import org.apache.ws.commons.schema.utils.XmlSchemaNamed;
+import org.apache.ws.commons.schema.utils.XmlSchemaNamedImpl;
+
 
 /**
  * The base class for all simple types and complex types.
  */
 
-public class XmlSchemaType extends XmlSchemaAnnotated {
+public abstract class XmlSchemaType extends XmlSchemaAnnotated implements XmlSchemaNamed {
 
     Object baseSchemaType;
     XmlSchemaDerivationMethod deriveBy;
@@ -34,16 +37,13 @@ public class XmlSchemaType extends XmlSchemaAnnotated {
     XmlSchemaDerivationMethod finalResolved;
     boolean isMixed;
 
-    // name of the type
-    String name;
-
-    XmlSchema schema;
+    private XmlSchemaNamedImpl namedDelegate;
 
     /**
      * Creates new XmlSchemaType
      */
-    public XmlSchemaType(XmlSchema schema) {
-        this.schema = schema;
+    protected XmlSchemaType(XmlSchema schema, boolean topLevel) {
+        namedDelegate = new XmlSchemaNamedImpl(schema, topLevel);
         finalDerivation = XmlSchemaDerivationMethod.NONE;
     }
 
@@ -91,29 +91,40 @@ public class XmlSchemaType extends XmlSchemaAnnotated {
         this.isMixed = isMixedValue;
     }
 
-    public String getName() {
-        return name;
+    public String toString() {
+        if (getName() == null) {
+            return super.toString() + "[anonymous]";
+        } else if (namedDelegate.getParent().logicalTargetNamespace == null) {
+            return super.toString() + "[{}" + getName() + "]";
+
+        } else {
+            return super.toString() 
+                + "[{" + namedDelegate.getParent().logicalTargetNamespace + "}" 
+                + getName() + "]";
+        }
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getName() {
+        return namedDelegate.getName();
+    }
+
+    public XmlSchema getParent() {
+        return namedDelegate.getParent();
     }
 
     public QName getQName() {
-        if (name == null) {
-            return null;
-        }
-        return new QName(schema.logicalTargetNamespace, name);
+        return namedDelegate.getQName();
     }
 
-    public String toString() {
-        if (name == null) {
-            return super.toString() + "[anonymous]";
-        } else if (schema.logicalTargetNamespace == null) {
-            return super.toString() + "[{}" + name + "]";
+    public boolean isAnonymous() {
+        return namedDelegate.isAnonymous();
+    }
 
-        } else {
-            return super.toString() + "[{" + schema.logicalTargetNamespace + "}" + name + "]";
-        }
+    public boolean isTopLevel() {
+        return namedDelegate.isTopLevel();
+    }
+
+    public void setName(String name) {
+        namedDelegate.setName(name);
     }
 }

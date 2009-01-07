@@ -43,8 +43,8 @@ public class XmlSchemaComplexType extends XmlSchemaType {
     /**
      * Creates new XmlSchemaComplexType
      */
-    public XmlSchemaComplexType(XmlSchema schema) {
-        super(schema);
+    public XmlSchemaComplexType(XmlSchema schema, boolean topLevel) {
+        super(schema, topLevel);
         attributes = new XmlSchemaObjectCollection();
         block = XmlSchemaDerivationMethod.NONE;
         isAbstract = false;
@@ -138,7 +138,7 @@ public class XmlSchemaComplexType extends XmlSchemaType {
             prefix += ":";
         }
 
-        String typeName = name != null ? name : "";
+        String typeName = !isAnonymous() ? getName() : "";
 
         xml += "<" + prefix + "complexType name=\"" + typeName + "\">\n";
 
