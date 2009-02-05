@@ -1735,7 +1735,7 @@ public class SchemaBuilder {
 		XmlSchemaAppInfo appInfo = new XmlSchemaAppInfo();
 		NodeList markup = new DocumentFragmentNodeList(content);
 
-		if (!content.hasAttribute("source")) {
+		if (!content.hasAttribute("source") && markup.getLength() == 0) {
 			return null;
 		}
 		appInfo.setSource(getAttribute(content, "source"));
