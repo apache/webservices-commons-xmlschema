@@ -1,8 +1,8 @@
  ====================================
-       XMLSchema ${version} Release Notes
+       XMLSchema 1.4.4 Release Notes
  ====================================
 
-This is the release of XMLSchema ${version} of Apache WS-Commons.
+This is the release of XMLSchema 1.4.4 of Apache WS-Commons.
 
 XMLSchema is a lightweight schema object model that can be used to manipulate 
 and generate XML schema representations. It has few external dependencies
@@ -12,7 +12,12 @@ You are welcome to kick the tires and get XMLSchema on the move.  Any
 contribution in the form of coding, testing, submitting improvements
 to the documentation, and reporting bugs are always welcome.
 
-This release fixes the following defects:
+This release fixes one defect that was introduced in 1.4.3:
+
+WSCOMMONS-436  SchemaBuilder returns a null XmlSchemaAppInfo when
+                                appinfo element without source attribute.
+
+The defect list for 1.4.3 was:
 
 WSCOMMONS-401 	Add support for CDATA in XmlSchemaDocumentation
 WSCOMMONS-396 	API lacks functions for global attributes like those for types and elements
