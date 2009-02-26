@@ -17,6 +17,11 @@ This release fixes one defect that was introduced in 1.4.3:
 WSCOMMONS-436  SchemaBuilder returns a null XmlSchemaAppInfo when
                                 appinfo element without source attribute.
 
+plus one older defect:
+
+WSCOMMONS-378  SchemaBuilder::handleSimpleType() doesn't 
+	call processExtensibilityComponents() for facets
+
 The defect list for 1.4.3 was:
 
 WSCOMMONS-401 	Add support for CDATA in XmlSchemaDocumentation
