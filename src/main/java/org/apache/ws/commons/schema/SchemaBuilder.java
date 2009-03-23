@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -66,7 +67,8 @@ public class SchemaBuilder {
      * initialize resolvedSchemas to non-null Clearing of cache is done by calling clearCache() which will
      * clear and nullify resolvedSchemas
      */
-    private static Map<String, SoftReference<XmlSchema>> resolvedSchemas;
+	
+    private static Map<String, Map<String, SoftReference<XmlSchema>>> resolvedSchemas;
     private static final String[] RESERVED_ATTRIBUTES_LIST =  {"name", 
                                                                "type", 
                                                                "default", 
@@ -109,16 +111,108 @@ public class SchemaBuilder {
         currentSchema = new XmlSchema();
     }
 
-    public static synchronized void clearCache() {
-        if (resolvedSchemas != null) {
-            resolvedSchemas.clear(); // necessary?
-            resolvedSchemas = null;
+    
+	/**
+     * Setup the cache to be used by the current thread of execution. Multiple
+     * threads can use the cache, and each one must call this method at
+     * some point prior to attempting to resolve the first schema, or the cache
+     * will not be used on that thread.
+     * 
+     * IMPORTANT: The thread MUST call clearCache() when it is done with the
+     * schemas or a large amount of memory may remain in-use.
+     */
+    public static synchronized void initCache() {
+
+    	if (resolvedSchemas == null) {
+            resolvedSchemas = 
+            	Collections.synchronizedMap(new HashMap<String, Map<String, SoftReference<XmlSchema>>>());
+        }
+        
+        String threadID = String.valueOf(Thread.currentThread().getId());
+        
+        Map<String, SoftReference<XmlSchema>> threadResolvedSchemas =    	
+        	resolvedSchemas.get(threadID);        
+
+        // If there is no entry yet for this thread ID, then create one
+        if (threadResolvedSchemas == null) {
+            threadResolvedSchemas = Collections.synchronizedMap(new Hashtable<String, SoftReference<XmlSchema>>());
+            resolvedSchemas.put(threadID, threadResolvedSchemas);
+
         }
     }
 
-    public static synchronized void initCache() {
-        if (resolvedSchemas == null) {
-            resolvedSchemas = Collections.synchronizedMap(new HashMap<String, SoftReference<XmlSchema>>());
+    /**
+     * Remove any entries from the cache for the current thread. Entries for
+     * other threads are not altered.
+     */
+    public static synchronized void clearCache() {
+        if (resolvedSchemas != null) {
+            String threadID = String.valueOf(Thread.currentThread().getId());
+            // If there are entries for this thread ID, then clear them and
+            // remove the entry
+            Map<String, SoftReference<XmlSchema>> threadResolvedSchemas =    	
+            	resolvedSchemas.get(threadID);        
+
+            if (threadResolvedSchemas != null) {
+                threadResolvedSchemas.clear();
+                resolvedSchemas.remove(threadID);
+            }
+        }
+    }
+	
+    /**
+     * Return a cached schema if one exists for this thread.  In order for schemas to be cached
+     * the thread must have done an initCache() previously.
+     * The parameters are used to construct a key used to lookup the schema
+     * @param targetNamespace
+     * @param schemaLocation
+     * @param baseUri
+     * @return The cached schema if one exists for this thread or null.
+     */
+    private XmlSchema getCachedSchema(String targetNamespace,
+            String schemaLocation, String baseUri) {
+        
+        XmlSchema resolvedSchema = null;
+    
+        if (resolvedSchemas != null) {  // cache is initialized, use it
+            String threadID = String.valueOf(Thread.currentThread().getId());
+            Map<String, SoftReference<XmlSchema>> threadResolvedSchemas =    	
+            	resolvedSchemas.get(threadID);        
+            if (threadResolvedSchemas != null) {
+                // Not being very smart about this at the moment. One could, for example,
+                // see that the schemaLocation or baseUri is the same as another, but differs
+                // only by a trailing slash. As it is now, we assume a single character difference
+                // means it's a schema that has yet to be resolved.
+                String schemaKey = targetNamespace + schemaLocation + baseUri;
+                SoftReference<XmlSchema> softref = threadResolvedSchemas.get(schemaKey);
+                if (softref != null) {
+                    resolvedSchema = softref.get();
+                }
+            }
+        }
+        return resolvedSchema;
+    }
+
+    /**
+     * Add an XmlSchema to the cache if the current thread has the cache enabled. 
+     * The first three parameters are used to construct a key
+     * @param targetNamespace
+     * @param schemaLocation
+     * @param baseUri
+     * This parameter is the value put under the key (if the cache is enabled)
+     * @param readSchema
+     */
+    private void putCachedSchema(String targetNamespace, String schemaLocation,
+            String baseUri, XmlSchema readSchema) {
+        
+        if (resolvedSchemas != null) {
+            String threadID = String.valueOf(Thread.currentThread().getId());
+            Map<String, SoftReference<XmlSchema>> threadResolvedSchemas =    	
+            	resolvedSchemas.get(threadID);        
+            if (threadResolvedSchemas != null) {
+                String schemaKey = targetNamespace + schemaLocation + baseUri;
+                threadResolvedSchemas.put(schemaKey, new SoftReference<XmlSchema>(readSchema));
+            }
         }
     }
 
@@ -917,22 +1011,10 @@ public class SchemaBuilder {
     XmlSchema resolveXmlSchema(String targetNamespace, String schemaLocation, String baseUri,
                                TargetNamespaceValidator validator) {
 
-        String schemaKey = null;
-        if (resolvedSchemas != null) { // cache is initialized, use it
-            // Not being very smart about this at the moment. One could, for example,
-            // see that the schemaLocation or baseUri is the same as another, but differs
-            // only by a trailing slash. As it is now, we assume a single character difference
-            // means it's a schema that has yet to be resolved.
-            schemaKey = Thread.currentThread().getId() + targetNamespace + schemaLocation + baseUri;
-            SoftReference<XmlSchema> softref = resolvedSchemas.get(schemaKey);
-            if (softref != null) {
-                XmlSchema resolvedSchema = softref.get();
-                if (resolvedSchema != null) {
-                    return resolvedSchema;
-                }
-            }
+        if (getCachedSchema(targetNamespace, schemaLocation, baseUri) != null) {
+            return getCachedSchema(targetNamespace, schemaLocation, baseUri);
         }
-
+        
         // use the entity resolver provided if the schema location is present null
         if (schemaLocation != null && !"".equals(schemaLocation)) {
             InputSource source = collection.getSchemaResolver().resolveEntity(targetNamespace,
@@ -958,9 +1040,7 @@ public class SchemaBuilder {
                 collection.push(key);
                 try {
                     XmlSchema readSchema = collection.read(source, null, validator);
-                    if (resolvedSchemas != null) {
-                        resolvedSchemas.put(schemaKey, new SoftReference<XmlSchema>(readSchema));
-                    }
+                    putCachedSchema(targetNamespace, schemaLocation, baseUri, readSchema);
                     return readSchema;
                 } catch (Exception e) {
                     throw new RuntimeException(e);
