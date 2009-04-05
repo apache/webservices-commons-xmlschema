@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -18,18 +18,26 @@
  */
 package tests;
 
-import junit.framework.TestCase;
-import org.apache.ws.commons.schema.*;
+import java.io.FileInputStream;
+import java.io.InputStream;
+
+import javax.xml.transform.stream.StreamSource;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import javax.xml.transform.stream.StreamSource;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import junit.framework.TestCase;
+
+
+import org.apache.ws.commons.schema.XmlSchema;
+import org.apache.ws.commons.schema.XmlSchemaAnnotation;
+import org.apache.ws.commons.schema.XmlSchemaAppInfo;
+import org.apache.ws.commons.schema.XmlSchemaCollection;
+import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
 
 public class AnnotationDeepTest extends TestCase {
-	
+    
     /**
      * The appinfo element has no source attribute
      * but it has content.
@@ -37,29 +45,29 @@ public class AnnotationDeepTest extends TestCase {
      * @throws Exception Any exception encountered
      */
     public void testAppInfoNoSource() throws Exception {
-    	
+        
         /*
-		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-		        targetNamespace="http://www.abc.com/validation"
-		        xmlns="http://www.abc.com/validation"
-		        xmlns:xsns="http://www.abc.com/validation"
-		        xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
-		        elementFormDefault="qualified">
-		    <xs:annotation>
-		        <xs:appinfo>
-		            <jaxb:schemaBindings>
-		                <jaxb:package  name="com.abc.validation"/>
-		            </jaxb:schemaBindings>
-		        </xs:appinfo>
-		    </xs:annotation>
-		
-		    <simpleType name="emptyAppinfo">
-		        <restriction base="string">
-		            <length value="1"/>
-		        </restriction>
-		    </simpleType>
-		
-		</xs:schema>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                targetNamespace="http://www.abc.com/validation"
+                xmlns="http://www.abc.com/validation"
+                xmlns:xsns="http://www.abc.com/validation"
+                xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+                elementFormDefault="qualified">
+            <xs:annotation>
+                <xs:appinfo>
+                    <jaxb:schemaBindings>
+                        <jaxb:package  name="com.abc.validation"/>
+                    </jaxb:schemaBindings>
+                </xs:appinfo>
+            </xs:annotation>
+        
+            <simpleType name="emptyAppinfo">
+                <restriction base="string">
+                    <length value="1"/>
+                </restriction>
+            </simpleType>
+        
+        </xs:schema>
         */
 
         InputStream is = new FileInputStream(Resources.asURI("annotation-appinfo-no-source.xsd"));
@@ -80,29 +88,29 @@ public class AnnotationDeepTest extends TestCase {
      * @throws Exception Any exception encountered
      */
     public void testAppInfoDeep() throws Exception {
-    	
+        
         /*
-		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-		        targetNamespace="http://www.abc.com/validation"
-		        xmlns="http://www.abc.com/validation"
-		        xmlns:xsns="http://www.abc.com/validation"
-		        xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
-		        elementFormDefault="qualified">
-		    <xs:annotation>
-		        <xs:appinfo source="anything">
-		            <jaxb:schemaBindings>
-		                <jaxb:package  name="com.abc.validation"/>
-		            </jaxb:schemaBindings>
-		        </xs:appinfo>
-		    </xs:annotation>
-		
-		    <simpleType name="emptyAppinfo">
-		        <restriction base="string">
-		            <length value="1"/>
-		        </restriction>
-		    </simpleType>
-		
-		</xs:schema>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                targetNamespace="http://www.abc.com/validation"
+                xmlns="http://www.abc.com/validation"
+                xmlns:xsns="http://www.abc.com/validation"
+                xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+                elementFormDefault="qualified">
+            <xs:annotation>
+                <xs:appinfo source="anything">
+                    <jaxb:schemaBindings>
+                        <jaxb:package  name="com.abc.validation"/>
+                    </jaxb:schemaBindings>
+                </xs:appinfo>
+            </xs:annotation>
+        
+            <simpleType name="emptyAppinfo">
+                <restriction base="string">
+                    <length value="1"/>
+                </restriction>
+            </simpleType>
+        
+        </xs:schema>
         */
 
         InputStream is = new FileInputStream(Resources.asURI("annotation-appinfo-deep.xsd"));
@@ -120,12 +128,12 @@ public class AnnotationDeepTest extends TestCase {
         assertTrue(node instanceof Element);
         Element el = (Element) node;
         assertEquals("First level child is retrieved ok",
-        		"http://java.sun.com/xml/ns/jaxb", node.getNamespaceURI());
+                "http://java.sun.com/xml/ns/jaxb", node.getNamespaceURI());
         assertEquals("First level child is retrieved ok",
-        		"schemaBindings", node.getLocalName());
+                "schemaBindings", node.getLocalName());
         assertTrue("schemaBindings should have a child", el.getChildNodes().getLength() > 0);
         NodeList l = el.getElementsByTagNameNS("http://java.sun.com/xml/ns/jaxb", "package");
-        assertTrue("ok this is actually working",l.getLength() > 0);
+        assertTrue("ok this is actually working", l.getLength() > 0);
 
     }
 }
