@@ -1632,11 +1632,7 @@ public class SchemaBuilder {
             currentSchema.groups.collection.put(group.getQName(), group);
             currentSchema.items.add(group);
         } else if (el.getLocalName().equals("attributeGroup")) {
-            XmlSchemaAttributeGroup group = handleAttributeGroup(currentSchema,
-                    el, schemaEl);
-            currentSchema.attributeGroups.collection.put(group.getQName(),
-                    group);
-            currentSchema.items.add(group);
+            handleAttributeGroup(currentSchema, el, schemaEl);
         } else if (el.getLocalName().equals("attribute")) {
             XmlSchemaAttribute attr = handleAttribute(currentSchema, el,
                     schemaEl, true); // pass true to

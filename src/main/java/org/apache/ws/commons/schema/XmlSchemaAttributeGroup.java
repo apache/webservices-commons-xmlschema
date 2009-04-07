@@ -42,6 +42,8 @@ public class XmlSchemaAttributeGroup extends XmlSchemaAnnotated implements XmlSc
      */
     public XmlSchemaAttributeGroup(XmlSchema parent) {
         namedDelegate = new XmlSchemaNamedImpl(parent, true);
+        parent.getItems().add(this);
+        // we can't be put in the map until we have a name. Perhaps we should be forced to have a name ?
         attributes = new XmlSchemaObjectCollection();
     }
 
@@ -82,6 +84,10 @@ public class XmlSchemaAttributeGroup extends XmlSchemaAnnotated implements XmlSc
     }
 
     public void setName(String name) {
+        if (name != null) {
+            namedDelegate.getParent().getAttributeGroups().remove(getQName());
+        }
         namedDelegate.setName(name);
+        namedDelegate.getParent().getAttributeGroups().put(getQName(), this);
     }
 }

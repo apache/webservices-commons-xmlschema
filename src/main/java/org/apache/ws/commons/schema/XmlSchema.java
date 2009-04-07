@@ -57,10 +57,8 @@ public class XmlSchema
     static final String SCHEMA_NS = XMLConstants.W3C_XML_SCHEMA_NS_URI;
     private static final String UTF_8_ENCODING = "UTF-8";
 
-    XmlSchemaForm attributeFormDefault;
-    XmlSchemaForm elementFormDefault;
 
-    XmlSchemaObjectTable attributeGroups;
+    Map<QName, XmlSchemaAttributeGroup> attributeGroups;
     XmlSchemaObjectTable attributes;
     XmlSchemaObjectTable elements;
     XmlSchemaObjectTable groups;
@@ -76,6 +74,8 @@ public class XmlSchema
     String schemaNamespacePrefix = "";
     XmlSchemaCollection parent;
 
+    private XmlSchemaForm elementFormDefault;
+    private XmlSchemaForm attributeFormDefault;
     private List<XmlSchemaExternal> externals;
     private NamespacePrefixList namespaceContext;
     // keep the encoding of the input
@@ -104,7 +104,7 @@ public class XmlSchema
         items = new XmlSchemaObjectCollection();
         externals = new ArrayList<XmlSchemaExternal>();
         elements = new XmlSchemaObjectTable();
-        attributeGroups = new XmlSchemaObjectTable();
+        attributeGroups = new HashMap<QName, XmlSchemaAttributeGroup>();
         attributes = new XmlSchemaObjectTable();
         groups = new XmlSchemaObjectTable();
         notations = new XmlSchemaObjectTable();
@@ -144,7 +144,7 @@ public class XmlSchema
         attributeFormDefault = value;
     }
 
-    public XmlSchemaObjectTable getAttributeGroups() {
+    public Map<QName, XmlSchemaAttributeGroup> getAttributeGroups() {
         return attributeGroups;
     }
 
@@ -214,7 +214,7 @@ public class XmlSchema
             return null;
         }
 
-        XmlSchemaAttributeGroup group = (XmlSchemaAttributeGroup)attributeGroups.getItem(name);
+        XmlSchemaAttributeGroup group = attributeGroups.get(name);
         if (deep) {
             if (group == null) {
                 // search the imports

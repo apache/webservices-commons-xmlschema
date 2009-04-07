@@ -22,6 +22,7 @@ package tests;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Iterator;
+import java.util.Map;
 
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
@@ -34,7 +35,6 @@ import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaComplexType;
 import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
-import org.apache.ws.commons.schema.XmlSchemaObjectTable;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -56,7 +56,8 @@ import org.junit.Test;
  * limitations under the License.
  *
  */
-public class AttributeGroupTest extends Assert {
+public class AttributeGroupTest
+    extends Assert {
 
     /**
      * This method will test the list.
@@ -90,48 +91,40 @@ public class AttributeGroupTest extends Assert {
         XmlSchemaObjectCollection c = t.getAttributes();
         for (Iterator i = c.getIterator(); i.hasNext();) {
             XmlSchemaAttributeGroupRef agrn = (XmlSchemaAttributeGroupRef)i.next();
-            assertEquals(new QName("http://soapinterop.org/types", "department"), 
-                         agrn.getRef().getTargetQName());
+            assertEquals(new QName("http://soapinterop.org/types", "department"), agrn.getRef()
+                .getTargetQName());
         }
 
-        XmlSchemaObjectTable attG = schema.getAttributeGroups();
+        Map<QName, XmlSchemaAttributeGroup> attG = schema.getAttributeGroups();
         assertNotNull(attG);
-        assertEquals(1, attG.getCount());
+        assertEquals(1, attG.size());
 
-        for (Iterator i = attG.getNames(); i.hasNext();) {
-            assertEquals("department", ((QName)i.next()).getLocalPart());
+        for (QName name : attG.keySet()) {
+            assertEquals("department", name.getLocalPart());
         }
 
-        for (Iterator i = attG.getValues(); i.hasNext();) {
-            Object obj1 = i.next();
-            if (obj1 instanceof XmlSchemaAttributeGroup) {
-                assertEquals("department", ((XmlSchemaAttributeGroup)obj1).getName());
-                XmlSchemaObjectCollection attributes = ((XmlSchemaAttributeGroup)obj1).getAttributes();
-                assertNotNull(attributes);
-                assertEquals(2, attributes.getCount());
-                for (Iterator j = attributes.getIterator(); j.hasNext();) {
-                    XmlSchemaAttribute obj2 = (XmlSchemaAttribute)j.next();
-                    String name = obj2.getName();
-                    if ("id".equals(name)) {
-                        assertEquals(new QName("http://soapinterop.org/types", "id"), obj2.getQName());
-                        assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "integer"), obj2
-                            .getSchemaTypeName());
-                    } else if ("name".equals(name)) {
-                        assertEquals(new QName("http://soapinterop.org/types", "name"), obj2.getQName());
-                        assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "string"), obj2
-                            .getSchemaTypeName());
-                    } else {
-                        fail("The name \"" + name + "\" should not have been found " + "for an attribute.");
+        for (XmlSchemaAttributeGroup group : attG.values()) {
+            assertEquals("department", group.getName());
+            XmlSchemaObjectCollection attributes = group.getAttributes();
+            assertNotNull(attributes);
+            assertEquals(2, attributes.getCount());
+            for (Iterator j = attributes.getIterator(); j.hasNext();) {
+                XmlSchemaAttribute obj2 = (XmlSchemaAttribute)j.next();
+                String name = obj2.getName();
+                if ("id".equals(name)) {
+                    assertEquals(new QName("http://soapinterop.org/types", "id"), obj2.getQName());
+                    assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "integer"), obj2
+                        .getSchemaTypeName());
+                } else if ("name".equals(name)) {
+                    assertEquals(new QName("http://soapinterop.org/types", "name"), obj2.getQName());
+                    assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "string"), obj2
+                        .getSchemaTypeName());
+                } else {
+                    fail("The name \"" + name + "\" should not have been found " + "for an attribute.");
 
-                    }
                 }
-            } else {
-                fail("There should have been one instance of the " + "class "
-                     + XmlSchemaAttributeGroup.class.getName() + " , but instead "
-                     + obj1.getClass().getName() + " was" + " found.");
             }
         }
 
     }
-
 }

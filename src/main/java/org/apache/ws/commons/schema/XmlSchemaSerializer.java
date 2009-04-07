@@ -1560,13 +1560,15 @@ public class XmlSchemaSerializer {
         }
 
         // todo: implement xml:lang,
-        if (schemaObj.attributeFormDefault != null && schemaObj.attributeFormDefault != XmlSchemaForm.NONE) {
+        if (schemaObj.getAttributeFormDefault() != null 
+            && schemaObj.getAttributeFormDefault() != XmlSchemaForm.NONE) {
             serializedSchema.setAttribute("attributeFormDefault", 
-                                          schemaObj.attributeFormDefault.toString());
+                                          schemaObj.getAttributeFormDefault().toString());
         }
 
-        if (schemaObj.elementFormDefault != null && schemaObj.elementFormDefault != XmlSchemaForm.NONE) {
-            serializedSchema.setAttribute("elementFormDefault", schemaObj.elementFormDefault.toString());
+        if (schemaObj.getElementFormDefault() != null 
+            && schemaObj.getElementFormDefault() != XmlSchemaForm.NONE) {
+            serializedSchema.setAttribute("elementFormDefault", schemaObj.getElementFormDefault().toString());
         }
 
         if (schemaObj.getAnnotation() != null) {
