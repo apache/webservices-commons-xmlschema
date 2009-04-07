@@ -57,8 +57,6 @@ public class XmlSchema
     static final String SCHEMA_NS = XMLConstants.W3C_XML_SCHEMA_NS_URI;
     private static final String UTF_8_ENCODING = "UTF-8";
 
-
-    Map<QName, XmlSchemaAttributeGroup> attributeGroups;
     XmlSchemaObjectTable attributes;
     XmlSchemaObjectTable elements;
     XmlSchemaObjectTable groups;
@@ -77,6 +75,7 @@ public class XmlSchema
     private XmlSchemaForm elementFormDefault;
     private XmlSchemaForm attributeFormDefault;
     private List<XmlSchemaExternal> externals;
+    private Map<QName, XmlSchemaAttributeGroup> attributeGroups;
     private NamespacePrefixList namespaceContext;
     // keep the encoding of the input
     private String inputEncoding;
@@ -796,6 +795,10 @@ public class XmlSchema
 
     void setExternals(List<XmlSchemaExternal> externals) {
         this.externals = externals;
+    }
+
+    void setAttributeGroups(Map<QName, XmlSchemaAttributeGroup> attributeGroups) {
+        this.attributeGroups = attributeGroups;
     }
 
     
