@@ -24,8 +24,10 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
@@ -44,6 +46,7 @@ import org.w3c.dom.Document;
 import org.apache.ws.commons.schema.XmlSchemaSerializer.XmlSchemaSerializerException;
 import org.apache.ws.commons.schema.utils.NamespaceContextOwner;
 import org.apache.ws.commons.schema.utils.NamespacePrefixList;
+import org.custommonkey.xmlunit.XMLConstants;
 
 /**
  * Contains the definition of a schema. All XML Schema definition language (XSD) elements are children of the
@@ -51,7 +54,7 @@ import org.apache.ws.commons.schema.utils.NamespacePrefixList;
  */
 public class XmlSchema
     extends XmlSchemaAnnotated implements NamespaceContextOwner {
-    static final String SCHEMA_NS = "http://www.w3.org/2001/XMLSchema";
+    static final String SCHEMA_NS = XMLConstants.W3C_XML_SCHEMA_NS_URI;
     private static final String UTF_8_ENCODING = "UTF-8";
 
     XmlSchemaForm attributeFormDefault;
@@ -65,7 +68,6 @@ public class XmlSchema
     XmlSchemaObjectTable schemaTypes;
     XmlSchemaDerivationMethod blockDefault;
     XmlSchemaDerivationMethod finalDefault;
-    XmlSchemaObjectCollection includes;
     XmlSchemaObjectCollection items;
     boolean isCompiled;
     String syntacticalTargetNamespace;
@@ -74,22 +76,10 @@ public class XmlSchema
     String schemaNamespacePrefix = "";
     XmlSchemaCollection parent;
 
+    private List<XmlSchemaExternal> externals;
     private NamespacePrefixList namespaceContext;
     // keep the encoding of the input
     private String inputEncoding;
-
-    /**
-     * Creates new XmlSchema Create a new XmlSchema. The schema is <i>not</i> added to the parent collection,
-     * since it has no target namespace when created through this constructor. Call
-     * {@link XmlSchema#XmlSchema(String, XmlSchemaCollection)} instead.
-     * 
-     * @param parent the parent XmlSchemaCollection
-     * @deprecated
-     */
-    @Deprecated
-    public XmlSchema(XmlSchemaCollection parent) {
-        this(null, null, parent);
-    }
 
     /**
      * Create a schema that is not a member of a collection.
@@ -112,7 +102,7 @@ public class XmlSchema
         blockDefault = XmlSchemaDerivationMethod.NONE;
         finalDefault = XmlSchemaDerivationMethod.NONE;
         items = new XmlSchemaObjectCollection();
-        includes = new XmlSchemaObjectCollection();
+        externals = new ArrayList<XmlSchemaExternal>();
         elements = new XmlSchemaObjectTable();
         attributeGroups = new XmlSchemaObjectTable();
         attributes = new XmlSchemaObjectTable();
@@ -192,9 +182,9 @@ public class XmlSchema
         if (deep) {
             if (element == null) {
                 // search the imports
-                for (Iterator includedItems = includes.getIterator(); includedItems.hasNext();) {
+                for (XmlSchemaExternal item : externals) {
 
-                    XmlSchema schema = getSchema(includedItems.next());
+                    XmlSchema schema = getSchema(item);
 
                     if (schema != null) {
                         // create an empty stack - push the current parent in
@@ -228,9 +218,9 @@ public class XmlSchema
         if (deep) {
             if (group == null) {
                 // search the imports
-                for (Iterator includedItems = includes.getIterator(); includedItems.hasNext();) {
+                for (XmlSchemaExternal item : externals) {
 
-                    XmlSchema schema = getSchema(includedItems.next());
+                    XmlSchema schema = getSchema(item);
 
                     if (schema != null) {
                         // create an empty stack - push the current parent in
@@ -262,9 +252,9 @@ public class XmlSchema
         if (deep) {
             if (attribute == null) {
                 // search the imports
-                for (Iterator includedItems = includes.getIterator(); includedItems.hasNext();) {
+                for (XmlSchemaExternal item : externals) {
 
-                    XmlSchema schema = getSchema(includedItems.next());
+                    XmlSchema schema = getSchema(item);
 
                     if (schema != null) {
                         // create an empty stack - push the current parent in
@@ -298,9 +288,9 @@ public class XmlSchema
         if (deep) {
             if (group == null) {
                 // search the imports
-                for (Iterator includedItems = includes.getIterator(); includedItems.hasNext();) {
+                for (XmlSchemaExternal item : externals) {
 
-                    XmlSchema schema = getSchema(includedItems.next());
+                    XmlSchema schema = getSchema(item);
 
                     if (schema != null) {
                         // create an empty stack - push the current parent in
@@ -334,9 +324,9 @@ public class XmlSchema
         if (deep) {
             if (notation == null) {
                 // search the imports
-                for (Iterator includedItems = includes.getIterator(); includedItems.hasNext();) {
+                for (XmlSchemaExternal item : externals) {
 
-                    XmlSchema schema = getSchema(includedItems.next());
+                    XmlSchema schema = getSchema(item);
 
                     if (schema != null) {
                         // create an empty stack - push the current parent in
@@ -410,9 +400,9 @@ public class XmlSchema
         if (deep) {
             if (type == null) {
                 // search the imports
-                for (Iterator includedItems = includes.getIterator(); includedItems.hasNext();) {
+                for (XmlSchemaExternal item : externals) {
 
-                    XmlSchema schema = getSchema(includedItems.next());
+                    XmlSchema schema = getSchema(item);
 
                     if (schema != null) {
                         // create an empty stack - push the current parent
@@ -516,8 +506,12 @@ public class XmlSchema
         return groups;
     }
 
-    public XmlSchemaObjectCollection getIncludes() {
-        return includes;
+    /**
+     * Return the includes, imports, and redefines.
+     * @return a list of the objects representing includes, imports, and redefines.
+     */
+    public List<XmlSchemaExternal> getExternals() {
+        return externals;
     }
 
     public boolean isCompiled() {
@@ -798,6 +792,10 @@ public class XmlSchema
 
     public XmlSchemaCollection getParent() {
         return parent;
+    }
+
+    void setExternals(List<XmlSchemaExternal> externals) {
+        this.externals = externals;
     }
 
     

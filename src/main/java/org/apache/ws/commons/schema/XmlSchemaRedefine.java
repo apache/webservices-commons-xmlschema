@@ -36,7 +36,8 @@ public class XmlSchemaRedefine extends XmlSchemaExternal {
     /**
      * Creates new XmlSchemaRedefine
      */
-    public XmlSchemaRedefine() {
+    public XmlSchemaRedefine(XmlSchema parent) {
+        super(parent);
         items = new XmlSchemaObjectCollection();
         schemaTypes = new XmlSchemaObjectTable();
         groups = new XmlSchemaObjectTable();

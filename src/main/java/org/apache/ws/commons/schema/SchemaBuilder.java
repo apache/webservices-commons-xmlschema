@@ -525,7 +525,7 @@ public class SchemaBuilder {
     XmlSchemaImport handleImport(XmlSchema schema, Element importEl,
             Element schemaEl) {
 
-        XmlSchemaImport schemaImport = new XmlSchemaImport();
+        XmlSchemaImport schemaImport = new XmlSchemaImport(schema);
 
         Element annotationEl = XDOMUtil.getFirstChildElementNS(importEl,
                 XmlSchema.SCHEMA_NS, "annotation");
@@ -583,7 +583,7 @@ public class SchemaBuilder {
     XmlSchemaInclude handleInclude(final XmlSchema schema, Element includeEl,
             Element schemaEl) {
 
-        XmlSchemaInclude include = new XmlSchemaInclude();
+        XmlSchemaInclude include = new XmlSchemaInclude(schema);
 
         Element annotationEl = XDOMUtil.getFirstChildElementNS(includeEl,
                 XmlSchema.SCHEMA_NS, "annotation");
@@ -1513,7 +1513,7 @@ public class SchemaBuilder {
     private XmlSchemaRedefine handleRedefine(XmlSchema schema,
             Element redefineEl, Element schemaEl) {
 
-        XmlSchemaRedefine redefine = new XmlSchemaRedefine();
+        XmlSchemaRedefine redefine = new XmlSchemaRedefine(schema);
         redefine.schemaLocation = redefineEl.getAttribute("schemaLocation");
         final TargetNamespaceValidator validator = newIncludeValidator(schema);
 
@@ -1624,17 +1624,9 @@ public class SchemaBuilder {
             }
             currentSchema.items.add(element);
         } else if (el.getLocalName().equals("include")) {
-            XmlSchemaInclude include = handleInclude(currentSchema, el,
-                    schemaEl);
-            currentSchema.includes.add(include);
-            currentSchema.items.add(include);
-
+            handleInclude(currentSchema, el, schemaEl);
         } else if (el.getLocalName().equals("import")) {
-            XmlSchemaImport schemaImport = handleImport(currentSchema, el,
-                    schemaEl);
-            currentSchema.includes.add(schemaImport);
-            currentSchema.items.add(schemaImport);
-
+            handleImport(currentSchema, el, schemaEl);
         } else if (el.getLocalName().equals("group")) {
             XmlSchemaGroup group = handleGroup(currentSchema, el, schemaEl);
             currentSchema.groups.collection.put(group.getQName(), group);
@@ -1653,9 +1645,7 @@ public class SchemaBuilder {
             currentSchema.attributes.collection.put(attr.getQName(), attr);
             currentSchema.items.add(attr);
         } else if (el.getLocalName().equals("redefine")) {
-            XmlSchemaRedefine redefine = handleRedefine(currentSchema, el,
-                    schemaEl);
-            currentSchema.includes.add(redefine);
+            handleRedefine(currentSchema, el,  schemaEl);
         } else if (el.getLocalName().equals("notation")) {
             XmlSchemaNotation notation = handleNotation(currentSchema, el);
             currentSchema.notations.collection.put(notation.getQName(),

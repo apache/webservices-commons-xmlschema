@@ -26,13 +26,15 @@ package org.apache.ws.commons.schema;
 public abstract class XmlSchemaExternal extends XmlSchemaAnnotated {
 
     XmlSchema schema;
-
     String schemaLocation;
 
     /**
      * Creates new XmlSchemaExternal
      */
-    protected XmlSchemaExternal() {
+    protected XmlSchemaExternal(XmlSchema parent) {
+        this.schema = parent;
+        parent.getExternals().add(this);
+        parent.getItems().add(this);
     }
 
     public XmlSchema getSchema() {
@@ -41,10 +43,6 @@ public abstract class XmlSchemaExternal extends XmlSchemaAnnotated {
 
     public String getSchemaLocation() {
         return schemaLocation;
-    }
-
-    public void setSchema(XmlSchema schema) {
-        this.schema = schema;
     }
 
     public void setSchemaLocation(String schemaLocation) {

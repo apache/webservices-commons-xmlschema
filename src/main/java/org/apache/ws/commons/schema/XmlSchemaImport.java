@@ -31,8 +31,8 @@ public class XmlSchemaImport extends XmlSchemaExternal {
     /**
      * Creates new XmlSchemaImport
      */
-    public XmlSchemaImport() {
-        super();
+    public XmlSchemaImport(XmlSchema parent) {
+        super(parent);
     }
 
     public String getNamespace() {

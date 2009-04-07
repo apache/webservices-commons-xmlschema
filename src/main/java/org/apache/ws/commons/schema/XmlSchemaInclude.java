@@ -29,8 +29,8 @@ public class XmlSchemaInclude extends XmlSchemaExternal {
     /**
      * Creates new XmlSchemaInclude
      */
-    public XmlSchemaInclude() {
-        super();
+    public XmlSchemaInclude(XmlSchema parent) {
+        super(parent);
     }
 
 }

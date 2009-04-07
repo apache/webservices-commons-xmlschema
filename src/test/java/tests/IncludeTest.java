@@ -22,6 +22,7 @@ package tests;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
@@ -32,8 +33,8 @@ import org.xml.sax.InputSource;
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaElement;
+import org.apache.ws.commons.schema.XmlSchemaExternal;
 import org.apache.ws.commons.schema.XmlSchemaInclude;
-import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -64,14 +65,14 @@ public class IncludeTest extends Assert {
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
 
-        XmlSchemaObjectCollection c = schema.getIncludes();
-        assertEquals(2, c.getCount());
+        List<XmlSchemaExternal> c = schema.getExternals();
+        assertEquals(2, c.size());
 
         Set<String> set = new HashSet<String>();
         set.add(Resources.asURI("include2.xsd"));
         set.add(Resources.asURI("include3.xsd"));
-        for (int i = 0; i < c.getCount(); i++) {
-            XmlSchemaInclude include = (XmlSchemaInclude)c.getItem(i);
+        for (int i = 0; i < c.size(); i++) {
+            XmlSchemaInclude include = (XmlSchemaInclude)c.get(i);
             assertNotNull(include);
             XmlSchema s = include.getSchema();
             assertNotNull(s);
@@ -121,10 +122,10 @@ public class IncludeTest extends Assert {
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(is, null);
 
-        XmlSchemaObjectCollection c = schema.getIncludes();
-        assertEquals(1, c.getCount());
+        List<XmlSchemaExternal> c = schema.getExternals();
+        assertEquals(1, c.size());
 
-        XmlSchemaInclude schemaInclude = (XmlSchemaInclude)c.getItem(0);
+        XmlSchemaInclude schemaInclude = (XmlSchemaInclude)c.get(0);
         assertNotNull(schemaInclude);
 
         XmlSchema schema2 = schemaInclude.getSchema();

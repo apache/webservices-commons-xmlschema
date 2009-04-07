@@ -23,6 +23,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
@@ -36,6 +37,7 @@ import org.apache.ws.commons.schema.XmlSchemaComplexContentExtension;
 import org.apache.ws.commons.schema.XmlSchemaComplexType;
 import org.apache.ws.commons.schema.XmlSchemaContentModel;
 import org.apache.ws.commons.schema.XmlSchemaElement;
+import org.apache.ws.commons.schema.XmlSchemaExternal;
 import org.apache.ws.commons.schema.XmlSchemaGroup;
 import org.apache.ws.commons.schema.XmlSchemaGroupRef;
 import org.apache.ws.commons.schema.XmlSchemaMaxInclusiveFacet;
@@ -89,10 +91,10 @@ public class RedefineTest extends Assert {
         assertEquals("vip", xse.getName());
         assertEquals(new QName("http://soapinterop.org/types", "person"), xse.getSchemaTypeName());
 
-        XmlSchemaObjectCollection xsoc = schema.getIncludes();
-        assertEquals(1, xsoc.getCount());
+        List<XmlSchemaExternal> xsoc = schema.getExternals();
+        assertEquals(1, xsoc.size());
 
-        XmlSchemaRedefine xsr = (XmlSchemaRedefine)xsoc.getItem(0);
+        XmlSchemaRedefine xsr = (XmlSchemaRedefine)xsoc.get(0);
         xsot = xsr.getSchemaTypes();
         assertEquals(1, xsot.getCount());
 
@@ -162,10 +164,10 @@ public class RedefineTest extends Assert {
         assertEquals("childsizedrink", xse.getName());
         assertEquals(new QName("http://soapinterop.org/types", "drinksize"), xse.getSchemaTypeName());
 
-        XmlSchemaObjectCollection xsoc = schema.getIncludes();
-        assertEquals(1, xsoc.getCount());
+        List<XmlSchemaExternal> xsoc = schema.getExternals();
+        assertEquals(1, xsoc.size());
 
-        XmlSchemaRedefine xsr = (XmlSchemaRedefine)xsoc.getItem(0);
+        XmlSchemaRedefine xsr = (XmlSchemaRedefine)xsoc.get(0);
         xsot = xsr.getSchemaTypes();
         assertEquals(1, xsot.getCount());
 
@@ -183,12 +185,12 @@ public class RedefineTest extends Assert {
         XmlSchemaSimpleTypeRestriction xsstr = (XmlSchemaSimpleTypeRestriction)xsst.getContent();
         assertEquals(new QName("http://soapinterop.org/types", "drinksize"), xsstr.getBaseTypeName());
 
-        xsoc = xsstr.getFacets();
+        XmlSchemaObjectCollection facets = xsstr.getFacets();
 
         Set<String> s = new HashSet<String>();
         s.add(XmlSchemaMinInclusiveFacet.class.getName());
         s.add(XmlSchemaMaxInclusiveFacet.class.getName());
-        for (Iterator i = xsoc.getIterator(); i.hasNext();) {
+        for (Iterator i = facets.getIterator(); i.hasNext();) {
             Object o = i.next();
             assertTrue(s.remove(o.getClass().getName()));
             if (o instanceof XmlSchemaMinInclusiveFacet) {
@@ -229,10 +231,10 @@ public class RedefineTest extends Assert {
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
 
-        XmlSchemaObjectCollection xsoc = schema.getIncludes();
-        assertEquals(1, xsoc.getCount());
+        List<XmlSchemaExternal> xsoc = schema.getExternals();
+        assertEquals(1, xsoc.size());
 
-        XmlSchemaRedefine xsr = (XmlSchemaRedefine)xsoc.getItem(0);
+        XmlSchemaRedefine xsr = (XmlSchemaRedefine)xsoc.get(0);
         XmlSchemaObjectTable xsot = xsr.getGroup();
         assertEquals(1, xsot.getCount());
 
@@ -247,13 +249,13 @@ public class RedefineTest extends Assert {
 
         XmlSchemaSequence xss = (XmlSchemaSequence)xsg.getParticle();
 
-        xsoc = xss.getItems();
-        assertEquals(2, xsoc.getCount());
+        XmlSchemaObjectCollection sequenceItems = xss.getItems();
+        assertEquals(2, sequenceItems.getCount());
 
         Set<String> s = new HashSet<String>();
         s.add(XmlSchemaGroupRef.class.getName());
         s.add(XmlSchemaElement.class.getName());
-        for (Iterator i = xsoc.getIterator(); i.hasNext();) {
+        for (Iterator i = sequenceItems.getIterator(); i.hasNext();) {
             Object o = i.next();
             assertTrue(s.remove(o.getClass().getName()));
             if (o instanceof XmlSchemaGroupRef) {
@@ -294,10 +296,10 @@ public class RedefineTest extends Assert {
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
 
-        XmlSchemaObjectCollection xsoc = schema.getIncludes();
-        assertEquals(1, xsoc.getCount());
+        List<XmlSchemaExternal> xsoc = schema.getExternals();
+        assertEquals(1, xsoc.size());
 
-        XmlSchemaRedefine xsr = (XmlSchemaRedefine)xsoc.getItem(0);
+        XmlSchemaRedefine xsr = (XmlSchemaRedefine)xsoc.get(0);
         XmlSchemaObjectTable xsot = xsr.getAttributeGroup();
         assertEquals(1, xsot.getCount());
 
@@ -312,12 +314,12 @@ public class RedefineTest extends Assert {
 
         assertNotNull(xsag);
         assertEquals("AttribGroup", xsag.getName());
-        xsoc = xsag.getAttributes();
+        XmlSchemaObjectCollection attributes = xsag.getAttributes();
 
         Set<String> s = new HashSet<String>();
         s.add("type");
         s.add("units");
-        for (Iterator i = xsoc.getIterator(); i.hasNext();) {
+        for (Iterator i = attributes.getIterator(); i.hasNext();) {
             XmlSchemaAttribute xsa = (XmlSchemaAttribute)i.next();
             assertTrue(s.remove(xsa.getName()));
         }
@@ -377,10 +379,10 @@ public class RedefineTest extends Assert {
         assertEquals("vip", xse.getName());
         assertEquals(new QName("http://soapinterop.org/types", "person"), xse.getSchemaTypeName());
 
-        XmlSchemaObjectCollection xsoc = schema.getIncludes();
-        assertEquals(1, xsoc.getCount());
+        List<XmlSchemaExternal> xsoc = schema.getExternals();
+        assertEquals(1, xsoc.size());
 
-        XmlSchemaRedefine xsr = (XmlSchemaRedefine)xsoc.getItem(0);
+        XmlSchemaRedefine xsr = (XmlSchemaRedefine)xsoc.get(0);
         xsot = xsr.getSchemaTypes();
         assertEquals(1, xsot.getCount());
 
