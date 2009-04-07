@@ -1634,12 +1634,7 @@ public class SchemaBuilder {
         } else if (el.getLocalName().equals("attributeGroup")) {
             handleAttributeGroup(currentSchema, el, schemaEl);
         } else if (el.getLocalName().equals("attribute")) {
-            XmlSchemaAttribute attr = handleAttribute(currentSchema, el,
-                    schemaEl, true); // pass true to
-            // indicate that it is
-            // a top level child
-            currentSchema.attributes.collection.put(attr.getQName(), attr);
-            currentSchema.items.add(attr);
+            handleAttribute(currentSchema, el, schemaEl, true); 
         } else if (el.getLocalName().equals("redefine")) {
             handleRedefine(currentSchema, el,  schemaEl);
         } else if (el.getLocalName().equals("notation")) {

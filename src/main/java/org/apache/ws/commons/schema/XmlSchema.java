@@ -50,20 +50,17 @@ import org.custommonkey.xmlunit.XMLConstants;
 
 /**
  * Contains the definition of a schema. All XML Schema definition language (XSD) elements are children of the
- * schema element. Represents the World Wide Web Consortium (W3C) schema element
+ * schema element. Represents the World Wide Web Consortium (W3C) schema element,
  */
 public class XmlSchema
     extends XmlSchemaAnnotated implements NamespaceContextOwner {
     static final String SCHEMA_NS = XMLConstants.W3C_XML_SCHEMA_NS_URI;
     private static final String UTF_8_ENCODING = "UTF-8";
 
-    XmlSchemaObjectTable attributes;
     XmlSchemaObjectTable elements;
     XmlSchemaObjectTable groups;
     XmlSchemaObjectTable notations;
     XmlSchemaObjectTable schemaTypes;
-    XmlSchemaDerivationMethod blockDefault;
-    XmlSchemaDerivationMethod finalDefault;
     XmlSchemaObjectCollection items;
     boolean isCompiled;
     String syntacticalTargetNamespace;
@@ -72,10 +69,13 @@ public class XmlSchema
     String schemaNamespacePrefix = "";
     XmlSchemaCollection parent;
 
+    private XmlSchemaDerivationMethod blockDefault;
+    private XmlSchemaDerivationMethod finalDefault;
     private XmlSchemaForm elementFormDefault;
     private XmlSchemaForm attributeFormDefault;
     private List<XmlSchemaExternal> externals;
     private Map<QName, XmlSchemaAttributeGroup> attributeGroups;
+    private Map<QName, XmlSchemaAttribute> attributes;
     private NamespacePrefixList namespaceContext;
     // keep the encoding of the input
     private String inputEncoding;
@@ -104,7 +104,7 @@ public class XmlSchema
         externals = new ArrayList<XmlSchemaExternal>();
         elements = new XmlSchemaObjectTable();
         attributeGroups = new HashMap<QName, XmlSchemaAttributeGroup>();
-        attributes = new XmlSchemaObjectTable();
+        attributes = new HashMap<QName, XmlSchemaAttribute>();
         groups = new XmlSchemaObjectTable();
         notations = new XmlSchemaObjectTable();
         schemaTypes = new XmlSchemaObjectTable();
@@ -147,7 +147,7 @@ public class XmlSchema
         return attributeGroups;
     }
 
-    public XmlSchemaObjectTable getAttributes() {
+    public Map<QName, XmlSchemaAttribute> getAttributes() {
         return attributes;
     }
 
@@ -247,7 +247,7 @@ public class XmlSchema
             // recursive schema - just return null
             return null;
         }
-        XmlSchemaAttribute attribute = (XmlSchemaAttribute)attributes.getItem(name);
+        XmlSchemaAttribute attribute = (XmlSchemaAttribute)attributes.get(name);
         if (deep) {
             if (attribute == null) {
                 // search the imports
@@ -799,6 +799,10 @@ public class XmlSchema
 
     void setAttributeGroups(Map<QName, XmlSchemaAttributeGroup> attributeGroups) {
         this.attributeGroups = attributeGroups;
+    }
+
+    void setAttributes(Map<QName, XmlSchemaAttribute> attributes) {
+        this.attributes = attributes;
     }
 
     

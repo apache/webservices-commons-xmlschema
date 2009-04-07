@@ -20,7 +20,6 @@ package tests;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.Iterator;
 
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
@@ -69,8 +68,7 @@ public class AttributeRefTest extends Assert {
         String namspace = qName.getNamespaceURI();
         assertEquals("http://tempuri.org/attribute", namspace);
 
-        for (Iterator toplevelAttributes = s.getAttributes().getValues(); toplevelAttributes.hasNext();) {
-            XmlSchemaAttribute attribute = (XmlSchemaAttribute)toplevelAttributes.next();
+        for (XmlSchemaAttribute attribute : s.getAttributes().values()) {
             assertEquals("http://tempuri.org/attribute", attribute.getQName().getNamespaceURI());
         }
 

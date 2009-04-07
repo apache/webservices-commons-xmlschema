@@ -49,6 +49,9 @@ public class XmlSchemaAttribute extends XmlSchemaAnnotated implements XmlSchemaN
         namedDelegate.setRefObject(ref);
         ref.setNamedObject(namedDelegate);
         use = XmlSchemaUse.NONE;
+        if (topLevel) {
+            schema.getItems().add(this);
+        }
     }
 
     public String getDefaultValue() {
@@ -118,10 +121,15 @@ public class XmlSchemaAttribute extends XmlSchemaAnnotated implements XmlSchemaN
     public boolean isTopLevel() {
         return namedDelegate.isTopLevel();
     }
-    
 
     public void setName(String name) {
+        if (namedDelegate.isTopLevel() && namedDelegate.getName() != null) {
+            namedDelegate.getParent().getAttributes().remove(getQName());
+        }
         namedDelegate.setName(name);
+        if (namedDelegate.isTopLevel()) {
+            namedDelegate.getParent().getAttributes().put(getQName(), this);
+        }
     }
 
     public boolean isFormSpecified() {

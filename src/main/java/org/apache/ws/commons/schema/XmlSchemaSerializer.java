@@ -1581,12 +1581,14 @@ public class XmlSchemaSerializer {
             serializedSchema.setAttribute("id", schemaObj.getId());
         }
         
-        if (schemaObj.blockDefault != null && schemaObj.blockDefault != XmlSchemaDerivationMethod.NONE) {
-            serializedSchema.setAttribute("blockDefault", schemaObj.blockDefault.toString());
+        if (schemaObj.getBlockDefault() != null 
+            && schemaObj.getBlockDefault() != XmlSchemaDerivationMethod.NONE) {
+            serializedSchema.setAttribute("blockDefault", schemaObj.getBlockDefault().toString());
         }
         
-        if (schemaObj.finalDefault != null && schemaObj.finalDefault != XmlSchemaDerivationMethod.NONE) {
-            serializedSchema.setAttribute("finalDefault", schemaObj.finalDefault.toString());
+        if (schemaObj.getFinalDefault() != null 
+            && schemaObj.getFinalDefault() != XmlSchemaDerivationMethod.NONE) {
+            serializedSchema.setAttribute("finalDefault", schemaObj.getFinalDefault().toString());
         }
 
         if (schemaObj.version != null) {
