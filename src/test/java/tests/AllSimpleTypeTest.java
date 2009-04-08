@@ -19,8 +19,6 @@
 
 package tests;
 
-import java.util.Iterator;
-
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
@@ -52,9 +50,7 @@ public class AllSimpleTypeTest {
         // loop through the schema elements and inspect the SchemaTypeObject
         // if the type is registered, then getSchemaType should return a SchemaType
         // object
-        Iterator values = schema.getElements().getValues();
-        while (values.hasNext()) {
-            XmlSchemaElement elt = (XmlSchemaElement)values.next();
+        for (XmlSchemaElement elt : schema.getElements().values()) { 
             XmlSchemaType schemaType = elt.getSchemaType();
             assertNotNull(schemaType);
 

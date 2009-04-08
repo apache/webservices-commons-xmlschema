@@ -35,6 +35,7 @@ import org.apache.ws.commons.schema.XmlSchemaType;
 public class XmlSchemaRef<T extends XmlSchemaNamed> extends XmlSchemaRefBase {
     private Class<? extends T> targetClass;
     private T targetObject;
+    
     public XmlSchemaRef(XmlSchema parent, Class<T> targetClass) {
         this.parent = parent;
         this.targetClass = targetClass;

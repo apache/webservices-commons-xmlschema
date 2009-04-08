@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
@@ -81,12 +82,13 @@ public class RedefineTest extends Assert {
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
 
-        XmlSchemaObjectTable xsot = schema.getElements();
-        assertEquals(1, xsot.getCount());
+        Map<QName, XmlSchemaElement> xsot = schema.getElements();
+        assertEquals(1, xsot.size());
 
         XmlSchemaElement xse = null;
-        for (Iterator i = xsot.getValues(); i.hasNext();) {
-            xse = (XmlSchemaElement)i.next();
+        Iterator<XmlSchemaElement> ei = xsot.values().iterator();
+        while (ei.hasNext()) {
+            xse = ei.next();
         }
         assertEquals("vip", xse.getName());
         assertEquals(new QName("http://soapinterop.org/types", "person"), xse.getSchemaTypeName());
@@ -95,16 +97,16 @@ public class RedefineTest extends Assert {
         assertEquals(1, xsoc.size());
 
         XmlSchemaRedefine xsr = (XmlSchemaRedefine)xsoc.get(0);
-        xsot = xsr.getSchemaTypes();
-        assertEquals(1, xsot.getCount());
+        XmlSchemaObjectTable redefTypes = xsr.getSchemaTypes();
+        assertEquals(1, redefTypes.getCount());
 
-        for (Iterator i = xsot.getNames(); i.hasNext();) {
+        for (Iterator i = redefTypes.getNames(); i.hasNext();) {
             QName qname = (QName)i.next();
             assertEquals(new QName("http://soapinterop.org/types", "person"), qname);
         }
 
         XmlSchemaComplexType xsct = null;
-        for (Iterator i = xsot.getValues(); i.hasNext();) {
+        for (Iterator i = redefTypes.getValues(); i.hasNext();) {
             xsct = (XmlSchemaComplexType)i.next();
         }
         assertNotNull(xsct);
@@ -154,12 +156,13 @@ public class RedefineTest extends Assert {
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
 
-        XmlSchemaObjectTable xsot = schema.getElements();
-        assertEquals(1, xsot.getCount());
+        Map<QName, XmlSchemaElement> elements = schema.getElements();
+        assertEquals(1, elements.size());
 
         XmlSchemaElement xse = null;
-        for (Iterator i = xsot.getValues(); i.hasNext();) {
-            xse = (XmlSchemaElement)i.next();
+        Iterator<XmlSchemaElement> ei = elements.values().iterator();
+        while (ei.hasNext()) {
+            xse = ei.next();
         }
         assertEquals("childsizedrink", xse.getName());
         assertEquals(new QName("http://soapinterop.org/types", "drinksize"), xse.getSchemaTypeName());
@@ -168,7 +171,7 @@ public class RedefineTest extends Assert {
         assertEquals(1, xsoc.size());
 
         XmlSchemaRedefine xsr = (XmlSchemaRedefine)xsoc.get(0);
-        xsot = xsr.getSchemaTypes();
+        XmlSchemaObjectTable xsot = xsr.getSchemaTypes();
         assertEquals(1, xsot.getCount());
 
         for (Iterator i = xsot.getNames(); i.hasNext();) {
@@ -369,12 +372,13 @@ public class RedefineTest extends Assert {
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
         XmlSchema schema = schemaCol.read(new StreamSource(is), null);
 
-        XmlSchemaObjectTable xsot = schema.getElements();
-        assertEquals(1, xsot.getCount());
+        Map<QName, XmlSchemaElement> elements = schema.getElements();
+        assertEquals(1, elements.size());
 
         XmlSchemaElement xse = null;
-        for (Iterator i = xsot.getValues(); i.hasNext();) {
-            xse = (XmlSchemaElement)i.next();
+        Iterator<XmlSchemaElement> ei = elements.values().iterator();
+        while (ei.hasNext()) {
+            xse = ei.next();
         }
         assertEquals("vip", xse.getName());
         assertEquals(new QName("http://soapinterop.org/types", "person"), xse.getSchemaTypeName());
@@ -383,7 +387,7 @@ public class RedefineTest extends Assert {
         assertEquals(1, xsoc.size());
 
         XmlSchemaRedefine xsr = (XmlSchemaRedefine)xsoc.get(0);
-        xsot = xsr.getSchemaTypes();
+        XmlSchemaObjectTable xsot = xsr.getSchemaTypes();
         assertEquals(1, xsot.getCount());
 
         for (Iterator i = xsot.getNames(); i.hasNext();) {

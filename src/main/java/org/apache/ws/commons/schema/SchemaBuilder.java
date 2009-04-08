@@ -1613,16 +1613,7 @@ public class SchemaBuilder {
             currentSchema.items.add(type);
             collection.resolveType(type.getQName(), type);
         } else if (el.getLocalName().equals("element")) {
-            XmlSchemaElement element = handleElement(currentSchema, el,
-                    schemaEl, true);
-            if (element.isTopLevel()) {
-                currentSchema.elements.collection.put(element.getQName(),
-                        element);
-            } else if (element.getRef().getTargetQName() != null) {
-                currentSchema.elements.collection.put(element.getRef()
-                        .getTargetQName(), element);
-            }
-            currentSchema.items.add(element);
+            handleElement(currentSchema, el, schemaEl, true);
         } else if (el.getLocalName().equals("include")) {
             handleInclude(currentSchema, el, schemaEl);
         } else if (el.getLocalName().equals("import")) {

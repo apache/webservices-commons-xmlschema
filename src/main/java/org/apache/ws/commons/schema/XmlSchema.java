@@ -57,7 +57,6 @@ public class XmlSchema
     static final String SCHEMA_NS = XMLConstants.W3C_XML_SCHEMA_NS_URI;
     private static final String UTF_8_ENCODING = "UTF-8";
 
-    XmlSchemaObjectTable elements;
     XmlSchemaObjectTable groups;
     XmlSchemaObjectTable notations;
     XmlSchemaObjectTable schemaTypes;
@@ -76,6 +75,7 @@ public class XmlSchema
     private List<XmlSchemaExternal> externals;
     private Map<QName, XmlSchemaAttributeGroup> attributeGroups;
     private Map<QName, XmlSchemaAttribute> attributes;
+    private Map<QName, XmlSchemaElement> elements;
     private NamespacePrefixList namespaceContext;
     // keep the encoding of the input
     private String inputEncoding;
@@ -102,7 +102,7 @@ public class XmlSchema
         finalDefault = XmlSchemaDerivationMethod.NONE;
         items = new XmlSchemaObjectCollection();
         externals = new ArrayList<XmlSchemaExternal>();
-        elements = new XmlSchemaObjectTable();
+        elements = new HashMap<QName, XmlSchemaElement>();
         attributeGroups = new HashMap<QName, XmlSchemaAttributeGroup>();
         attributes = new HashMap<QName, XmlSchemaAttribute>();
         groups = new XmlSchemaObjectTable();
@@ -167,7 +167,7 @@ public class XmlSchema
         this.elementFormDefault = elementFormDefault;
     }
 
-    public XmlSchemaObjectTable getElements() {
+    public Map<QName, XmlSchemaElement> getElements() {
         return elements;
     }
 
@@ -177,7 +177,7 @@ public class XmlSchema
             return null;
         }
 
-        XmlSchemaElement element = (XmlSchemaElement)elements.getItem(name);
+        XmlSchemaElement element = elements.get(name);
         if (deep) {
             if (element == null) {
                 // search the imports
@@ -803,6 +803,10 @@ public class XmlSchema
 
     void setAttributes(Map<QName, XmlSchemaAttribute> attributes) {
         this.attributes = attributes;
+    }
+
+    void setElements(Map<QName, XmlSchemaElement> elements) {
+        this.elements = elements;
     }
 
     

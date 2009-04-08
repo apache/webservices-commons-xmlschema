@@ -27,6 +27,9 @@ import org.apache.ws.commons.schema.utils.XmlSchemaRef;
 
 /**
  * Class for elements. Represents the World Wide Web Consortium (W3C) element element.
+ * 
+ * Note that ref= elements are in the parent schema 'items' collection,
+ * not in the 'element' Map.
  */
 
 public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver, XmlSchemaNamedWithForm {
@@ -84,6 +87,9 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver,
         nillable = false;
         finalDerivation = XmlSchemaDerivationMethod.NONE;
         block = XmlSchemaDerivationMethod.NONE;
+        if (topLevel) {
+            parentSchema.getItems().add(this);
+        }
     }
 
     /**
@@ -199,9 +205,14 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver,
         return namedDelegate.isTopLevel();
     }
     
-
     public void setName(String name) {
+        if (namedDelegate.isTopLevel() && namedDelegate.getName() != null) {
+            namedDelegate.getParent().getElements().remove(getQName());
+        }
         namedDelegate.setName(name);
+        if (namedDelegate.isTopLevel()) {
+            namedDelegate.getParent().getElements().put(getQName(), this);
+        }
     }
 
     public XmlSchemaForm getForm() {

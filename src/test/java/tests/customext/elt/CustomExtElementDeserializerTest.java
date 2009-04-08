@@ -18,7 +18,6 @@
  */
 package tests.customext.elt;
 
-import java.util.Iterator;
 import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -58,10 +57,7 @@ public class CustomExtElementDeserializerTest extends Assert {
 
         // get the elements and check whether their annotations are properly
         // populated
-        Iterator values = schema.getElements().getValues();
-        while (values.hasNext()) {
-            XmlSchemaElement elt = (XmlSchemaElement)values.next();
-            assertNotNull(elt);
+        for (XmlSchemaElement elt : schema.getElements().values()) {
             Map metaInfoMap = elt.getMetaInfoMap();
             assertNotNull(metaInfoMap);
 
