@@ -1619,9 +1619,7 @@ public class SchemaBuilder {
         } else if (el.getLocalName().equals("import")) {
             handleImport(currentSchema, el, schemaEl);
         } else if (el.getLocalName().equals("group")) {
-            XmlSchemaGroup group = handleGroup(currentSchema, el, schemaEl);
-            currentSchema.groups.collection.put(group.getQName(), group);
-            currentSchema.items.add(group);
+            handleGroup(currentSchema, el, schemaEl);
         } else if (el.getLocalName().equals("attributeGroup")) {
             handleAttributeGroup(currentSchema, el, schemaEl);
         } else if (el.getLocalName().equals("attribute")) {

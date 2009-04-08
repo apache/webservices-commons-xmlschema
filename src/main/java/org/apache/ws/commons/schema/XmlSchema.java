@@ -57,7 +57,6 @@ public class XmlSchema
     static final String SCHEMA_NS = XMLConstants.W3C_XML_SCHEMA_NS_URI;
     private static final String UTF_8_ENCODING = "UTF-8";
 
-    XmlSchemaObjectTable groups;
     XmlSchemaObjectTable notations;
     XmlSchemaObjectTable schemaTypes;
     XmlSchemaObjectCollection items;
@@ -76,6 +75,8 @@ public class XmlSchema
     private Map<QName, XmlSchemaAttributeGroup> attributeGroups;
     private Map<QName, XmlSchemaAttribute> attributes;
     private Map<QName, XmlSchemaElement> elements;
+    private Map<QName, XmlSchemaGroup> groups;
+
     private NamespacePrefixList namespaceContext;
     // keep the encoding of the input
     private String inputEncoding;
@@ -105,7 +106,7 @@ public class XmlSchema
         elements = new HashMap<QName, XmlSchemaElement>();
         attributeGroups = new HashMap<QName, XmlSchemaAttributeGroup>();
         attributes = new HashMap<QName, XmlSchemaAttribute>();
-        groups = new XmlSchemaObjectTable();
+        groups = new HashMap<QName, XmlSchemaGroup>();
         notations = new XmlSchemaObjectTable();
         schemaTypes = new XmlSchemaObjectTable();
 
@@ -283,7 +284,7 @@ public class XmlSchema
             // recursive schema - just return null
             return null;
         }
-        XmlSchemaGroup group = (XmlSchemaGroup)groups.getItem(name);
+        XmlSchemaGroup group = groups.get(name);
         if (deep) {
             if (group == null) {
                 // search the imports
@@ -501,7 +502,7 @@ public class XmlSchema
         this.finalDefault = finalDefault;
     }
 
-    public XmlSchemaObjectTable getGroups() {
+    public Map<QName, XmlSchemaGroup> getGroups() {
         return groups;
     }
 
@@ -807,6 +808,10 @@ public class XmlSchema
 
     void setElements(Map<QName, XmlSchemaElement> elements) {
         this.elements = elements;
+    }
+
+    void setGroups(Map<QName, XmlSchemaGroup> groups) {
+        this.groups = groups;
     }
 
     

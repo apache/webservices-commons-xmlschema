@@ -39,6 +39,7 @@ public class XmlSchemaGroup extends XmlSchemaAnnotated implements XmlSchemaNamed
     
     public XmlSchemaGroup(XmlSchema parent) {
         namedDelegate = new XmlSchemaNamedImpl(parent, true);
+        parent.items.add(this);
     }
     
 
@@ -71,7 +72,13 @@ public class XmlSchemaGroup extends XmlSchemaAnnotated implements XmlSchemaNamed
     }
 
     public void setName(String name) {
+        if (namedDelegate.getQName() != null) {
+            namedDelegate.getParent().getGroups().remove(namedDelegate.getQName());
+        }
         namedDelegate.setName(name);
+        if (name != null) {
+            namedDelegate.getParent().getGroups().put(namedDelegate.getQName(), this);
+        }
     }
 
 }

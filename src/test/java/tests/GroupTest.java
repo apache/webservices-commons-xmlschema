@@ -23,6 +23,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
@@ -36,7 +37,6 @@ import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.XmlSchemaGroup;
 import org.apache.ws.commons.schema.XmlSchemaGroupRef;
 import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
-import org.apache.ws.commons.schema.XmlSchemaObjectTable;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -79,13 +79,13 @@ public class GroupTest extends Assert {
         XmlSchemaGroupRef ref = (XmlSchemaGroupRef)cType.getParticle();
         assertEquals(new QName("http://soapinterop.org/types", "priceGroup"), ref.getRefName());
 
-        XmlSchemaObjectTable t = schema.getGroups();
-        assertEquals(1, t.getCount());
+        Map<QName, XmlSchemaGroup> t = schema.getGroups();
+        assertEquals(1, t.size());
 
         Set<String> s = new HashSet<String>();
         s.add("priceGroup");
-        for (Iterator i = t.getNames(); i.hasNext();) {
-            String name = ((QName)i.next()).getLocalPart();
+        for (QName qname : t.keySet()) {
+            String name = qname.getLocalPart();
             assertEquals("priceGroup", name);
             s.remove(name);
         }
@@ -94,7 +94,8 @@ public class GroupTest extends Assert {
         s.clear();
         s.add("org.apache.ws.commons.schema.XmlSchemaGroup");
         XmlSchemaGroup xsg = null;
-        for (Iterator i = t.getValues(); i.hasNext();) {
+        Iterator<XmlSchemaGroup> i = t.values().iterator();
+        while (i.hasNext()) {
             xsg = (XmlSchemaGroup)i.next();
             s.remove(xsg.getClass().getName());
         }
