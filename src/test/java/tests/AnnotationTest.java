@@ -61,7 +61,7 @@ public class AnnotationTest extends Assert {
         QName typeQName = new QName("http://soapinterop.org/types", "emptyAppinfo");
         InputStream is = new FileInputStream(Resources.asURI("annotation.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is));
 
         XmlSchemaSimpleType simpleType = (XmlSchemaSimpleType)schemaCol.getTypeByQName(typeQName);
         assertNotNull(simpleType);
@@ -113,7 +113,7 @@ public class AnnotationTest extends Assert {
         QName typeQName = new QName("http://soapinterop.org/types", "emptyDocumentation");
         InputStream is = new FileInputStream(Resources.asURI("annotation.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is));
 
         XmlSchemaSimpleType simpleType = (XmlSchemaSimpleType)schemaCol.getTypeByQName(typeQName);
         assertNotNull(simpleType);
@@ -163,7 +163,7 @@ public class AnnotationTest extends Assert {
         QName typeQName = new QName("http://soapinterop.org/types", "emptyAppinfoDocumentation");
         InputStream is = new FileInputStream(Resources.asURI("annotation.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is));
 
         XmlSchemaSimpleType simpleType = (XmlSchemaSimpleType)schemaCol.getTypeByQName(typeQName);
         assertNotNull(simpleType);
@@ -194,7 +194,7 @@ public class AnnotationTest extends Assert {
         QName typeQName = new QName("http://soapinterop.org/types", "annotationTest");
         InputStream is = new FileInputStream(Resources.asURI("annotation.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is));
 
         XmlSchemaSimpleType simpleType = (XmlSchemaSimpleType)schemaCol.getTypeByQName(typeQName);
         assertNotNull(simpleType);
@@ -251,7 +251,7 @@ public class AnnotationTest extends Assert {
 
         InputStream is = new FileInputStream(Resources.asURI("annotation.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+        XmlSchema schema = schemaCol.read(new StreamSource(is));
 
         XmlSchemaAnnotation xsa = schema.getAnnotation();
         XmlSchemaObjectCollection col = xsa.getItems();

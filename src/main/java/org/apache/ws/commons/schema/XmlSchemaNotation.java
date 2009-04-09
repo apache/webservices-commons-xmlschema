@@ -41,6 +41,7 @@ public class XmlSchemaNotation extends XmlSchemaAnnotated implements XmlSchemaNa
      */
     public XmlSchemaNotation(XmlSchema parent) {
         namedDelegate = new XmlSchemaNamedImpl(parent, true);
+        parent.getItems().add(this);
     }
 
     public String getPublic() {
@@ -92,7 +93,10 @@ public class XmlSchemaNotation extends XmlSchemaAnnotated implements XmlSchemaNa
     }
 
     public void setName(String name) {
+        if (namedDelegate.getName() != null) {
+            namedDelegate.getParent().getNotations().remove(getQName());
+        }
         namedDelegate.setName(name);
+        namedDelegate.getParent().getNotations().put(getQName(), this);
     }
-
 }

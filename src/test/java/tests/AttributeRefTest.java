@@ -56,7 +56,7 @@ public class AttributeRefTest extends Assert {
 
         InputStream is = new FileInputStream(Resources.asURI("attributref.xsd"));
         XmlSchemaCollection schema = new XmlSchemaCollection();
-        XmlSchema s = schema.read(new StreamSource(is), null);
+        XmlSchema s = schema.read(new StreamSource(is));
 
         XmlSchemaComplexType typeByName = (XmlSchemaComplexType)s.getTypeByName(typeQName);
         assertNotNull(typeByName);

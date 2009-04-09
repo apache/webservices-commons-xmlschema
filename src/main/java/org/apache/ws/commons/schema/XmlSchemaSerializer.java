@@ -154,7 +154,7 @@ public class XmlSchemaSerializer {
      */
     Element serializeAll(Document doc, XmlSchemaAll allObj, XmlSchema schema)
         throws XmlSchemaSerializerException {
-        Element allEl = createNewElement(doc, "all", schema.schemaNamespacePrefix, XmlSchema.SCHEMA_NS);
+        Element allEl = createNewElement(doc, "all", schema.getSchemaNamespacePrefix(), XmlSchema.SCHEMA_NS);
 
         serializeMaxMinOccurs(allObj, allEl);
 
@@ -202,7 +202,7 @@ public class XmlSchemaSerializer {
      */
     Element serializeAnnotation(Document doc, XmlSchemaAnnotation annotationObj, XmlSchema schema) {
 
-        Element annotation = createNewElement(doc, "annotation", schema.schemaNamespacePrefix,
+        Element annotation = createNewElement(doc, "annotation", schema.getSchemaNamespacePrefix(),
                                               XmlSchema.SCHEMA_NS);
 
         XmlSchemaObjectCollection contents = annotationObj.items;
@@ -244,7 +244,7 @@ public class XmlSchemaSerializer {
      * **********************************************************************
      */
     Element serializeAny(Document doc, XmlSchemaAny anyObj, XmlSchema schema) {
-        Element anyEl = createNewElement(doc, "any", schema.schemaNamespacePrefix, XmlSchema.SCHEMA_NS);
+        Element anyEl = createNewElement(doc, "any", schema.getSchemaNamespacePrefix(), XmlSchema.SCHEMA_NS);
         if (anyObj.getId() != null && anyObj.getId().length() > 0) {
             anyEl.setAttribute("id", anyObj.getId());
         }
@@ -285,7 +285,7 @@ public class XmlSchemaSerializer {
      */
     Element serializeAnyAttribute(Document doc, XmlSchemaAnyAttribute anyAttributeObj, XmlSchema schema) {
 
-        Element anyAttribute = createNewElement(doc, "anyAttribute", schema.schemaNamespacePrefix,
+        Element anyAttribute = createNewElement(doc, "anyAttribute", schema.getSchemaNamespacePrefix(),
                                                 XmlSchema.SCHEMA_NS);
 
         if (anyAttributeObj.namespace != null) {
@@ -327,7 +327,7 @@ public class XmlSchemaSerializer {
      */
     Element serializeAppInfo(Document doc, XmlSchemaAppInfo appInfoObj, XmlSchema schema) {
 
-        Element appInfoEl = createNewElement(doc, "appinfo", schema.schemaNamespacePrefix,
+        Element appInfoEl = createNewElement(doc, "appinfo", schema.getSchemaNamespacePrefix(),
                                              XmlSchema.SCHEMA_NS);
         if (appInfoObj.source != null) {
             appInfoEl.setAttribute("source", appInfoObj.source);
@@ -363,7 +363,7 @@ public class XmlSchemaSerializer {
     Element serializeAttribute(Document doc, XmlSchemaAttribute attributeObj, XmlSchema schema)
         throws XmlSchemaSerializerException {
 
-        Element attribute = createNewElement(doc, "attribute", schema.schemaNamespacePrefix,
+        Element attribute = createNewElement(doc, "attribute", schema.getSchemaNamespacePrefix(),
                                              XmlSchema.SCHEMA_NS);
         if (attributeObj.getRef().getTargetQName() != null) {
             String refName = resolveQName(attributeObj.getRef().getTargetQName(), schema);
@@ -486,7 +486,7 @@ public class XmlSchemaSerializer {
     Element serializeAttributeGroup(Document doc, XmlSchemaAttributeGroup attributeGroupObj, XmlSchema schema)
         throws XmlSchemaSerializerException {
 
-        Element attributeGroup = createNewElement(doc, "attributeGroup", schema.schemaNamespacePrefix,
+        Element attributeGroup = createNewElement(doc, "attributeGroup", schema.getSchemaNamespacePrefix(),
                                                   XmlSchema.SCHEMA_NS);
 
         if (!attributeGroupObj.isAnonymous()) {
@@ -544,7 +544,7 @@ public class XmlSchemaSerializer {
     Element serializeAttributeGroupRef(Document doc, XmlSchemaAttributeGroupRef attributeGroupObj,
                                        XmlSchema schema) throws XmlSchemaSerializerException {
 
-        Element attributeGroupRef = createNewElement(doc, "attributeGroup", schema.schemaNamespacePrefix,
+        Element attributeGroupRef = createNewElement(doc, "attributeGroup", schema.getSchemaNamespacePrefix(),
                                                      XmlSchema.SCHEMA_NS);
         if (attributeGroupObj.getRef().getTarget() != null) {
             String refName = resolveQName(attributeGroupObj.getRef().getTargetQName(), schema);
@@ -585,7 +585,8 @@ public class XmlSchemaSerializer {
         throws XmlSchemaSerializerException {
         // todo: handle any non schema attri ?
 
-        Element choice = createNewElement(doc, "choice", schema.schemaNamespacePrefix, XmlSchema.SCHEMA_NS);
+        Element choice = createNewElement(doc, "choice", schema.getSchemaNamespacePrefix(), 
+                                          XmlSchema.SCHEMA_NS);
         if (choiceObj.getId() != null && choiceObj.getId().length() > 0) {
             choice.setAttribute("id", choiceObj.getId());
         }
@@ -652,7 +653,7 @@ public class XmlSchemaSerializer {
     Element serializeComplexContent(Document doc, XmlSchemaComplexContent complexContentObj, XmlSchema schema)
         throws XmlSchemaSerializerException {
 
-        Element complexContent = createNewElement(doc, "complexContent", schema.schemaNamespacePrefix,
+        Element complexContent = createNewElement(doc, "complexContent", schema.getSchemaNamespacePrefix(),
                                                   XmlSchema.SCHEMA_NS);
 
         if (complexContentObj.getAnnotation() != null) {
@@ -710,7 +711,7 @@ public class XmlSchemaSerializer {
     Element serializeComplexContentExtension(Document doc, XmlSchemaComplexContentExtension extensionObj,
                                              XmlSchema schema) throws XmlSchemaSerializerException {
 
-        Element extension = createNewElement(doc, "extension", schema.schemaNamespacePrefix,
+        Element extension = createNewElement(doc, "extension", schema.getSchemaNamespacePrefix(),
                                              XmlSchema.SCHEMA_NS);
         if (extensionObj.baseTypeName != null) {
             String baseType = resolveQName(extensionObj.baseTypeName, schema);
@@ -779,7 +780,7 @@ public class XmlSchemaSerializer {
                                                XmlSchemaComplexContentRestriction restrictionObj,
                                                XmlSchema schema) throws XmlSchemaSerializerException {
 
-        Element restriction = createNewElement(doc, "restriction", schema.schemaNamespacePrefix,
+        Element restriction = createNewElement(doc, "restriction", schema.getSchemaNamespacePrefix(),
                                                XmlSchema.SCHEMA_NS);
 
         if (restrictionObj.baseTypeName != null) {
@@ -852,7 +853,8 @@ public class XmlSchemaSerializer {
     Element serializeComplexType(Document doc, XmlSchemaComplexType complexTypeObj, XmlSchema schema)
         throws XmlSchemaSerializerException {
 
-        Element serializedComplexType = createNewElement(doc, "complexType", schema.schemaNamespacePrefix,
+        Element serializedComplexType = createNewElement(doc, "complexType", 
+                                                         schema.getSchemaNamespacePrefix(),
                                                          XmlSchema.SCHEMA_NS);
 
         if (!complexTypeObj.isAnonymous()) {
@@ -950,7 +952,7 @@ public class XmlSchemaSerializer {
      */
     Element serializeDocumentation(Document doc, XmlSchemaDocumentation documentationObj, XmlSchema schema) {
 
-        Element documentationEl = createNewElement(doc, "documentation", schema.schemaNamespacePrefix,
+        Element documentationEl = createNewElement(doc, "documentation", schema.getSchemaNamespacePrefix(),
                                                    XmlSchema.SCHEMA_NS);
         if (documentationObj.source != null) {
             documentationEl.setAttribute("source", documentationObj.source);
@@ -1007,7 +1009,7 @@ public class XmlSchemaSerializer {
      */
     Element serializeElement(Document doc, XmlSchemaElement elementObj, XmlSchema schema)
         throws XmlSchemaSerializerException {
-        Element serializedEl = createNewElement(doc, "element", schema.schemaNamespacePrefix,
+        Element serializedEl = createNewElement(doc, "element", schema.getSchemaNamespacePrefix(),
                                                 XmlSchema.SCHEMA_NS);
 
         if (elementObj.getRef().getTargetQName() != null) {
@@ -1169,7 +1171,9 @@ public class XmlSchemaSerializer {
     Element serializeField(Document doc, XmlSchemaXPath fieldObj, XmlSchema schema)
         throws XmlSchemaSerializerException {
 
-        Element field = createNewElement(doc, "field", schema.schemaNamespacePrefix, XmlSchema.SCHEMA_NS);
+        Element field = createNewElement(doc, "field", 
+                                         schema.getSchemaNamespacePrefix(), 
+                                         XmlSchema.SCHEMA_NS);
 
         if (fieldObj.xpath != null) {
             field.setAttribute("xpath", fieldObj.xpath);
@@ -1204,7 +1208,8 @@ public class XmlSchemaSerializer {
     Element serializeGroup(Document doc, XmlSchemaGroup groupObj, XmlSchema schema)
         throws XmlSchemaSerializerException {
 
-        Element group = createNewElement(doc, "group", schema.schemaNamespacePrefix, XmlSchema.SCHEMA_NS);
+        Element group = createNewElement(doc, "group", schema.getSchemaNamespacePrefix(), 
+                                         XmlSchema.SCHEMA_NS);
 
         if (!groupObj.isAnonymous()) {
             String grpName = groupObj.getName();
@@ -1255,7 +1260,8 @@ public class XmlSchemaSerializer {
     Element serializeGroupRef(Document doc, XmlSchemaGroupRef groupRefObj, XmlSchema schema)
         throws XmlSchemaSerializerException {
 
-        Element groupRef = createNewElement(doc, "group", schema.schemaNamespacePrefix, XmlSchema.SCHEMA_NS);
+        Element groupRef = createNewElement(doc, "group", schema.getSchemaNamespacePrefix(), 
+                                            XmlSchema.SCHEMA_NS);
 
         if (groupRefObj.refName != null) {
             String groupRefName = resolveQName(groupRefObj.refName, schema);
@@ -1310,11 +1316,14 @@ public class XmlSchemaSerializer {
         Element constraint;
 
         if (constraintObj instanceof XmlSchemaUnique) {
-            constraint = createNewElement(doc, "unique", schema.schemaNamespacePrefix, XmlSchema.SCHEMA_NS);
+            constraint = createNewElement(doc, "unique", schema.getSchemaNamespacePrefix(),
+                                          XmlSchema.SCHEMA_NS);
         } else if (constraintObj instanceof XmlSchemaKey) {
-            constraint = createNewElement(doc, "key", schema.schemaNamespacePrefix, XmlSchema.SCHEMA_NS);
+            constraint = createNewElement(doc, "key", schema.getSchemaNamespacePrefix(), 
+                                          XmlSchema.SCHEMA_NS);
         } else if (constraintObj instanceof XmlSchemaKeyref) {
-            constraint = createNewElement(doc, "keyref", schema.schemaNamespacePrefix, XmlSchema.SCHEMA_NS);
+            constraint = createNewElement(doc, "keyref", schema.getSchemaNamespacePrefix(), 
+                                          XmlSchema.SCHEMA_NS);
             XmlSchemaKeyref keyref = (XmlSchemaKeyref)constraintObj;
             if (keyref.refer != null) {
                 String keyrefStr = resolveQName(keyref.refer, schema);
@@ -1367,7 +1376,8 @@ public class XmlSchemaSerializer {
     Element serializeImport(Document doc, XmlSchemaImport importObj, XmlSchema schema,
                             boolean serializeIncluded) throws XmlSchemaSerializerException {
 
-        Element importEl = createNewElement(doc, "import", schema.schemaNamespacePrefix, XmlSchema.SCHEMA_NS);
+        Element importEl = createNewElement(doc, "import", 
+                                            schema.getSchemaNamespacePrefix(), XmlSchema.SCHEMA_NS);
 
         if (importObj.namespace != null) {
             importEl.setAttribute("namespace", importObj.namespace);
@@ -1416,7 +1426,7 @@ public class XmlSchemaSerializer {
     Element serializeInclude(Document doc, XmlSchemaInclude includeObj, XmlSchema schema,
                              boolean serializeIncluded) throws XmlSchemaSerializerException {
 
-        Element includeEl = createNewElement(doc, "include", schema.schemaNamespacePrefix,
+        Element includeEl = createNewElement(doc, "include", schema.getSchemaNamespacePrefix(),
                                              XmlSchema.SCHEMA_NS);
 
         if (includeObj.schemaLocation != null) {
@@ -1464,7 +1474,7 @@ public class XmlSchemaSerializer {
     Element serializeRedefine(Document doc, XmlSchemaRedefine redefineObj, XmlSchema schema)
         throws XmlSchemaSerializerException {
 
-        Element redefine = createNewElement(doc, "redefine", schema.schemaNamespacePrefix,
+        Element redefine = createNewElement(doc, "redefine", schema.getSchemaNamespacePrefix(),
                                             XmlSchema.SCHEMA_NS);
 
         if (redefineObj.schemaLocation != null) {
@@ -1515,7 +1525,7 @@ public class XmlSchemaSerializer {
     Document[] serializeSchemaElement(XmlSchema schemaObj, boolean serializeIncluded)
         throws XmlSchemaSerializerException {
 
-        XmlSchemaObjectCollection items = schemaObj.getItems();
+        List<XmlSchemaObject> items = schemaObj.getItems();
         Document serializedSchemaDocs;
         try {
             DocumentBuilderFactory docFac = DocumentBuilderFactory.newInstance();
@@ -1531,31 +1541,32 @@ public class XmlSchemaSerializer {
         serializedSchema = setupNamespaces(serializedSchemaDocs, schemaObj);
         schemaElement = serializedSchema;
 
-        if (schemaObj.syntacticalTargetNamespace != null) {
-            serializedSchema.setAttribute("targetNamespace", schemaObj.syntacticalTargetNamespace);
+        if (schemaObj.getSyntacticalTargetNamespace() != null) {
+            serializedSchema.setAttribute("targetNamespace", schemaObj.getSyntacticalTargetNamespace());
 
-            Object targetNS = schemaNamespace.get(schemaObj.syntacticalTargetNamespace);
+            Object targetNS = schemaNamespace.get(schemaObj.getSyntacticalTargetNamespace());
 
             // if the namespace is not entered then add
             // the targetNamespace as its
             if (targetNS == null) {
-                if (!Constants.XMLNS_URI.equals(schemaObj.syntacticalTargetNamespace)) {
+                if (!Constants.XMLNS_URI.equals(schemaObj.getSyntacticalTargetNamespace())) {
                     serializedSchema.setAttributeNS(XMLNS_NAMESPACE_URI, "xmlns",
-                                                    schemaObj.syntacticalTargetNamespace);
+                                                    schemaObj.getSyntacticalTargetNamespace());
                 }
                 String prefix = null;
                 if (schemaObj.getNamespaceContext() != null) {
-                    prefix = schemaObj.getNamespaceContext().getPrefix(schemaObj.syntacticalTargetNamespace);
+                    prefix = schemaObj.
+                        getNamespaceContext().getPrefix(schemaObj.getSyntacticalTargetNamespace());
                 }
-                if (prefix == null && schemaObj.parent != null
-                    && schemaObj.parent.getNamespaceContext() != null) {
-                    prefix = schemaObj.parent.getNamespaceContext()
-                        .getPrefix(schemaObj.syntacticalTargetNamespace);
+                if (prefix == null && schemaObj.getParent() != null
+                    && schemaObj.getParent().getNamespaceContext() != null) {
+                    prefix = schemaObj.getParent().getNamespaceContext()
+                        .getPrefix(schemaObj.getSyntacticalTargetNamespace());
                 }
                 if (prefix == null) {
                     prefix = "";
                 }
-                schemaNamespace.put(schemaObj.syntacticalTargetNamespace, prefix);
+                schemaNamespace.put(schemaObj.getSyntacticalTargetNamespace(), prefix);
             }
         }
 
@@ -1591,8 +1602,8 @@ public class XmlSchemaSerializer {
             serializedSchema.setAttribute("finalDefault", schemaObj.getFinalDefault().toString());
         }
 
-        if (schemaObj.version != null) {
-            serializedSchema.setAttribute("version", schemaObj.version);
+        if (schemaObj.getVersion() != null) {
+            serializedSchema.setAttribute("version", schemaObj.getVersion());
         }
 
         // add the extra namespace declarations if any are available
@@ -1641,7 +1652,7 @@ public class XmlSchemaSerializer {
     Element serializeSelector(Document doc, XmlSchemaXPath selectorObj, XmlSchema schema)
         throws XmlSchemaSerializerException {
 
-        Element selector = createNewElement(doc, "selector", schema.schemaNamespacePrefix,
+        Element selector = createNewElement(doc, "selector", schema.getSchemaNamespacePrefix(),
                                             XmlSchema.SCHEMA_NS);
 
         if (selectorObj.xpath != null) {
@@ -1676,7 +1687,7 @@ public class XmlSchemaSerializer {
     Element serializeSequence(Document doc, XmlSchemaSequence sequenceObj, XmlSchema schema)
         throws XmlSchemaSerializerException {
 
-        Element sequence = createNewElement(doc, "sequence", schema.schemaNamespacePrefix,
+        Element sequence = createNewElement(doc, "sequence", schema.getSchemaNamespacePrefix(),
                                             XmlSchema.SCHEMA_NS);
 
         if (sequenceObj.getId() != null) {
@@ -1729,7 +1740,7 @@ public class XmlSchemaSerializer {
      */
     Element serializeSimpleContent(Document doc, XmlSchemaSimpleContent simpleContentObj, XmlSchema schema)
         throws XmlSchemaSerializerException {
-        Element simpleContent = createNewElement(doc, "simpleContent", schema.schemaNamespacePrefix,
+        Element simpleContent = createNewElement(doc, "simpleContent", schema.getSchemaNamespacePrefix(),
                                                  XmlSchema.SCHEMA_NS);
 
         Element content;
@@ -1780,7 +1791,7 @@ public class XmlSchemaSerializer {
     Element serializeSimpleContentExtension(Document doc, XmlSchemaSimpleContentExtension extensionObj,
                                             XmlSchema schema) throws XmlSchemaSerializerException {
 
-        Element extension = createNewElement(doc, "extension", schema.schemaNamespacePrefix,
+        Element extension = createNewElement(doc, "extension", schema.getSchemaNamespacePrefix(),
                                              XmlSchema.SCHEMA_NS);
 
         if (extensionObj.baseTypeName != null) {
@@ -1845,7 +1856,7 @@ public class XmlSchemaSerializer {
     Element serializeSimpleContentRestriction(Document doc, XmlSchemaSimpleContentRestriction restrictionObj,
                                               XmlSchema schema) throws XmlSchemaSerializerException {
 
-        Element restriction = createNewElement(doc, "restriction", schema.schemaNamespacePrefix,
+        Element restriction = createNewElement(doc, "restriction", schema.getSchemaNamespacePrefix(),
                                                XmlSchema.SCHEMA_NS);
 
         if (restrictionObj.baseTypeName != null) {
@@ -1913,7 +1924,7 @@ public class XmlSchemaSerializer {
     Element serializeSimpleType(Document doc, XmlSchemaSimpleType simpleTypeObj, XmlSchema schema)
         throws XmlSchemaSerializerException {
 
-        Element serializedSimpleType = createNewElement(doc, "simpleType", schema.schemaNamespacePrefix,
+        Element serializedSimpleType = createNewElement(doc, "simpleType", schema.getSchemaNamespacePrefix(),
                                                         XmlSchema.SCHEMA_NS);
 
         if (simpleTypeObj.getFinalDerivation() != null 
@@ -1983,7 +1994,7 @@ public class XmlSchemaSerializer {
     Element serializeSimpleTypeList(Document doc, XmlSchemaSimpleTypeList listObj, XmlSchema schema)
         throws XmlSchemaSerializerException {
 
-        Element list = createNewElement(doc, "list", schema.schemaNamespacePrefix, XmlSchema.SCHEMA_NS);
+        Element list = createNewElement(doc, "list", schema.getSchemaNamespacePrefix(), XmlSchema.SCHEMA_NS);
 
         if (listObj.itemTypeName != null) {
             String listItemType = resolveQName(listObj.itemTypeName, schema);
@@ -2023,11 +2034,12 @@ public class XmlSchemaSerializer {
     Element serializeSimpleTypeRestriction(Document doc, XmlSchemaSimpleTypeRestriction restrictionObj,
                                            XmlSchema schema) throws XmlSchemaSerializerException {
         // todo: need to implement any attribute that related to non schema namespace
-        Element serializedRestriction = createNewElement(doc, "restriction", schema.schemaNamespacePrefix,
+        Element serializedRestriction = createNewElement(doc, "restriction",
+                                                         schema.getSchemaNamespacePrefix(),
                                                          XmlSchema.SCHEMA_NS);
 
-        if (schema.schemaNamespacePrefix.length() > 0) {
-            serializedRestriction.setPrefix(schema.schemaNamespacePrefix);
+        if (schema.getSchemaNamespacePrefix().length() > 0) {
+            serializedRestriction.setPrefix(schema.getSchemaNamespacePrefix());
         }
         if (restrictionObj.baseTypeName != null) {
             String baseType = resolveQName(restrictionObj.baseTypeName, schema);
@@ -2080,7 +2092,8 @@ public class XmlSchemaSerializer {
     Element serializeSimpleTypeUnion(Document doc, XmlSchemaSimpleTypeUnion unionObj, XmlSchema schema)
         throws XmlSchemaSerializerException {
 
-        Element union = createNewElement(doc, "union", schema.schemaNamespacePrefix, XmlSchema.SCHEMA_NS);
+        Element union = createNewElement(doc, "union", schema.getSchemaNamespacePrefix(), 
+                                         XmlSchema.SCHEMA_NS);
         if (unionObj.getId() != null) {
             union.setAttribute("id", unionObj.getId());
         }
@@ -2136,7 +2149,7 @@ public class XmlSchemaSerializer {
     // found children base on parent as its root.
     private void appendElement(Document doc, Element parent, Node children, XmlSchema schema) {
         Element elTmp = (Element)children;
-        Element el = createNewElement(doc, elTmp.getLocalName(), schema.schemaNamespacePrefix,
+        Element el = createNewElement(doc, elTmp.getLocalName(), schema.getSchemaNamespacePrefix(),
                                       XmlSchema.SCHEMA_NS);
         NamedNodeMap attributes = el.getAttributes();
         // check if child node has attribute
@@ -2171,7 +2184,8 @@ public class XmlSchemaSerializer {
 
     private Element constructFacet(XmlSchemaFacet facetObj, Document doc, XmlSchema schema, String tagName) {
 
-        Element facetEl = createNewElement(doc, tagName, schema.schemaNamespacePrefix, XmlSchema.SCHEMA_NS);
+        Element facetEl = createNewElement(doc, tagName, schema.getSchemaNamespacePrefix(), 
+                                           XmlSchema.SCHEMA_NS);
 
         facetEl.setAttribute("value", facetObj.value.toString());
         if (facetObj.fixed) {
@@ -2287,14 +2301,14 @@ public class XmlSchemaSerializer {
         }
     }
 
-    private void serializeSchemaChild(XmlSchemaObjectCollection items, Element serializedSchema,
+    private void serializeSchemaChild(List<XmlSchemaObject> items, Element serializedSchema,
                                       Document serializedSchemaDocs, XmlSchema schemaObj,
                                       boolean serializeIncluded) throws XmlSchemaSerializerException {
 
-        int itemsLength = items.getCount();
+        int itemsLength = items.size();
         /**
-         * For each of the items that belong to this schema, serialize each member found. Permittable member
-         * is: element, simpleType, complexType, group, attrributeGroup, Attribute, include, import and
+         * For each of the items that belong to this schema, serialize each member found. Valid members
+         * are: element, simpleType, complexType, group, attrributeGroup, Attribute, include, import and
          * redefine. if any of the member found then serialize the component.
          */
 
@@ -2302,7 +2316,7 @@ public class XmlSchemaSerializer {
         // serialized schema. So this loop does the serialization of the
         // imports and includes
         for (int i = 0; i < itemsLength; i++) {
-            XmlSchemaObject obj = items.getItem(i);
+            XmlSchemaObject obj = items.get(i);
             if (obj instanceof XmlSchemaInclude) {
                 Element e = serializeInclude(serializedSchemaDocs, (XmlSchemaInclude)obj, schemaObj,
                                              serializeIncluded);
@@ -2316,7 +2330,7 @@ public class XmlSchemaSerializer {
 
         // reloop to serialize the others
         for (int i = 0; i < itemsLength; i++) {
-            XmlSchemaObject obj = items.getItem(i);
+            XmlSchemaObject obj = items.get(i);
 
             if (obj instanceof XmlSchemaElement) {
                 Element e = serializeElement(serializedSchemaDocs, (XmlSchemaElement)obj, schemaObj);
@@ -2351,10 +2365,10 @@ public class XmlSchemaSerializer {
     private Element setupNamespaces(Document schemaDocs, XmlSchema schemaObj) {
         NamespacePrefixList ctx = schemaObj.getNamespaceContext();
         xsdPrefix = ctx.getPrefix(XSD_NAMESPACE);
-        schemaObj.schemaNamespacePrefix = xsdPrefix;
+        schemaObj.setSchemaNamespacePrefix(xsdPrefix);
         if (xsdPrefix == null) {
             xsdPrefix = "";
-            schemaObj.schemaNamespacePrefix = "";
+            schemaObj.setSchemaNamespacePrefix("");
         }
         String[] prefixes = ctx.getDeclaredPrefixes();
         for (String prefix : prefixes) {
@@ -2366,10 +2380,10 @@ public class XmlSchemaSerializer {
         // for schema that not set the xmlns attrib member
         if (schemaNamespace.get(XSD_NAMESPACE) == null) {
             schemaNamespace.put(XSD_NAMESPACE, xsdPrefix);
-            schemaObj.schemaNamespacePrefix = xsdPrefix;
+            schemaObj.setSchemaNamespacePrefix(xsdPrefix);
         }
 
-        Element schemaEl = createNewElement(schemaDocs, "schema", schemaObj.schemaNamespacePrefix,
+        Element schemaEl = createNewElement(schemaDocs, "schema", schemaObj.getSchemaNamespacePrefix(),
                                             XmlSchema.SCHEMA_NS);
 
         Iterator entries = schemaNamespace.entrySet().iterator();

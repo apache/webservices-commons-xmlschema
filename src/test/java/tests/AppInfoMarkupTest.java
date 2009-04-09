@@ -45,7 +45,7 @@ public class AppInfoMarkupTest extends XMLAssert {
 
         InputStream is = new FileInputStream(Resources.asURI("appInfo.xsd"));
         XmlSchemaCollection schema = new XmlSchemaCollection();
-        XmlSchema s = schema.read(new StreamSource(is), null);
+        XmlSchema s = schema.read(new StreamSource(is));
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         s.write(baos);
 

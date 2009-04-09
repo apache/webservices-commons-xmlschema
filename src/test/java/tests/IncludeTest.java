@@ -63,7 +63,7 @@ public class IncludeTest extends Assert {
 
         InputStream is = new FileInputStream(Resources.asURI("include.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+        XmlSchema schema = schemaCol.read(new StreamSource(is));
 
         List<XmlSchemaExternal> c = schema.getExternals();
         assertEquals(2, c.size());
@@ -106,7 +106,7 @@ public class IncludeTest extends Assert {
     public void testImportSchemaWithoutNamespace() throws Exception {
         InputStream is = new FileInputStream(Resources.asURI("includingWithNamespace.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is));
 
         assertNotNull(schemaCol.getTypeByQName(new QName("http://tns.demo.org", "XdwsGroupId")));
     }
@@ -120,7 +120,7 @@ public class IncludeTest extends Assert {
         InputSource is = new InputSource(new FileInputStream(uri));
         is.setSystemId(uri);
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(is, null);
+        XmlSchema schema = schemaCol.read(is);
 
         List<XmlSchemaExternal> c = schema.getExternals();
         assertEquals(1, c.size());
@@ -143,7 +143,7 @@ public class IncludeTest extends Assert {
         InputSource isource = new InputSource(new FileInputStream(uri));
         isource.setSystemId(uri);
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(isource, null);
+        XmlSchema schema = schemaCol.read(isource);
         assertNotNull(schema);
     }
 
@@ -158,7 +158,7 @@ public class IncludeTest extends Assert {
         InputSource isource = new InputSource(new FileInputStream(uri));
         isource.setSystemId(uri);
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(isource, null);
+        XmlSchema schema = schemaCol.read(isource);
         assertNotNull(schema);
     }
 }

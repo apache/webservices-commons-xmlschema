@@ -43,7 +43,7 @@ public class TestForwardRefs extends Assert {
         QName elementQName = new QName("http://soapinterop.org/types", "attrTest");
         InputStream is = new FileInputStream(Resources.asURI("forwardRef.xsd"));
         XmlSchemaCollection schema = new XmlSchemaCollection();
-        schema.read(new StreamSource(is), null);
+        schema.read(new StreamSource(is));
 
         XmlSchemaElement elem = schema.getElementByQName(elementQName);
         assertNotNull(elem);

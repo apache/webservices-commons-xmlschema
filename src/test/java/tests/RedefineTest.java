@@ -80,7 +80,7 @@ public class RedefineTest extends Assert {
 
         InputStream is = new FileInputStream(Resources.asURI("redefine2.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+        XmlSchema schema = schemaCol.read(new StreamSource(is));
 
         Map<QName, XmlSchemaElement> xsot = schema.getElements();
         assertEquals(1, xsot.size());
@@ -154,7 +154,7 @@ public class RedefineTest extends Assert {
 
         InputStream is = new FileInputStream(Resources.asURI("redefine4.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+        XmlSchema schema = schemaCol.read(new StreamSource(is));
 
         Map<QName, XmlSchemaElement> elements = schema.getElements();
         assertEquals(1, elements.size());
@@ -232,7 +232,7 @@ public class RedefineTest extends Assert {
 
         InputStream is = new FileInputStream(Resources.asURI("redefine6.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+        XmlSchema schema = schemaCol.read(new StreamSource(is));
 
         List<XmlSchemaExternal> xsoc = schema.getExternals();
         assertEquals(1, xsoc.size());
@@ -297,7 +297,7 @@ public class RedefineTest extends Assert {
 
         InputStream is = new FileInputStream(Resources.asURI("redefine8.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+        XmlSchema schema = schemaCol.read(new StreamSource(is));
 
         List<XmlSchemaExternal> xsoc = schema.getExternals();
         assertEquals(1, xsoc.size());
@@ -370,7 +370,7 @@ public class RedefineTest extends Assert {
 
         InputStream is = new FileInputStream(Resources.asURI("redefine10.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+        XmlSchema schema = schemaCol.read(new StreamSource(is));
 
         Map<QName, XmlSchemaElement> elements = schema.getElements();
         assertEquals(1, elements.size());

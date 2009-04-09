@@ -84,7 +84,7 @@ public class AnyTest extends Assert {
         QName elementQName = new QName("http://soapinterop.org/types", "department");
         InputStream is = new FileInputStream(Resources.asURI("any.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is));
 
         verifyAccuracy(elementQName, schemaCol, 5L, 10L);
 
@@ -94,7 +94,7 @@ public class AnyTest extends Assert {
     public void testAnyAttribute() throws Exception {
         InputStream is = new FileInputStream(Resources.asURI("anyAttribute.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is));
 
         XmlSchema[] schemas = schemaCol.getXmlSchemas();
         XmlSchema schema = null;
@@ -110,7 +110,7 @@ public class AnyTest extends Assert {
         byte[] bytes = baos.toByteArray();
         ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
         schemaCol = new XmlSchemaCollection();
-        schemaCol.read(new InputSource(bais), null);
+        schemaCol.read(new InputSource(bais));
         XmlSchemaType type = schemaCol.getTypeByQName(new QName("http://soapinterop.org/types",
                                                                 "OccuringStructWithAnyAttribute"));
         XmlSchemaComplexType complexType = (XmlSchemaComplexType)type;
@@ -132,13 +132,13 @@ public class AnyTest extends Assert {
         QName elementQName = new QName("http://soapinterop.org/types", "department");
         InputStream is = new FileInputStream(Resources.asURI("anyZero.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+        XmlSchema schema = schemaCol.read(new StreamSource(is));
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         schema.write(baos);
 
         XmlSchemaCollection schemaCol2 = new XmlSchemaCollection();
-        schemaCol2.read(new StreamSource(new ByteArrayInputStream(baos.toByteArray())), null);
+        schemaCol2.read(new StreamSource(new ByteArrayInputStream(baos.toByteArray())));
 
         verifyAccuracy(elementQName, schemaCol2, 0, 0);
 

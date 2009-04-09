@@ -44,6 +44,9 @@ public abstract class XmlSchemaType extends XmlSchemaAnnotated implements XmlSch
     protected XmlSchemaType(XmlSchema schema, boolean topLevel) {
         namedDelegate = new XmlSchemaNamedImpl(schema, topLevel);
         finalDerivation = XmlSchemaDerivationMethod.NONE;
+        if (topLevel) {
+            schema.getItems().add(this);
+        }
     }
 
     public XmlSchemaDerivationMethod getDeriveBy() {
@@ -73,12 +76,12 @@ public abstract class XmlSchemaType extends XmlSchemaAnnotated implements XmlSch
     public String toString() {
         if (getName() == null) {
             return super.toString() + "[anonymous]";
-        } else if (namedDelegate.getParent().logicalTargetNamespace == null) {
+        } else if (namedDelegate.getParent().getLogicalTargetNamespace() == null) {
             return super.toString() + "[{}" + getName() + "]";
 
         } else {
             return super.toString() 
-                + "[{" + namedDelegate.getParent().logicalTargetNamespace + "}" 
+                + "[{" + namedDelegate.getParent().getLogicalTargetNamespace() + "}" 
                 + getName() + "]";
         }
     }
@@ -104,7 +107,13 @@ public abstract class XmlSchemaType extends XmlSchemaAnnotated implements XmlSch
     }
 
     public void setName(String name) {
+        if (namedDelegate.isTopLevel() && namedDelegate.getName() != null) {
+            namedDelegate.getParent().getSchemaTypes().remove(getQName());
+        }
         namedDelegate.setName(name);
+        if (namedDelegate.isTopLevel()) {
+            namedDelegate.getParent().getSchemaTypes().put(getQName(), this);
+        }
     }
 
     void setFinalResolved(XmlSchemaDerivationMethod finalResolved) {

@@ -392,11 +392,10 @@ public final class XmlSchemaCollection {
      * 
      * @param doc The schema document.
      * @param systemId System ID for this schema.
-     * @param veh handler to be called to check validity of the schema.
      * @return the schema object.
      */
-    public XmlSchema read(Document doc, String systemId, ValidationEventHandler veh) {
-        return read(doc, systemId, veh, null);
+    public XmlSchema read(Document doc, String systemId) {
+        return read(doc, systemId, null);
     }
 
     /**
@@ -405,14 +404,12 @@ public final class XmlSchemaCollection {
      * 
      * @param doc Source document.
      * @param systemId System id.
-     * @param veh Stub for future capability to handle validation errors.
      * @param validator object that is called back to check validity of the target namespace.
      * @return the schema object.
      */
-    public XmlSchema read(Document doc, String systemId, ValidationEventHandler veh,
-                          TargetNamespaceValidator validator) {
+    public XmlSchema read(Document doc, String systemId, TargetNamespaceValidator validator) {
         SchemaBuilder builder = new SchemaBuilder(this, validator);
-        XmlSchema schema = builder.build(doc, systemId, veh);
+        XmlSchema schema = builder.build(doc, systemId);
         schema.setInputEncoding(DOMUtil.getInputEncoding(doc));
         return schema;
     }
@@ -426,9 +423,9 @@ public final class XmlSchemaCollection {
      * @param veh handler that is called back for validation.
      * @return the XML schema object.
      */
-    public XmlSchema read(Document doc, ValidationEventHandler veh) {
+    public XmlSchema read(Document doc) {
         SchemaBuilder builder = new SchemaBuilder(this, null);
-        return builder.build(doc, null, veh);
+        return builder.build(doc, null);
     }
 
     /**
@@ -466,15 +463,14 @@ public final class XmlSchemaCollection {
      * source.
      * 
      * @param inputSource the XSD document.
-     * @param veh handler that is called back for validation.
      * @return the XML schema object.
      */
-    public XmlSchema read(InputSource inputSource, ValidationEventHandler veh) {
-        return read(inputSource, veh, null);
+    public XmlSchema read(InputSource inputSource) {
+        return read(inputSource, null);
     }
 
-    public XmlSchema read(Reader r, ValidationEventHandler veh) {
-        return read(new InputSource(r), veh);
+    public XmlSchema read(Reader r) {
+        return read(new InputSource(r));
     }
 
     /**
@@ -485,25 +481,25 @@ public final class XmlSchemaCollection {
      * @param veh handler that is called back for validation.
      * @return the XML schema object.
      */
-    public XmlSchema read(Source source, ValidationEventHandler veh) {
+    public XmlSchema read(Source source) {
         if (source instanceof SAXSource) {
-            return read(((SAXSource)source).getInputSource(), veh);
+            return read(((SAXSource)source).getInputSource());
         } else if (source instanceof DOMSource) {
             Node node = ((DOMSource)source).getNode();
             if (node instanceof Document) {
                 node = ((Document)node).getDocumentElement();
             }
-            return read((Document)node, veh);
+            return read((Document)node);
         } else if (source instanceof StreamSource) {
             StreamSource ss = (StreamSource)source;
             InputSource isource = new InputSource(ss.getSystemId());
             isource.setByteStream(ss.getInputStream());
             isource.setCharacterStream(ss.getReader());
             isource.setPublicId(ss.getPublicId());
-            return read(isource, veh);
+            return read(isource);
         } else {
             InputSource isource = new InputSource(source.getSystemId());
-            return read(isource, veh);
+            return read(isource);
         }
     }
 
@@ -616,15 +612,14 @@ public final class XmlSchemaCollection {
         return schemas.get(pKey);
     }
 
-    XmlSchema read(final InputSource inputSource, ValidationEventHandler veh,
-                   TargetNamespaceValidator namespaceValidator) {
+    XmlSchema read(InputSource inputSource, TargetNamespaceValidator namespaceValidator) {
         try {
             DocumentBuilderFactory docFac = DocumentBuilderFactory.newInstance();
             docFac.setNamespaceAware(true);
             final DocumentBuilder builder = docFac.newDocumentBuilder();
             Document doc = null;
             doc = parseDoPriv(inputSource, builder, doc);
-            return read(doc, inputSource.getSystemId(), veh, namespaceValidator);
+            return read(doc, inputSource.getSystemId(), namespaceValidator);
         } catch (ParserConfigurationException e) {
             throw new XmlSchemaException(e.getMessage());
         } catch (IOException e) {
@@ -650,7 +645,6 @@ public final class XmlSchemaCollection {
         XmlSchemaSimpleType type;
         type = new XmlSchemaSimpleType(schema, true);
         type.setName(typeName);
-        schema.addType(type);
     }
 
     private Document parseDoPriv(final InputSource inputSource, final DocumentBuilder builder, Document doc)

@@ -162,7 +162,7 @@ public class SchemaBuilder {
      * @param uri
      * @param veh
      */
-    XmlSchema build(Document doc, String uri, ValidationEventHandler veh) {
+    XmlSchema build(Document doc, String uri) {
         Element schemaEl = doc.getDocumentElement();
         XmlSchema xmlSchema = handleXmlSchemaElement(schemaEl, uri);
         xmlSchema.setInputEncoding(DOMUtil.getInputEncoding(doc));
@@ -543,15 +543,15 @@ public class SchemaBuilder {
             public void validate(XmlSchema pSchema) {
                 final boolean valid;
                 if (isEmpty(uri)) {
-                    valid = isEmpty(pSchema.syntacticalTargetNamespace);
+                    valid = isEmpty(pSchema.getSyntacticalTargetNamespace());
                 } else {
-                    valid = pSchema.syntacticalTargetNamespace.equals(uri);
+                    valid = pSchema.getSyntacticalTargetNamespace().equals(uri);
                 }
                 if (!valid) {
                     throw new XmlSchemaException(
                             "An imported schema was announced to have the namespace "
                                     + uri + ", but has the namespace "
-                                    + pSchema.syntacticalTargetNamespace);
+                                    + pSchema.getSyntacticalTargetNamespace());
                 }
             }
 
@@ -601,10 +601,10 @@ public class SchemaBuilder {
 
         final TargetNamespaceValidator validator = newIncludeValidator(schema);
         if (schema.getSourceURI() != null) {
-            include.schema = resolveXmlSchema(schema.logicalTargetNamespace,
+            include.schema = resolveXmlSchema(schema.getLogicalTargetNamespace(),
                     include.schemaLocation, schema.getSourceURI(), validator);
         } else {
-            include.schema = resolveXmlSchema(schema.logicalTargetNamespace,
+            include.schema = resolveXmlSchema(schema.getLogicalTargetNamespace(),
                     include.schemaLocation, validator);
         }
 
@@ -681,7 +681,7 @@ public class SchemaBuilder {
         setNamespaceAttributes(currentSchema, schemaEl);
 
         XmlSchemaCollection.SchemaKey schemaKey = new XmlSchemaCollection.SchemaKey(
-                currentSchema.logicalTargetNamespace, systemId);
+                currentSchema.getLogicalTargetNamespace(), systemId);
         handleSchemaElementBasics(schemaEl, systemId, schemaKey);
 
         Element el = XDOMUtil.getFirstChildElementNS(schemaEl,
@@ -746,13 +746,10 @@ public class SchemaBuilder {
             if (collection.check(key)) {
                 collection.push(key);
                 try {
-                    XmlSchema readSchema = collection.read(source, null,
-                            validator);
+                    XmlSchema readSchema = collection.read(source, validator);
                     putCachedSchema(targetNamespace, schemaLocation, baseUri,
                             readSchema);
                     return readSchema;
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
                 } finally {
                     collection.pop();
                 }
@@ -867,9 +864,9 @@ public class SchemaBuilder {
             prefix = pName.substring(0, offset);
             uri = pContext.getNamespaceURI(prefix);
             if (uri == null || Constants.NULL_NS_URI.equals(uri)
-                    && currentSchema.parent != null
-                    && currentSchema.parent.getNamespaceContext() != null) {
-                uri = currentSchema.parent.getNamespaceContext()
+                    && currentSchema.getParent() != null
+                    && currentSchema.getParent().getNamespaceContext() != null) {
+                uri = currentSchema.getParent().getNamespaceContext()
                         .getNamespaceURI(prefix);
             }
 
@@ -1518,10 +1515,10 @@ public class SchemaBuilder {
         final TargetNamespaceValidator validator = newIncludeValidator(schema);
 
         if (schema.getSourceURI() != null) {
-            redefine.schema = resolveXmlSchema(schema.logicalTargetNamespace,
+            redefine.schema = resolveXmlSchema(schema.getLogicalTargetNamespace(),
                     redefine.schemaLocation, schema.getSourceURI(), validator);
         } else {
-            redefine.schema = resolveXmlSchema(schema.logicalTargetNamespace,
+            redefine.schema = resolveXmlSchema(schema.getLogicalTargetNamespace(),
                     redefine.schemaLocation, validator);
         }
 
@@ -1576,11 +1573,11 @@ public class SchemaBuilder {
             XmlSchemaCollection.SchemaKey schemaKey) {
         if (!collection.containsSchema(schemaKey)) {
             collection.addSchema(schemaKey, currentSchema);
-            currentSchema.parent = collection; // establish parentage now.
+            currentSchema.setParent(collection); // establish parentage now.
         } else {
             throw new XmlSchemaException(
                     "Schema name conflict in collection. Namespace: "
-                            + currentSchema.logicalTargetNamespace);
+                            + currentSchema.getLogicalTargetNamespace());
         }
 
         currentSchema.setElementFormDefault(this.getFormDefault(schemaEl,
@@ -1603,14 +1600,10 @@ public class SchemaBuilder {
         if (el.getLocalName().equals("simpleType")) {
             XmlSchemaType type = handleSimpleType(currentSchema, el, schemaEl,
                     true);
-            currentSchema.addType(type);
-            currentSchema.items.add(type);
             collection.resolveType(type.getQName(), type);
         } else if (el.getLocalName().equals("complexType")) {
             XmlSchemaType type = handleComplexType(currentSchema, el, schemaEl,
                     true);
-            currentSchema.addType(type);
-            currentSchema.items.add(type);
             collection.resolveType(type.getQName(), type);
         } else if (el.getLocalName().equals("element")) {
             handleElement(currentSchema, el, schemaEl, true);
@@ -1627,10 +1620,7 @@ public class SchemaBuilder {
         } else if (el.getLocalName().equals("redefine")) {
             handleRedefine(currentSchema, el,  schemaEl);
         } else if (el.getLocalName().equals("notation")) {
-            XmlSchemaNotation notation = handleNotation(currentSchema, el);
-            currentSchema.notations.collection.put(notation.getQName(),
-                    notation);
-            currentSchema.items.add(notation);
+            handleNotation(currentSchema, el);
         } else if (el.getLocalName().equals("annotation")) {
             XmlSchemaAnnotation annotation = handleAnnotation(el);
             currentSchema.setAnnotation(annotation);
@@ -1928,19 +1918,19 @@ public class SchemaBuilder {
     private TargetNamespaceValidator newIncludeValidator(final XmlSchema schema) {
         return new TargetNamespaceValidator() {
             public void validate(XmlSchema pSchema) {
-                if (isEmpty(pSchema.syntacticalTargetNamespace)) {
-                    pSchema.logicalTargetNamespace = schema.logicalTargetNamespace;
+                if (isEmpty(pSchema.getSyntacticalTargetNamespace())) {
+                    pSchema.setLogicalTargetNamespace(schema.getLogicalTargetNamespace());
                 } else {
-                    if (!pSchema.syntacticalTargetNamespace
-                            .equals(schema.logicalTargetNamespace)) {
+                    if (!pSchema.getSyntacticalTargetNamespace()
+                            .equals(schema.getLogicalTargetNamespace())) {
                         String msg = "An included schema was announced to have the default target namespace";
-                        if (!isEmpty(schema.logicalTargetNamespace)) {
+                        if (!isEmpty(schema.getLogicalTargetNamespace())) {
                             msg += " or the target namespace "
-                                    + schema.logicalTargetNamespace;
+                                    + schema.getLogicalTargetNamespace();
                         }
                         throw new XmlSchemaException(msg
                                 + ", but has the target namespace "
-                                + pSchema.logicalTargetNamespace);
+                                + pSchema.getLogicalTargetNamespace());
                     }
                 }
             }

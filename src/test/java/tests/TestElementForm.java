@@ -46,7 +46,7 @@ public class TestElementForm extends Assert {
     public void setUp() throws Exception {
         InputStream is = new FileInputStream(Resources.asURI("elementForm.xsd"));
         schema = new XmlSchemaCollection();
-        schema.read(new StreamSource(is), null);
+        schema.read(new StreamSource(is));
     }
 
     @Test

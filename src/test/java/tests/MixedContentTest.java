@@ -44,7 +44,7 @@ public class MixedContentTest extends Assert {
 
         InputStream is = new FileInputStream(Resources.asURI("mixedContent.xsd"));
         XmlSchemaCollection schema = new XmlSchemaCollection();
-        XmlSchema s = schema.read(new StreamSource(is), null);
+        XmlSchema s = schema.read(new StreamSource(is));
 
         XmlSchemaElement elementByName = s.getElementByName(elementQName);
         assertNotNull(elementByName);

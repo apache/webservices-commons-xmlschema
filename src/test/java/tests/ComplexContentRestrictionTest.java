@@ -62,7 +62,7 @@ public class ComplexContentRestrictionTest extends Assert {
         QName typeQName = new QName("http://soapinterop.org/types", "NoAssemblyRequiredProduct");
         InputStream is = new FileInputStream(Resources.asURI("deriverestriction.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is));
 
         XmlSchemaComplexType cType = (XmlSchemaComplexType)schemaCol.getTypeByQName(typeQName);
         assertNotNull(cType);

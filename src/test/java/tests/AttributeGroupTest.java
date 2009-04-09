@@ -78,7 +78,7 @@ public class AttributeGroupTest
         QName elementQName = new QName("http://soapinterop.org/types", "member");
         InputStream is = new FileInputStream(Resources.asURI("attributegroup.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+        XmlSchema schema = schemaCol.read(new StreamSource(is));
 
         XmlSchemaElement elem = schemaCol.getElementByQName(elementQName);
         assertNotNull(elem);

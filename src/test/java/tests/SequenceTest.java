@@ -55,7 +55,7 @@ public class SequenceTest extends Assert {
 
         InputStream is = new FileInputStream(Resources.asURI("sequence.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is));
 
         QName wrongQName = new QName("http://soapinterop.org/types", "machine");
         XmlSchemaElement elem = schemaCol.getElementByQName(wrongQName);

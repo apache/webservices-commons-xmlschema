@@ -55,18 +55,13 @@ import org.custommonkey.xmlunit.XMLConstants;
 public class XmlSchema
     extends XmlSchemaAnnotated implements NamespaceContextOwner {
     static final String SCHEMA_NS = XMLConstants.W3C_XML_SCHEMA_NS_URI;
+    
     private static final String UTF_8_ENCODING = "UTF-8";
 
-    XmlSchemaObjectTable notations;
-    XmlSchemaObjectTable schemaTypes;
-    XmlSchemaObjectCollection items;
-    boolean isCompiled;
-    String syntacticalTargetNamespace;
-    String logicalTargetNamespace;
-    String version;
-    String schemaNamespacePrefix = "";
-    XmlSchemaCollection parent;
+    // This has be ordered so that things come out in the order we parse them.
+    private List<XmlSchemaObject> items;
 
+    private XmlSchemaCollection parent;
     private XmlSchemaDerivationMethod blockDefault;
     private XmlSchemaDerivationMethod finalDefault;
     private XmlSchemaForm elementFormDefault;
@@ -76,6 +71,12 @@ public class XmlSchema
     private Map<QName, XmlSchemaAttribute> attributes;
     private Map<QName, XmlSchemaElement> elements;
     private Map<QName, XmlSchemaGroup> groups;
+    private Map<QName, XmlSchemaNotation> notations;
+    private Map<QName, XmlSchemaType> schemaTypes;
+    private String syntacticalTargetNamespace;
+    private String schemaNamespacePrefix;
+    private String logicalTargetNamespace;
+    private String version;
 
     private NamespacePrefixList namespaceContext;
     // keep the encoding of the input
@@ -101,14 +102,14 @@ public class XmlSchema
         elementFormDefault = XmlSchemaForm.UNQUALIFIED;
         blockDefault = XmlSchemaDerivationMethod.NONE;
         finalDefault = XmlSchemaDerivationMethod.NONE;
-        items = new XmlSchemaObjectCollection();
+        items = new ArrayList<XmlSchemaObject>();
         externals = new ArrayList<XmlSchemaExternal>();
         elements = new HashMap<QName, XmlSchemaElement>();
         attributeGroups = new HashMap<QName, XmlSchemaAttributeGroup>();
         attributes = new HashMap<QName, XmlSchemaAttribute>();
         groups = new HashMap<QName, XmlSchemaGroup>();
-        notations = new XmlSchemaObjectTable();
-        schemaTypes = new XmlSchemaObjectTable();
+        notations = new HashMap<QName, XmlSchemaNotation>();
+        schemaTypes = new HashMap<QName, XmlSchemaType>();
 
         logicalTargetNamespace = namespace;
         syntacticalTargetNamespace = namespace;
@@ -320,7 +321,7 @@ public class XmlSchema
             // recursive schema - just return null
             return null;
         }
-        XmlSchemaNotation notation = (XmlSchemaNotation)notations.getItem(name);
+        XmlSchemaNotation notation = notations.get(name);
         if (deep) {
             if (notation == null) {
                 // search the imports
@@ -395,7 +396,7 @@ public class XmlSchema
             // recursive schema - just return null
             return null;
         }
-        XmlSchemaType type = (XmlSchemaType)schemaTypes.getItem(name);
+        XmlSchemaType type = schemaTypes.get(name);
 
         if (deep) {
             if (type == null) {
@@ -514,19 +515,15 @@ public class XmlSchema
         return externals;
     }
 
-    public boolean isCompiled() {
-        return isCompiled;
-    }
-
-    public XmlSchemaObjectCollection getItems() {
+    public List<XmlSchemaObject> getItems() {
         return items;
     }
 
-    public XmlSchemaObjectTable getNotations() {
+    public Map<QName, XmlSchemaNotation> getNotations() {
         return notations;
     }
 
-    public XmlSchemaObjectTable getSchemaTypes() {
+    public Map<QName, XmlSchemaType> getSchemaTypes() {
         return schemaTypes;
     }
 
@@ -543,10 +540,6 @@ public class XmlSchema
 
     public String getVersion() {
         return version;
-    }
-
-    public void compile(ValidationEventHandler eh) {
-
     }
 
     /**
@@ -689,11 +682,11 @@ public class XmlSchema
 
     public void addType(XmlSchemaType type) {
         QName qname = type.getQName();
-        if (schemaTypes.contains(qname)) {
+        if (schemaTypes.containsKey(qname)) {
             throw new XmlSchemaException(" Schema for namespace '" + syntacticalTargetNamespace
                                          + "' already contains type '" + qname.getLocalPart() + "'");
         }
-        schemaTypes.add(qname, type);
+        schemaTypes.put(qname, type);
     }
 
     public NamespacePrefixList getNamespaceContext() {
@@ -794,25 +787,31 @@ public class XmlSchema
         return parent;
     }
 
-    void setExternals(List<XmlSchemaExternal> externals) {
-        this.externals = externals;
+    public String getSchemaNamespacePrefix() {
+        return schemaNamespacePrefix;
     }
 
-    void setAttributeGroups(Map<QName, XmlSchemaAttributeGroup> attributeGroups) {
-        this.attributeGroups = attributeGroups;
+    public void setSchemaNamespacePrefix(String schemaNamespacePrefix) {
+        this.schemaNamespacePrefix = schemaNamespacePrefix;
     }
 
-    void setAttributes(Map<QName, XmlSchemaAttribute> attributes) {
-        this.attributes = attributes;
+    void setParent(XmlSchemaCollection parent) {
+        this.parent = parent;
     }
 
-    void setElements(Map<QName, XmlSchemaElement> elements) {
-        this.elements = elements;
+    void setSyntacticalTargetNamespace(String syntacticalTargetNamespace) {
+        this.syntacticalTargetNamespace = syntacticalTargetNamespace;
     }
 
-    void setGroups(Map<QName, XmlSchemaGroup> groups) {
-        this.groups = groups;
+    String getSyntacticalTargetNamespace() {
+        return syntacticalTargetNamespace;
     }
 
-    
+    void setLogicalTargetNamespace(String logicalTargetNamespace) {
+        this.logicalTargetNamespace = logicalTargetNamespace;
+    }
+
+    void setVersion(String version) {
+        this.version = version;
+    }
 }

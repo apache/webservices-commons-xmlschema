@@ -66,7 +66,7 @@ public class FacetsTest extends Assert {
         QName elementQName = new QName("http://soapinterop.org/types", "myZipCode");
         InputStream is = new FileInputStream(Resources.asURI("facets.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is));
 
         XmlSchemaElement elem = schemaCol.getElementByQName(elementQName);
         assertNotNull(elem);
@@ -122,7 +122,7 @@ public class FacetsTest extends Assert {
         QName elementQName = new QName("http://soapinterop.org/types", "myCreditCardNumber");
         InputStream is = new FileInputStream(Resources.asURI("facets.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is));
 
         XmlSchemaElement elem = schemaCol.getElementByQName(elementQName);
         assertNotNull(elem);
@@ -174,7 +174,7 @@ public class FacetsTest extends Assert {
         QName elementQName = new QName("http://soapinterop.org/types", "myAge");
         InputStream is = new FileInputStream(Resources.asURI("facets.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is));
 
         XmlSchemaElement elem = schemaCol.getElementByQName(elementQName);
         assertNotNull(elem);
@@ -227,7 +227,7 @@ public class FacetsTest extends Assert {
         QName elementQName = new QName("http://soapinterop.org/types", "myDistance");
         InputStream is = new FileInputStream(Resources.asURI("facets.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is));
 
         XmlSchemaElement elem = schemaCol.getElementByQName(elementQName);
         assertNotNull(elem);
@@ -283,7 +283,7 @@ public class FacetsTest extends Assert {
         QName elementQName = new QName("http://soapinterop.org/types", "myWeight");
         InputStream is = new FileInputStream(Resources.asURI("facets.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is));
 
         XmlSchemaElement elem = schemaCol.getElementByQName(elementQName);
         assertNotNull(elem);
@@ -339,7 +339,7 @@ public class FacetsTest extends Assert {
         QName elementQName = new QName("http://soapinterop.org/types", "myWhiteSpace");
         InputStream is = new FileInputStream(Resources.asURI("facets.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is));
 
         XmlSchemaElement elem = schemaCol.getElementByQName(elementQName);
         assertNotNull(elem);
@@ -391,7 +391,7 @@ public class FacetsTest extends Assert {
         QName elementQName = new QName("http://soapinterop.org/types", "myHeight");
         InputStream is = new FileInputStream(Resources.asURI("facets.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is));
 
         XmlSchemaElement elem = schemaCol.getElementByQName(elementQName);
         assertNotNull(elem);
@@ -447,7 +447,7 @@ public class FacetsTest extends Assert {
         QName elementQName = new QName("http://soapinterop.org/types", "myYardLength");
         InputStream is = new FileInputStream(Resources.asURI("facets.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is));
 
         XmlSchemaElement elem = schemaCol.getElementByQName(elementQName);
         assertNotNull(elem);
@@ -505,7 +505,7 @@ public class FacetsTest extends Assert {
         QName elementQName = new QName("http://soapinterop.org/types", "layoutComponent");
         InputStream is = new FileInputStream(Resources.asURI("facets.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is));
 
         XmlSchemaElement elem = schemaCol.getElementByQName(elementQName);
         assertNotNull(elem);

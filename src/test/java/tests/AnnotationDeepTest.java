@@ -72,7 +72,7 @@ public class AnnotationDeepTest extends TestCase {
 
         InputStream is = new FileInputStream(Resources.asURI("annotation-appinfo-no-source.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+        XmlSchema schema = schemaCol.read(new StreamSource(is));
         
         XmlSchemaAnnotation annotation = schema.getAnnotation();
         assertTrue("annotation is retrieved ok", null != annotation);
@@ -115,7 +115,7 @@ public class AnnotationDeepTest extends TestCase {
 
         InputStream is = new FileInputStream(Resources.asURI("annotation-appinfo-deep.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+        XmlSchema schema = schemaCol.read(new StreamSource(is));
         
         XmlSchemaAnnotation annotation = schema.getAnnotation();
         assertTrue("annotation is retrieved ok", null != annotation);

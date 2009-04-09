@@ -76,7 +76,7 @@ public class NamespaceContextTest extends XMLAssert {
         // Set the namespaces explicitly
         NamespaceMap prefixmap = new NamespaceMap(namespaceMapFromWSDL);
         xsc.setNamespaceContext(prefixmap);
-        XmlSchema schemaDef = xsc.read(schemaInputSource, null);
+        XmlSchema schemaDef = xsc.read(schemaInputSource);
         StringWriter sw = new StringWriter();
         schemaDef.write(sw);
 

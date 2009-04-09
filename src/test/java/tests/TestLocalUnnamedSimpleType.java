@@ -48,6 +48,6 @@ public class TestLocalUnnamedSimpleType extends Assert {
     @Test
     public void testLocalUnnamedSimpleType() throws Exception {
         XmlSchemaCollection schema = new XmlSchemaCollection();
-        schema.read(new StreamSource(new ByteArrayInputStream(schemaXML.getBytes())), null);
+        schema.read(new StreamSource(new ByteArrayInputStream(schemaXML.getBytes())));
     }
 }

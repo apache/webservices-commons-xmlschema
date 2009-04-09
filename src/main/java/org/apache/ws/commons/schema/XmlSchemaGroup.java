@@ -39,7 +39,7 @@ public class XmlSchemaGroup extends XmlSchemaAnnotated implements XmlSchemaNamed
     
     public XmlSchemaGroup(XmlSchema parent) {
         namedDelegate = new XmlSchemaNamedImpl(parent, true);
-        parent.items.add(this);
+        parent.getItems().add(this);
     }
     
 

@@ -41,7 +41,7 @@ public class TestSimpleRestriction extends Assert {
 
         InputStream is = new FileInputStream(Resources.asURI("SimpleContentRestriction.xsd"));
         XmlSchemaCollection schema = new XmlSchemaCollection();
-        schema.read(new StreamSource(is), null);
+        schema.read(new StreamSource(is));
 
         XmlSchemaType simpleType = schema.getTypeByQName(typeQName);
         assertNotNull(simpleType);
@@ -57,7 +57,7 @@ public class TestSimpleRestriction extends Assert {
     public void testSimpleTypeRestrictionWithoutNamespace() throws Exception {
         InputStream is = new FileInputStream(Resources.asURI("includedWithoutNamespace.xsd"));
         XmlSchemaCollection schema = new XmlSchemaCollection();
-        schema.read(new StreamSource(is), null);
+        schema.read(new StreamSource(is));
         XmlSchemaType principalId = schema.getTypeByQName(new QName("", "XdwsPrincipalId"));
         assertNotNull(principalId);
         XmlSchemaSimpleType groupId = (XmlSchemaSimpleType)schema

@@ -66,7 +66,7 @@ public class ImportTest extends Assert {
         Document doc = documentBuilderFactory.newDocumentBuilder().parse(file.toURL().toString());
 
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(doc, file.toURL().toString(), null);
+        XmlSchema schema = schemaCol.read(doc, file.toURL().toString());
         assertNotNull(schema);
 
     }
@@ -85,7 +85,7 @@ public class ImportTest extends Assert {
         Document doc = documentBuilderFactory.newDocumentBuilder().parse(file.toURL().toString());
 
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(doc, file.toURL().toString(), null);
+        XmlSchema schema = schemaCol.read(doc, file.toURL().toString());
         assertNotNull(schema);
 
         assertNotNull(schema.getTypeByName(new QName("http://soapinterop.org/xsd2", "SOAPStruct")));

@@ -22,7 +22,7 @@ package tests;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashSet;
-import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
@@ -39,7 +39,6 @@ import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.XmlSchemaEnumerationFacet;
 import org.apache.ws.commons.schema.XmlSchemaNotation;
 import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
-import org.apache.ws.commons.schema.XmlSchemaObjectTable;
 import org.apache.ws.commons.schema.XmlSchemaSimpleType;
 import org.apache.ws.commons.schema.XmlSchemaSimpleTypeRestriction;
 
@@ -92,18 +91,18 @@ public class NotationTest extends Assert {
 
         InputStream is = new FileInputStream(Resources.asURI("notation.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+        XmlSchema schema = schemaCol.read(new StreamSource(is));
 
         testSimpleRestrictions(elementQName, notationName, schemaCol, schema);
 
-        XmlSchemaObjectTable xsot = schema.getNotations();
-        assertEquals(2, xsot.getCount());
+        Map<QName, XmlSchemaNotation> notations = schema.getNotations();
+        assertEquals(2, notations.size());
 
         Set<String> s = new HashSet<String>();
         s.add("teamMascot");
         s.add("teamLogo");
-        for (Iterator i = xsot.getNames(); i.hasNext();) {
-            String name = ((QName)i.next()).getLocalPart();
+        for (Map.Entry<QName, XmlSchemaNotation> e : notations.entrySet()) {
+            String name = e.getKey().getLocalPart();
             if (!("teamLogo".equals(name) || "teamMascot".equals(name))) {
                 fail("An unexpected name of \"" + name + "\" was found.");
             }
@@ -114,8 +113,8 @@ public class NotationTest extends Assert {
         s.clear();
         s.add("teamMascot");
         s.add("teamLogo");
-        for (Iterator i = xsot.getValues(); i.hasNext();) {
-            XmlSchemaNotation xsn = (XmlSchemaNotation)i.next();
+        for (Map.Entry<QName, XmlSchemaNotation> e : notations.entrySet()) {
+            XmlSchemaNotation xsn = e.getValue();
             String name = xsn.getName();
             XmlSchemaAnnotation xsa = xsn.getAnnotation();
             XmlSchemaObjectCollection col = xsa.getItems();
@@ -159,8 +158,8 @@ public class NotationTest extends Assert {
     
     private void testSimpleRestrictions(QName elementQName, QName notationName, XmlSchemaCollection schemaCol,
                                   XmlSchema schema) {
-        XmlSchemaObjectTable notations = schema.getNotations();
-        assertNotNull(notations.getItem(notationName));
+        Map<QName, XmlSchemaNotation> notations = schema.getNotations();
+        assertNotNull(notations.get(notationName));
 
         XmlSchemaElement elem = schemaCol.getElementByQName(elementQName);
         assertNotNull(elem);

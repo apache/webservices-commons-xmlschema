@@ -61,7 +61,7 @@ public class SimpleContentExtensionTest extends Assert {
         QName elementQName = new QName("http://soapinterop.org/types", "height");
         InputStream is = new FileInputStream(Resources.asURI("simplecontentextension.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+        XmlSchema schema = schemaCol.read(new StreamSource(is));
 
         XmlSchemaElement elem = schema.getElementByName(elementQName);
         assertNotNull(elem);

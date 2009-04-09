@@ -65,7 +65,7 @@ public class ParameterizedW3CTestsTest extends XMLAssert {
     public XmlSchema loadSchema(File f) throws Exception {
         XmlSchemaCollection col = new XmlSchemaCollection();
         col.setBaseUri(f.getPath());
-        return col.read(new FileReader(f), null);
+        return col.read(new FileReader(f));
     }
 
     @Test

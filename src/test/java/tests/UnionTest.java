@@ -56,7 +56,7 @@ public class UnionTest extends Assert {
         QName elementQName = new QName("http://soapinterop.org/types", "unionTest");
         InputStream is = new FileInputStream(Resources.asURI("union.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        schemaCol.read(new StreamSource(is), null);
+        schemaCol.read(new StreamSource(is));
 
         XmlSchemaElement elem = schemaCol.getElementByQName(elementQName);
         assertNotNull(elem);

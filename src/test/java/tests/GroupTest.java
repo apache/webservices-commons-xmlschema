@@ -66,7 +66,7 @@ public class GroupTest extends Assert {
         QName elementQName = new QName("http://soapinterop.org/types", "price");
         InputStream is = new FileInputStream(Resources.asURI("group.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+        XmlSchema schema = schemaCol.read(new StreamSource(is));
 
         XmlSchemaElement elem = schemaCol.getElementByQName(elementQName);
         assertNotNull(elem);

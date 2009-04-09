@@ -43,7 +43,7 @@ public class ElementRefsTest extends Assert {
         QName elementQName = new QName("http://soapinterop.org/types", "attTests");
         InputStream is = new FileInputStream(Resources.asURI("elementreferences.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+        XmlSchema schema = schemaCol.read(new StreamSource(is));
 
         XmlSchemaElement elem = schemaCol.getElementByQName(elementQName);
 

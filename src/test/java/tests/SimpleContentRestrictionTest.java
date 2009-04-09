@@ -80,7 +80,7 @@ public class SimpleContentRestrictionTest extends Assert {
         QName typeQName = new QName("http://soapinterop.org/types", "dietdrinksize");
         InputStream is = new FileInputStream(Resources.asURI("screstriction.xsd"));
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(new StreamSource(is), null);
+        XmlSchema schema = schemaCol.read(new StreamSource(is));
 
         XmlSchemaComplexType xsct = (XmlSchemaComplexType)schema.getTypeByName(typeQName);
         assertNotNull(xsct);
