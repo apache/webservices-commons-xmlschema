@@ -203,11 +203,11 @@ public class XmlSchemaSerializer {
         Element annotation = createNewElement(doc, "annotation", schema.getSchemaNamespacePrefix(),
                                               XmlSchema.SCHEMA_NS);
 
-        XmlSchemaObjectCollection contents = annotationObj.items;
-        int contentLength = contents.getCount();
+        List<XmlSchemaAnnotationItem> contents = annotationObj.getItems();
+        int contentLength = contents.size();
 
         for (int i = 0; i < contentLength; i++) {
-            XmlSchemaObject obj = contents.getItem(i);
+            XmlSchemaObject obj = contents.get(i);
 
             if (obj instanceof XmlSchemaAppInfo) {
                 XmlSchemaAppInfo appinfo = (XmlSchemaAppInfo)obj;

@@ -231,7 +231,8 @@ public class SchemaBuilder {
      * add it to annotation collection
      */
     XmlSchemaAnnotation handleAnnotation(Element annotEl) {
-        XmlSchemaObjectCollection content = new XmlSchemaObjectCollection();
+        XmlSchemaAnnotation annotation = new XmlSchemaAnnotation();
+        List<XmlSchemaAnnotationItem> content = annotation.getItems();
         XmlSchemaAppInfo appInfoObj;
         XmlSchemaDocumentation docsObj;
 
@@ -255,9 +256,6 @@ public class SchemaBuilder {
                 content.add(docsObj);
             }
         }
-
-        XmlSchemaAnnotation annotation = new XmlSchemaAnnotation();
-        annotation.items = content;
 
         // process extra attributes and elements
         processExtensibilityComponents(annotation, annotEl);

@@ -21,6 +21,7 @@ package tests;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
@@ -31,11 +32,11 @@ import org.w3c.dom.NodeList;
 
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaAnnotation;
+import org.apache.ws.commons.schema.XmlSchemaAnnotationItem;
 import org.apache.ws.commons.schema.XmlSchemaAppInfo;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaDocumentation;
 import org.apache.ws.commons.schema.XmlSchemaObject;
-import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
 import org.apache.ws.commons.schema.XmlSchemaSimpleType;
 
 import org.junit.Assert;
@@ -69,13 +70,13 @@ public class AnnotationTest extends Assert {
         XmlSchemaAnnotation xsa = simpleType.getAnnotation();
         assertNotNull(xsa);
 
-        XmlSchemaObjectCollection col = xsa.getItems();
-        assertEquals(1, col.getCount());
+        List<XmlSchemaAnnotationItem> col = xsa.getItems();
+        assertEquals(1, col.size());
 
         Set<String> s = new HashSet<String>();
         s.add(XmlSchemaDocumentation.class.getName());
-        for (int i = 0; i < col.getCount(); i++) {
-            XmlSchemaObject o = col.getItem(i);
+        for (int i = 0; i < col.size(); i++) {
+            XmlSchemaObject o = col.get(i);
             if (o instanceof XmlSchemaAppInfo) {
                 fail("The appinfo element did not contain a source"
                      + " attribute or any content, so this element" + " was not exptected to be found.");
@@ -121,13 +122,13 @@ public class AnnotationTest extends Assert {
         XmlSchemaAnnotation xsa = simpleType.getAnnotation();
         assertNotNull(xsa);
 
-        XmlSchemaObjectCollection col = xsa.getItems();
-        assertEquals(1, col.getCount());
+        List<XmlSchemaAnnotationItem> col = xsa.getItems();
+        assertEquals(1, col.size());
 
         Set<String> s = new HashSet<String>();
         s.add(XmlSchemaAppInfo.class.getName());
-        for (int i = 0; i < col.getCount(); i++) {
-            XmlSchemaObject o = col.getItem(i);
+        for (int i = 0; i < col.size(); i++) {
+            XmlSchemaObject o = col.get(i);
             if (o instanceof XmlSchemaAppInfo) {
                 assertEquals("http://test/source/appinfo", ((XmlSchemaAppInfo)o).getSource());
                 NodeList nl = ((XmlSchemaAppInfo)o).getMarkup();
@@ -171,8 +172,8 @@ public class AnnotationTest extends Assert {
         XmlSchemaAnnotation xsa = simpleType.getAnnotation();
         assertNotNull(xsa);
 
-        XmlSchemaObjectCollection col = xsa.getItems();
-        assertEquals(0, col.getCount());
+        List<XmlSchemaAnnotationItem> col = xsa.getItems();
+        assertEquals(0, col.size());
 
     }
 
@@ -202,14 +203,14 @@ public class AnnotationTest extends Assert {
         XmlSchemaAnnotation xsa = simpleType.getAnnotation();
         assertNotNull(xsa);
 
-        XmlSchemaObjectCollection col = xsa.getItems();
-        assertEquals(2, col.getCount());
+        List<XmlSchemaAnnotationItem> col = xsa.getItems();
+        assertEquals(2, col.size());
 
         Set<String> s = new HashSet<String>();
         s.add(XmlSchemaAppInfo.class.getName());
         s.add(XmlSchemaDocumentation.class.getName());
-        for (int i = 0; i < col.getCount(); i++) {
-            XmlSchemaObject o = col.getItem(i);
+        for (int i = 0; i < col.size(); i++) {
+            XmlSchemaObject o = col.get(i);
             if (o instanceof XmlSchemaAppInfo) {
                 assertEquals("http://test/source/appinfo", ((XmlSchemaAppInfo)o).getSource());
                 NodeList nl = ((XmlSchemaAppInfo)o).getMarkup();
@@ -254,14 +255,14 @@ public class AnnotationTest extends Assert {
         XmlSchema schema = schemaCol.read(new StreamSource(is));
 
         XmlSchemaAnnotation xsa = schema.getAnnotation();
-        XmlSchemaObjectCollection col = xsa.getItems();
-        assertEquals(2, col.getCount());
+        List<XmlSchemaAnnotationItem> col = xsa.getItems();
+        assertEquals(2, col.size());
 
         Set<String> s = new HashSet<String>();
         s.add(XmlSchemaAppInfo.class.getName());
         s.add(XmlSchemaDocumentation.class.getName());
-        for (int i = 0; i < col.getCount(); i++) {
-            XmlSchemaObject o = col.getItem(i);
+        for (int i = 0; i < col.size(); i++) {
+            XmlSchemaObject o = col.get(i);
             if (o instanceof XmlSchemaAppInfo) {
                 assertEquals("http://test101/source/appinfo", ((XmlSchemaAppInfo)o).getSource());
                 NodeList nl = ((XmlSchemaAppInfo)o).getMarkup();

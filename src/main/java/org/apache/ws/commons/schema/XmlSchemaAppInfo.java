@@ -28,7 +28,7 @@ import org.w3c.dom.NodeList;
 
 // Jan 24 2002 - Joni - Change the Node into NodeList
 
-public class XmlSchemaAppInfo extends XmlSchemaObject {
+public class XmlSchemaAppInfo extends XmlSchemaAnnotationItem {
 
     /**
      * Provides the source of the application information.

@@ -26,7 +26,7 @@ import org.w3c.dom.NodeList;
  * Wide Web Consortium (W3C) documentation element.
  */
 
-public class XmlSchemaDocumentation extends XmlSchemaObject {
+public class XmlSchemaDocumentation extends XmlSchemaAnnotationItem {
 
 
     /**

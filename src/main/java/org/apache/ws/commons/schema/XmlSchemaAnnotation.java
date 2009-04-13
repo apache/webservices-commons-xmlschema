@@ -19,21 +19,24 @@
 
 package org.apache.ws.commons.schema;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Defines an annotation. Represents the World Wide Web Consortium (W3C) annotation element.
  */
 
 public class XmlSchemaAnnotation extends XmlSchemaObject {
-    XmlSchemaObjectCollection items;
+    private List<XmlSchemaAnnotationItem> items;
 
     /**
      * Creates new XmlSchemaAnnotation
      */
     public XmlSchemaAnnotation() {
-        items = new XmlSchemaObjectCollection();
+        items = new ArrayList<XmlSchemaAnnotationItem>();
     }
 
-    public XmlSchemaObjectCollection getItems() {
+    public List<XmlSchemaAnnotationItem> getItems() {
         return items;
     }
 }

@@ -22,6 +22,7 @@ package tests;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -33,6 +34,7 @@ import org.w3c.dom.NodeList;
 
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaAnnotation;
+import org.apache.ws.commons.schema.XmlSchemaAnnotationItem;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaDocumentation;
 import org.apache.ws.commons.schema.XmlSchemaElement;
@@ -117,11 +119,11 @@ public class NotationTest extends Assert {
             XmlSchemaNotation xsn = e.getValue();
             String name = xsn.getName();
             XmlSchemaAnnotation xsa = xsn.getAnnotation();
-            XmlSchemaObjectCollection col = xsa.getItems();
-            assertEquals(1, col.getCount());
+            List<XmlSchemaAnnotationItem> col = xsa.getItems();
+            assertEquals(1, col.size());
             XmlSchemaDocumentation xsd = null;
-            for (int k = 0; k < col.getCount(); k++) {
-                xsd = (XmlSchemaDocumentation)col.getItem(k);
+            for (int k = 0; k < col.size(); k++) {
+                xsd = (XmlSchemaDocumentation)col.get(k);
             }
             if ("teamMascot".equals(name)) {
                 assertEquals("http://www.team.com/graphics/teamMascot", xsn.getPublic());

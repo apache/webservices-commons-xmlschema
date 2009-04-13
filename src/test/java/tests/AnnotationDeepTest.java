@@ -20,6 +20,7 @@ package tests;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.List;
 
 import javax.xml.transform.stream.StreamSource;
 
@@ -32,9 +33,9 @@ import junit.framework.TestCase;
 
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaAnnotation;
+import org.apache.ws.commons.schema.XmlSchemaAnnotationItem;
 import org.apache.ws.commons.schema.XmlSchemaAppInfo;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
-import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
 
 public class AnnotationDeepTest extends TestCase {
     
@@ -76,8 +77,8 @@ public class AnnotationDeepTest extends TestCase {
         
         XmlSchemaAnnotation annotation = schema.getAnnotation();
         assertTrue("annotation is retrieved ok", null != annotation);
-        XmlSchemaObjectCollection items = annotation.getItems();
-        assertEquals("Annotation contains an appinfo and yet this fails", 1, items.getCount());
+        List<XmlSchemaAnnotationItem> items = annotation.getItems();
+        assertEquals("Annotation contains an appinfo and yet this fails", 1, items.size());
 
     }
 
@@ -119,9 +120,9 @@ public class AnnotationDeepTest extends TestCase {
         
         XmlSchemaAnnotation annotation = schema.getAnnotation();
         assertTrue("annotation is retrieved ok", null != annotation);
-        XmlSchemaObjectCollection items = annotation.getItems();
-        assertTrue(items.getItem(0) instanceof XmlSchemaAppInfo);
-        XmlSchemaAppInfo appInfo = (XmlSchemaAppInfo) items.getItem(0);
+        List<XmlSchemaAnnotationItem> items = annotation.getItems();
+        assertTrue(items.get(0) instanceof XmlSchemaAppInfo);
+        XmlSchemaAppInfo appInfo = (XmlSchemaAppInfo) items.get(0);
         NodeList markup = appInfo.getMarkup();
         assertTrue("The markup exists", null != markup);
         Node node = markup.item(1);
