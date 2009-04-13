@@ -24,6 +24,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
@@ -38,8 +39,8 @@ import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaComplexType;
 import org.apache.ws.commons.schema.XmlSchemaContentProcessing;
 import org.apache.ws.commons.schema.XmlSchemaElement;
-import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
 import org.apache.ws.commons.schema.XmlSchemaSequence;
+import org.apache.ws.commons.schema.XmlSchemaSequenceMember;
 import org.apache.ws.commons.schema.XmlSchemaType;
 
 import org.junit.Assert;
@@ -157,15 +158,15 @@ public class AnyTest extends Assert {
         XmlSchemaSequence xss = (XmlSchemaSequence)type.getParticle();
         assertNotNull(xss);
 
-        XmlSchemaObjectCollection c = xss.getItems();
-        assertEquals(3, c.getCount());
+        List<XmlSchemaSequenceMember> c = xss.getItems();
+        assertEquals(3, c.size());
 
         Set<String> s = new HashSet<String>();
         s.add("id");
         s.add("name");
         Object o = null;
-        for (int i = 0; i < c.getCount(); i++) {
-            o = c.getItem(i);
+        for (int i = 0; i < c.size(); i++) {
+            o = c.get(i);
             if (o instanceof XmlSchemaElement) {
                 String name = ((XmlSchemaElement)o).getName();
                 if ("id".equals(name)) {

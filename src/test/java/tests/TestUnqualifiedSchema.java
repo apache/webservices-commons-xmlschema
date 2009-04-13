@@ -20,6 +20,7 @@
 package tests;
 
 import java.util.Iterator;
+import java.util.List;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -30,8 +31,8 @@ import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaComplexType;
 import org.apache.ws.commons.schema.XmlSchemaElement;
-import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
 import org.apache.ws.commons.schema.XmlSchemaSequence;
+import org.apache.ws.commons.schema.XmlSchemaSequenceMember;
 import org.apache.ws.commons.schema.XmlSchemaType;
 
 import org.junit.Assert;
@@ -56,8 +57,8 @@ public class TestUnqualifiedSchema extends Assert {
         assertNotNull(t);
 
         XmlSchemaSequence seq = (XmlSchemaSequence)t.getParticle();
-        XmlSchemaObjectCollection items = seq.getItems();
-        Iterator iterator = items.getIterator();
+        List<XmlSchemaSequenceMember> items = seq.getItems();
+        Iterator iterator = items.iterator();
         while (iterator.hasNext()) {
             XmlSchemaElement elt2 = (XmlSchemaElement)iterator.next();
             XmlSchemaType schemaType2 = elt2.getSchemaType();

@@ -24,13 +24,14 @@ package org.apache.ws.commons.schema;
  * element. Represents the World Wide Web Consortium (W3C) any element.
  */
 
-public class XmlSchemaAny extends XmlSchemaParticle {
+public class XmlSchemaAny extends XmlSchemaParticle 
+    implements XmlSchemaChoiceMember, XmlSchemaSequenceMember {
 
     /**
      * Namespaces containing the elements that can be used.
      */
-    String namespace;
-    XmlSchemaContentProcessing processContent;
+    private String namespace;
+    private XmlSchemaContentProcessing processContent;
 
     
     /**

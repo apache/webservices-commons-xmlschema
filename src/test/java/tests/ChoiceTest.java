@@ -23,6 +23,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
@@ -32,7 +33,7 @@ import org.apache.ws.commons.schema.XmlSchemaChoice;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaComplexType;
 import org.apache.ws.commons.schema.XmlSchemaElement;
-import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
+import org.apache.ws.commons.schema.XmlSchemaObject;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -77,8 +78,8 @@ public class ChoiceTest extends Assert {
         Set<String> s = new HashSet<String>();
         s.add("desktop");
         s.add("laptop");
-        XmlSchemaObjectCollection items = choice.getItems();
-        Iterator iterator = items.getIterator();
+        List<XmlSchemaObject> items = choice.getItems();
+        Iterator iterator = items.iterator();
         while (iterator.hasNext()) {
             XmlSchemaElement e = (XmlSchemaElement)iterator.next();
             String eName = e.getName();

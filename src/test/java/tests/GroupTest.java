@@ -23,6 +23,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -36,7 +37,7 @@ import org.apache.ws.commons.schema.XmlSchemaComplexType;
 import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.XmlSchemaGroup;
 import org.apache.ws.commons.schema.XmlSchemaGroupRef;
-import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
+import org.apache.ws.commons.schema.XmlSchemaObject;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -112,8 +113,8 @@ public class GroupTest extends Assert {
         s.add("salePrice");
         s.add("clearancePrice");
         s.add("freePrice");
-        XmlSchemaObjectCollection items = xsc.getItems();
-        Iterator iterator = items.getIterator();
+        List<XmlSchemaObject> items = xsc.getItems();
+        Iterator iterator = items.iterator();
         while (iterator.hasNext()) {
             XmlSchemaElement e = (XmlSchemaElement)iterator.next();
             String eName = e.getName();

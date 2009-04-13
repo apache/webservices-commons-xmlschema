@@ -20,8 +20,8 @@
 package org.apache.ws.commons.schema;
 
 /**
- * Common base class of the items that can live inside an annotation.
+ * Common type for items that can serve as the particle of a group.
  */
-public abstract class XmlSchemaAnnotationItem
-    extends XmlSchemaObject {
+public abstract class XmlSchemaGroupParticle extends XmlSchemaParticle {
+
 }

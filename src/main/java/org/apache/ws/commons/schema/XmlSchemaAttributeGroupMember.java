@@ -20,8 +20,8 @@
 package org.apache.ws.commons.schema;
 
 /**
- * Common base class of the items that can live inside an annotation.
+ * Implemented by the types that can go into an attribute group.
  */
-public abstract class XmlSchemaAnnotationItem
-    extends XmlSchemaObject {
+public interface XmlSchemaAttributeGroupMember {
+
 }

@@ -22,6 +22,7 @@ package tests;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
@@ -32,8 +33,8 @@ import org.apache.ws.commons.schema.XmlSchemaComplexContentRestriction;
 import org.apache.ws.commons.schema.XmlSchemaComplexType;
 import org.apache.ws.commons.schema.XmlSchemaContentModel;
 import org.apache.ws.commons.schema.XmlSchemaElement;
-import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
 import org.apache.ws.commons.schema.XmlSchemaSequence;
+import org.apache.ws.commons.schema.XmlSchemaSequenceMember;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -77,14 +78,14 @@ public class ComplexContentRestrictionTest extends Assert {
         XmlSchemaSequence xsp = (XmlSchemaSequence)xsccr.getParticle();
         assertNotNull(xsp);
 
-        XmlSchemaObjectCollection col = xsp.getItems();
+        List<XmlSchemaSequenceMember> col = xsp.getItems();
 
         Set<String> s = new HashSet<String>();
         s.add("Name");
         s.add("Description");
         s.add("Parts");
-        for (int i = 0; i < col.getCount(); i++) {
-            XmlSchemaElement xse = (XmlSchemaElement)col.getItem(i);
+        for (int i = 0; i < col.size(); i++) {
+            XmlSchemaElement xse = (XmlSchemaElement)col.get(i);
             String name = xse.getName();
             if ("Name".equals(name)) {
                 assertEquals(new QName("", "Name"), xse.getWireName());

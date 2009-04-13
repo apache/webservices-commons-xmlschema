@@ -20,6 +20,7 @@ package tests;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.List;
 
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
@@ -27,8 +28,8 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaComplexType;
 import org.apache.ws.commons.schema.XmlSchemaElement;
-import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
 import org.apache.ws.commons.schema.XmlSchemaSequence;
+import org.apache.ws.commons.schema.XmlSchemaSequenceMember;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -55,12 +56,12 @@ public class TestElementForm extends Assert {
         assertNotNull("Couldn't find unQualifiedLocals element", element);
         XmlSchemaComplexType type = (XmlSchemaComplexType)element.getSchemaType();
         XmlSchemaSequence seq = (XmlSchemaSequence)type.getParticle();
-        XmlSchemaObjectCollection items = seq.getItems();
+        List<XmlSchemaSequenceMember> items = seq.getItems();
         XmlSchemaElement subElement;
-        subElement = (XmlSchemaElement)items.getItem(0);
+        subElement = (XmlSchemaElement)items.get(0);
         QName qname = subElement.getWireName();
         assertEquals("Namespace on unqualified element", "", qname.getNamespaceURI());
-        subElement = (XmlSchemaElement)items.getItem(1);
+        subElement = (XmlSchemaElement)items.get(1);
         qname = subElement.getWireName();
         assertEquals("Bad namespace on qualified element", NS, qname.getNamespaceURI());
     }

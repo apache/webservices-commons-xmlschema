@@ -32,7 +32,8 @@ import org.apache.ws.commons.schema.utils.XmlSchemaRef;
  * not in the 'element' Map.
  */
 
-public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver, XmlSchemaNamedWithForm {
+public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver, XmlSchemaNamedWithForm,
+    XmlSchemaChoiceMember, XmlSchemaSequenceMember {
 
     /**
      * Attribute used to block a type derivation.

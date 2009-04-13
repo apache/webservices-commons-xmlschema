@@ -33,6 +33,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaAttribute;
 import org.apache.ws.commons.schema.XmlSchemaAttributeGroup;
+import org.apache.ws.commons.schema.XmlSchemaAttributeGroupMember;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaComplexContentExtension;
 import org.apache.ws.commons.schema.XmlSchemaComplexType;
@@ -47,6 +48,7 @@ import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
 import org.apache.ws.commons.schema.XmlSchemaObjectTable;
 import org.apache.ws.commons.schema.XmlSchemaRedefine;
 import org.apache.ws.commons.schema.XmlSchemaSequence;
+import org.apache.ws.commons.schema.XmlSchemaSequenceMember;
 import org.apache.ws.commons.schema.XmlSchemaSimpleType;
 import org.apache.ws.commons.schema.XmlSchemaSimpleTypeRestriction;
 
@@ -120,12 +122,12 @@ public class RedefineTest extends Assert {
         XmlSchemaSequence xsp = (XmlSchemaSequence)xscce.getParticle();
         assertNotNull(xsp);
 
-        XmlSchemaObjectCollection c = xsp.getItems();
-        assertEquals(1, c.getCount());
+        List<XmlSchemaSequenceMember> c = xsp.getItems();
+        assertEquals(1, c.size());
 
         xse = null;
-        for (int i = 0; i < c.getCount(); i++) {
-            xse = (XmlSchemaElement)c.getItem(i);
+        for (int i = 0; i < c.size(); i++) {
+            xse = (XmlSchemaElement)c.get(i);
         }
         assertEquals("id", xse.getName());
         assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "string"), xse.getSchemaTypeName());
@@ -252,13 +254,13 @@ public class RedefineTest extends Assert {
 
         XmlSchemaSequence xss = (XmlSchemaSequence)xsg.getParticle();
 
-        XmlSchemaObjectCollection sequenceItems = xss.getItems();
-        assertEquals(2, sequenceItems.getCount());
+        List<XmlSchemaSequenceMember> sequenceItems = xss.getItems();
+        assertEquals(2, sequenceItems.size());
 
         Set<String> s = new HashSet<String>();
         s.add(XmlSchemaGroupRef.class.getName());
         s.add(XmlSchemaElement.class.getName());
-        for (Iterator i = sequenceItems.getIterator(); i.hasNext();) {
+        for (Iterator i = sequenceItems.iterator(); i.hasNext();) {
             Object o = i.next();
             assertTrue(s.remove(o.getClass().getName()));
             if (o instanceof XmlSchemaGroupRef) {
@@ -317,12 +319,12 @@ public class RedefineTest extends Assert {
 
         assertNotNull(xsag);
         assertEquals("AttribGroup", xsag.getName());
-        XmlSchemaObjectCollection attributes = xsag.getAttributes();
+        List<XmlSchemaAttributeGroupMember> attributes = xsag.getAttributes();
 
         Set<String> s = new HashSet<String>();
         s.add("type");
         s.add("units");
-        for (Iterator i = attributes.getIterator(); i.hasNext();) {
+        for (Iterator i = attributes.iterator(); i.hasNext();) {
             XmlSchemaAttribute xsa = (XmlSchemaAttribute)i.next();
             assertTrue(s.remove(xsa.getName()));
         }
@@ -410,12 +412,12 @@ public class RedefineTest extends Assert {
         XmlSchemaSequence xsp = (XmlSchemaSequence)xscce.getParticle();
         assertNotNull(xsp);
 
-        XmlSchemaObjectCollection c = xsp.getItems();
-        assertEquals(1, c.getCount());
+        List<XmlSchemaSequenceMember> c = xsp.getItems();
+        assertEquals(1, c.size());
 
         xse = null;
-        for (int i = 0; i < c.getCount(); i++) {
-            xse = (XmlSchemaElement)c.getItem(i);
+        for (int i = 0; i < c.size(); i++) {
+            xse = (XmlSchemaElement)c.get(i);
         }
         assertEquals("id", xse.getName());
         assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "string"), xse.getSchemaTypeName());

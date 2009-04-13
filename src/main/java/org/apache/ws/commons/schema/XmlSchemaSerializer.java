@@ -161,13 +161,13 @@ public class XmlSchemaSerializer {
             allEl.appendChild(annotation);
         }
 
-        XmlSchemaObjectCollection itemColl = allObj.items;
+        List<XmlSchemaElement> itemColl = allObj.getItems();
 
         if (itemColl != null) {
-            int itemLength = itemColl.getCount();
+            int itemLength = itemColl.size();
 
             for (int i = 0; i < itemLength; i++) {
-                XmlSchemaObject obj = itemColl.getItem(i);
+                XmlSchemaObject obj = itemColl.get(i);
                 if (obj instanceof XmlSchemaElement) {
                     Element el = serializeElement(doc, (XmlSchemaElement)obj, schema);
                     allEl.appendChild(el);
@@ -249,12 +249,13 @@ public class XmlSchemaSerializer {
 
         serializeMaxMinOccurs(anyObj, anyEl);
 
-        if (anyObj.namespace != null) {
-            anyEl.setAttribute("namespace", anyObj.namespace);
+        if (anyObj.getNamespace() != null) {
+            anyEl.setAttribute("namespace", anyObj.getNamespace());
         }
 
-        if (anyObj.processContent != null && anyObj.processContent != XmlSchemaContentProcessing.NONE) {
-            anyEl.setAttribute("processContents", anyObj.processContent.toString());
+        if (anyObj.getProcessContent() != null 
+            && anyObj.getProcessContent() != XmlSchemaContentProcessing.NONE) {
+            anyEl.setAttribute("processContents", anyObj.getProcessContent().toString());
         }
         
         if (anyObj.getAnnotation() != null) {
@@ -501,9 +502,9 @@ public class XmlSchemaSerializer {
             Element annotation = serializeAnnotation(doc, attributeGroupObj.getAnnotation(), schema);
             attributeGroup.appendChild(annotation);
         }
-        int attributesLength = attributeGroupObj.getAttributes().getCount();
+        int attributesLength = attributeGroupObj.getAttributes().size();
         for (int i = 0; i < attributesLength; i++) {
-            XmlSchemaObject obj = attributeGroupObj.getAttributes().getItem(i);
+            XmlSchemaAttributeGroupMember obj = attributeGroupObj.getAttributes().get(i);
 
             if (obj instanceof XmlSchemaAttribute) {
                 Element attr = serializeAttribute(doc, (XmlSchemaAttribute)obj, schema);
@@ -601,13 +602,13 @@ public class XmlSchemaSerializer {
             choice.appendChild(annotation);
         }
 
-        XmlSchemaObjectCollection itemColl = choiceObj.items;
+        List<XmlSchemaObject> itemColl = choiceObj.getItems();
 
         if (itemColl != null) {
-            int itemLength = itemColl.getCount();
+            int itemLength = itemColl.size();
 
             for (int i = 0; i < itemLength; i++) {
-                XmlSchemaObject obj = itemColl.getItem(i);
+                XmlSchemaObject obj = itemColl.get(i);
 
                 if (obj instanceof XmlSchemaElement) {
                     Element el = serializeElement(doc, (XmlSchemaElement)obj, schema);
@@ -1261,8 +1262,8 @@ public class XmlSchemaSerializer {
         Element groupRef = createNewElement(doc, "group", schema.getSchemaNamespacePrefix(), 
                                             XmlSchema.SCHEMA_NS);
 
-        if (groupRefObj.refName != null) {
-            String groupRefName = resolveQName(groupRefObj.refName, schema);
+        if (groupRefObj.getRefName() != null) {
+            String groupRefName = resolveQName(groupRefObj.getRefName(), schema);
             groupRef.setAttribute("ref", groupRefName);
         } else {
             throw new XmlSchemaSerializerException("Group must have name or ref");
@@ -1270,13 +1271,13 @@ public class XmlSchemaSerializer {
 
         serializeMaxMinOccurs(groupRefObj, groupRef);
 
-        if (groupRefObj.particle != null) {
-            if (groupRefObj.particle instanceof XmlSchemaChoice) {
-                serializeChoice(doc, (XmlSchemaChoice)groupRefObj.particle, schema);
-            } else if (groupRefObj.particle instanceof XmlSchemaSequence) {
-                serializeSequence(doc, (XmlSchemaSequence)groupRefObj.particle, schema);
-            } else if (groupRefObj.particle instanceof XmlSchemaAll) {
-                serializeAll(doc, (XmlSchemaAll)groupRefObj.particle, schema);
+        if (groupRefObj.getParticle() != null) {
+            if (groupRefObj.getParticle() instanceof XmlSchemaChoice) {
+                serializeChoice(doc, (XmlSchemaChoice)groupRefObj.getParticle(), schema);
+            } else if (groupRefObj.getParticle() instanceof XmlSchemaSequence) {
+                serializeSequence(doc, (XmlSchemaSequence)groupRefObj.getParticle(), schema);
+            } else if (groupRefObj.getParticle() instanceof XmlSchemaAll) {
+                serializeAll(doc, (XmlSchemaAll)groupRefObj.getParticle(), schema);
             } else {
                 throw new XmlSchemaSerializerException("The content of group " + "ref particle should be"
                                                        + " sequence, choice or all reference:  "
@@ -1717,10 +1718,10 @@ public class XmlSchemaSerializer {
 
         serializeMaxMinOccurs(sequenceObj, sequence);
 
-        XmlSchemaObjectCollection seqColl = sequenceObj.items;
-        int containLength = seqColl.getCount();
+        List<XmlSchemaSequenceMember> seqColl = sequenceObj.getItems();
+        int containLength = seqColl.size();
         for (int i = 0; i < containLength; i++) {
-            XmlSchemaObject obj = seqColl.getItem(i);
+            XmlSchemaSequenceMember obj = seqColl.get(i);
             if (obj instanceof XmlSchemaElement) {
                 Element el = serializeElement(doc, (XmlSchemaElement)obj, schema);
                 sequence.appendChild(el);

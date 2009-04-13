@@ -26,11 +26,11 @@ import javax.xml.namespace.QName;
  * Represents the World Wide Web Consortium (W3C) group element with ref attribute.
  */
 
-public class XmlSchemaGroupRef extends XmlSchemaParticle {
+public class XmlSchemaGroupRef extends XmlSchemaParticle implements XmlSchemaSequenceMember {
 
-    XmlSchemaGroupBase particle;
+    private XmlSchemaGroupParticle particle;
 
-    QName refName;
+    private QName refName;
 
     /**
      * Creates new XmlSchemaGroupRef
@@ -38,7 +38,7 @@ public class XmlSchemaGroupRef extends XmlSchemaParticle {
     public XmlSchemaGroupRef() {
     }
 
-    public XmlSchemaGroupBase getParticle() {
+    public XmlSchemaGroupParticle getParticle() {
         return this.particle;
     }
 
@@ -48,6 +48,10 @@ public class XmlSchemaGroupRef extends XmlSchemaParticle {
 
     public void setRefName(QName refName) {
         this.refName = refName;
+    }
+
+    void setParticle(XmlSchemaGroupParticle particle) {
+        this.particle = particle;
     }
 
 }

@@ -19,24 +19,33 @@
 
 package org.apache.ws.commons.schema;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Requires the elements in the group to appear in the specified sequence within the containing element.
  * Represents the World Wide Web Consortium (W3C) sequence (compositor) element.
+ * 
+ * (element|group|choice|sequence|any)
  */
 
-public class XmlSchemaSequence extends XmlSchemaGroupBase {
+public class XmlSchemaSequence extends XmlSchemaGroupParticle implements XmlSchemaChoiceMember,
+    XmlSchemaSequenceMember {
+    
+    private List<XmlSchemaSequenceMember> items;
 
     /**
      * Creates new XmlSchemaSequence
      */
     public XmlSchemaSequence() {
+        items = new ArrayList<XmlSchemaSequenceMember>();
     }
 
     /**
      * The elements contained within the compositor. Collection of XmlSchemaElement, XmlSchemaGroupRef,
      * XmlSchemaChoice, XmlSchemaSequence, or XmlSchemaAny.
      */
-    public XmlSchemaObjectCollection getItems() {
+    public List<XmlSchemaSequenceMember> getItems() {
         return items;
     }
 }

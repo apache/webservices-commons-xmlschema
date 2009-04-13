@@ -319,8 +319,11 @@ public class SchemaBuilder {
                 ct.attributes.add(handleAttributeGroupRef(schema, el));
             } else if (el.getLocalName().equals("group")) {
                 XmlSchemaGroupRef group = handleGroupRef(schema, el, schemaEl);
-                ct.particle = group.particle == null ? (XmlSchemaParticle) group
-                        : group.particle;
+                if (group.getParticle() == null) {
+                    ct.setParticle(group);
+                } else {
+                    ct.setParticle(group.getParticle());
+                }
             } else if (el.getLocalName().equals("simpleContent")) {
                 ct.contentModel = handleSimpleContent(schema, el, schemaEl);
             } else if (el.getLocalName().equals("complexContent")) {
@@ -898,7 +901,7 @@ public class SchemaBuilder {
             if (el.getLocalName().equals("element")) {
                 XmlSchemaElement element = handleElement(schema, el, schemaEl,
                         false);
-                all.items.add(element);
+                all.getItems().add(element);
             } else if (el.getLocalName().equals("annotation")) {
                 XmlSchemaAnnotation annotation = handleAnnotation(el);
                 all.setAnnotation(annotation);
@@ -914,14 +917,14 @@ public class SchemaBuilder {
         XmlSchemaAny any = new XmlSchemaAny();
 
         if (anyEl.hasAttribute("namespace")) {
-            any.namespace = anyEl.getAttribute("namespace");
+            any.setNamespace(anyEl.getAttribute("namespace"));
         }
 
         if (anyEl.hasAttribute("processContents")) {
             String processContent = getEnumString(anyEl, "processContents");
 
-            any.processContent = XmlSchemaContentProcessing
-                    .schemaValueOf(processContent);
+            any.setProcessContent(XmlSchemaContentProcessing
+                    .schemaValueOf(processContent));
         }
 
         Element annotationEl = XDOMUtil.getFirstChildElementNS(anyEl,
@@ -1161,20 +1164,20 @@ public class SchemaBuilder {
 
             if (el.getLocalName().equals("sequence")) {
                 XmlSchemaSequence seq = handleSequence(schema, el, schemaEl);
-                choice.items.add(seq);
+                choice.getItems().add(seq);
             } else if (el.getLocalName().equals("element")) {
                 XmlSchemaElement element = handleElement(schema, el, schemaEl,
                         false);
-                choice.items.add(element);
+                choice.getItems().add(element);
             } else if (el.getLocalName().equals("group")) {
                 XmlSchemaGroupRef group = handleGroupRef(schema, el, schemaEl);
-                choice.items.add(group);
+                choice.getItems().add(group);
             } else if (el.getLocalName().equals("choice")) {
                 XmlSchemaChoice choiceItem = handleChoice(schema, el, schemaEl);
-                choice.items.add(choiceItem);
+                choice.getItems().add(choiceItem);
             } else if (el.getLocalName().equals("any")) {
                 XmlSchemaAny any = handleAny(schema, el, schemaEl);
-                choice.items.add(any);
+                choice.getItems().add(any);
             } else if (el.getLocalName().equals("annotation")) {
                 XmlSchemaAnnotation annotation = handleAnnotation(el);
                 choice.setAnnotation(annotation);
@@ -1447,7 +1450,7 @@ public class SchemaBuilder {
 
         if (groupEl.hasAttribute("ref")) {
             String ref = groupEl.getAttribute("ref");
-            group.refName = getRefQName(ref, groupEl);
+            group.setRefName(getRefQName(ref, groupEl));
             return group;
         }
         for (Element el = XDOMUtil.getFirstChildElementNS(groupEl,
@@ -1455,11 +1458,11 @@ public class SchemaBuilder {
                 .getNextSiblingElement(el)) {
 
             if (el.getLocalName().equals("sequence")) {
-                group.particle = handleSequence(schema, el, schemaEl);
+                group.setParticle(handleSequence(schema, el, schemaEl));
             } else if (el.getLocalName().equals("all")) {
-                group.particle = handleAll(schema, el, schemaEl);
+                group.setParticle(handleAll(schema, el, schemaEl));
             } else if (el.getLocalName().equals("choice")) {
-                group.particle = handleChoice(schema, el, schemaEl);
+                group.setParticle(handleChoice(schema, el, schemaEl));
             }
         }
         return group;
@@ -1640,20 +1643,20 @@ public class SchemaBuilder {
 
             if (el.getLocalName().equals("sequence")) {
                 XmlSchemaSequence seq = handleSequence(schema, el, schemaEl);
-                sequence.items.add(seq);
+                sequence.getItems().add(seq);
             } else if (el.getLocalName().equals("element")) {
                 XmlSchemaElement element = handleElement(schema, el, schemaEl,
                         false);
-                sequence.items.add(element);
+                sequence.getItems().add(element);
             } else if (el.getLocalName().equals("group")) {
                 XmlSchemaGroupRef group = handleGroupRef(schema, el, schemaEl);
-                sequence.items.add(group);
+                sequence.getItems().add(group);
             } else if (el.getLocalName().equals("choice")) {
                 XmlSchemaChoice choice = handleChoice(schema, el, schemaEl);
-                sequence.items.add(choice);
+                sequence.getItems().add(choice);
             } else if (el.getLocalName().equals("any")) {
                 XmlSchemaAny any = handleAny(schema, el, schemaEl);
-                sequence.items.add(any);
+                sequence.getItems().add(any);
             } else if (el.getLocalName().equals("annotation")) {
                 XmlSchemaAnnotation annotation = handleAnnotation(el);
                 sequence.setAnnotation(annotation);

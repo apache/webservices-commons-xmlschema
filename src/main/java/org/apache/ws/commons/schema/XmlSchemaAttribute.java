@@ -30,7 +30,8 @@ import org.apache.ws.commons.schema.utils.XmlSchemaRef;
  * 
  * ref= attributes are in the parent items collection, not in the map of named items.
  */
-public class XmlSchemaAttribute extends XmlSchemaAnnotated implements XmlSchemaNamedWithForm {
+public class XmlSchemaAttribute extends XmlSchemaAnnotated implements XmlSchemaNamedWithForm,
+    XmlSchemaAttributeGroupMember {
 
     private String defaultValue;
     private String fixedValue;

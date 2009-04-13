@@ -22,6 +22,7 @@ package tests;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.namespace.QName;
@@ -30,6 +31,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaAttribute;
 import org.apache.ws.commons.schema.XmlSchemaAttributeGroup;
+import org.apache.ws.commons.schema.XmlSchemaAttributeGroupMember;
 import org.apache.ws.commons.schema.XmlSchemaAttributeGroupRef;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaComplexType;
@@ -105,10 +107,10 @@ public class AttributeGroupTest
 
         for (XmlSchemaAttributeGroup group : attG.values()) {
             assertEquals("department", group.getName());
-            XmlSchemaObjectCollection attributes = group.getAttributes();
+            List<XmlSchemaAttributeGroupMember> attributes = group.getAttributes();
             assertNotNull(attributes);
-            assertEquals(2, attributes.getCount());
-            for (Iterator j = attributes.getIterator(); j.hasNext();) {
+            assertEquals(2, attributes.size());
+            for (Iterator j = attributes.iterator(); j.hasNext();) {
                 XmlSchemaAttribute obj2 = (XmlSchemaAttribute)j.next();
                 String name = obj2.getName();
                 if ("id".equals(name)) {

@@ -19,20 +19,28 @@
 
 package org.apache.ws.commons.schema;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Allows only one of its children to appear in an instance. Represents the World Wide Web Consortium (W3C)
- * choice (compositor) element.
+ * choice (compositor) element. 
+ * 
+ * This can contain any of (element|group|choice|sequence|any)*. 
  */
-public class XmlSchemaChoice extends XmlSchemaGroupBase {
+public class XmlSchemaChoice extends XmlSchemaGroupParticle implements XmlSchemaChoiceMember,
+    XmlSchemaSequenceMember {
+    private List<XmlSchemaObject> items;
 
     /**
      * Creates new XmlSchemaChoice
      */
     public XmlSchemaChoice() {
+        items = new ArrayList<XmlSchemaObject>();
     }
 
-    public XmlSchemaObjectCollection getItems() {
-        return this.items;
+    public List<XmlSchemaObject> getItems() {
+        return items;
     }
 
 }

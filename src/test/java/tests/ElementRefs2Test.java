@@ -23,6 +23,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
@@ -38,8 +39,8 @@ import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaComplexType;
 import org.apache.ws.commons.schema.XmlSchemaElement;
-import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
 import org.apache.ws.commons.schema.XmlSchemaSequence;
+import org.apache.ws.commons.schema.XmlSchemaSequenceMember;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -57,9 +58,9 @@ public class ElementRefs2Test extends Assert {
         assertNotNull(elem);
 
         XmlSchemaComplexType cmplxType = (XmlSchemaComplexType)elem.getSchemaType();
-        XmlSchemaObjectCollection items = ((XmlSchemaSequence)cmplxType.getParticle()).getItems();
+        List<XmlSchemaSequenceMember> items = ((XmlSchemaSequence)cmplxType.getParticle()).getItems();
 
-        Iterator it = items.getIterator();
+        Iterator it = items.iterator();
         while (it.hasNext()) {
             XmlSchemaElement innerElement = (XmlSchemaElement)it.next();
             assertNotNull(innerElement.getRef().getTargetQName());

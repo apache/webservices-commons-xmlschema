@@ -20,8 +20,8 @@
 package org.apache.ws.commons.schema;
 
 /**
- * Common base class of the items that can live inside an annotation.
+ * This interface exists to allow all of the items that can occur in a choice element
+ * to have a type in common. It has no protocol.
  */
-public abstract class XmlSchemaAnnotationItem
-    extends XmlSchemaObject {
+public interface XmlSchemaChoiceMember {
 }

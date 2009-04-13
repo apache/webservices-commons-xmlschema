@@ -31,10 +31,10 @@ import org.apache.ws.commons.schema.utils.XmlSchemaNamedImpl;
  * the World Wide Web Consortium (W3C) group element.
  */
 
-public class XmlSchemaGroup extends XmlSchemaAnnotated implements XmlSchemaNamed {
+public class XmlSchemaGroup extends XmlSchemaAnnotated implements XmlSchemaNamed, 
+    XmlSchemaChoiceMember, XmlSchemaSequenceMember {
 
-
-    private XmlSchemaGroupBase particle;
+    private XmlSchemaGroupParticle particle;
     private XmlSchemaNamedImpl namedDelegate;
     
     public XmlSchemaGroup(XmlSchema parent) {
@@ -43,11 +43,11 @@ public class XmlSchemaGroup extends XmlSchemaAnnotated implements XmlSchemaNamed
     }
     
 
-    public XmlSchemaGroupBase getParticle() {
+    public XmlSchemaGroupParticle getParticle() {
         return particle;
     }
 
-    public void setParticle(XmlSchemaGroupBase particle) {
+    public void setParticle(XmlSchemaGroupParticle particle) {
         this.particle = particle;
     }
 

@@ -19,6 +19,9 @@
 
 package org.apache.ws.commons.schema;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.namespace.QName;
 
 import org.apache.ws.commons.schema.utils.XmlSchemaNamed;
@@ -32,9 +35,10 @@ import org.apache.ws.commons.schema.utils.XmlSchemaNamedImpl;
  * attribute. 
  */
 
-public class XmlSchemaAttributeGroup extends XmlSchemaAnnotated implements XmlSchemaNamed {
+public class XmlSchemaAttributeGroup extends XmlSchemaAnnotated implements XmlSchemaNamed,
+    XmlSchemaAttributeGroupMember {
     private XmlSchemaAnyAttribute anyAttribute;
-    private XmlSchemaObjectCollection attributes;
+    private List<XmlSchemaAttributeGroupMember> attributes;
     private XmlSchemaNamedImpl namedDelegate;
 
     /**
@@ -44,7 +48,7 @@ public class XmlSchemaAttributeGroup extends XmlSchemaAnnotated implements XmlSc
         namedDelegate = new XmlSchemaNamedImpl(parent, true);
         parent.getItems().add(this);
         // we can't be put in the map until we have a name. Perhaps we should be forced to have a name ?
-        attributes = new XmlSchemaObjectCollection();
+        attributes = new ArrayList<XmlSchemaAttributeGroupMember>();
     }
 
     public XmlSchemaAnyAttribute getAnyAttribute() {
@@ -55,12 +59,8 @@ public class XmlSchemaAttributeGroup extends XmlSchemaAnnotated implements XmlSc
         this.anyAttribute = anyAttribute;
     }
 
-    public XmlSchemaObjectCollection getAttributes() {
+    public List<XmlSchemaAttributeGroupMember> getAttributes() {
         return this.attributes;
-    }
-
-    public void setAttributes(XmlSchemaObjectCollection attributes) {
-        this.attributes = attributes;
     }
 
     public String getName() {
