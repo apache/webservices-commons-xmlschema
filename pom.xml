@@ -23,7 +23,7 @@
   <artifactId>XmlSchema</artifactId>
   <packaging>bundle</packaging>
   <name>XmlSchema</name>
-  <version>1.4-SNAPSHOT</version>
+  <version>1.4.5</version>
   <description>Commons XMLSchema is a light weight schema object model that can be used to manipulate or
         generate a schema. It has a clean, easy to use API and can easily be integrated into an existing project
         since it has almost no dependencies on third party libraries.</description>
@@ -50,9 +50,9 @@
     </license>
   </licenses>
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/webservices/commons/branches/modules/XmlSchema/1_4_X_BRANCH</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/webservices/commons/branches/modules/XmlSchema/1_4_X_BRANCH</developerConnection>
-    <url>http://svn.apache.org/viewvc/webservices/commons/branches/modules/XmlSchema/1_4_X_BRANCH</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/webservices/commons/tags/XmlSchema/XmlSchema-1.4.5</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/webservices/commons/tags/XmlSchema/XmlSchema-1.4.5</developerConnection>
+    <url>http://svn.apache.org/viewvc/webservices/commons/tags/XmlSchema/XmlSchema-1.4.5</url>
   </scm>
   <organization>
     <name>The Apache Software Foundation</name>
