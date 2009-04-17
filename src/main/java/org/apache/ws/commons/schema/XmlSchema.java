@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
+import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
@@ -46,7 +47,6 @@ import org.w3c.dom.Document;
 import org.apache.ws.commons.schema.XmlSchemaSerializer.XmlSchemaSerializerException;
 import org.apache.ws.commons.schema.utils.NamespaceContextOwner;
 import org.apache.ws.commons.schema.utils.NamespacePrefixList;
-import org.custommonkey.xmlunit.XMLConstants;
 
 /**
  * Contains the definition of a schema. All XML Schema definition language (XSD) elements are children of the
