@@ -44,7 +44,7 @@
                 <item name="Jxr Reports" href="jxr.html"/>
                 <item name="JDepend Report" href="jdepend-report.html"/>
                 <item name="View Source"
-                      href="http://svn.apache.org/viewvc/webservices/commons/trunk/modules/XmlSchema/?root=Apache-SVN"/>
+                      href="http://svn.apache.org/viewvc/webservices/commons/branches/modules/XmlSchema/1_4_X_BRANCH/?root=Apache-SVN"/>
             </item>
             <item name="Project Information">
                 <item name="Mailing Lists" href="/mail-lists.html"/>

@@ -29,11 +29,11 @@
     <section>
       <h2>Releases</h2>
       <div align="left">
-        <p>XmlSchema is becoming more and more stable and the latest official version available for download is
-                    XmlSchema 1.4.4. All the releases are available for download as source or binary. For more information,
-                    please see
-                    <a href="http://www.apache.org/dev/release.html">Apache Release FAQ</a>
-                </p>
+        <p>The latest official version available for download is
+           XmlSchema 1.4.5. All the releases are available for download as source or binary. For more information,
+           please see
+           <a href="http://www.apache.org/dev/release.html">Apache Release FAQ</a>
+        </p>
         <p>Please select the XmlSchema version you want to download.</p>
       </div>
       <div align="center">
@@ -45,6 +45,32 @@
               <td align="center" width="300">Distribution</td>
               <td align="center" width="100">Date</td>
               <td align="center" width="200">Description</td>
+            </tr>
+            <tr class="b">
+              <td align="center" valign="middle">
+                                                         1.4.5
+                                                       </td>
+              <td align="center">Release</td>
+              <td>Source Distribution
+                    <a href="[preferred]/ws/commons/XmlSchema/1_4_5/XmlSchema-1.4.5-src.zip" title="[preferred]/ws/commons/XmlSchema/1_4_3/XmlSchema-1.4.5-src.zip">zip</a>
+                    <a href="http://www.apache.org/dist/ws/commons/XmlSchema/1_4_5/XmlSchema-1.4.5-src.zip.md5" class="externalLink" title="http://www.apache.org/dist/ws/commons/XmlSchema/1_4_5/XmlSchema-1.4.5-src.zip.md5">MD5</a>
+                                                                 <a href="http://www.apache.org/dist/ws/commons/XmlSchema/1_4_5/XmlSchema-1.4.5-src.zip.asc" class="externalLink" title="http://www.apache.org/dist/ws/commons/XmlSchema/1_4_5/XmlSchema-1.4.5-src.zip.asc">PGP</a>
+                                                                  <br/>
+                                                                  Binary Distribution
+                                                                  <a href="[preferred]/ws/commons/XmlSchema/1_4_5/XmlSchema-1.4.5-bin.zip" title="[preferred]/ws/commons/XmlSchema/1_4_5/XmlSchema-1.4.5-bin.zip">zip</a>
+                                                                 <a href="http://www.apache.org/dist/ws/commons/XmlSchema/1_4_5/XmlSchema-1.4.5-bin.zip.md5" class="externalLink" title="http://www.apache.org/dist/ws/commons/XmlSchema/1_4_5/XmlSchema-1.4.5-bin.zip.md5">MD5</a>
+                                                                 <a href="http://www.apache.org/dist/ws/commons/XmlSchema/1_4_5/XmlSchema-1.4.5-bin.zip.asc" class="externalLink" title="http://www.apache.org/dist/ws/ws/commons/XmlSchema/1_4_5/XmlSchema-1.4.5-bin.zip.asc">
+                                                                                    PGP</a>
+                                                                  <br/>
+                                                                  Documents Distribution
+                                                                  <a href="[preferred]/ws/commons/XmlSchema/1_4_5/XmlSchema-1.4.5-docs.zip" title="[preferred]/ws/commons/XmlSchema/1_4_5/XmlSchema-1.4.5-docs.zip">zip</a>
+                                                                 <a href="http://www.apache.org/dist/ws/commons/XmlSchema/1_4_5/XmlSchema-1.4.5-docs.zip.md5" class="externalLink" title="http://www.apache.org/dist/ws/commons/XmlSchema/1_4_5/XmlSchema-1.4.5-docs.zip.md5">MD5</a>
+                                                                 <a href="http://www.apache.org/dist/ws/commons/XmlSchema/1_4_5/XmlSchema-1.4.5-docs.zip.asc" class="externalLink" title="http://www.apache.org/dist/ws/ws/commons/XmlSchema/1_4_5/XmlSchema-1.4.5-docs.zip.asc">
+                                                                                    PGP</a>
+                                                                  <br/>
+                                                                  </td>
+              <td>2009 - 04 - 18</td>
+              <td>1.4.5 Release (Mirrored)</td>
             </tr>
             <tr class="b">
               <td align="center" valign="middle">
@@ -72,10 +98,7 @@
               <td>2009 - 03 - 06</td>
               <td>1.4.4 Release (Mirrored)</td>
             </tr>
-
-
-
-   <tr class="b">
+            <tr class="b">
               <td align="center" valign="middle">
                                                          1.4.3
                                                        </td>
@@ -102,8 +125,6 @@
               <td>12 - 11 - 2008</td>
               <td>1.4.3 Release (Mirrored)</td>
             </tr>
-
-
             <tr class="b">
               <td align="center" valign="middle">
                                                          1.4.2
