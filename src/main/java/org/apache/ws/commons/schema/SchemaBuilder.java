@@ -1759,8 +1759,11 @@ public class SchemaBuilder {
                         "annotation")) {
                     XmlSchemaAnnotation facetAnnotation = handleAnnotation(el);
                     facet.setAnnotation(facetAnnotation);
+
                 }
                 restriction.facets.add(facet);
+                //process extra attributes and elements
+                processExtensibilityComponents(facet, el);
             }
         }
         return restriction;
@@ -1856,6 +1859,8 @@ public class SchemaBuilder {
                     XmlSchemaAnnotation facetAnnotation = handleAnnotation(annotation);
                     facet.setAnnotation(facetAnnotation);
                 }
+                //process extra attributes and elements
+                processExtensibilityComponents(facet, el);
                 restriction.facets.add(facet);
             }
 
