@@ -22,12 +22,9 @@ import java.util.*;
 
 public class NamespaceMap extends HashMap implements NamespacePrefixList {
     
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public NamespaceMap() {
+    public NamespaceMap() {
     }
     
     public NamespaceMap(Map map) {
@@ -44,15 +41,17 @@ public class NamespaceMap extends HashMap implements NamespacePrefixList {
     }
 
     public String getNamespaceURI(String prefix) {
-        return get(prefix).toString();
+        Object o = get(prefix);
+        return o == null ? null : o.toString();
     }
 
     public String getPrefix(String namespaceURI) {
         Iterator iterator = entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry entry = (Map.Entry) iterator.next();
-            if (entry.getValue().toString().equals(namespaceURI)) {
-                return (String) entry.getKey();
+            String val = entry.getValue() == null ? null : entry.getValue().toString();
+            if (namespaceURI.equals(val)) {
+                return (String)entry.getKey();
             }
         }
         return null;
@@ -63,7 +62,8 @@ public class NamespaceMap extends HashMap implements NamespacePrefixList {
         Iterator iterator = entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry entry = (Map.Entry) iterator.next();
-            if (entry.getValue().toString().equals(namespaceURI)) {
+            String val = entry.getValue() == null ? null : entry.getValue().toString();
+            if (namespaceURI.equals(val)) {
                 list.add(entry.getKey());
             }
         }
