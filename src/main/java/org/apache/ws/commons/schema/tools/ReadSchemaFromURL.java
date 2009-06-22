@@ -40,12 +40,14 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import org.apache.ws.commons.schema.XmlSchemaCollection;
-import org.custommonkey.xmlunit.XMLConstants;
 
 /**
- * 
+ * Utility class for testing schema reading.
  */
 public class ReadSchemaFromURL {
+    
+    // in 1.4 there is no constant for this in the JRE.
+    private final static String SCHEMA_URI = "http://www.w3.org/2001/XMLSchema";
 
     /**
      * Read a schema from a URL, perhaps provoking errors.
@@ -77,13 +79,13 @@ public class ReadSchemaFromURL {
 
                 public String getNamespaceURI(String prefix) {
                     if ("xsd".equals(prefix)) {
-                        return XMLConstants.W3C_XML_SCHEMA_NS_URI;
+                        return SCHEMA_URI;
                     }
                     return null;
                 }
 
                 public String getPrefix(String namespaceURI) {
-                    if (XMLConstants.W3C_XML_SCHEMA_NS_URI.equals(namespaceURI)) {
+                    if (SCHEMA_URI.equals(namespaceURI)) {
                         return "xsd";
                     }
                     return null;
