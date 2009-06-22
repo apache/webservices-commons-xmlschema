@@ -158,6 +158,9 @@
           <configuration>
             <source>1.3</source>
             <target>1.3</target>
+            <excludes>
+              <exclude>org/apache/ws/commons/schema/tools/ReadSchemaFromURL.java</exclude>
+            </excludes>
           </configuration>
         </plugin>
         <plugin>
