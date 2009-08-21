@@ -39,9 +39,10 @@ public abstract class PrefixCollector {
      * declarations are ignored.
      */
     public void searchLocalPrefixDeclarations(Node pNode) {
-        if (pNode.getNodeType() == Node.ELEMENT_NODE) {
+        short type = pNode.getNodeType();
+        if (type == Node.ELEMENT_NODE || type == Node.DOCUMENT_NODE) {
             NamedNodeMap map = pNode.getAttributes();
-            for (int i = 0; i < map.getLength(); i++) {
+            for (int i = 0; map != null && i < map.getLength(); i++) {
                 Node attr = map.item(i);
                 final String uri = attr.getNamespaceURI();
                 if (Constants.XMLNS_ATTRIBUTE_NS_URI.equals(uri)) {
