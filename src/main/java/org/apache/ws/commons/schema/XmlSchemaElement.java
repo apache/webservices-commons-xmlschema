@@ -19,6 +19,10 @@
 
 package org.apache.ws.commons.schema;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import javax.xml.namespace.QName;
 
 import org.apache.ws.commons.schema.utils.XmlSchemaNamedWithForm;
@@ -40,7 +44,7 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver,
      */
     private XmlSchemaDerivationMethod block;
 
-    private XmlSchemaObjectCollection constraints;
+    private List<XmlSchemaIdentityConstraint> constraints;
 
     /**
      * Provides the default value of the element if its content is a simple type or the element's content is
@@ -83,7 +87,7 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver,
         namedDelegate.setRefObject(ref);
         ref.setNamedObject(namedDelegate);
 
-        constraints = new XmlSchemaObjectCollection();
+        constraints = Collections.synchronizedList(new ArrayList<XmlSchemaIdentityConstraint>());
         abstractElement = false;
         nillable = false;
         finalDerivation = XmlSchemaDerivationMethod.NONE;
@@ -96,7 +100,7 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver,
     /**
      * Returns a collection of constraints on the element.
      */
-    public XmlSchemaObjectCollection getConstraints() {
+    public List<XmlSchemaIdentityConstraint> getConstraints() {
         return constraints;
     }
 
@@ -230,13 +234,6 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver,
 
     public QName getWireName() {
         return namedDelegate.getWireName();
-    }
-
-    /**
-     * @param constraints The constraints to set.
-     */
-    public void setConstraints(XmlSchemaObjectCollection constraints) {
-        this.constraints = constraints;
     }
 
     /**

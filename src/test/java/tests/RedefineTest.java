@@ -45,12 +45,12 @@ import org.apache.ws.commons.schema.XmlSchemaGroupRef;
 import org.apache.ws.commons.schema.XmlSchemaMaxInclusiveFacet;
 import org.apache.ws.commons.schema.XmlSchemaMinInclusiveFacet;
 import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
-import org.apache.ws.commons.schema.XmlSchemaObjectTable;
 import org.apache.ws.commons.schema.XmlSchemaRedefine;
 import org.apache.ws.commons.schema.XmlSchemaSequence;
 import org.apache.ws.commons.schema.XmlSchemaSequenceMember;
 import org.apache.ws.commons.schema.XmlSchemaSimpleType;
 import org.apache.ws.commons.schema.XmlSchemaSimpleTypeRestriction;
+import org.apache.ws.commons.schema.XmlSchemaType;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -99,16 +99,16 @@ public class RedefineTest extends Assert {
         assertEquals(1, xsoc.size());
 
         XmlSchemaRedefine xsr = (XmlSchemaRedefine)xsoc.get(0);
-        XmlSchemaObjectTable redefTypes = xsr.getSchemaTypes();
-        assertEquals(1, redefTypes.getCount());
+        Map<QName, XmlSchemaType> redefTypes = xsr.getSchemaTypes();
+        assertEquals(1, redefTypes.size());
 
-        for (Iterator i = redefTypes.getNames(); i.hasNext();) {
-            QName qname = (QName)i.next();
+        for (Iterator<QName> i = redefTypes.keySet().iterator(); i.hasNext();) {
+            QName qname = i.next();
             assertEquals(new QName("http://soapinterop.org/types", "person"), qname);
         }
 
         XmlSchemaComplexType xsct = null;
-        for (Iterator i = redefTypes.getValues(); i.hasNext();) {
+        for (Iterator<XmlSchemaType> i = redefTypes.values().iterator(); i.hasNext();) {
             xsct = (XmlSchemaComplexType)i.next();
         }
         assertNotNull(xsct);
@@ -173,16 +173,16 @@ public class RedefineTest extends Assert {
         assertEquals(1, xsoc.size());
 
         XmlSchemaRedefine xsr = (XmlSchemaRedefine)xsoc.get(0);
-        XmlSchemaObjectTable xsot = xsr.getSchemaTypes();
-        assertEquals(1, xsot.getCount());
+        Map<QName, XmlSchemaType> xsot = xsr.getSchemaTypes();
+        assertEquals(1, xsot.size());
 
-        for (Iterator i = xsot.getNames(); i.hasNext();) {
-            QName qname = (QName)i.next();
+        for (Iterator<QName> i = xsot.keySet().iterator(); i.hasNext();) {
+            QName qname = i.next();
             assertEquals(new QName("http://soapinterop.org/types", "drinksize"), qname);
         }
 
         XmlSchemaSimpleType xsst = null;
-        for (Iterator i = xsot.getValues(); i.hasNext();) {
+        for (Iterator<XmlSchemaType> i = xsot.values().iterator(); i.hasNext();) {
             xsst = (XmlSchemaSimpleType)i.next();
         }
         assertNotNull(xsst);
@@ -240,16 +240,16 @@ public class RedefineTest extends Assert {
         assertEquals(1, xsoc.size());
 
         XmlSchemaRedefine xsr = (XmlSchemaRedefine)xsoc.get(0);
-        XmlSchemaObjectTable xsot = xsr.getGroup();
-        assertEquals(1, xsot.getCount());
+        Map<QName, XmlSchemaGroup> xsot = xsr.getGroups();
+        assertEquals(1, xsot.size());
 
-        for (Iterator i = xsot.getNames(); i.hasNext();) {
-            assertEquals("PrologGroup", ((QName)i.next()).getLocalPart());
+        for (Iterator<QName> i = xsot.keySet().iterator(); i.hasNext();) {
+            assertEquals("PrologGroup", i.next().getLocalPart());
         }
 
         XmlSchemaGroup xsg = null;
-        for (Iterator i = xsot.getValues(); i.hasNext();) {
-            xsg = (XmlSchemaGroup)i.next();
+        for (Iterator<XmlSchemaGroup> i = xsot.values().iterator(); i.hasNext();) {
+            xsg = i.next();
         }
 
         XmlSchemaSequence xss = (XmlSchemaSequence)xsg.getParticle();
@@ -305,15 +305,15 @@ public class RedefineTest extends Assert {
         assertEquals(1, xsoc.size());
 
         XmlSchemaRedefine xsr = (XmlSchemaRedefine)xsoc.get(0);
-        XmlSchemaObjectTable xsot = xsr.getAttributeGroup();
-        assertEquals(1, xsot.getCount());
+        Map<QName, XmlSchemaAttributeGroup> xsot = xsr.getAttributeGroups();
+        assertEquals(1, xsot.size());
 
-        for (Iterator i = xsot.getNames(); i.hasNext();) {
-            assertEquals("AttribGroup", ((QName)i.next()).getLocalPart());
+        for (Iterator<QName> i = xsot.keySet().iterator(); i.hasNext();) {
+            assertEquals("AttribGroup", (i.next()).getLocalPart());
         }
 
         XmlSchemaAttributeGroup xsag = null;
-        for (Iterator i = xsot.getValues(); i.hasNext();) {
+        for (Iterator<XmlSchemaAttributeGroup> i = xsot.values().iterator(); i.hasNext();) {
             xsag = (XmlSchemaAttributeGroup)i.next();
         }
 
@@ -389,16 +389,16 @@ public class RedefineTest extends Assert {
         assertEquals(1, xsoc.size());
 
         XmlSchemaRedefine xsr = (XmlSchemaRedefine)xsoc.get(0);
-        XmlSchemaObjectTable xsot = xsr.getSchemaTypes();
-        assertEquals(1, xsot.getCount());
+        Map<QName, XmlSchemaType> xsot = xsr.getSchemaTypes();
+        assertEquals(1, xsot.size());
 
-        for (Iterator i = xsot.getNames(); i.hasNext();) {
-            QName qname = (QName)i.next();
+        for (Iterator<QName> i = xsot.keySet().iterator(); i.hasNext();) {
+            QName qname = i.next();
             assertEquals(new QName("http://soapinterop.org/types", "person"), qname);
         }
 
         XmlSchemaComplexType xsct = null;
-        for (Iterator i = xsot.getValues(); i.hasNext();) {
+        for (Iterator<XmlSchemaType> i = xsot.values().iterator(); i.hasNext();) {
             xsct = (XmlSchemaComplexType)i.next();
         }
         assertNotNull(xsct);

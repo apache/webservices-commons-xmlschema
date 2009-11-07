@@ -1070,13 +1070,13 @@ public class XmlSchemaSerializer {
                 serializedEl.appendChild(simpleType);
             }
         }
-        if (elementObj.getConstraints().getCount() > 0) {
-            for (int i = 0; i < elementObj.getConstraints().getCount(); i++) {
+        if (elementObj.getConstraints().size() > 0) {
+            for (int i = 0; i < elementObj.getConstraints().size(); i++) {
                 Element constraint = serializeIdentityConstraint(
                                                                  doc,
                                                                  (XmlSchemaIdentityConstraint)
                                                                  elementObj.getConstraints()
-                                                                     .getItem(i), schema);
+                                                                     .get(i), schema);
                 serializedEl.appendChild(constraint);
             }
         }
@@ -1486,9 +1486,9 @@ public class XmlSchemaSerializer {
             Element annotation = serializeAnnotation(doc, redefineObj.getAnnotation(), schema);
             redefine.appendChild(annotation);
         }
-        int itemsLength = redefineObj.items.getCount();
+        int itemsLength = redefineObj.getItems().size();
         for (int i = 0; i < itemsLength; i++) {
-            XmlSchemaObject obj = redefineObj.items.getItem(i);
+            XmlSchemaObject obj = redefineObj.getItems().get(i);
             if (obj instanceof XmlSchemaSimpleType) {
                 Element simpleType = serializeSimpleType(doc, (XmlSchemaSimpleType)obj, schema);
                 redefine.appendChild(simpleType);

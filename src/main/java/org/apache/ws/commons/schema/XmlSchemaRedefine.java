@@ -19,6 +19,14 @@
 
 package org.apache.ws.commons.schema;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.xml.namespace.QName;
+
 /**
  * Allows simple and complex types, groups, and attribute groups from external schema files to be redefined in
  * the current schema. This class provides versioning for the schema elements. Represents the World Wide Web
@@ -27,36 +35,36 @@ package org.apache.ws.commons.schema;
 
 public class XmlSchemaRedefine extends XmlSchemaExternal {
 
-    XmlSchemaObjectTable attributeGroups;
-    XmlSchemaObjectTable groups;
-    XmlSchemaObjectTable schemaTypes;
+    private Map<QName, XmlSchemaAttributeGroup> attributeGroups;
+    private Map<QName, XmlSchemaGroup> groups;
+    private Map<QName, XmlSchemaType> schemaTypes;
 
-    XmlSchemaObjectCollection items;
+    private List<XmlSchemaObject> items;
 
     /**
      * Creates new XmlSchemaRedefine
      */
     public XmlSchemaRedefine(XmlSchema parent) {
         super(parent);
-        items = new XmlSchemaObjectCollection();
-        schemaTypes = new XmlSchemaObjectTable();
-        groups = new XmlSchemaObjectTable();
-        attributeGroups = new XmlSchemaObjectTable();
+        items = Collections.synchronizedList(new ArrayList<XmlSchemaObject>());
+        schemaTypes = Collections.synchronizedMap(new HashMap<QName, XmlSchemaType>());
+        groups = Collections.synchronizedMap(new HashMap<QName, XmlSchemaGroup>());
+        attributeGroups = Collections.synchronizedMap(new HashMap<QName, XmlSchemaAttributeGroup>());
     }
 
-    public XmlSchemaObjectTable getAttributeGroup() {
+    public Map<QName, XmlSchemaAttributeGroup> getAttributeGroups() {
         return attributeGroups;
     }
 
-    public XmlSchemaObjectTable getGroup() {
+    public Map<QName, XmlSchemaGroup> getGroups() {
         return groups;
     }
 
-    public XmlSchemaObjectCollection getItems() {
+    public List<XmlSchemaObject> getItems() {
         return items;
     }
 
-    public XmlSchemaObjectTable getSchemaTypes() {
+    public Map<QName, XmlSchemaType> getSchemaTypes() {
         return schemaTypes;
     }
 

@@ -1541,26 +1541,25 @@ public class SchemaBuilder {
                 XmlSchemaType type = handleSimpleType(schema, el, schemaEl,
                         false);
 
-                redefine.schemaTypes.collection.put(type.getQName(), type);
-                redefine.items.add(type);
+                redefine.getSchemaTypes().put(type.getQName(), type);
+                redefine.getItems().add(type);
             } else if (el.getLocalName().equals("complexType")) {
 
                 XmlSchemaType type = handleComplexType(schema, el, schemaEl,
                         true);
 
-                redefine.schemaTypes.collection.put(type.getQName(), type);
-                redefine.items.add(type);
+                redefine.getSchemaTypes().put(type.getQName(), type);
+                redefine.getItems().add(type);
             } else if (el.getLocalName().equals("group")) {
                 XmlSchemaGroup group = handleGroup(schema, el, schemaEl);
-                redefine.groups.collection.put(group.getQName(), group);
-                redefine.items.add(group);
+                redefine.getGroups().put(group.getQName(), group);
+                redefine.getItems().add(group);
             } else if (el.getLocalName().equals("attributeGroup")) {
                 XmlSchemaAttributeGroup group = handleAttributeGroup(schema,
                         el, schemaEl);
 
-                redefine.attributeGroups.collection
-                        .put(group.getQName(), group);
-                redefine.items.add(group);
+                redefine.getAttributeGroups().put(group.getQName(), group);
+                redefine.getItems().add(group);
             } else if (el.getLocalName().equals("annotation")) {
                 XmlSchemaAnnotation annotation = handleAnnotation(el);
                 redefine.setAnnotation(annotation);

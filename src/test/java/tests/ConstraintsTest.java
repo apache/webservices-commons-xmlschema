@@ -22,6 +22,7 @@ package tests;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
@@ -29,6 +30,7 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaElement;
+import org.apache.ws.commons.schema.XmlSchemaIdentityConstraint;
 import org.apache.ws.commons.schema.XmlSchemaKey;
 import org.apache.ws.commons.schema.XmlSchemaKeyref;
 import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
@@ -79,15 +81,15 @@ public class ConstraintsTest extends Assert {
         assertEquals("constraintTest", elem.getName());
         assertEquals(new QName("http://soapinterop.org/types", "constraintTest"), elem.getQName());
 
-        XmlSchemaObjectCollection c = elem.getConstraints();
-        assertEquals(3, c.getCount());
+        List<XmlSchemaIdentityConstraint> c = elem.getConstraints();
+        assertEquals(3, c.size());
 
         Set<String> s = new HashSet<String>();
         s.add(XmlSchemaKey.class.getName());
         s.add(XmlSchemaKeyref.class.getName());
         s.add(XmlSchemaUnique.class.getName());
-        for (int i = 0; i < c.getCount(); i++) {
-            Object o = c.getItem(i);
+        for (int i = 0; i < c.size(); i++) {
+            Object o = c.get(i);
             if (o instanceof XmlSchemaKey) {
                 XmlSchemaKey key = (XmlSchemaKey)o;
                 assertEquals("keyTest", key.getName());
