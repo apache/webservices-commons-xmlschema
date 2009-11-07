@@ -19,6 +19,10 @@
 
 package org.apache.ws.commons.schema;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import javax.xml.namespace.QName;
 
 /**
@@ -27,15 +31,15 @@ import javax.xml.namespace.QName;
  */
 
 public class XmlSchemaSimpleTypeRestriction extends XmlSchemaSimpleTypeContent {
-    XmlSchemaSimpleType baseType;
-    QName baseTypeName;
-    XmlSchemaObjectCollection facets;
+    private XmlSchemaSimpleType baseType;
+    private QName baseTypeName;
+    private List<XmlSchemaFacet> facets;
 
     /**
      * Creates new XmlSchemaSimpleTypeRestriction
      */
     public XmlSchemaSimpleTypeRestriction() {
-        facets = new XmlSchemaObjectCollection();
+        facets = Collections.synchronizedList(new ArrayList<XmlSchemaFacet>());
     }
 
 
@@ -55,7 +59,7 @@ public class XmlSchemaSimpleTypeRestriction extends XmlSchemaSimpleTypeContent {
         this.baseTypeName = baseTypeName;
     }
 
-    public XmlSchemaObjectCollection getFacets() {
+    public List<XmlSchemaFacet> getFacets() {
         return this.facets;
     }
 }

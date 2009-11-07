@@ -1836,12 +1836,12 @@ public class SchemaBuilder {
         if (restrictionEl.hasAttribute("base")) {
             NamespaceContext ctx = NodeNamespaceContext
                     .getNamespaceContext(restrictionEl);
-            restriction.baseTypeName = getRefQName(restrictionEl
-                    .getAttribute("base"), ctx);
+            restriction.setBaseTypeName(getRefQName(restrictionEl
+                    .getAttribute("base"), ctx));
         } else if (inlineSimpleType != null) {
 
-            restriction.baseType = handleSimpleType(schema, inlineSimpleType,
-                    schemaEl, false);
+            restriction.setBaseType(handleSimpleType(schema, inlineSimpleType,
+                    schemaEl, false));
         }
         for (Element el = XDOMUtil.getFirstChildElementNS(restrictionEl,
                 XmlSchema.SCHEMA_NS); el != null; el = XDOMUtil
@@ -1860,7 +1860,7 @@ public class SchemaBuilder {
                 }
                 //process extra attributes and elements
                 processExtensibilityComponents(facet, el);
-                restriction.facets.add(facet);
+                restriction.getFacets().add(facet);
             }
 
         }

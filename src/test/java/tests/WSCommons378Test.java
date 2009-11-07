@@ -21,6 +21,7 @@ package tests;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.namespace.QName;
@@ -29,7 +30,7 @@ import org.w3c.dom.Attr;
 
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaEnumerationFacet;
-import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
+import org.apache.ws.commons.schema.XmlSchemaFacet;
 import org.apache.ws.commons.schema.XmlSchemaSimpleType;
 import org.apache.ws.commons.schema.XmlSchemaSimpleTypeRestriction;
 import org.apache.ws.commons.schema.constants.Constants;
@@ -59,12 +60,12 @@ public class WSCommons378Test extends Assert {
 
         XmlSchemaSimpleType type = (XmlSchemaSimpleType)schemaCol.getTypeByQName(new QName("foo"));
         XmlSchemaSimpleTypeRestriction restriction = (XmlSchemaSimpleTypeRestriction)type.getContent();
-        XmlSchemaObjectCollection facets = restriction.getFacets();
+        List<XmlSchemaFacet> facets = restriction.getFacets();
 
-        assertEquals(2, facets.getCount());
+        assertEquals(2, facets.size());
 
-        XmlSchemaEnumerationFacet facet1 = (XmlSchemaEnumerationFacet)facets.getItem(0);
-        XmlSchemaEnumerationFacet facet2 = (XmlSchemaEnumerationFacet)facets.getItem(1);
+        XmlSchemaEnumerationFacet facet1 = (XmlSchemaEnumerationFacet)facets.get(0);
+        XmlSchemaEnumerationFacet facet2 = (XmlSchemaEnumerationFacet)facets.get(1);
 
         final Map externalAttributes1 = (Map)facet1.getMetaInfoMap()
             .get(Constants.MetaDataConstants.EXTERNAL_ATTRIBUTES);

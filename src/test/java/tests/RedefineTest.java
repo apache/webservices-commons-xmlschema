@@ -40,11 +40,11 @@ import org.apache.ws.commons.schema.XmlSchemaComplexType;
 import org.apache.ws.commons.schema.XmlSchemaContentModel;
 import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.XmlSchemaExternal;
+import org.apache.ws.commons.schema.XmlSchemaFacet;
 import org.apache.ws.commons.schema.XmlSchemaGroup;
 import org.apache.ws.commons.schema.XmlSchemaGroupRef;
 import org.apache.ws.commons.schema.XmlSchemaMaxInclusiveFacet;
 import org.apache.ws.commons.schema.XmlSchemaMinInclusiveFacet;
-import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
 import org.apache.ws.commons.schema.XmlSchemaRedefine;
 import org.apache.ws.commons.schema.XmlSchemaSequence;
 import org.apache.ws.commons.schema.XmlSchemaSequenceMember;
@@ -190,12 +190,12 @@ public class RedefineTest extends Assert {
         XmlSchemaSimpleTypeRestriction xsstr = (XmlSchemaSimpleTypeRestriction)xsst.getContent();
         assertEquals(new QName("http://soapinterop.org/types", "drinksize"), xsstr.getBaseTypeName());
 
-        XmlSchemaObjectCollection facets = xsstr.getFacets();
+        List<XmlSchemaFacet> facets = xsstr.getFacets();
 
         Set<String> s = new HashSet<String>();
         s.add(XmlSchemaMinInclusiveFacet.class.getName());
         s.add(XmlSchemaMaxInclusiveFacet.class.getName());
-        for (Iterator i = facets.getIterator(); i.hasNext();) {
+        for (Iterator<XmlSchemaFacet> i = facets.iterator(); i.hasNext();) {
             Object o = i.next();
             assertTrue(s.remove(o.getClass().getName()));
             if (o instanceof XmlSchemaMinInclusiveFacet) {

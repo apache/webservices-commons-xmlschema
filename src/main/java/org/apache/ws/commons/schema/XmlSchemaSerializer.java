@@ -2059,11 +2059,11 @@ public class XmlSchemaSerializer {
         if (schema.getSchemaNamespacePrefix().length() > 0) {
             serializedRestriction.setPrefix(schema.getSchemaNamespacePrefix());
         }
-        if (restrictionObj.baseTypeName != null) {
-            String baseType = resolveQName(restrictionObj.baseTypeName, schema);
+        if (restrictionObj.getBaseTypeName() != null) {
+            String baseType = resolveQName(restrictionObj.getBaseTypeName(), schema);
             serializedRestriction.setAttribute("base", baseType);
-        } else if (restrictionObj.baseType instanceof XmlSchemaSimpleType) {
-            Element inlineSimpleType = serializeSimpleType(doc, restrictionObj.baseType, schema);
+        } else if (restrictionObj.getBaseType() instanceof XmlSchemaSimpleType) {
+            Element inlineSimpleType = serializeSimpleType(doc, restrictionObj.getBaseType(), schema);
             serializedRestriction.appendChild(inlineSimpleType);
         } else {
             throw new XmlSchemaSerializerException("restriction must be define "
@@ -2078,10 +2078,10 @@ public class XmlSchemaSerializer {
             Element annotation = serializeAnnotation(doc, restrictionObj.getAnnotation(), schema);
             serializedRestriction.appendChild(annotation);
         }
-        if (restrictionObj.facets.getCount() > 0) {
-            int facetsNum = restrictionObj.facets.getCount();
+        if (restrictionObj.getFacets().size() > 0) {
+            int facetsNum = restrictionObj.getFacets().size();
             for (int i = 0; i < facetsNum; i++) {
-                Element facetEl = serializeFacet(doc, (XmlSchemaFacet)restrictionObj.facets.getItem(i),
+                Element facetEl = serializeFacet(doc, (XmlSchemaFacet)restrictionObj.getFacets().get(i),
                                                  schema);
                 serializedRestriction.appendChild(facetEl);
             }

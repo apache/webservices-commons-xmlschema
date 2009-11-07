@@ -39,8 +39,8 @@ import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaDocumentation;
 import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.XmlSchemaEnumerationFacet;
+import org.apache.ws.commons.schema.XmlSchemaFacet;
 import org.apache.ws.commons.schema.XmlSchemaNotation;
-import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
 import org.apache.ws.commons.schema.XmlSchemaSimpleType;
 import org.apache.ws.commons.schema.XmlSchemaSimpleTypeRestriction;
 
@@ -174,13 +174,13 @@ public class NotationTest extends Assert {
         XmlSchemaSimpleTypeRestriction xsstc = (XmlSchemaSimpleTypeRestriction)type.getContent();
         assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "NOTATION"), xsstc.getBaseTypeName());
 
-        XmlSchemaObjectCollection xsoc = xsstc.getFacets();
-        assertEquals(2, xsoc.getCount());
+        List<XmlSchemaFacet> xsoc = xsstc.getFacets();
+        assertEquals(2, xsoc.size());
         Set<String> s = new HashSet<String>();
         s.add("tns:teamLogo");
         s.add("tns:teamMascot");
-        for (int i = 0; i < xsoc.getCount(); i++) {
-            XmlSchemaEnumerationFacet xsef = (XmlSchemaEnumerationFacet)xsoc.getItem(i);
+        for (int i = 0; i < xsoc.size(); i++) {
+            XmlSchemaEnumerationFacet xsef = (XmlSchemaEnumerationFacet)xsoc.get(i);
             String value = (String)xsef.getValue();
             if (!("tns:teamLogo".equals(value) || "tns:teamMascot".equals(value))) {
                 fail("An unexpected value of \"" + value + "\" was found.");

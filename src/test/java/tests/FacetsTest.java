@@ -22,6 +22,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
@@ -30,6 +31,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.XmlSchemaEnumerationFacet;
+import org.apache.ws.commons.schema.XmlSchemaFacet;
 import org.apache.ws.commons.schema.XmlSchemaFractionDigitsFacet;
 import org.apache.ws.commons.schema.XmlSchemaLengthFacet;
 import org.apache.ws.commons.schema.XmlSchemaMaxExclusiveFacet;
@@ -38,7 +40,6 @@ import org.apache.ws.commons.schema.XmlSchemaMaxLengthFacet;
 import org.apache.ws.commons.schema.XmlSchemaMinExclusiveFacet;
 import org.apache.ws.commons.schema.XmlSchemaMinInclusiveFacet;
 import org.apache.ws.commons.schema.XmlSchemaMinLengthFacet;
-import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
 import org.apache.ws.commons.schema.XmlSchemaPatternFacet;
 import org.apache.ws.commons.schema.XmlSchemaSimpleType;
 import org.apache.ws.commons.schema.XmlSchemaSimpleTypeRestriction;
@@ -82,13 +83,13 @@ public class FacetsTest extends Assert {
         XmlSchemaSimpleType xsst = r.getBaseType();
         assertNull(xsst);
 
-        XmlSchemaObjectCollection collection = r.getFacets();
-        assertEquals(2, collection.getCount());
+        List<XmlSchemaFacet> collection = r.getFacets();
+        assertEquals(2, collection.size());
 
         Set<String> s = new HashSet<String>();
         s.add(XmlSchemaLengthFacet.class.getName());
         s.add(XmlSchemaPatternFacet.class.getName());
-        for (Iterator i = collection.getIterator(); i.hasNext();) {
+        for (Iterator<XmlSchemaFacet> i = collection.iterator(); i.hasNext();) {
             Object o = i.next();
             assertTrue(s.remove(o.getClass().getName()));
             if (o instanceof XmlSchemaLengthFacet) {
@@ -138,12 +139,12 @@ public class FacetsTest extends Assert {
         XmlSchemaSimpleType xsst = r.getBaseType();
         assertNull(xsst);
 
-        XmlSchemaObjectCollection collection = r.getFacets();
-        assertEquals(1, collection.getCount());
+        List<XmlSchemaFacet> collection = r.getFacets();
+        assertEquals(1, collection.size());
 
         Set<String> s = new HashSet<String>();
         s.add(XmlSchemaPatternFacet.class.getName());
-        for (Iterator i = collection.getIterator(); i.hasNext();) {
+        for (Iterator<XmlSchemaFacet> i = collection.iterator(); i.hasNext();) {
             Object o = i.next();
             assertTrue(s.remove(o.getClass().getName()));
             if (o instanceof XmlSchemaPatternFacet) {
@@ -190,12 +191,12 @@ public class FacetsTest extends Assert {
         XmlSchemaSimpleType xsst = r.getBaseType();
         assertNull(xsst);
 
-        XmlSchemaObjectCollection collection = r.getFacets();
-        assertEquals(1, collection.getCount());
+        List<XmlSchemaFacet> collection = r.getFacets();
+        assertEquals(1, collection.size());
 
         Set<String> s = new HashSet<String>();
         s.add(XmlSchemaTotalDigitsFacet.class.getName());
-        for (Iterator i = collection.getIterator(); i.hasNext();) {
+        for (Iterator<XmlSchemaFacet> i = collection.iterator(); i.hasNext();) {
             Object o = i.next();
             assertTrue(s.remove(o.getClass().getName()));
             if (o instanceof XmlSchemaTotalDigitsFacet) {
@@ -243,13 +244,13 @@ public class FacetsTest extends Assert {
         XmlSchemaSimpleType xsst = r.getBaseType();
         assertNull(xsst);
 
-        XmlSchemaObjectCollection collection = r.getFacets();
-        assertEquals(2, collection.getCount());
+        List<XmlSchemaFacet> collection = r.getFacets();
+        assertEquals(2, collection.size());
 
         Set<String> s = new HashSet<String>();
         s.add(XmlSchemaMaxInclusiveFacet.class.getName());
         s.add(XmlSchemaMinInclusiveFacet.class.getName());
-        for (Iterator i = collection.getIterator(); i.hasNext();) {
+        for (Iterator<XmlSchemaFacet> i = collection.iterator(); i.hasNext();) {
             Object o = i.next();
             assertTrue(s.remove(o.getClass().getName()));
             if (o instanceof XmlSchemaMaxInclusiveFacet) {
@@ -299,13 +300,13 @@ public class FacetsTest extends Assert {
         XmlSchemaSimpleType xsst = r.getBaseType();
         assertNull(xsst);
 
-        XmlSchemaObjectCollection collection = r.getFacets();
-        assertEquals(2, collection.getCount());
+        List<XmlSchemaFacet> collection = r.getFacets();
+        assertEquals(2, collection.size());
 
         Set<String> s = new HashSet<String>();
         s.add(XmlSchemaMaxExclusiveFacet.class.getName());
         s.add(XmlSchemaMinExclusiveFacet.class.getName());
-        for (Iterator i = collection.getIterator(); i.hasNext();) {
+        for (Iterator<XmlSchemaFacet> i = collection.iterator(); i.hasNext();) {
             Object o = i.next();
             assertTrue(s.remove(o.getClass().getName()));
             if (o instanceof XmlSchemaMaxExclusiveFacet) {
@@ -355,12 +356,12 @@ public class FacetsTest extends Assert {
         XmlSchemaSimpleType xsst = r.getBaseType();
         assertNull(xsst);
 
-        XmlSchemaObjectCollection collection = r.getFacets();
-        assertEquals(1, collection.getCount());
+        List<XmlSchemaFacet> collection = r.getFacets();
+        assertEquals(1, collection.size());
 
         Set<String> s = new HashSet<String>();
         s.add(XmlSchemaWhiteSpaceFacet.class.getName());
-        for (Iterator i = collection.getIterator(); i.hasNext();) {
+        for (Iterator<XmlSchemaFacet> i = collection.iterator(); i.hasNext();) {
             Object o = i.next();
             assertTrue(s.remove(o.getClass().getName()));
             if (o instanceof XmlSchemaWhiteSpaceFacet) {
@@ -407,13 +408,13 @@ public class FacetsTest extends Assert {
         XmlSchemaSimpleType xsst = r.getBaseType();
         assertNull(xsst);
 
-        XmlSchemaObjectCollection collection = r.getFacets();
-        assertEquals(2, collection.getCount());
+        List<XmlSchemaFacet> collection = r.getFacets();
+        assertEquals(2, collection.size());
 
         Set<String> s = new HashSet<String>();
         s.add(XmlSchemaFractionDigitsFacet.class.getName());
         s.add(XmlSchemaTotalDigitsFacet.class.getName());
-        for (Iterator i = collection.getIterator(); i.hasNext();) {
+        for (Iterator<XmlSchemaFacet> i = collection.iterator(); i.hasNext();) {
             Object o = i.next();
             assertTrue(s.remove(o.getClass().getName()));
             if (o instanceof XmlSchemaFractionDigitsFacet) {
@@ -464,13 +465,13 @@ public class FacetsTest extends Assert {
         XmlSchemaSimpleType xsst = r.getBaseType();
         assertNull(xsst);
 
-        XmlSchemaObjectCollection collection = r.getFacets();
-        assertEquals(2, collection.getCount());
+        List<XmlSchemaFacet> collection = r.getFacets();
+        assertEquals(2, collection.size());
 
         Set<String> s = new HashSet<String>();
         s.add(XmlSchemaMinLengthFacet.class.getName());
         s.add(XmlSchemaMaxLengthFacet.class.getName());
-        for (Iterator i = collection.getIterator(); i.hasNext();) {
+        for (Iterator<XmlSchemaFacet> i = collection.iterator(); i.hasNext();) {
             Object o = i.next();
             assertTrue(s.remove(o.getClass().getName()));
             if (o instanceof XmlSchemaMinLengthFacet) {
@@ -522,13 +523,13 @@ public class FacetsTest extends Assert {
         XmlSchemaSimpleType xsst = r.getBaseType();
         assertNull(xsst);
 
-        XmlSchemaObjectCollection collection = r.getFacets();
-        assertEquals(2, collection.getCount());
+        List<XmlSchemaFacet> collection = r.getFacets();
+        assertEquals(2, collection.size());
 
         Set<String> s = new HashSet<String>();
         s.add("Field");
         s.add("Separator");
-        for (Iterator i = collection.getIterator(); i.hasNext();) {
+        for (Iterator<XmlSchemaFacet> i = collection.iterator(); i.hasNext();) {
             XmlSchemaEnumerationFacet xsef = (XmlSchemaEnumerationFacet)i.next();
             String value = (String)xsef.getValue();
             assertTrue("Atempted to remove an enumeration with the value of " + "\"" + value
