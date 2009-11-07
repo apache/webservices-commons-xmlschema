@@ -34,7 +34,6 @@ public class XmlSchemaComplexType extends XmlSchemaType {
     private XmlSchemaAnyAttribute anyAttribute;
     private XmlSchemaAnyAttribute attributeWildcard;
     private List<XmlSchemaAttributeOrGroupRef> attributes;
-    private XmlSchemaObjectTable attributeUses;
     private XmlSchemaDerivationMethod block;
     private XmlSchemaDerivationMethod blockResolved;
     private XmlSchemaContentModel contentModel;
@@ -65,10 +64,6 @@ public class XmlSchemaComplexType extends XmlSchemaType {
 
     public List<XmlSchemaAttributeOrGroupRef> getAttributes() {
         return attributes;
-    }
-
-    public XmlSchemaObjectTable getAttributeUses() {
-        return attributeUses;
     }
 
     public XmlSchemaAnyAttribute getAttributeWildcard() {
@@ -157,10 +152,6 @@ public class XmlSchemaComplexType extends XmlSchemaType {
 
     void setAttributes(List<XmlSchemaAttributeOrGroupRef> attributes) {
         this.attributes = attributes;
-    }
-
-    void setAttributeUses(XmlSchemaObjectTable attributeUses) {
-        this.attributeUses = attributeUses;
     }
 
     void setBlockResolved(XmlSchemaDerivationMethod blockResolved) {
