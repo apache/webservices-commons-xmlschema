@@ -26,7 +26,7 @@ import org.apache.ws.commons.schema.utils.XmlSchemaRef;
  * Represents the World Wide Web Consortium (W3C) attributeGroup
  * element with the ref attribute.
  */
-public class XmlSchemaAttributeGroupRef extends XmlSchemaAnnotated
+public class XmlSchemaAttributeGroupRef extends XmlSchemaAttributeOrGroupRef
     implements XmlSchemaAttributeGroupMember {
     private XmlSchemaRef<XmlSchemaAttributeGroup> ref;
     

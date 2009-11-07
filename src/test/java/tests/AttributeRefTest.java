@@ -61,7 +61,7 @@ public class AttributeRefTest extends Assert {
         XmlSchemaComplexType typeByName = (XmlSchemaComplexType)s.getTypeByName(typeQName);
         assertNotNull(typeByName);
 
-        XmlSchemaAttribute item = (XmlSchemaAttribute)typeByName.getAttributes().getItem(0);
+        XmlSchemaAttribute item = (XmlSchemaAttribute)typeByName.getAttributes().get(0);
         QName qName = item.getRef().getTargetQName();
         assertNotNull(qName);
 

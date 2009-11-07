@@ -29,8 +29,8 @@ import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.ws.commons.schema.XmlSchema;
-import org.apache.ws.commons.schema.XmlSchemaAnnotated;
 import org.apache.ws.commons.schema.XmlSchemaAttribute;
+import org.apache.ws.commons.schema.XmlSchemaAttributeOrGroupRef;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaComplexType;
 import org.apache.ws.commons.schema.XmlSchemaElement;
@@ -78,7 +78,7 @@ public class SimpleContentExtensionTest extends Assert {
         assertNotNull(xssce);
         assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "integer"), xssce.getBaseTypeName());
 
-        List<XmlSchemaAnnotated> xsoc = xssce.getAttributes();
+        List<XmlSchemaAttributeOrGroupRef> xsoc = xssce.getAttributes();
         assertEquals(3, xsoc.size());
 
         Set<String> s = new HashSet<String>();

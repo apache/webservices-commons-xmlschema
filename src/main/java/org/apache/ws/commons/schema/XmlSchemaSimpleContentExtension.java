@@ -39,7 +39,7 @@ public class XmlSchemaSimpleContentExtension extends XmlSchemaContent {
      * Contains XmlSchemaAttribute and XmlSchemaAttributeGroupRef. Collection of attributes for the simple
      * type.
      */
-    private List<XmlSchemaAnnotated> attributes;
+    private List<XmlSchemaAttributeOrGroupRef> attributes;
 
     /* Name of the built-in data type, simple type, or complex type. */
     private QName baseTypeName;
@@ -48,7 +48,7 @@ public class XmlSchemaSimpleContentExtension extends XmlSchemaContent {
      * Creates new XmlSchemaSimpleContentExtension
      */
     public XmlSchemaSimpleContentExtension() {
-        attributes = Collections.synchronizedList(new ArrayList<XmlSchemaAnnotated>());
+        attributes = Collections.synchronizedList(new ArrayList<XmlSchemaAttributeOrGroupRef>());
 
     }
 
@@ -56,7 +56,7 @@ public class XmlSchemaSimpleContentExtension extends XmlSchemaContent {
         return this.anyAttribute;
     }
 
-    public List<XmlSchemaAnnotated> getAttributes() {
+    public List<XmlSchemaAttributeOrGroupRef> getAttributes() {
         return this.attributes;
     }
 
@@ -72,7 +72,7 @@ public class XmlSchemaSimpleContentExtension extends XmlSchemaContent {
         this.baseTypeName = baseTypeName;
     }
 
-    void setAttributes(List<XmlSchemaAnnotated> attributes) {
+    void setAttributes(List<XmlSchemaAttributeOrGroupRef> attributes) {
         this.attributes = attributes;
     }
 

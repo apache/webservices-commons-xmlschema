@@ -308,15 +308,15 @@ public class SchemaBuilder {
             // el.getPrefix();
             // if(elPrefix.equals(schema.schema_ns_prefix)) {
             if (el.getLocalName().equals("sequence")) {
-                ct.particle = handleSequence(schema, el, schemaEl);
+                ct.setParticle(handleSequence(schema, el, schemaEl));
             } else if (el.getLocalName().equals("choice")) {
-                ct.particle = handleChoice(schema, el, schemaEl);
+                ct.setParticle(handleChoice(schema, el, schemaEl));
             } else if (el.getLocalName().equals("all")) {
-                ct.particle = handleAll(schema, el, schemaEl);
+                ct.setParticle(handleAll(schema, el, schemaEl));
             } else if (el.getLocalName().equals("attribute")) {
-                ct.attributes.add(handleAttribute(schema, el, schemaEl));
+                ct.getAttributes().add(handleAttribute(schema, el, schemaEl));
             } else if (el.getLocalName().equals("attributeGroup")) {
-                ct.attributes.add(handleAttributeGroupRef(schema, el));
+                ct.getAttributes().add(handleAttributeGroupRef(schema, el));
             } else if (el.getLocalName().equals("group")) {
                 XmlSchemaGroupRef group = handleGroupRef(schema, el, schemaEl);
                 if (group.getParticle() == null) {
@@ -325,9 +325,9 @@ public class SchemaBuilder {
                     ct.setParticle(group.getParticle());
                 }
             } else if (el.getLocalName().equals("simpleContent")) {
-                ct.contentModel = handleSimpleContent(schema, el, schemaEl);
+                ct.setContentModel(handleSimpleContent(schema, el, schemaEl));
             } else if (el.getLocalName().equals("complexContent")) {
-                ct.contentModel = handleComplexContent(schema, el, schemaEl);
+                ct.setContentModel(handleComplexContent(schema, el, schemaEl));
             } else if (el.getLocalName().equals("annotation")) {
                 ct.setAnnotation(handleAnnotation(el));
             } else if (el.getLocalName().equals("anyAttribute")) {

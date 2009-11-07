@@ -19,6 +19,10 @@
 
 package org.apache.ws.commons.schema;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import javax.xml.namespace.QName;
 
 /**
@@ -27,25 +31,25 @@ import javax.xml.namespace.QName;
  */
 
 public class XmlSchemaComplexType extends XmlSchemaType {
-    XmlSchemaAnyAttribute anyAttribute;
-    XmlSchemaAnyAttribute attributeWildcard;
-    XmlSchemaObjectCollection attributes;
-    XmlSchemaObjectTable attributeUses;
-    XmlSchemaDerivationMethod block;
-    XmlSchemaDerivationMethod blockResolved;
-    XmlSchemaContentModel contentModel;
-    XmlSchemaContentType contentType;
-    XmlSchemaParticle particleType;
-    XmlSchemaParticle particle;
-    boolean isAbstract;
-    boolean isMixed;
+    private XmlSchemaAnyAttribute anyAttribute;
+    private XmlSchemaAnyAttribute attributeWildcard;
+    private List<XmlSchemaAttributeOrGroupRef> attributes;
+    private XmlSchemaObjectTable attributeUses;
+    private XmlSchemaDerivationMethod block;
+    private XmlSchemaDerivationMethod blockResolved;
+    private XmlSchemaContentModel contentModel;
+    private XmlSchemaContentType contentType;
+    private XmlSchemaParticle particleType;
+    private XmlSchemaParticle particle;
+    private boolean isAbstract;
+    private boolean isMixed;
 
     /**
      * Creates new XmlSchemaComplexType
      */
     public XmlSchemaComplexType(XmlSchema schema, boolean topLevel) {
         super(schema, topLevel);
-        attributes = new XmlSchemaObjectCollection();
+        attributes = Collections.synchronizedList(new ArrayList<XmlSchemaAttributeOrGroupRef>());
         block = XmlSchemaDerivationMethod.NONE;
         isAbstract = false;
         isMixed = false;
@@ -59,7 +63,7 @@ public class XmlSchemaComplexType extends XmlSchemaType {
         this.anyAttribute = anyAttribute;
     }
 
-    public XmlSchemaObjectCollection getAttributes() {
+    public List<XmlSchemaAttributeOrGroupRef> getAttributes() {
         return attributes;
     }
 
@@ -145,6 +149,30 @@ public class XmlSchemaComplexType extends XmlSchemaType {
 
         XmlSchemaComplexContentExtension ext = (XmlSchemaComplexContentExtension)content;
         return ext.getBaseTypeName();
+    }
+
+    void setAttributeWildcard(XmlSchemaAnyAttribute attributeWildcard) {
+        this.attributeWildcard = attributeWildcard;
+    }
+
+    void setAttributes(List<XmlSchemaAttributeOrGroupRef> attributes) {
+        this.attributes = attributes;
+    }
+
+    void setAttributeUses(XmlSchemaObjectTable attributeUses) {
+        this.attributeUses = attributeUses;
+    }
+
+    void setBlockResolved(XmlSchemaDerivationMethod blockResolved) {
+        this.blockResolved = blockResolved;
+    }
+
+    void setParticleType(XmlSchemaParticle particleType) {
+        this.particleType = particleType;
+    }
+
+    XmlSchemaParticle getParticleType() {
+        return particleType;
     }
 
 }

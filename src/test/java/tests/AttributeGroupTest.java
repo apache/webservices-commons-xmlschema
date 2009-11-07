@@ -33,10 +33,10 @@ import org.apache.ws.commons.schema.XmlSchemaAttribute;
 import org.apache.ws.commons.schema.XmlSchemaAttributeGroup;
 import org.apache.ws.commons.schema.XmlSchemaAttributeGroupMember;
 import org.apache.ws.commons.schema.XmlSchemaAttributeGroupRef;
+import org.apache.ws.commons.schema.XmlSchemaAttributeOrGroupRef;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaComplexType;
 import org.apache.ws.commons.schema.XmlSchemaElement;
-import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -90,8 +90,8 @@ public class AttributeGroupTest
         XmlSchemaComplexType t = (XmlSchemaComplexType)elem.getSchemaType();
         assertNotNull(t);
 
-        XmlSchemaObjectCollection c = t.getAttributes();
-        for (Iterator i = c.getIterator(); i.hasNext();) {
+        List<XmlSchemaAttributeOrGroupRef> c = t.getAttributes();
+        for (Iterator<XmlSchemaAttributeOrGroupRef> i = c.iterator(); i.hasNext();) {
             XmlSchemaAttributeGroupRef agrn = (XmlSchemaAttributeGroupRef)i.next();
             assertEquals(new QName("http://soapinterop.org/types", "department"), agrn.getRef()
                 .getTargetQName());
