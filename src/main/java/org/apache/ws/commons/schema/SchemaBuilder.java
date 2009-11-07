@@ -1225,7 +1225,7 @@ public class SchemaBuilder {
 
         if (extEl.hasAttribute("base")) {
             String name = extEl.getAttribute("base");
-            ext.baseTypeName = getRefQName(name, extEl);
+            ext.setBaseTypeName(getRefQName(name, extEl));
         }
 
         for (Element el = XDOMUtil.getFirstChildElementNS(extEl,
@@ -1233,19 +1233,19 @@ public class SchemaBuilder {
                 .getNextSiblingElementNS(el, XmlSchema.SCHEMA_NS)) {
 
             if (el.getLocalName().equals("sequence")) {
-                ext.particle = handleSequence(schema, el, schemaEl);
+                ext.setParticle(handleSequence(schema, el, schemaEl));
             } else if (el.getLocalName().equals("choice")) {
-                ext.particle = handleChoice(schema, el, schemaEl);
+                ext.setParticle(handleChoice(schema, el, schemaEl));
             } else if (el.getLocalName().equals("all")) {
-                ext.particle = handleAll(schema, el, schemaEl);
+                ext.setParticle(handleAll(schema, el, schemaEl));
             } else if (el.getLocalName().equals("attribute")) {
-                ext.attributes.add(handleAttribute(schema, el, schemaEl));
+                ext.getAttributes().add(handleAttribute(schema, el, schemaEl));
             } else if (el.getLocalName().equals("attributeGroup")) {
-                ext.attributes.add(handleAttributeGroupRef(schema, el));
+                ext.getAttributes().add(handleAttributeGroupRef(schema, el));
             } else if (el.getLocalName().equals("group")) {
-                ext.particle = handleGroupRef(schema, el, schemaEl);
+                ext.setParticle(handleGroupRef(schema, el, schemaEl));
             } else if (el.getLocalName().equals("anyAttribute")) {
-                ext.anyAttribute = handleAnyAttribute(schema, el, schemaEl);
+                ext.setAnyAttribute(handleAnyAttribute(schema, el, schemaEl));
             } else if (el.getLocalName().equals("annotation")) {
                 ext.setAnnotation(handleAnnotation(el));
             }

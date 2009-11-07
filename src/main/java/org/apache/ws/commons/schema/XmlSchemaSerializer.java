@@ -708,8 +708,8 @@ public class XmlSchemaSerializer {
 
         Element extension = createNewElement(doc, "extension", schema.getSchemaNamespacePrefix(),
                                              XmlSchema.SCHEMA_NS);
-        if (extensionObj.baseTypeName != null) {
-            String baseType = resolveQName(extensionObj.baseTypeName, schema);
+        if (extensionObj.getBaseTypeName() != null) {
+            String baseType = resolveQName(extensionObj.getBaseTypeName(), schema);
             extension.setAttribute("base", baseType);
         }
         if (extensionObj.getAnnotation() != null) {
@@ -717,25 +717,26 @@ public class XmlSchemaSerializer {
             extension.appendChild(annotation);
         }
 
-        if (extensionObj.particle instanceof XmlSchemaSequence) {
-            Element sequenceParticle = serializeSequence(doc, (XmlSchemaSequence)extensionObj.particle,
+        if (extensionObj.getParticle() instanceof XmlSchemaSequence) {
+            Element sequenceParticle = serializeSequence(doc, (XmlSchemaSequence)extensionObj.getParticle(),
                                                          schema);
             extension.appendChild(sequenceParticle);
-        } else if (extensionObj.particle instanceof XmlSchemaChoice) {
-            Element choiceParticle = serializeChoice(doc, (XmlSchemaChoice)extensionObj.particle, schema);
+        } else if (extensionObj.getParticle() instanceof XmlSchemaChoice) {
+            Element choiceParticle = serializeChoice(doc, 
+                                                     (XmlSchemaChoice)extensionObj.getParticle(), schema);
             extension.appendChild(choiceParticle);
-        } else if (extensionObj.particle instanceof XmlSchemaAll) {
-            Element allParticle = serializeAll(doc, (XmlSchemaAll)extensionObj.particle, schema);
+        } else if (extensionObj.getParticle() instanceof XmlSchemaAll) {
+            Element allParticle = serializeAll(doc, (XmlSchemaAll)extensionObj.getParticle(), schema);
             extension.appendChild(allParticle);
-        } else if (extensionObj.particle instanceof XmlSchemaGroupRef) {
-            Element groupRefParticle = serializeGroupRef(doc, (XmlSchemaGroupRef)extensionObj.particle,
+        } else if (extensionObj.getParticle() instanceof XmlSchemaGroupRef) {
+            Element groupRefParticle = serializeGroupRef(doc, (XmlSchemaGroupRef)extensionObj.getParticle(),
                                                          schema);
             extension.appendChild(groupRefParticle);
         }
 
-        int attributesLength = extensionObj.attributes.getCount();
+        int attributesLength = extensionObj.getAttributes().size();
         for (int i = 0; i < attributesLength; i++) {
-            XmlSchemaObject obj = extensionObj.attributes.getItem(i);
+            XmlSchemaObject obj = extensionObj.getAttributes().get(i);
 
             if (obj instanceof XmlSchemaAttribute) {
                 Element attr = serializeAttribute(doc, (XmlSchemaAttribute)obj, schema);
@@ -746,8 +747,8 @@ public class XmlSchemaSerializer {
             }
         }
 
-        if (extensionObj.anyAttribute != null) {
-            Element anyAttribute = serializeAnyAttribute(doc, extensionObj.anyAttribute, schema);
+        if (extensionObj.getAnyAttribute() != null) {
+            Element anyAttribute = serializeAnyAttribute(doc, extensionObj.getAnyAttribute(), schema);
             extension.appendChild(anyAttribute);
         }
 

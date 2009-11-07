@@ -19,6 +19,10 @@
 
 package org.apache.ws.commons.schema;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import javax.xml.namespace.QName;
 
 /**
@@ -30,24 +34,23 @@ import javax.xml.namespace.QName;
 public class XmlSchemaComplexContentExtension extends XmlSchemaContent {
 
     /* Allows an XmlSchemaAnyAttribute to be used for the attribute value. */
-    XmlSchemaAnyAttribute anyAttribute;
+    private XmlSchemaAnyAttribute anyAttribute;
     /*
      * Contains XmlSchemaAttribute and XmlSchemaAttributeGroupRef. Collection of attributes for the simple
      * type.
      */
-    XmlSchemaObjectCollection attributes;
+    private List<XmlSchemaAttributeOrGroupRef> attributes;
     /* Name of the built-in data type, simple type, or complex type. */
-    QName baseTypeName;
+    private QName baseTypeName;
 
     /* One of the XmlSchemaGroupRef, XmlSchemaChoice, XmlSchemaAll, or XmlSchemaSequence classes. */
-    XmlSchemaParticle particle;
+    private XmlSchemaParticle particle;
 
     /**
      * Creates new XmlSchemaComplexContentExtension
      */
     public XmlSchemaComplexContentExtension() {
-        attributes = new XmlSchemaObjectCollection();
-
+        attributes = Collections.synchronizedList(new ArrayList<XmlSchemaAttributeOrGroupRef>());
     }
 
     public void setAnyAttribute(XmlSchemaAnyAttribute anyAttribute) {
@@ -58,7 +61,7 @@ public class XmlSchemaComplexContentExtension extends XmlSchemaContent {
         return this.anyAttribute;
     }
 
-    public XmlSchemaObjectCollection getAttributes() {
+    public List<XmlSchemaAttributeOrGroupRef> getAttributes() {
         return this.attributes;
     }
 
@@ -76,5 +79,9 @@ public class XmlSchemaComplexContentExtension extends XmlSchemaContent {
 
     public void setParticle(XmlSchemaParticle particle) {
         this.particle = particle;
+    }
+
+    void setAttributes(List<XmlSchemaAttributeOrGroupRef> attributes) {
+        this.attributes = attributes;
     }
 }
