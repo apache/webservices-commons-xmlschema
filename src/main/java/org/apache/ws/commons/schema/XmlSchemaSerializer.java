@@ -1328,23 +1328,23 @@ public class XmlSchemaSerializer {
             throw new XmlSchemaSerializerException("not valid identity " + "constraint");
         }
 
-        if (constraintObj.name != null) {
-            constraint.setAttribute("name", constraintObj.name);
+        if (constraintObj.getName() != null) {
+            constraint.setAttribute("name", constraintObj.getName());
         }
         if (constraintObj.getAnnotation() != null) {
             Element annotation = serializeAnnotation(doc, constraintObj.getAnnotation(), schema);
             constraint.appendChild(annotation);
         }
 
-        if (constraintObj.selector != null) {
-            Element selector = serializeSelector(doc, constraintObj.selector, schema);
+        if (constraintObj.getSelector() != null) {
+            Element selector = serializeSelector(doc, constraintObj.getSelector(), schema);
             constraint.appendChild(selector);
         }
-        XmlSchemaObjectCollection fieldColl = constraintObj.fields;
+        List<XmlSchemaXPath> fieldColl = constraintObj.getFields();
         if (fieldColl != null) {
-            int fieldLength = fieldColl.getCount();
+            int fieldLength = fieldColl.size();
             for (int i = 0; i < fieldLength; i++) {
-                Element field = serializeField(doc, (XmlSchemaXPath)fieldColl.getItem(i), schema);
+                Element field = serializeField(doc, fieldColl.get(i), schema);
                 constraint.appendChild(field);
             }
         }
@@ -1812,8 +1812,8 @@ public class XmlSchemaSerializer {
         Element extension = createNewElement(doc, "extension", schema.getSchemaNamespacePrefix(),
                                              XmlSchema.SCHEMA_NS);
 
-        if (extensionObj.baseTypeName != null) {
-            String baseTypeName = resolveQName(extensionObj.baseTypeName, schema);
+        if (extensionObj.getBaseTypeName() != null) {
+            String baseTypeName = resolveQName(extensionObj.getBaseTypeName(), schema);
 
             extension.setAttribute("base", baseTypeName);
         }
@@ -1827,10 +1827,10 @@ public class XmlSchemaSerializer {
             extension.appendChild(annotation);
         }
 
-        XmlSchemaObjectCollection attributes = extensionObj.attributes;
-        int attributeLength = attributes.getCount();
+        List<XmlSchemaAnnotated> attributes = extensionObj.getAttributes();
+        int attributeLength = attributes.size();
         for (int i = 0; i < attributeLength; i++) {
-            XmlSchemaObject obj = attributes.getItem(i);
+            XmlSchemaObject obj = attributes.get(i);
 
             if (obj instanceof XmlSchemaAttribute) {
                 Element attribute = serializeAttribute(doc, (XmlSchemaAttribute)obj, schema);
@@ -1845,8 +1845,8 @@ public class XmlSchemaSerializer {
         /*
          * anyAttribute must comeafter any other attributes
          */
-        if (extensionObj.anyAttribute != null) {
-            Element anyAttribute = serializeAnyAttribute(doc, extensionObj.anyAttribute, schema);
+        if (extensionObj.getAnyAttribute() != null) {
+            Element anyAttribute = serializeAnyAttribute(doc, extensionObj.getAnyAttribute(), schema);
             extension.appendChild(anyAttribute);
         }
 

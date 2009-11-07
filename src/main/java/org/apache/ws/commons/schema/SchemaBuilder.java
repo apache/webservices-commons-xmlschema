@@ -1296,7 +1296,7 @@ public class SchemaBuilder {
             XmlSchemaIdentityConstraint constraint = typeClass.newInstance();
 
             if (constraintEl.hasAttribute("name")) {
-                constraint.name = constraintEl.getAttribute("name");
+                constraint.setName(constraintEl.getAttribute("name"));
             }
 
             if (constraintEl.hasAttribute("refer")) {
@@ -1322,11 +1322,11 @@ public class SchemaBuilder {
 
                         selectorXPath.setAnnotation(annotation);
                     }
-                    constraint.selector = selectorXPath;
+                    constraint.setSelector(selectorXPath);
                 } else if (el.getLocalName().equals("field")) {
                     XmlSchemaXPath fieldXPath = new XmlSchemaXPath();
                     fieldXPath.xpath = el.getAttribute("xpath");
-                    constraint.fields.add(fieldXPath);
+                    constraint.getFields().add(fieldXPath);
 
                     Element annotationEl = XDOMUtil.getFirstChildElementNS(el,
                             XmlSchema.SCHEMA_NS, "annotation");
@@ -1693,7 +1693,7 @@ public class SchemaBuilder {
 
         if (extEl.hasAttribute("base")) {
             String name = extEl.getAttribute("base");
-            ext.baseTypeName = getRefQName(name, extEl);
+            ext.setBaseTypeName(getRefQName(name, extEl));
         }
 
         for (Element el = XDOMUtil.getFirstChildElementNS(extEl,
@@ -1702,13 +1702,13 @@ public class SchemaBuilder {
 
             if (el.getLocalName().equals("attribute")) {
                 XmlSchemaAttribute attr = handleAttribute(schema, el, schemaEl);
-                ext.attributes.add(attr);
+                ext.getAttributes().add(attr);
             } else if (el.getLocalName().equals("attributeGroup")) {
                 XmlSchemaAttributeGroupRef attrGroup = handleAttributeGroupRef(
                         schema, el);
-                ext.attributes.add(attrGroup);
+                ext.getAttributes().add(attrGroup);
             } else if (el.getLocalName().equals("anyAttribute")) {
-                ext.anyAttribute = handleAnyAttribute(schema, el, schemaEl);
+                ext.setAnyAttribute(handleAnyAttribute(schema, el, schemaEl));
             } else if (el.getLocalName().equals("annotation")) {
                 XmlSchemaAnnotation ann = handleAnnotation(el);
                 ext.setAnnotation(ann);

@@ -19,26 +19,30 @@
 
 package org.apache.ws.commons.schema;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Class for the identity constraints: key, keyref, and unique elements.
  */
 
 public class XmlSchemaIdentityConstraint extends XmlSchemaAnnotated {
 
-    XmlSchemaObjectCollection fields;
+    private List<XmlSchemaXPath> fields;
 
-    String name;
+    private String name;
 
-    XmlSchemaXPath selector;
+    private XmlSchemaXPath selector;
 
     /**
      * Creates new XmlSchemaIdentityConstraint
      */
     public XmlSchemaIdentityConstraint() {
-        fields = new XmlSchemaObjectCollection();
+        fields = Collections.synchronizedList(new ArrayList<XmlSchemaXPath>());
     }
 
-    public XmlSchemaObjectCollection getFields() {
+    public List<XmlSchemaXPath> getFields() {
         return fields;
     }
 
@@ -56,6 +60,10 @@ public class XmlSchemaIdentityConstraint extends XmlSchemaAnnotated {
 
     public void setSelector(XmlSchemaXPath selector) {
         this.selector = selector;
+    }
+
+    void setFields(List<XmlSchemaXPath> fields) {
+        this.fields = fields;
     }
 
 }

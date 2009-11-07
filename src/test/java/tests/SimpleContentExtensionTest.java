@@ -22,17 +22,18 @@ package tests;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.ws.commons.schema.XmlSchema;
+import org.apache.ws.commons.schema.XmlSchemaAnnotated;
 import org.apache.ws.commons.schema.XmlSchemaAttribute;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaComplexType;
 import org.apache.ws.commons.schema.XmlSchemaElement;
-import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
 import org.apache.ws.commons.schema.XmlSchemaSimpleContent;
 import org.apache.ws.commons.schema.XmlSchemaSimpleContentExtension;
 
@@ -77,15 +78,15 @@ public class SimpleContentExtensionTest extends Assert {
         assertNotNull(xssce);
         assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "integer"), xssce.getBaseTypeName());
 
-        XmlSchemaObjectCollection xsoc = xssce.getAttributes();
-        assertEquals(3, xsoc.getCount());
+        List<XmlSchemaAnnotated> xsoc = xssce.getAttributes();
+        assertEquals(3, xsoc.size());
 
         Set<String> s = new HashSet<String>();
         s.add("units");
         s.add("id");
         s.add("desc");
-        for (int i = 0; i < xsoc.getCount(); i++) {
-            XmlSchemaAttribute xsa = (XmlSchemaAttribute)xsoc.getItem(i);
+        for (int i = 0; i < xsoc.size(); i++) {
+            XmlSchemaAttribute xsa = (XmlSchemaAttribute)xsoc.get(i);
             String name = xsa.getName();
             if ("units".equals(name)) {
                 assertEquals(new QName("http://soapinterop.org/types", "units"), xsa.getQName());

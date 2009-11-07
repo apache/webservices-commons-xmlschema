@@ -19,6 +19,10 @@
 
 package org.apache.ws.commons.schema;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import javax.xml.namespace.QName;
 
 /**
@@ -29,22 +33,22 @@ import javax.xml.namespace.QName;
 public class XmlSchemaSimpleContentExtension extends XmlSchemaContent {
 
     /* Allows an XmlSchemaAnyAttribute to be used for the attribute value. */
-    XmlSchemaAnyAttribute anyAttribute;
+    private XmlSchemaAnyAttribute anyAttribute;
 
     /*
      * Contains XmlSchemaAttribute and XmlSchemaAttributeGroupRef. Collection of attributes for the simple
      * type.
      */
-    XmlSchemaObjectCollection attributes;
+    private List<XmlSchemaAnnotated> attributes;
 
     /* Name of the built-in data type, simple type, or complex type. */
-    QName baseTypeName;
+    private QName baseTypeName;
 
     /**
      * Creates new XmlSchemaSimpleContentExtension
      */
     public XmlSchemaSimpleContentExtension() {
-        attributes = new XmlSchemaObjectCollection();
+        attributes = Collections.synchronizedList(new ArrayList<XmlSchemaAnnotated>());
 
     }
 
@@ -52,7 +56,7 @@ public class XmlSchemaSimpleContentExtension extends XmlSchemaContent {
         return this.anyAttribute;
     }
 
-    public XmlSchemaObjectCollection getAttributes() {
+    public List<XmlSchemaAnnotated> getAttributes() {
         return this.attributes;
     }
 
@@ -60,12 +64,16 @@ public class XmlSchemaSimpleContentExtension extends XmlSchemaContent {
         return this.baseTypeName;
     }
 
-    public void setAnyAttribute(XmlSchemaAnyAttribute anyAttribute) {
+    void setAnyAttribute(XmlSchemaAnyAttribute anyAttribute) {
         this.anyAttribute = anyAttribute;
     }
 
-    public void setBaseTypeName(QName baseTypeName) {
+    void setBaseTypeName(QName baseTypeName) {
         this.baseTypeName = baseTypeName;
+    }
+
+    void setAttributes(List<XmlSchemaAnnotated> attributes) {
+        this.attributes = attributes;
     }
 
 }

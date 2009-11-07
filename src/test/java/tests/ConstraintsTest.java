@@ -33,7 +33,6 @@ import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.XmlSchemaIdentityConstraint;
 import org.apache.ws.commons.schema.XmlSchemaKey;
 import org.apache.ws.commons.schema.XmlSchemaKeyref;
-import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
 import org.apache.ws.commons.schema.XmlSchemaUnique;
 import org.apache.ws.commons.schema.XmlSchemaXPath;
 
@@ -97,11 +96,11 @@ public class ConstraintsTest extends Assert {
                 XmlSchemaXPath selectorXpath = key.getSelector();
                 assertEquals("tns:products/tns:productName", selectorXpath.getXPath());
 
-                XmlSchemaObjectCollection fields = key.getFields();
-                assertEquals(1, fields.getCount());
+                List<XmlSchemaXPath> fields = key.getFields();
+                assertEquals(1, fields.size());
                 XmlSchemaXPath fieldXpath = null;
-                for (int j = 0; j < fields.getCount(); j++) {
-                    fieldXpath = (XmlSchemaXPath)fields.getItem(j);
+                for (int j = 0; j < fields.size(); j++) {
+                    fieldXpath = fields.get(j);
                 }
                 assertNotNull(fieldXpath);
                 assertEquals("@productId", fieldXpath.getXPath());
@@ -114,11 +113,11 @@ public class ConstraintsTest extends Assert {
                 XmlSchemaXPath selectorXpath = keyref.getSelector();
                 assertEquals("tns:manufacturers/tns:location/tns:productName", selectorXpath.getXPath());
 
-                XmlSchemaObjectCollection fields = keyref.getFields();
-                assertEquals(1, fields.getCount());
+                List<XmlSchemaXPath> fields = keyref.getFields();
+                assertEquals(1, fields.size());
                 XmlSchemaXPath fieldXpath = null;
-                for (int j = 0; j < fields.getCount(); j++) {
-                    fieldXpath = (XmlSchemaXPath)fields.getItem(j);
+                for (int j = 0; j < fields.size(); j++) {
+                    fieldXpath = fields.get(j);
                 }
                 assertNotNull(fieldXpath);
                 assertEquals("@productId", fieldXpath.getXPath());
@@ -129,11 +128,11 @@ public class ConstraintsTest extends Assert {
                 XmlSchemaXPath selectorXpath = unique.getSelector();
                 assertEquals("tns:manufacturers/tns:location", selectorXpath.getXPath());
 
-                XmlSchemaObjectCollection fields = unique.getFields();
-                assertEquals(1, fields.getCount());
+                List<XmlSchemaXPath> fields = unique.getFields();
+                assertEquals(1, fields.size());
                 XmlSchemaXPath fieldXpath = null;
-                for (int j = 0; j < fields.getCount(); j++) {
-                    fieldXpath = (XmlSchemaXPath)fields.getItem(j);
+                for (int j = 0; j < fields.size(); j++) {
+                    fieldXpath = fields.get(j);
                 }
                 assertNotNull(fieldXpath);
                 assertEquals("@district", fieldXpath.getXPath());
