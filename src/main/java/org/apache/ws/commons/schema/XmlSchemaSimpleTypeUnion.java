@@ -19,6 +19,10 @@
 
 package org.apache.ws.commons.schema;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import javax.xml.namespace.QName;
 
 /**
@@ -28,15 +32,15 @@ import javax.xml.namespace.QName;
 
 public class XmlSchemaSimpleTypeUnion extends XmlSchemaSimpleTypeContent {
 
-    XmlSchemaObjectCollection baseTypes;
-    String memberTypesSource;
-    QName[] memberTypesQNames;
+    private List<XmlSchemaSimpleType> baseTypes;
+    private String memberTypesSource;
+    private QName[] memberTypesQNames;
 
     public XmlSchemaSimpleTypeUnion() {
-        baseTypes = new XmlSchemaObjectCollection();
+        baseTypes = Collections.synchronizedList(new ArrayList<XmlSchemaSimpleType>());
     }
 
-    public XmlSchemaObjectCollection getBaseTypes() {
+    public List<XmlSchemaSimpleType> getBaseTypes() {
         return this.baseTypes;
     }
 
@@ -50,6 +54,10 @@ public class XmlSchemaSimpleTypeUnion extends XmlSchemaSimpleTypeContent {
 
     public QName[] getMemberTypesQNames() {
         return this.memberTypesQNames;
+    }
+
+    public void setMemberTypesQNames(QName[] memberTypesQNames) {
+        this.memberTypesQNames = memberTypesQNames;
     }
 
 }

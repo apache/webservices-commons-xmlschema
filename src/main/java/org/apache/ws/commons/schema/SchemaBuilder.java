@@ -1880,15 +1880,15 @@ public class SchemaBuilder {
          */
         if (unionEl.hasAttribute("memberTypes")) {
             String memberTypes = unionEl.getAttribute("memberTypes");
-            union.memberTypesSource = memberTypes;
+            union.setMemberTypesSource(memberTypes);
             Vector<QName> v = new Vector<QName>();
             StringTokenizer tokenizer = new StringTokenizer(memberTypes, " ");
             while (tokenizer.hasMoreTokens()) {
                 String member = tokenizer.nextToken();
                 v.add(getRefQName(member, unionEl));
             }
-            union.memberTypesQNames = new QName[v.size()];
-            v.copyInto(union.memberTypesQNames);
+            union.setMemberTypesQNames(new QName[v.size()]);
+            v.copyInto(union.getMemberTypesQNames());
         }
 
         Element inlineUnionType = XDOMUtil.getFirstChildElementNS(unionEl,
@@ -1898,10 +1898,11 @@ public class SchemaBuilder {
             XmlSchemaSimpleType unionSimpleType = handleSimpleType(schema,
                     inlineUnionType, schemaEl, false);
 
-            union.baseTypes.add(unionSimpleType);
+            union.getBaseTypes().add(unionSimpleType);
 
             if (!unionSimpleType.isAnonymous()) {
-                union.memberTypesSource += " " + unionSimpleType.getName();
+                union.setMemberTypesSource(union.getMemberTypesSource() 
+                                           + " " + unionSimpleType.getName());
             }
 
             inlineUnionType = XDOMUtil.getNextSiblingElementNS(inlineUnionType,

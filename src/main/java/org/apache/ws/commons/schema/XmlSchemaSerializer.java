@@ -139,16 +139,12 @@ public class XmlSchemaSerializer {
     }
 
     /**
-     * ********************************************************************* Element serializeAll(Document
-     * doc, XmlSchemaAll allObj, XmlSchema schema) throws XmlSchemaSerializerException{
-     * <p/>
-     * Each member of complex type will be appended and pass the element created. Complex type processed
-     * according to w3c Recommendation May 2 2001.
-     * <p/>
-     * Parameter: doc - Document the parent use. allObj - XmlSchemaAll that will be serialized. schema -
-     * Schema Document object of the parent.
-     * <p/>
-     * Return: Element of particle all. **********************************************************************
+     * Serialize an 'all' item.
+     * @param doc
+     * @param allObj
+     * @param schema
+     * @return
+     * @throws XmlSchemaSerializerException
      */
     Element serializeAll(Document doc, XmlSchemaAll allObj, XmlSchema schema)
         throws XmlSchemaSerializerException {
@@ -2120,15 +2116,15 @@ public class XmlSchemaSerializer {
             union.setAttribute("id", unionObj.getId());
         }
 
-        if (unionObj.memberTypesSource != null) {
-            union.setAttribute("memberTypes", unionObj.memberTypesSource);
+        if (unionObj.getMemberTypesSource() != null) {
+            union.setAttribute("memberTypes", unionObj.getMemberTypesSource());
         }
-        if (unionObj.baseTypes.getCount() > 0) {
-            int baseTypesLength = unionObj.baseTypes.getCount();
+        if (unionObj.getBaseTypes().size() > 0) {
+            int baseTypesLength = unionObj.getBaseTypes().size();
             Element baseType;
             for (int i = 0; i < baseTypesLength; i++) {
                 try {
-                    baseType = serializeSimpleType(doc, (XmlSchemaSimpleType)unionObj.baseTypes.getItem(i),
+                    baseType = serializeSimpleType(doc, (XmlSchemaSimpleType)unionObj.getBaseTypes().get(i),
                                                    schema);
                     union.appendChild(baseType);
                 } catch (ClassCastException e) {

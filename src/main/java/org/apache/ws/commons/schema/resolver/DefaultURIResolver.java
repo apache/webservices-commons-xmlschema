@@ -38,7 +38,7 @@ public class DefaultURIResolver implements CollectionURIResolver {
     /**
      * Try to resolve a schema location to some data.
      * 
-     * @param namespace targt namespace.
+     * @param namespace target namespace.
      * @param schemaLocation system ID.
      * @param baseUri base URI for the schema.
      */
@@ -75,7 +75,9 @@ public class DefaultURIResolver implements CollectionURIResolver {
      * @return boolean
      */
     protected boolean isAbsolute(String uri) {
-        return uri.startsWith("http://");
+        return uri.startsWith("http://")
+            || uri.startsWith("https://")
+            || uri.startsWith("urn:");
     }
 
     /**
