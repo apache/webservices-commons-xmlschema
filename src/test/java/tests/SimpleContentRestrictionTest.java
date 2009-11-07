@@ -22,17 +22,19 @@ package tests;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.ws.commons.schema.XmlSchema;
+import org.apache.ws.commons.schema.XmlSchemaAnnotated;
 import org.apache.ws.commons.schema.XmlSchemaAttribute;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaComplexType;
 import org.apache.ws.commons.schema.XmlSchemaEnumerationFacet;
-import org.apache.ws.commons.schema.XmlSchemaObjectCollection;
+import org.apache.ws.commons.schema.XmlSchemaFacet;
 import org.apache.ws.commons.schema.XmlSchemaSimpleContent;
 import org.apache.ws.commons.schema.XmlSchemaSimpleContentRestriction;
 
@@ -91,15 +93,15 @@ public class SimpleContentRestrictionTest extends Assert {
         XmlSchemaSimpleContentRestriction xsscr = (XmlSchemaSimpleContentRestriction)xssc.getContent();
         assertNotNull(xsscr);
         assertEquals(new QName("http://soapinterop.org/types", "drinksize"), xsscr.getBaseTypeName());
-        XmlSchemaObjectCollection xsoc = xsscr.getAttributes();
+        List<XmlSchemaAnnotated> xsoc = xsscr.getAttributes();
         assertNotNull(xsoc);
-        assertEquals(2, xsoc.getCount());
+        assertEquals(2, xsoc.size());
 
         Set<String> s = new HashSet<String>();
         s.add("units");
         s.add("id");
-        for (int i = 0; i < xsoc.getCount(); i++) {
-            XmlSchemaAttribute xsa = (XmlSchemaAttribute)xsoc.getItem(i);
+        for (int i = 0; i < xsoc.size(); i++) {
+            XmlSchemaAttribute xsa = (XmlSchemaAttribute)xsoc.get(i);
             String name = xsa.getName();
             if ("units".equals(name)) {
                 assertEquals(new QName("http://soapinterop.org/types", "units"), xsa.getQName());
@@ -122,15 +124,15 @@ public class SimpleContentRestrictionTest extends Assert {
         }
         assertTrue("The set should have been empty, but instead contained: " + s + ".", s.isEmpty());
 
-        XmlSchemaObjectCollection xsoc2 = xsscr.getFacets();
+        List<XmlSchemaFacet> xsoc2 = xsscr.getFacets();
         assertNotNull(xsoc2);
-        assertEquals(2, xsoc2.getCount());
+        assertEquals(2, xsoc2.size());
 
         s.clear();
         s.add("small");
         s.add("medium");
-        for (int i = 0; i < xsoc2.getCount(); i++) {
-            XmlSchemaEnumerationFacet xsef = (XmlSchemaEnumerationFacet)xsoc2.getItem(i);
+        for (int i = 0; i < xsoc2.size(); i++) {
+            XmlSchemaEnumerationFacet xsef = (XmlSchemaEnumerationFacet)xsoc2.get(i);
             String value = (String)xsef.getValue();
             if (!("small".equals(value) || "medium".equals(value))) {
                 fail("Unexpected enumeration value of \"" + value + "\" found.");

@@ -1877,8 +1877,8 @@ public class XmlSchemaSerializer {
         Element restriction = createNewElement(doc, "restriction", schema.getSchemaNamespacePrefix(),
                                                XmlSchema.SCHEMA_NS);
 
-        if (restrictionObj.baseTypeName != null) {
-            String baseTypeName = resolveQName(restrictionObj.baseTypeName, schema);
+        if (restrictionObj.getBaseTypeName() != null) {
+            String baseTypeName = resolveQName(restrictionObj.getBaseTypeName(), schema);
 
             restriction.setAttribute("base", baseTypeName);
 
@@ -1891,9 +1891,9 @@ public class XmlSchemaSerializer {
             Element annotation = serializeAnnotation(doc, restrictionObj.getAnnotation(), schema);
             restriction.appendChild(annotation);
         }
-        int attrCollLength = restrictionObj.attributes.getCount();
+        int attrCollLength = restrictionObj.getAttributes().size();
         for (int i = 0; i < attrCollLength; i++) {
-            XmlSchemaObject obj = restrictionObj.attributes.getItem(i);
+            XmlSchemaAnnotated obj = restrictionObj.getAttributes().get(i);
 
             if (obj instanceof XmlSchemaAttribute) {
                 Element attribute = serializeAttribute(doc, (XmlSchemaAttribute)obj, schema);
@@ -1904,18 +1904,18 @@ public class XmlSchemaSerializer {
                 restriction.appendChild(attributeGroup);
             }
         }
-        if (restrictionObj.baseType != null) {
-            Element inlineSimpleType = serializeSimpleType(doc, restrictionObj.baseType, schema);
+        if (restrictionObj.getBaseType() != null) {
+            Element inlineSimpleType = serializeSimpleType(doc, restrictionObj.getBaseType(), schema);
             restriction.appendChild(inlineSimpleType);
         }
         if (restrictionObj.anyAttribute != null) {
             Element anyAttribute = serializeAnyAttribute(doc, restrictionObj.anyAttribute, schema);
             restriction.appendChild(anyAttribute);
         }
-        XmlSchemaObjectCollection facets = restrictionObj.facets;
-        int facetLength = facets.getCount();
+        List<XmlSchemaFacet> facets = restrictionObj.getFacets();
+        int facetLength = facets.size();
         for (int i = 0; i < facetLength; i++) {
-            Element facet = serializeFacet(doc, (XmlSchemaFacet)facets.getItem(i), schema);
+            Element facet = serializeFacet(doc, facets.get(i), schema);
             restriction.appendChild(facet);
         }
 

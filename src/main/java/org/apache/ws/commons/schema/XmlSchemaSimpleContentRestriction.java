@@ -19,6 +19,10 @@
 
 package org.apache.ws.commons.schema;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import javax.xml.namespace.QName;
 
 /**
@@ -33,25 +37,25 @@ public class XmlSchemaSimpleContentRestriction extends XmlSchemaContent {
      * Contains XmlSchemaAttribute and XmlSchemaAttributeGroupRef. Collection of attributes for the simple
      * type.
      */
-    XmlSchemaObjectCollection attributes;
+    private List<XmlSchemaAnnotated> attributes;
 
     /* Derived from the type specified by the base value. */
-    XmlSchemaSimpleType baseType;
+    private XmlSchemaSimpleType baseType;
 
     /* Name of the built-in data type, simple type, or complex type. */
-    QName baseTypeName;
+    private QName baseTypeName;
 
 
     /* One or more of the facet classes: */
-    XmlSchemaObjectCollection facets;
+    private List<XmlSchemaFacet> facets;
 
 
     /**
      * Creates new XmlSchemaSimpleContentRestriction
      */
     public XmlSchemaSimpleContentRestriction() {
-        facets = new XmlSchemaObjectCollection();
-        attributes = new XmlSchemaObjectCollection();
+        facets = Collections.synchronizedList(new ArrayList<XmlSchemaFacet>());
+        attributes = Collections.synchronizedList(new ArrayList<XmlSchemaAnnotated>());
     }
 
     /* Allows an XmlSchemaAnyAttribute to be used for the attribute value. */
@@ -64,9 +68,7 @@ public class XmlSchemaSimpleContentRestriction extends XmlSchemaContent {
         return this.anyAttribute;
     }
 
-
-
-    public XmlSchemaObjectCollection getAttributes() {
+    public List<XmlSchemaAnnotated> getAttributes() {
         return this.attributes;
     }
 
@@ -85,7 +87,7 @@ public class XmlSchemaSimpleContentRestriction extends XmlSchemaContent {
         return this.baseTypeName;
     }
 
-    public XmlSchemaObjectCollection getFacets() {
+    public List<XmlSchemaFacet> getFacets() {
         return this.facets;
     }
 

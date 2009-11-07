@@ -1724,7 +1724,7 @@ public class SchemaBuilder {
 
         if (restrictionEl.hasAttribute("base")) {
             String name = restrictionEl.getAttribute("base");
-            restriction.baseTypeName = getRefQName(name, restrictionEl);
+            restriction.setBaseTypeName(getRefQName(name, restrictionEl));
         }
 
         if (restrictionEl.hasAttribute("id")) {
@@ -1739,14 +1739,14 @@ public class SchemaBuilder {
 
             if (el.getLocalName().equals("attribute")) {
                 XmlSchemaAttribute attr = handleAttribute(schema, el, schemaEl);
-                restriction.attributes.add(attr);
+                restriction.getAttributes().add(attr);
             } else if (el.getLocalName().equals("attributeGroup")) {
                 XmlSchemaAttributeGroupRef attrGroup = handleAttributeGroupRef(
                         schema, el);
-                restriction.attributes.add(attrGroup);
+                restriction.getAttributes().add(attrGroup);
             } else if (el.getLocalName().equals("simpleType")) {
-                restriction.baseType = handleSimpleType(schema, el, schemaEl,
-                        false);
+                restriction.setBaseType(handleSimpleType(schema, el, schemaEl,
+                        false));
             } else if (el.getLocalName().equals("anyAttribute")) {
                 restriction.anyAttribute = handleAnyAttribute(schema, el,
                         schemaEl);
@@ -1760,7 +1760,7 @@ public class SchemaBuilder {
                     facet.setAnnotation(facetAnnotation);
 
                 }
-                restriction.facets.add(facet);
+                restriction.getFacets().add(facet);
                 //process extra attributes and elements
                 processExtensibilityComponents(facet, el);
             }
