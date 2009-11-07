@@ -778,8 +778,8 @@ public class XmlSchemaSerializer {
         Element restriction = createNewElement(doc, "restriction", schema.getSchemaNamespacePrefix(),
                                                XmlSchema.SCHEMA_NS);
 
-        if (restrictionObj.baseTypeName != null) {
-            String baseTypeName = resolveQName(restrictionObj.baseTypeName, schema);
+        if (restrictionObj.getBaseTypeName() != null) {
+            String baseTypeName = resolveQName(restrictionObj.getBaseTypeName(), schema);
             restriction.setAttribute("base", baseTypeName);
         }
 
@@ -792,25 +792,26 @@ public class XmlSchemaSerializer {
             restriction.appendChild(annotation);
         }
 
-        if (restrictionObj.particle instanceof XmlSchemaSequence) {
-            Element sequenceParticle = serializeSequence(doc, (XmlSchemaSequence)restrictionObj.particle,
+        if (restrictionObj.getParticle() instanceof XmlSchemaSequence) {
+            Element sequenceParticle = serializeSequence(doc, (XmlSchemaSequence)restrictionObj.getParticle(),
                                                          schema);
             restriction.appendChild(sequenceParticle);
-        } else if (restrictionObj.particle instanceof XmlSchemaChoice) {
-            Element choiceParticle = serializeChoice(doc, (XmlSchemaChoice)restrictionObj.particle, schema);
+        } else if (restrictionObj.getParticle() instanceof XmlSchemaChoice) {
+            Element choiceParticle = serializeChoice(doc, 
+                                                     (XmlSchemaChoice)restrictionObj.getParticle(), schema);
             restriction.appendChild(choiceParticle);
-        } else if (restrictionObj.particle instanceof XmlSchemaAll) {
-            Element allParticle = serializeAll(doc, (XmlSchemaAll)restrictionObj.particle, schema);
+        } else if (restrictionObj.getParticle() instanceof XmlSchemaAll) {
+            Element allParticle = serializeAll(doc, (XmlSchemaAll)restrictionObj.getParticle(), schema);
             restriction.appendChild(allParticle);
-        } else if (restrictionObj.particle instanceof XmlSchemaGroupRef) {
-            Element groupRefParticle = serializeGroupRef(doc, (XmlSchemaGroupRef)restrictionObj.particle,
+        } else if (restrictionObj.getParticle() instanceof XmlSchemaGroupRef) {
+            Element groupRefParticle = serializeGroupRef(doc, (XmlSchemaGroupRef)restrictionObj.getParticle(),
                                                          schema);
             restriction.appendChild(groupRefParticle);
         }
 
-        int attributesLength = restrictionObj.attributes.getCount();
+        int attributesLength = restrictionObj.getAttributes().size();
         for (int i = 0; i < attributesLength; i++) {
-            XmlSchemaObject obj = restrictionObj.attributes.getItem(i);
+            XmlSchemaAttributeOrGroupRef obj = restrictionObj.getAttributes().get(i);
 
             if (obj instanceof XmlSchemaAttribute) {
                 Element attr = serializeAttribute(doc, (XmlSchemaAttribute)obj, schema);
@@ -821,8 +822,8 @@ public class XmlSchemaSerializer {
             }
         }
 
-        if (restrictionObj.anyAttribute != null) {
-            Element anyAttribute = serializeAnyAttribute(doc, restrictionObj.anyAttribute, schema);
+        if (restrictionObj.getAnyAttribute() != null) {
+            Element anyAttribute = serializeAnyAttribute(doc, restrictionObj.getAnyAttribute(), schema);
             restriction.appendChild(anyAttribute);
         }
 

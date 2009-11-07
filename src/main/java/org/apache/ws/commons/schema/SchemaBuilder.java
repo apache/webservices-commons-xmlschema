@@ -1260,28 +1260,28 @@ public class SchemaBuilder {
 
         if (restrictionEl.hasAttribute("base")) {
             String name = restrictionEl.getAttribute("base");
-            restriction.baseTypeName = getRefQName(name, restrictionEl);
+            restriction.setBaseTypeName(getRefQName(name, restrictionEl));
         }
         for (Element el = XDOMUtil.getFirstChildElementNS(restrictionEl,
                 XmlSchema.SCHEMA_NS); el != null; el = XDOMUtil
                 .getNextSiblingElementNS(el, XmlSchema.SCHEMA_NS)) {
 
             if (el.getLocalName().equals("sequence")) {
-                restriction.particle = handleSequence(schema, el, schemaEl);
+                restriction.setParticle(handleSequence(schema, el, schemaEl));
             } else if (el.getLocalName().equals("choice")) {
-                restriction.particle = handleChoice(schema, el, schemaEl);
+                restriction.setParticle(handleChoice(schema, el, schemaEl));
             } else if (el.getLocalName().equals("all")) {
-                restriction.particle = handleAll(schema, el, schemaEl);
+                restriction.setParticle(handleAll(schema, el, schemaEl));
             } else if (el.getLocalName().equals("attribute")) {
-                restriction.attributes
+                restriction.getAttributes()
                         .add(handleAttribute(schema, el, schemaEl));
             } else if (el.getLocalName().equals("attributeGroup")) {
-                restriction.attributes.add(handleAttributeGroupRef(schema, el));
+                restriction.getAttributes().add(handleAttributeGroupRef(schema, el));
             } else if (el.getLocalName().equals("group")) {
-                restriction.particle = handleGroupRef(schema, el, schemaEl);
+                restriction.setParticle(handleGroupRef(schema, el, schemaEl));
             } else if (el.getLocalName().equals("anyAttribute")) {
-                restriction.anyAttribute = handleAnyAttribute(schema, el,
-                        schemaEl);
+                restriction.setAnyAttribute(handleAnyAttribute(schema, el,
+                        schemaEl));
             } else if (el.getLocalName().equals("annotation")) {
                 restriction.setAnnotation(handleAnnotation(el));
             }
