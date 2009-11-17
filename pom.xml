@@ -603,21 +603,22 @@
       </plugin>
     </plugins>
   </reporting>
-  <distributionManagement>
-    <repository>
-      <id>apache-repo</id>
-      <name>Maven Central Repository</name>
-      <url>scpexe://people.apache.org/www/people.apache.org/repo/m2-ibiblio-rsync-repository</url>
-    </repository>
-    <snapshotRepository>
-      <id>apache-snapshots</id>
-      <name>Apache Development Repository</name>
-      <url>scpexe://people.apache.org/www/people.apache.org/repo/m2-snapshot-repository</url>
-      <uniqueVersion>false</uniqueVersion>
-    </snapshotRepository>
-    <site>
-      <id>website</id>
-      <url>scpexe://people.apache.org/www/ws.apache.org/commons/XmlSchema</url>
-    </site>
-  </distributionManagement>
+
+    <distributionManagement>
+        <repository>
+            <id>apache.releases.https</id>
+            <name>Apache Release Distribution Repository</name>
+            <url>https://repository.apache.org/service/local/staging/deploy/maven2</url>
+        </repository>
+        <snapshotRepository>
+            <id>apache.snapshots.https</id>
+            <name>Apache Development Snapshot Repository</name>
+            <url>https://repository.apache.org/content/repositories/snapshots</url>
+            <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
+        <site>
+            <id>apache.cxf.site</id>
+            <url>scpexe://people.apache.org/www/ws.apache.org/commons/XmlSchema/mvn_site</url>
+        </site>
+    </distributionManagement>
 </project>
