@@ -215,6 +215,7 @@
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
           <configuration>
+	    <forkMode>never</forkMode>
 	    <additionalClasspathElements>
 	      <additionalClasspathElement>w3c-testcases</additionalClasspathElement>
 	    </additionalClasspathElements>
