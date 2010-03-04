@@ -61,6 +61,9 @@ public class DefaultURIResolver implements CollectionURIResolver {
                     	baseUri = baseFile.toURI().toString();
                     }
                 }
+
+                // if the schema location contain spaces URI parser gives errors
+                schemaLocation = schemaLocation.replace(" ","%20");
                 
                 String ref = new URI(baseUri).resolve(new URI(schemaLocation)).toString();
 
