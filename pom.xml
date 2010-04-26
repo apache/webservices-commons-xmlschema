@@ -24,6 +24,11 @@
   <packaging>bundle</packaging>
   <name>XmlSchema</name>
   <version>1.4.6-SNAPSHOT</version>
+  <parent>
+    <groupId>org.apache</groupId>
+    <artifactId>apache</artifactId>
+    <version>6</version>
+  </parent>
   <description>Commons XMLSchema is a light weight schema object model that can be used to manipulate or
         generate a schema. It has a clean, easy to use API and can easily be integrated into an existing project
         since it has almost no dependencies on third party libraries.</description>
@@ -145,12 +150,12 @@
         </plugin>
         <plugin>
           <artifactId>maven-release-plugin</artifactId>
-          <version>2.0-beta-8</version>
+          <version>2.0</version>
           <configuration>
             <tagBase>https://svn.apache.org/repos/asf/webservices/commons/tags/XmlSchema</tagBase>
-            <useReleaseProfiles>false</useReleaseProfiles>
+            <useReleaseProfiles>true</useReleaseProfiles>
+            <releaseProfiles>xmlschema_release,release,fastinstall</releaseProfiles>
             <goals>deploy</goals>
-            <arguments>-Prelease</arguments>
           </configuration>
         </plugin>
         <plugin>
@@ -178,6 +183,7 @@
         </plugin>
         <plugin>
           <artifactId>maven-assembly-plugin</artifactId>
+          <version>2.2-beta-5</version>
           <configuration>
             <descriptors>
               <descriptor>src/main/assembly/bin.xml</descriptor>
@@ -218,12 +224,6 @@
   <profiles>
     <profile>
       <id>release</id>
-      <activation>
-        <property>
-          <name>release</name>
-          <value />
-        </property>
-      </activation>
       <build>
         <plugins>
 <!--
@@ -266,15 +266,6 @@
                 </goals>
               </execution>
             </executions>
-          </plugin>
-          <plugin>
-            <inherited>true</inherited>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-deploy-plugin</artifactId>
-            <configuration>
-              <altDeploymentRepository>${deploy.altRepository}</altDeploymentRepository>
-              <updateReleaseInfo>true</updateReleaseInfo>
-            </configuration>
           </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -420,30 +411,6 @@
       </build>
     </profile>
   </profiles>
-  <pluginRepositories>
-    <pluginRepository>
-      <id>snapshot</id>
-      <name>Snapshot repository</name>
-      <url>http://snapshots.maven.codehaus.org/maven2/</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </pluginRepository>
-    <pluginRepository>
-      <id>snapshot-apache</id>
-      <name>Apache Snapshot repository</name>
-      <url>http://people.apache.org/repo/m2-snapshot-repository</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </pluginRepository>
-  </pluginRepositories>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -467,7 +434,21 @@
   <reporting>
     <plugins>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>2.1</version>
+        <configuration>
+          <dependencyDetailsEnabled>false</dependencyDetailsEnabled>
+          <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+        </configuration>
+      </plugin>
+      <plugin>
         <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>2.1.2</version>
+        <configuration>
+          <dependencyDetailsEnabled>false</dependencyDetailsEnabled>
+          <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -485,17 +466,6 @@
     </plugins>
   </reporting>
   <distributionManagement>
-    <repository>
-      <id>apache-repo</id>
-      <name>Maven Central Repository</name>
-      <url>scpexe://people.apache.org/www/people.apache.org/repo/m2-ibiblio-rsync-repository</url>
-    </repository>
-    <snapshotRepository>
-      <id>apache-snapshots</id>
-      <name>Apache Development Repository</name>
-      <url>scpexe://people.apache.org/www/people.apache.org/repo/m2-snapshot-repository</url>
-      <uniqueVersion>false</uniqueVersion>
-    </snapshotRepository>
     <site>
       <id>website</id>
       <url>scpexe://people.apache.org/www/ws.apache.org/commons/XmlSchema</url>
