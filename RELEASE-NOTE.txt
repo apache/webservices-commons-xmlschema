@@ -1,5 +1,5 @@
 ====================================
-This is the release of XMLSchema 1.4.5 of Apache WS-Commons.
+This is the release of XMLSchema 1.4.6 of Apache WS-Commons.
 ====================================
 
 XMLSchema is a lightweight schema object model that can be used to manipulate 
@@ -9,6 +9,17 @@ and can be easily integrated into an existing project.
 You are welcome to kick the tires and get XMLSchema on the move.  Any
 contribution in the form of coding, testing, submitting improvements
 to the documentation, and reporting bugs are always welcome.
+
+Bugs fixed since XmlSchema 1.4.5:
+
+WSCOMMONS-533	
+NullPointerException processing schema		
+
+WSCOMMONS-482
+Runtime dependency on xmlunit in utility program ReadSchemaFromURL		
+
+WSCOMMONS-531
+SchemaBuilder does not parse all the 'key' and 'keyref' definitions when it uses namespace prefix		
 
 Bugs fixed since XmlSchema 1.4.4:
 
