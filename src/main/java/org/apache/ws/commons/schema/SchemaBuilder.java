@@ -1599,7 +1599,7 @@ public class SchemaBuilder {
 				if (isEmpty(uri)) {
 					valid = isEmpty(pSchema.syntacticalTargetNamespace);
 				} else {
-					valid = pSchema.syntacticalTargetNamespace.equals(uri);
+					valid = uri.equals(pSchema.syntacticalTargetNamespace);
 				}
 				if (!valid) {
 					throw new XmlSchemaException(
