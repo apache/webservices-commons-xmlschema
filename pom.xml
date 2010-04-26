@@ -155,6 +155,8 @@
             <tagBase>https://svn.apache.org/repos/asf/webservices/commons/tags/XmlSchema</tagBase>
             <useReleaseProfiles>true</useReleaseProfiles>
             <releaseProfiles>xmlschema_release,release,fastinstall</releaseProfiles>
+            <remoteTagging>true</remoteTagging>
+            <preparationGoals>clean install</preparationGoals>
             <goals>deploy</goals>
           </configuration>
         </plugin>
