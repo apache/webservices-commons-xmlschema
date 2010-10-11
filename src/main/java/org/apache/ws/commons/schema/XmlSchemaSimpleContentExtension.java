@@ -64,15 +64,15 @@ public class XmlSchemaSimpleContentExtension extends XmlSchemaContent {
         return this.baseTypeName;
     }
 
-    void setAnyAttribute(XmlSchemaAnyAttribute anyAttribute) {
+    public void setAnyAttribute(XmlSchemaAnyAttribute anyAttribute) {
         this.anyAttribute = anyAttribute;
     }
 
-    void setBaseTypeName(QName baseTypeName) {
+    public void setBaseTypeName(QName baseTypeName) {
         this.baseTypeName = baseTypeName;
     }
 
-    void setAttributes(List<XmlSchemaAttributeOrGroupRef> attributes) {
+    public void setAttributes(List<XmlSchemaAttributeOrGroupRef> attributes) {
         this.attributes = attributes;
     }
 
