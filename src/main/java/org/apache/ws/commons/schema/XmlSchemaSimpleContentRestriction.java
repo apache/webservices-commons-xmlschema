@@ -37,7 +37,7 @@ public class XmlSchemaSimpleContentRestriction extends XmlSchemaContent {
      * Contains XmlSchemaAttribute and XmlSchemaAttributeGroupRef. Collection of attributes for the simple
      * type.
      */
-    private List<XmlSchemaAnnotated> attributes;
+    private List<XmlSchemaAttributeOrGroupRef> attributes;
 
     /* Derived from the type specified by the base value. */
     private XmlSchemaSimpleType baseType;
@@ -55,7 +55,7 @@ public class XmlSchemaSimpleContentRestriction extends XmlSchemaContent {
      */
     public XmlSchemaSimpleContentRestriction() {
         facets = Collections.synchronizedList(new ArrayList<XmlSchemaFacet>());
-        attributes = Collections.synchronizedList(new ArrayList<XmlSchemaAnnotated>());
+        attributes = Collections.synchronizedList(new ArrayList<XmlSchemaAttributeOrGroupRef>());
     }
 
     /* Allows an XmlSchemaAnyAttribute to be used for the attribute value. */
@@ -68,7 +68,7 @@ public class XmlSchemaSimpleContentRestriction extends XmlSchemaContent {
         return this.anyAttribute;
     }
 
-    public List<XmlSchemaAnnotated> getAttributes() {
+    public List<XmlSchemaAttributeOrGroupRef> getAttributes() {
         return this.attributes;
     }
 

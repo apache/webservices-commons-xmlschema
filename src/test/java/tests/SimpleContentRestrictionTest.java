@@ -29,8 +29,8 @@ import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.ws.commons.schema.XmlSchema;
-import org.apache.ws.commons.schema.XmlSchemaAnnotated;
 import org.apache.ws.commons.schema.XmlSchemaAttribute;
+import org.apache.ws.commons.schema.XmlSchemaAttributeOrGroupRef;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
 import org.apache.ws.commons.schema.XmlSchemaComplexType;
 import org.apache.ws.commons.schema.XmlSchemaEnumerationFacet;
@@ -62,7 +62,7 @@ public class SimpleContentRestrictionTest extends Assert {
 
     /**
      * This method will test the simple content restriction.
-     * 
+     *
      * @throws Exception Any exception encountered
      */
     @Test
@@ -93,7 +93,7 @@ public class SimpleContentRestrictionTest extends Assert {
         XmlSchemaSimpleContentRestriction xsscr = (XmlSchemaSimpleContentRestriction)xssc.getContent();
         assertNotNull(xsscr);
         assertEquals(new QName("http://soapinterop.org/types", "drinksize"), xsscr.getBaseTypeName());
-        List<XmlSchemaAnnotated> xsoc = xsscr.getAttributes();
+        List<XmlSchemaAttributeOrGroupRef> xsoc = xsscr.getAttributes();
         assertNotNull(xsoc);
         assertEquals(2, xsoc.size());
 
@@ -105,7 +105,7 @@ public class SimpleContentRestrictionTest extends Assert {
             String name = xsa.getName();
             if ("units".equals(name)) {
                 assertEquals(new QName("http://soapinterop.org/types", "units"), xsa.getQName());
-                assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "string"), 
+                assertEquals(new QName("http://www.w3.org/2001/XMLSchema", "string"),
                              xsa.getSchemaTypeName());
                 assertNull(xsa.getDefaultValue());
                 assertEquals("required", xsa.getUse().toString());
