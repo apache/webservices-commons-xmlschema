@@ -55,7 +55,7 @@ import org.apache.ws.commons.schema.utils.NamespacePrefixList;
 public class XmlSchema
     extends XmlSchemaAnnotated implements NamespaceContextOwner {
     static final String SCHEMA_NS = XMLConstants.W3C_XML_SCHEMA_NS_URI;
-    
+
     private static final String UTF_8_ENCODING = "UTF-8";
 
     // This has be ordered so that things come out in the order we parse them.
@@ -91,7 +91,7 @@ public class XmlSchema
 
     /**
      * Create a new schema and record it as a member of a schema collection.
-     * 
+     *
      * @param namespace the target namespace.
      * @param systemId the system ID for the schema.
      * @param parent the parent collection.
@@ -117,7 +117,7 @@ public class XmlSchema
             logicalTargetNamespace = "";
         }
         if (parent != null) {
-            XmlSchemaCollection.SchemaKey schemaKey = 
+            XmlSchemaCollection.SchemaKey schemaKey =
                 new XmlSchemaCollection.SchemaKey(this.logicalTargetNamespace,
                                                   systemId);
             if (parent.containsSchema(schemaKey)) {
@@ -207,8 +207,8 @@ public class XmlSchema
         }
         return element;
     }
-    
-    protected XmlSchemaAttributeGroup getAttributeGroupByName(QName name, 
+
+    protected XmlSchemaAttributeGroup getAttributeGroupByName(QName name,
                                                               boolean deep, Stack<XmlSchema> schemaStack) {
         if (schemaStack != null && schemaStack.contains(this)) {
             // recursive schema - just return null
@@ -279,7 +279,7 @@ public class XmlSchema
         return attribute;
 
     }
-    
+
     protected XmlSchemaGroup getGroupByName(QName name, boolean deep, Stack<XmlSchema> schemaStack) {
         if (schemaStack != null && schemaStack.contains(this)) {
             // recursive schema - just return null
@@ -315,7 +315,7 @@ public class XmlSchema
         return group;
 
     }
-    
+
     protected XmlSchemaNotation getNotationByName(QName name, boolean deep, Stack<XmlSchema> schemaStack) {
         if (schemaStack != null && schemaStack.contains(this)) {
             // recursive schema - just return null
@@ -354,7 +354,7 @@ public class XmlSchema
 
     /**
      * get an element by the name in the local schema
-     * 
+     *
      * @param name
      * @return the element.
      */
@@ -364,8 +364,8 @@ public class XmlSchema
     }
 
     /**
-     * Look for a element by its qname. Searches through all the schemas
-     * 
+     * Look for a element by its QName.
+     *
      * @param name
      * @return the element.
      */
@@ -374,8 +374,8 @@ public class XmlSchema
     }
 
     /**
-     * Look for a global attribute by its QName. Searches through all schemas.
-     * 
+     * Look for a global attribute by its QName.
+     *
      * @param name
      * @return the attribute.
      */
@@ -384,8 +384,19 @@ public class XmlSchema
     }
 
     /**
+     * Look for an attribute by the name in the local schema
+     *
+     * @param name
+     * @return the attribute
+     */
+    public XmlSchemaAttribute getAttributeByName(String name) {
+        QName nameToSearchFor = new QName(this.getTargetNamespace(), name);
+        return this.getAttributeByName(nameToSearchFor, false, null);
+    }
+
+    /**
      * Protected method that allows safe (non-recursive schema loading). It looks for a type with constraints.
-     * 
+     *
      * @param name
      * @param deep
      * @param schemaStack
@@ -428,7 +439,7 @@ public class XmlSchema
 
     /**
      * Search this schema and all the imported/included ones for the given Qname
-     * 
+     *
      * @param name
      * @return the type.
      */
@@ -438,7 +449,7 @@ public class XmlSchema
 
     /**
      * Retrieve a type by QName.
-     * 
+     *
      * @param name
      * @return the type.
      */
@@ -446,7 +457,7 @@ public class XmlSchema
         QName nameToSearchFor = new QName(this.getTargetNamespace(), name);
         return getTypeByName(nameToSearchFor, false, null);
     }
-    
+
     /**
      * Retrieve an attribute group by QName.
      * @param name
@@ -455,7 +466,7 @@ public class XmlSchema
     public XmlSchemaAttributeGroup getAttributeGroupByName(QName name) {
         return getAttributeGroupByName(name, true, null);
     }
-    
+
     /**
      * Retrieve a group by QName.
      * @param name
@@ -474,10 +485,10 @@ public class XmlSchema
         return getNotationByName(name, true, null);
     }
 
-    
+
     /**
      * Get a schema from an import
-     * 
+     *
      * @param includeOrImport
      * @return return the schema object.
      */
@@ -544,7 +555,7 @@ public class XmlSchema
 
     /**
      * Serialize the schema into the given output stream
-     * 
+     *
      * @param out - the output stream to write to
      */
     public void write(OutputStream out) {
@@ -564,7 +575,7 @@ public class XmlSchema
 
     /**
      * Serialize the schema into the given output stream
-     * 
+     *
      * @param out - the output stream to write to
      * @param options - a map of options
      */
@@ -584,7 +595,7 @@ public class XmlSchema
 
     /**
      * Serialie the schema to a given writer
-     * 
+     *
      * @param writer - the writer to write this
      */
     public void write(Writer writer, Map<String, String> options) {
@@ -593,7 +604,7 @@ public class XmlSchema
 
     /**
      * Serialie the schema to a given writer
-     * 
+     *
      * @param writer - the writer to write this
      */
     public void write(Writer writer) {
@@ -614,7 +625,7 @@ public class XmlSchema
 
     /**
      * serialize the schema - this is the method tht does to work
-     * 
+     *
      * @param schema
      * @param out
      * @param options
@@ -672,7 +683,7 @@ public class XmlSchema
 
     /**
      * Load the default options
-     * 
+     *
      * @param options - the map of
      */
     private void loadDefaultOptions(Map<String, String> options) {
@@ -753,7 +764,7 @@ public class XmlSchema
 
         return true;
     }
-    
+
     @Override
     public int hashCode() {
         return super.hashCode();
@@ -761,7 +772,7 @@ public class XmlSchema
 
     /**
      * Retrieve a DOM tree for this one schema, independent of any included or related schemas.
-     * 
+     *
      * @return The DOM document.
      * @throws XmlSchemaSerializerException
      */
@@ -778,7 +789,7 @@ public class XmlSchema
     public String getLogicalTargetNamespace() {
         return logicalTargetNamespace;
     }
-    
+
     public String toString() {
         return super.toString() + "[" + logicalTargetNamespace + "]";
     }
