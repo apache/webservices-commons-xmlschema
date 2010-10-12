@@ -35,18 +35,19 @@ import org.apache.ws.commons.schema.XmlSchemaType;
 public class XmlSchemaRef<T extends XmlSchemaNamed> extends XmlSchemaRefBase {
     private Class<? extends T> targetClass;
     private T targetObject;
-    
+
     public XmlSchemaRef(XmlSchema parent, Class<T> targetClass) {
         this.parent = parent;
         this.targetClass = targetClass;
     }
-    
+
     protected void forgetTargetObject() {
         targetObject = null;
     }
-    
+
+
     public T getTarget() {
-        
+
         if (targetObject == null) {
             Class<?> cls = targetClass;
             XmlSchemaCollection parentCollection = parent.getParent();
@@ -65,5 +66,10 @@ public class XmlSchemaRef<T extends XmlSchemaNamed> extends XmlSchemaRefBase {
             }
         }
         return targetObject;
+    }
+
+    @Override
+    public String toString() {
+        return "XmlSchemaRef: " + targetClass.getName() + " " + targetQName;
     }
 }

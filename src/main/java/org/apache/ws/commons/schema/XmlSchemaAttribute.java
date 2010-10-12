@@ -27,7 +27,7 @@ import org.apache.ws.commons.schema.utils.XmlSchemaRef;
 
 /**
  * Class for attribute types. Represents the World Wide Web Consortium (W3C) attribute element.
- * 
+ *
  * ref= attributes are in the parent items collection, not in the map of named items.
  */
 public class XmlSchemaAttribute extends XmlSchemaAttributeOrGroupRef implements XmlSchemaNamedWithForm,
@@ -40,7 +40,7 @@ public class XmlSchemaAttribute extends XmlSchemaAttributeOrGroupRef implements 
     private XmlSchemaUse use;
     private XmlSchemaNamedWithFormImpl namedDelegate;
     private XmlSchemaRef<XmlSchemaAttribute> ref;
-    
+
     /**
      * Create a new attribute.
      * @param schema containing scheme.
@@ -98,39 +98,46 @@ public class XmlSchemaAttribute extends XmlSchemaAttributeOrGroupRef implements 
     }
 
     public void setUse(XmlSchemaUse use) {
+        if (namedDelegate.isTopLevel() && use != null) {
+            throw new XmlSchemaException("Top-level attributes may not have a 'use'");
+        }
         this.use = use;
     }
 
     public String getName() {
         return namedDelegate.getName();
     }
-    
+
 
     public XmlSchema getParent() {
         return namedDelegate.getParent();
     }
-    
+
 
     public QName getQName() {
         return namedDelegate.getQName();
     }
-    
+
 
     public boolean isAnonymous() {
         return namedDelegate.isAnonymous();
     }
-    
+
 
     public boolean isTopLevel() {
         return namedDelegate.isTopLevel();
     }
 
     public void setName(String name) {
+
         if (namedDelegate.isTopLevel() && namedDelegate.getName() != null) {
             namedDelegate.getParent().getAttributes().remove(getQName());
         }
         namedDelegate.setName(name);
         if (namedDelegate.isTopLevel()) {
+            if (name == null) {
+                throw new XmlSchemaException("Top-level attributes may not be anonymous");
+            }
             namedDelegate.getParent().getAttributes().put(getQName(), this);
         }
     }
@@ -144,6 +151,9 @@ public class XmlSchemaAttribute extends XmlSchemaAttributeOrGroupRef implements 
     }
 
     public void setForm(XmlSchemaForm form) {
+        if (namedDelegate.isTopLevel() && form != XmlSchemaForm.NONE) {
+            throw new XmlSchemaException("Top-level attributes may not have a 'form'");
+        }
         namedDelegate.setForm(form);
     }
 

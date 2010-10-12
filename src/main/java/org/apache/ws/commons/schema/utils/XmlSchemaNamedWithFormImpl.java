@@ -26,7 +26,7 @@ import org.apache.ws.commons.schema.XmlSchemaException;
 import org.apache.ws.commons.schema.XmlSchemaForm;
 
 /**
- * 
+ *
  */
 public class XmlSchemaNamedWithFormImpl extends XmlSchemaNamedImpl implements XmlSchemaNamedWithForm {
     private XmlSchemaForm form = XmlSchemaForm.NONE;
@@ -44,7 +44,12 @@ public class XmlSchemaNamedWithFormImpl extends XmlSchemaNamedImpl implements Xm
         this.element = element;
     }
 
-    /** {@inheritDoc}*/
+    /**
+     * Return the <strong>effective</strong> 'form' for this item. If the item
+     * has an explicit form declaration, this returns that declared form. If not,
+     * it returns the appropriate default form from the containing schema.
+     * @return {@link XmlSchemaForm#QUALIFIED} or {@link XmlSchemaForm#UNQUALIFIED}.
+     */
     public XmlSchemaForm getForm() {
         if (form != XmlSchemaForm.NONE) {
             return form;
