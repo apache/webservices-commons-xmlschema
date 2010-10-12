@@ -35,7 +35,7 @@ public class CircularSchemaTest extends Assert {
         XmlSchemaCollection schemas = new XmlSchemaCollection();
         File file = new File(Resources.asURI("circular/a.xsd"));
         InputSource source = new InputSource(new FileInputStream(file));
-        source.setSystemId(file.toURL().toString());
+        source.setSystemId(file.toURI().toURL().toString());
 
         schemas.read(source);
 

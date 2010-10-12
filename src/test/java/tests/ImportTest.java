@@ -54,7 +54,7 @@ public class ImportTest extends Assert {
 
     /**
      * variation of above don't set the base uri.
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -63,17 +63,17 @@ public class ImportTest extends Assert {
         // create a DOM document
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         documentBuilderFactory.setNamespaceAware(true);
-        Document doc = documentBuilderFactory.newDocumentBuilder().parse(file.toURL().toString());
+        Document doc = documentBuilderFactory.newDocumentBuilder().parse(file.toURI().toURL().toString());
 
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(doc, file.toURL().toString());
+        XmlSchema schema = schemaCol.read(doc, file.toURI().toURL().toString());
         assertNotNull(schema);
 
     }
 
     /**
      * see whether we can reach the types of the imported schemas.
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -82,10 +82,10 @@ public class ImportTest extends Assert {
         // create a DOM document
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         documentBuilderFactory.setNamespaceAware(true);
-        Document doc = documentBuilderFactory.newDocumentBuilder().parse(file.toURL().toString());
+        Document doc = documentBuilderFactory.newDocumentBuilder().parse(file.toURI().toURL().toString());
 
         XmlSchemaCollection schemaCol = new XmlSchemaCollection();
-        XmlSchema schema = schemaCol.read(doc, file.toURL().toString());
+        XmlSchema schema = schemaCol.read(doc, file.toURI().toURL().toString());
         assertNotNull(schema);
 
         assertNotNull(schema.getTypeByName(new QName("http://soapinterop.org/xsd2", "SOAPStruct")));

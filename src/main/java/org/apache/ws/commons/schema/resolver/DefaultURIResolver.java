@@ -37,7 +37,7 @@ public class DefaultURIResolver implements CollectionURIResolver {
 
     /**
      * Try to resolve a schema location to some data.
-     * 
+     *
      * @param namespace target namespace.
      * @param schemaLocation system ID.
      * @param baseUri base URI for the schema.
@@ -70,7 +70,7 @@ public class DefaultURIResolver implements CollectionURIResolver {
 
     /**
      * Find whether a given uri is relative or not
-     * 
+     *
      * @param uri
      * @return boolean
      */
@@ -82,7 +82,7 @@ public class DefaultURIResolver implements CollectionURIResolver {
 
     /**
      * This is essentially a call to "new URL(contextURL, spec)" with extra handling in case spec is a file.
-     * 
+     *
      * @param contextURL
      * @param spec
      * @throws java.io.IOException
@@ -122,7 +122,7 @@ public class DefaultURIResolver implements CollectionURIResolver {
 
     /**
      * Method getFileURL
-     * 
+     *
      * @param contextURL
      * @param path
      * @throws IOException
@@ -149,7 +149,7 @@ public class DefaultURIResolver implements CollectionURIResolver {
             }
 
             if (parentFile != null) {
-                parent = parentFile.toURL();
+                parent = parentFile.toURI().toURL();
             }
             if (parent != null) {
                 return new URL(parent, path);
@@ -161,7 +161,7 @@ public class DefaultURIResolver implements CollectionURIResolver {
 
     /**
      * Get the base URI derived from a schema collection. It serves as a fallback from the specified base.
-     * 
+     *
      * @return URI
      */
     public String getCollectionBaseURI() {
@@ -170,7 +170,7 @@ public class DefaultURIResolver implements CollectionURIResolver {
 
     /**
      * set the collection base URI, which serves as a fallback from the base of the immediate schema.
-     * 
+     *
      * @param collectionBaseURI the URI.
      */
     public void setCollectionBaseURI(String collectionBaseURI) {

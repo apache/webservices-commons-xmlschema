@@ -19,9 +19,11 @@
 
 package org.apache.ws.commons.schema;
 
+import org.apache.ws.commons.schema.utils.XmlSchemaObjectBase;
+
 /**
  * Common type for all items that can occur in a sequence.
  */
-public interface XmlSchemaSequenceMember {
+public interface XmlSchemaSequenceMember extends XmlSchemaObjectBase {
 
 }
