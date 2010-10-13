@@ -32,13 +32,15 @@ public abstract class XmlSchemaExternal extends XmlSchemaAnnotated {
      * Creates new XmlSchemaExternal
      */
     protected XmlSchemaExternal(XmlSchema parent) {
-        this.schema = parent;
         parent.getExternals().add(this);
         parent.getItems().add(this);
     }
 
     public XmlSchema getSchema() {
         return schema;
+    }
+    public void setSchema(XmlSchema sc) {
+        schema = sc;
     }
 
     public String getSchemaLocation() {
