@@ -87,6 +87,11 @@ public final class NodeNamespaceContext implements NamespacePrefixList, Serializ
     
     
     public static String getNamespaceURI(Element el, String pfx) {
+        if ("xml".equals(pfx)) {
+            return "http://www.w3.org/XML/1998/namespace";
+        } else  if ("xmlns".equals(pfx)) {
+            return "http://www.w3.org/2000/xmlns/";
+        }
         if (DOM_LEVEL_3) {
             return getNamespaceURIDomLevel3(el, pfx);
         }
