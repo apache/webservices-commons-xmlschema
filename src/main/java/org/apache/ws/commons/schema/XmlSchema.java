@@ -141,26 +141,6 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
     }
 
     /**
-     * Add a new type to the schema. The type must have a name, and there must not already be a type of this
-     * name in the schema. The type must have been created as a top-level type.
-     *
-     * @param type the new type.
-     */
-    public void addType(XmlSchemaType type) {
-        QName qname = type.getQName();
-        if (schemaTypes.containsKey(qname)) {
-            throw new XmlSchemaException("Schema for namespace '" + syntacticalTargetNamespace
-                                         + "' already contains type '" + qname.getLocalPart() + "'");
-        }
-        if (!type.isTopLevel()) {
-            throw new XmlSchemaException(
-                                         "Attempt to add a non-top-level type "
-                                         + "to the global items in a schema");
-        }
-        schemaTypes.put(qname, type);
-    }
-
-    /**
      * Return an array of DOM documents consisting of this schema and any schemas that it references.
      * Referenced schemas are only returned if the {@link XmlSchemaExternal} objects corresponding to them
      * have their 'schema' fields filled in.
