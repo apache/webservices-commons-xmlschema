@@ -25,7 +25,6 @@ import javax.xml.namespace.QName;
  * Class used within complex types that defines the reference to groups defined at the schema level.
  * Represents the World Wide Web Consortium (W3C) group element with ref attribute.
  */
-
 public class XmlSchemaGroupRef extends XmlSchemaParticle implements XmlSchemaSequenceMember {
 
     private XmlSchemaGroupParticle particle;
@@ -53,5 +52,4 @@ public class XmlSchemaGroupRef extends XmlSchemaParticle implements XmlSchemaSeq
     void setParticle(XmlSchemaGroupParticle particle) {
         this.particle = particle;
     }
-
 }

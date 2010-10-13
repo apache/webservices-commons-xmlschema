@@ -24,6 +24,7 @@ import javax.xml.namespace.QName;
 import org.apache.ws.commons.schema.utils.XmlSchemaNamedWithForm;
 import org.apache.ws.commons.schema.utils.XmlSchemaNamedWithFormImpl;
 import org.apache.ws.commons.schema.utils.XmlSchemaRef;
+import org.apache.ws.commons.schema.utils.XmlSchemaRefBase;
 
 /**
  * Class for attribute types. Represents the World Wide Web Consortium (W3C) attribute element.
@@ -31,7 +32,7 @@ import org.apache.ws.commons.schema.utils.XmlSchemaRef;
  * ref= attributes are in the parent items collection, not in the map of named items.
  */
 public class XmlSchemaAttribute extends XmlSchemaAttributeOrGroupRef implements XmlSchemaNamedWithForm,
-    XmlSchemaAttributeGroupMember {
+    XmlSchemaAttributeGroupMember, XmlSchemaItemWithRef<XmlSchemaAttribute> {
 
     private String defaultValue;
     private String fixedValue;
@@ -159,5 +160,17 @@ public class XmlSchemaAttribute extends XmlSchemaAttributeOrGroupRef implements 
 
     public QName getWireName() {
         return namedDelegate.getWireName();
+    }
+
+    public boolean isRef() {
+        return ref.getTargetQName() != null;
+    }
+
+    public QName getTargetQName() {
+        return ref.getTargetQName();
+    }
+
+    public XmlSchemaRefBase getRefBase() {
+        return ref;
     }
 }

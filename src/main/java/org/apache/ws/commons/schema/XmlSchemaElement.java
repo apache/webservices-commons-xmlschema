@@ -28,16 +28,18 @@ import javax.xml.namespace.QName;
 import org.apache.ws.commons.schema.utils.XmlSchemaNamedWithForm;
 import org.apache.ws.commons.schema.utils.XmlSchemaNamedWithFormImpl;
 import org.apache.ws.commons.schema.utils.XmlSchemaRef;
+import org.apache.ws.commons.schema.utils.XmlSchemaRefBase;
 
 /**
  * Class for elements. Represents the World Wide Web Consortium (W3C) element element.
- * 
+ *
  * Note that ref= elements are in the parent schema 'items' collection,
  * not in the 'element' Map.
  */
 
 public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver, XmlSchemaNamedWithForm,
-    XmlSchemaChoiceMember, XmlSchemaSequenceMember {
+    XmlSchemaChoiceMember, XmlSchemaSequenceMember,
+    XmlSchemaItemWithRef<XmlSchemaElement> {
 
     /**
      * Attribute used to block a type derivation.
@@ -75,7 +77,7 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver,
      * QName of an element that can be a substitute for this element.
      */
     private QName substitutionGroup;
-    
+
     private XmlSchemaNamedWithFormImpl namedDelegate;
 
     /**
@@ -152,11 +154,11 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver,
         this.nillable = isNillable;
     }
 
-  
+
     public XmlSchemaRef<XmlSchemaElement> getRef() {
         return ref;
     }
- 
+
     public XmlSchemaType getSchemaType() {
         return schemaType;
     }
@@ -184,32 +186,32 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver,
     public void setType(XmlSchemaType type) {
         this.schemaType = type;
     }
-    
+
 
     public String getName() {
         return namedDelegate.getName();
     }
-    
+
 
     public XmlSchema getParent() {
         return namedDelegate.getParent();
     }
-    
+
 
     public QName getQName() {
         return namedDelegate.getQName();
     }
-    
+
 
     public boolean isAnonymous() {
         return namedDelegate.isAnonymous();
     }
-    
+
 
     public boolean isTopLevel() {
         return namedDelegate.isTopLevel();
     }
-    
+
     public void setName(String name) {
         if (namedDelegate.isTopLevel() && namedDelegate.getName() != null) {
             namedDelegate.getParent().getElements().remove(getQName());
@@ -273,5 +275,17 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver,
      */
     public XmlSchemaDerivationMethod getFinalDerivationResolved() {
         return finalDerivationResolved;
+    }
+
+    public boolean isRef() {
+        return ref.getTargetQName() != null;
+    }
+
+    public QName getTargetQName() {
+        return ref.getTargetQName();
+    }
+
+    public XmlSchemaRefBase getRefBase() {
+        return ref;
     }
 }
