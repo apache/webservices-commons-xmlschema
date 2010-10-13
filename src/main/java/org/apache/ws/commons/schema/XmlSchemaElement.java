@@ -56,7 +56,6 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver,
     private String fixedValue;
 
     private XmlSchemaDerivationMethod finalDerivation;
-    private XmlSchemaDerivationMethod finalDerivationResolved;
 
     private boolean abstractElement;
     private boolean nillable;
@@ -198,6 +197,9 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver,
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public QName getQName() {
         return namedDelegate.getQName();
     }
@@ -252,29 +254,19 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver,
     }
 
     /**
-     * @param abstractElement The abstractElement to set.
+     * Set the 'abstract' attribute of this element.
+     * @param abstractElement
      */
     public void setAbstractElement(boolean abstractElement) {
         this.abstractElement = abstractElement;
     }
 
-    /** * @return Returns the abstractElement.
+
+    /**
+     *  @return true if this element is abstract.
      */
     public boolean isAbstractElement() {
         return abstractElement;
-    }
-
-    /**
-     * @param finalDerivationResolved The finalDerivationResolved to set.
-     */
-    public void setFinalDerivationResolved(XmlSchemaDerivationMethod finalDerivationResolved) {
-        this.finalDerivationResolved = finalDerivationResolved;
-    }
-
-    /** * @return Returns the finalDerivationResolved.
-     */
-    public XmlSchemaDerivationMethod getFinalDerivationResolved() {
-        return finalDerivationResolved;
     }
 
     public boolean isRef() {

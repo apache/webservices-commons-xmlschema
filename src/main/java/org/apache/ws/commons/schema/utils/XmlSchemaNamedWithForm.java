@@ -26,7 +26,7 @@ import org.apache.ws.commons.schema.XmlSchemaForm;
 /**
  * Attributes and elements have names that are influenced by their form.
  * Essentially, the 'form' has three possible values: qualified,
- * unqualified, and 'inherit from parent' (= unspecified). 
+ * unqualified, and 'inherit from parent' (= unspecified).
  */
 public interface XmlSchemaNamedWithForm extends XmlSchemaNamed {
     /**
@@ -35,14 +35,14 @@ public interface XmlSchemaNamedWithForm extends XmlSchemaNamed {
      * @return
      */
     XmlSchemaForm getForm();
-    
+
     /**
      * Set the schema form.
      * @param form Schema form. Pass in XmlSchemaForm.NONE to inherit
      * from the parent schema.
      */
     void setForm(XmlSchemaForm form);
-    
+
     /**
      * True if this item has a specified form, false if it inherits from
      * the parent schema.
@@ -51,9 +51,9 @@ public interface XmlSchemaNamedWithForm extends XmlSchemaNamed {
     boolean isFormSpecified();
 
     /**
-     * The name of this item as it is sent 'over the wire'. If the form 
-     * is unqualified, this has "" for a namespaceURI. Otherwise, it is the
-     * same as getName().
+     * The name of this item as it is sent 'over the wire' or stored
+     * in an XML file. If the form is unqualified, this has "" for a namespaceURI.
+     * Otherwise, it is the same as getQName().
      * @return
      */
     QName getWireName();
