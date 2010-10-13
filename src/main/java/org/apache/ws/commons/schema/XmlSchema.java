@@ -50,10 +50,9 @@ import org.apache.ws.commons.schema.utils.NamespacePrefixList;
 
 /**
  * Contains the definition of a schema. All XML Schema definition language (XSD) elements are children of the
- * schema element. Represents the World Wide Web Consortium (W3C) schema element,
+ * schema element.
  */
-public class XmlSchema
-    extends XmlSchemaAnnotated implements NamespaceContextOwner {
+public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwner {
     static final String SCHEMA_NS = XMLConstants.W3C_XML_SCHEMA_NS_URI;
 
     private static final String UTF_8_ENCODING = "UTF-8";
@@ -83,17 +82,18 @@ public class XmlSchema
     private String inputEncoding;
 
     /**
-     * Create a schema that is not a member of a collection.
+     * Create a schema that is not a member of a collection and has no target namespace or system ID.
      */
     public XmlSchema() {
         this(null, null, null);
     }
 
     /**
-     * Create a new schema and record it as a member of a schema collection.
+     * Create a new schema with a target namespace and system ID, and record it as a member of a schema
+     * collection.
      *
      * @param namespace the target namespace.
-     * @param systemId the system ID for the schema.
+     * @param systemId the system ID for the schema. This is used to resolve references to other schemas.
      * @param parent the parent collection.
      */
     public XmlSchema(String namespace, String systemId, XmlSchemaCollection parent) {
@@ -118,7 +118,8 @@ public class XmlSchema
         }
         if (parent != null) {
             XmlSchemaCollection.SchemaKey schemaKey =
-                new XmlSchemaCollection.SchemaKey(this.logicalTargetNamespace,
+                new XmlSchemaCollection.SchemaKey(
+                                                  this.logicalTargetNamespace,
                                                   systemId);
             if (parent.containsSchema(schemaKey)) {
                 throw new XmlSchemaException("Schema name conflict in collection");
@@ -128,120 +129,466 @@ public class XmlSchema
         }
     }
 
+    /**
+     * Create a new schema in a collection with a target namespace.
+     *
+     * @param namespace the target namespace.
+     * @param parent the containing collection.
+     */
     public XmlSchema(String namespace, XmlSchemaCollection parent) {
         this(namespace, namespace, parent);
 
     }
 
-    public void setInputEncoding(String encoding) {
-        this.inputEncoding = encoding;
+    /**
+     * Add a new type to the schema. The type must have a name, and there must not already be a type of this
+     * name in the schema. The type must have been created as a top-level type.
+     *
+     * @param type the new type.
+     */
+    public void addType(XmlSchemaType type) {
+        QName qname = type.getQName();
+        if (schemaTypes.containsKey(qname)) {
+            throw new XmlSchemaException("Schema for namespace '" + syntacticalTargetNamespace
+                                         + "' already contains type '" + qname.getLocalPart() + "'");
+        }
+        if (!type.isTopLevel()) {
+            throw new XmlSchemaException(
+                                         "Attempt to add a non-top-level type "
+                                         + "to the global items in a schema");
+        }
+        schemaTypes.put(qname, type);
     }
 
+    /**
+     * Return an array of DOM documents consisting of this schema and any schemas that it references.
+     * Referenced schemas are only returned if the {@link XmlSchemaExternal} objects corresponding to them
+     * have their 'schema' fields filled in.
+     *
+     * @return DOM documents.
+     */
+    public Document[] getAllSchemas() {
+        try {
+
+            XmlSchemaSerializer xser = new XmlSchemaSerializer();
+            xser.setExtReg(this.parent.getExtReg());
+            return xser.serializeSchema(this, true);
+
+        } catch (XmlSchemaSerializer.XmlSchemaSerializerException e) {
+            throw new XmlSchemaException("Error serializing schema", e);
+        }
+    }
+
+    /**
+     * Retrieve a global attribute by its QName.
+     *
+     * @param name
+     * @return the attribute.
+     */
+    public XmlSchemaAttribute getAttributeByName(QName name) {
+        return this.getAttributeByName(name, true, null);
+    }
+
+    /**
+     * Look for an attribute by its local name.
+     *
+     * @param name
+     * @return the attribute
+     */
+    public XmlSchemaAttribute getAttributeByName(String name) {
+        QName nameToSearchFor = new QName(this.getTargetNamespace(), name);
+        return this.getAttributeByName(nameToSearchFor, false, null);
+    }
+
+    /**
+     * @return the default attribute form for this schema.
+     */
     public XmlSchemaForm getAttributeFormDefault() {
         return attributeFormDefault;
     }
 
-    public void setAttributeFormDefault(XmlSchemaForm value) {
-        attributeFormDefault = value;
+    /**
+     * Retrieve an attribute group by QName.
+     *
+     * @param name
+     * @return
+     */
+    public XmlSchemaAttributeGroup getAttributeGroupByName(QName name) {
+        return getAttributeGroupByName(name, true, null);
     }
 
+    /**
+     * Return a map containing all the defined attribute groups of this schema. The keys are QNames, where the
+     * namespace will always be the target namespace of this schema. This makes it easier to look up items for
+     * cross-schema references.
+     *
+     * @return the map of attribute groups.
+     */
     public Map<QName, XmlSchemaAttributeGroup> getAttributeGroups() {
         return attributeGroups;
     }
 
+    /**
+     * Return a map containing all the defined attributes of this schema. The keys are QNames, where the
+     * namespace will always be the target namespace of this schema. This makes it easier to look up items for
+     * cross-schema references.
+     *
+     * @return the map of attributes.
+     */
     public Map<QName, XmlSchemaAttribute> getAttributes() {
         return attributes;
     }
 
+    /**
+     * Return the default block value for this schema.
+     *
+     * @return the default block value.
+     */
     public XmlSchemaDerivationMethod getBlockDefault() {
         return blockDefault;
     }
 
-    public void setBlockDefault(XmlSchemaDerivationMethod blockDefault) {
-        this.blockDefault = blockDefault;
+    /**
+     * Look for a element by its QName.
+     *
+     * @param name
+     * @return the element.
+     */
+    public XmlSchemaElement getElementByName(QName name) {
+        return this.getElementByName(name, true, null);
     }
 
+    /**
+     * get an element by its local name.
+     *
+     * @param name
+     * @return the element.
+     */
+    public XmlSchemaElement getElementByName(String name) {
+        QName nameToSearchFor = new QName(this.getTargetNamespace(), name);
+        return this.getElementByName(nameToSearchFor, false, null);
+    }
+
+    /**
+     * @return the default element form for this schema.
+     */
     public XmlSchemaForm getElementFormDefault() {
         return elementFormDefault;
     }
 
-    public void setElementFormDefault(XmlSchemaForm elementFormDefault) {
-        this.elementFormDefault = elementFormDefault;
-    }
-
+    /**
+     * Return a map containing all the defined elements of this schema. The keys are QNames, where the
+     * namespace will always be the target namespace of this schema. This makes it easier to look up items for
+     * cross-schema references.
+     *
+     * @return the map of elements.
+     */
     public Map<QName, XmlSchemaElement> getElements() {
         return elements;
     }
 
-    protected XmlSchemaElement getElementByName(QName name, boolean deep, Stack<XmlSchema> schemaStack) {
-        if (schemaStack != null && schemaStack.contains(this)) {
-            // recursive schema - just return null
-            return null;
-        }
-
-        XmlSchemaElement element = elements.get(name);
-        if (deep) {
-            if (element == null) {
-                // search the imports
-                for (XmlSchemaExternal item : externals) {
-
-                    XmlSchema schema = getSchema(item);
-
-                    if (schema != null) {
-                        // create an empty stack - push the current parent in
-                        // and
-                        // use the protected method to process the schema
-                        if (schemaStack == null) {
-                            schemaStack = new Stack<XmlSchema>();
-                        }
-                        schemaStack.push(this);
-                        element = schema.getElementByName(name, deep, schemaStack);
-                        if (element != null) {
-                            return element;
-                        }
-                    }
-                }
-            } else {
-                return element;
-            }
-        }
-        return element;
+    /**
+     * Return all of the includes, imports, and redefines for this schema.
+     *
+     * @return a list of the objects representing includes, imports, and redefines.
+     */
+    public List<XmlSchemaExternal> getExternals() {
+        return externals;
     }
 
-    protected XmlSchemaAttributeGroup getAttributeGroupByName(QName name,
-                                                              boolean deep, Stack<XmlSchema> schemaStack) {
-        if (schemaStack != null && schemaStack.contains(this)) {
-            // recursive schema - just return null
-            return null;
+    /**
+     * @return the default 'final' value for this schema.
+     */
+    public XmlSchemaDerivationMethod getFinalDefault() {
+        return finalDefault;
+    }
+
+    /**
+     * Retrieve a group by QName.
+     *
+     * @param name
+     * @return
+     */
+    public XmlSchemaGroup getGroupByName(QName name) {
+        return getGroupByName(name, true, null);
+    }
+
+    /**
+     * Return a map containing all the defined groups of this schema. The keys are QNames, where the namespace
+     * will always be the target namespace of this schema. This makes it easier to look up items for
+     * cross-schema references.
+     *
+     * @return the map of groups.
+     */
+    public Map<QName, XmlSchemaGroup> getGroups() {
+        return groups;
+    }
+
+    /**
+     * Return the character encoding for this schema. This will only be present if either the schema was read
+     * from an XML document or there was a call to {@link #setInputEncoding(String)}.
+     *
+     * @return
+     */
+    public String getInputEncoding() {
+        return inputEncoding;
+    }
+
+    /**
+     * @return <strong>all</strong> of the global items from this schema.
+     */
+    public List<XmlSchemaObject> getItems() {
+        return items;
+    }
+
+    /**
+     * Return the logical target namespace. If a schema document has no target namespace, but it is referenced
+     * via an xs:include or xs:redefine, its logical target namespace is the target namespace of the including
+     * schema.
+     *
+     * @return the logical target namespace.
+     */
+    public String getLogicalTargetNamespace() {
+        return logicalTargetNamespace;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public NamespacePrefixList getNamespaceContext() {
+        return namespaceContext;
+    }
+
+    /**
+     * Retrieve a notation by QName.
+     *
+     * @param name
+     * @return the notation
+     */
+    public XmlSchemaNotation getNotationByName(QName name) {
+        return getNotationByName(name, true, null);
+    }
+
+    /**
+     * Return a map containing all the defined notations of this schema. The keys are QNames, where the
+     * namespace will always be the target namespace of this schema. This makes it easier to look up items for
+     * cross-schema references.
+     *
+     * @return the map of notations.
+     */
+    public Map<QName, XmlSchemaNotation> getNotations() {
+        return notations;
+    }
+
+    /**
+     * Return the parent XmlSchemaCollection. If this schema was not initialized in a collection the return
+     * value will be null.
+     *
+     * @return the parent collection.
+     */
+    public XmlSchemaCollection getParent() {
+        return parent;
+    }
+
+    /**
+     * Retrieve a DOM tree for this one schema, independent of any included or related schemas.
+     *
+     * @return The DOM document.
+     * @throws XmlSchemaSerializerException
+     */
+    public Document getSchemaDocument() throws XmlSchemaSerializerException {
+        XmlSchemaSerializer xser = new XmlSchemaSerializer();
+        xser.setExtReg(this.parent.getExtReg());
+        return xser.serializeSchema(this, false)[0];
+    }
+
+    /**
+     * @return the namespace prefix for the target namespace.
+     */
+    public String getSchemaNamespacePrefix() {
+        return schemaNamespacePrefix;
+    }
+
+    /**
+     * Return a map containing all the defined types of this schema. The keys are QNames, where the namespace
+     * will always be the target namespace of this schema. This makes it easier to look up items for
+     * cross-schema references.
+     *
+     * @return the map of types.
+     */
+    public Map<QName, XmlSchemaType> getSchemaTypes() {
+        return schemaTypes;
+    }
+
+    /**
+     * Return the declared target namespace of this schema.
+     *
+     * @see #getLogicalTargetNamespace()
+     * @return the namespace URI.
+     */
+    public String getTargetNamespace() {
+        return syntacticalTargetNamespace;
+    }
+
+    /**
+     * Search this schema, and its peers in its parent collection, for a schema type specified by QName.
+     *
+     * @param name the type name.
+     * @return the type.
+     */
+    public XmlSchemaType getTypeByName(QName name) {
+        return getTypeByName(name, true, null);
+    }
+
+    /**
+     * Retrieve a named type from this schema.
+     *
+     * @param name
+     * @return the type.
+     */
+    public XmlSchemaType getTypeByName(String name) {
+        QName nameToSearchFor = new QName(this.getTargetNamespace(), name);
+        return getTypeByName(nameToSearchFor, false, null);
+    }
+
+    /**
+     * Return the declared XML Schema version of this schema. XmlSchema supports only version 1.0.
+     *
+     * @return
+     */
+    public String getVersion() {
+        return version;
+    }
+
+    /**
+     * Set the default attribute form for this schema.
+     *
+     * @param value the form. This may not be null.
+     */
+    public void setAttributeFormDefault(XmlSchemaForm value) {
+        attributeFormDefault = value;
+    }
+
+    /**
+     * Set the default block value for this schema.
+     *
+     * @param blockDefault the new block value.
+     */
+    public void setBlockDefault(XmlSchemaDerivationMethod blockDefault) {
+        this.blockDefault = blockDefault;
+    }
+
+    /**
+     * Set the default element form for this schema.
+     *
+     * @param elementFormDefault the element form. This may not be null.
+     */
+    public void setElementFormDefault(XmlSchemaForm elementFormDefault) {
+        this.elementFormDefault = elementFormDefault;
+    }
+
+    /**
+     * Set the default 'final' value for this schema. The value may not be null.
+     *
+     * @param finalDefault the new final value.
+     */
+    public void setFinalDefault(XmlSchemaDerivationMethod finalDefault) {
+        this.finalDefault = finalDefault;
+    }
+
+    /**
+     * Set the character encoding name for the schema. This is typically set when reading a schema from an XML
+     * file, so that it can be written back out in the same encoding.
+     *
+     * @param encoding Character encoding name.
+     */
+    public void setInputEncoding(String encoding) {
+        this.inputEncoding = encoding;
+    }
+
+    /**
+     * Sets the schema elements namespace context. This may be used for schema serialization, until a better
+     * mechanism was found.
+     */
+    public void setNamespaceContext(NamespacePrefixList namespaceContext) {
+        this.namespaceContext = namespaceContext;
+    }
+
+    /**
+     * Set the namespace prefix corresponding to the target namespace.
+     *
+     * @param schemaNamespacePrefix
+     */
+    public void setSchemaNamespacePrefix(String schemaNamespacePrefix) {
+        this.schemaNamespacePrefix = schemaNamespacePrefix;
+    }
+
+    /**
+     * Set the target namespace for this schema.
+     *
+     * @param targetNamespace the new target namespace URI. A value of "" is ignored.
+     */
+    public void setTargetNamespace(String targetNamespace) {
+        if (!"".equals(targetNamespace)) {
+            logicalTargetNamespace = targetNamespace;
+            syntacticalTargetNamespace = targetNamespace;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + "[" + logicalTargetNamespace + "]";
+    }
+
+    /**
+     * Serialize the schema as XML to the specified stream using the encoding established with
+     * {@link #setInputEncoding(String)}.
+     *
+     * @param out - the output stream to write to
+     * @throws UnsupportedEncodingException for an invalid encoding.
+     */
+    public void write(OutputStream out) throws UnsupportedEncodingException {
+        if (this.inputEncoding != null && !"".equals(this.inputEncoding)) {
+            write(new OutputStreamWriter(out, this.inputEncoding));
+        } else {
+            // As per the XML spec the default is taken to be UTF 8
+            write(new OutputStreamWriter(out, UTF_8_ENCODING));
         }
 
-        XmlSchemaAttributeGroup group = attributeGroups.get(name);
-        if (deep) {
-            if (group == null) {
-                // search the imports
-                for (XmlSchemaExternal item : externals) {
+    }
 
-                    XmlSchema schema = getSchema(item);
-
-                    if (schema != null) {
-                        // create an empty stack - push the current parent in
-                        // and
-                        // use the protected method to process the schema
-                        if (schemaStack == null) {
-                            schemaStack = new Stack<XmlSchema>();
-                        }
-                        schemaStack.push(this);
-                        group = schema.getAttributeGroupByName(name, deep, schemaStack);
-                        if (group != null) {
-                            return group;
-                        }
-                    }
-                }
-            } else {
-                return group;
-            }
+    /**
+     * Serialize the schema as XML to the specified stream using the encoding established with
+     * {@link #setInputEncoding(String)}.
+     *
+     * @param out - the output stream to write to
+     * @param options - a map of options
+     * @throws UnsupportedEncodingException
+     */
+    public void write(OutputStream out, Map<String, String> options) throws UnsupportedEncodingException {
+        if (this.inputEncoding != null && !"".equals(this.inputEncoding)) {
+            write(new OutputStreamWriter(out, this.inputEncoding), options);
+        } else {
+            write(new OutputStreamWriter(out, UTF_8_ENCODING), options);
         }
-        return group;
+    }
+
+    /**
+     * Serialize the schema to a {@link java.io.Writer}.
+     *
+     * @param writer - the writer to write this
+     */
+    public void write(Writer writer) {
+        serializeInternal(this, writer, null);
+    }
+
+    /**
+     * Serialize the schema to a {@link java.io.Writer}.
+     *
+     * @param writer - the writer to write this
+     */
+    public void write(Writer writer, Map<String, String> options) {
+        serializeInternal(this, writer, options);
     }
 
     protected XmlSchemaAttribute getAttributeByName(QName name, boolean deep, Stack<XmlSchema> schemaStack) {
@@ -278,6 +625,77 @@ public class XmlSchema
 
         return attribute;
 
+    }
+
+    protected XmlSchemaAttributeGroup getAttributeGroupByName(QName name, boolean deep,
+                                                              Stack<XmlSchema> schemaStack) {
+        if (schemaStack != null && schemaStack.contains(this)) {
+            // recursive schema - just return null
+            return null;
+        }
+
+        XmlSchemaAttributeGroup group = attributeGroups.get(name);
+        if (deep) {
+            if (group == null) {
+                // search the imports
+                for (XmlSchemaExternal item : externals) {
+
+                    XmlSchema schema = getSchema(item);
+
+                    if (schema != null) {
+                        // create an empty stack - push the current parent in
+                        // and
+                        // use the protected method to process the schema
+                        if (schemaStack == null) {
+                            schemaStack = new Stack<XmlSchema>();
+                        }
+                        schemaStack.push(this);
+                        group = schema.getAttributeGroupByName(name, deep, schemaStack);
+                        if (group != null) {
+                            return group;
+                        }
+                    }
+                }
+            } else {
+                return group;
+            }
+        }
+        return group;
+    }
+
+    protected XmlSchemaElement getElementByName(QName name, boolean deep, Stack<XmlSchema> schemaStack) {
+        if (schemaStack != null && schemaStack.contains(this)) {
+            // recursive schema - just return null
+            return null;
+        }
+
+        XmlSchemaElement element = elements.get(name);
+        if (deep) {
+            if (element == null) {
+                // search the imports
+                for (XmlSchemaExternal item : externals) {
+
+                    XmlSchema schema = getSchema(item);
+
+                    if (schema != null) {
+                        // create an empty stack - push the current parent in
+                        // and
+                        // use the protected method to process the schema
+                        if (schemaStack == null) {
+                            schemaStack = new Stack<XmlSchema>();
+                        }
+                        schemaStack.push(this);
+                        element = schema.getElementByName(name, deep, schemaStack);
+                        if (element != null) {
+                            return element;
+                        }
+                    }
+                }
+            } else {
+                return element;
+            }
+        }
+        return element;
     }
 
     protected XmlSchemaGroup getGroupByName(QName name, boolean deep, Stack<XmlSchema> schemaStack) {
@@ -353,48 +771,6 @@ public class XmlSchema
     }
 
     /**
-     * get an element by the name in the local schema
-     *
-     * @param name
-     * @return the element.
-     */
-    public XmlSchemaElement getElementByName(String name) {
-        QName nameToSearchFor = new QName(this.getTargetNamespace(), name);
-        return this.getElementByName(nameToSearchFor, false, null);
-    }
-
-    /**
-     * Look for a element by its QName.
-     *
-     * @param name
-     * @return the element.
-     */
-    public XmlSchemaElement getElementByName(QName name) {
-        return this.getElementByName(name, true, null);
-    }
-
-    /**
-     * Look for a global attribute by its QName.
-     *
-     * @param name
-     * @return the attribute.
-     */
-    public XmlSchemaAttribute getAttributeByName(QName name) {
-        return this.getAttributeByName(name, true, null);
-    }
-
-    /**
-     * Look for an attribute by the name in the local schema
-     *
-     * @param name
-     * @return the attribute
-     */
-    public XmlSchemaAttribute getAttributeByName(String name) {
-        QName nameToSearchFor = new QName(this.getTargetNamespace(), name);
-        return this.getAttributeByName(nameToSearchFor, false, null);
-    }
-
-    /**
      * Protected method that allows safe (non-recursive schema loading). It looks for a type with constraints.
      *
      * @param name
@@ -437,54 +813,25 @@ public class XmlSchema
         return type;
     }
 
-    /**
-     * Search this schema and all the imported/included ones for the given Qname
-     *
-     * @param name
-     * @return the type.
-     */
-    public XmlSchemaType getTypeByName(QName name) {
-        return getTypeByName(name, true, null);
+    String getSyntacticalTargetNamespace() {
+        return syntacticalTargetNamespace;
     }
 
-    /**
-     * Retrieve a type by QName.
-     *
-     * @param name
-     * @return the type.
-     */
-    public XmlSchemaType getTypeByName(String name) {
-        QName nameToSearchFor = new QName(this.getTargetNamespace(), name);
-        return getTypeByName(nameToSearchFor, false, null);
+    void setLogicalTargetNamespace(String logicalTargetNamespace) {
+        this.logicalTargetNamespace = logicalTargetNamespace;
     }
 
-    /**
-     * Retrieve an attribute group by QName.
-     * @param name
-     * @return
-     */
-    public XmlSchemaAttributeGroup getAttributeGroupByName(QName name) {
-        return getAttributeGroupByName(name, true, null);
+    void setParent(XmlSchemaCollection parent) {
+        this.parent = parent;
     }
 
-    /**
-     * Retrieve a group by QName.
-     * @param name
-     * @return
-     */
-    public XmlSchemaGroup getGroupByName(QName name) {
-        return getGroupByName(name, true, null);
+    void setSyntacticalTargetNamespace(String syntacticalTargetNamespace) {
+        this.syntacticalTargetNamespace = syntacticalTargetNamespace;
     }
 
-    /**
-     * Retrieve a notation by QName.
-     * @param name
-     * @return
-     */
-    public XmlSchemaNotation getNotationByName(QName name) {
-        return getNotationByName(name, true, null);
+    void setVersion(String version) {
+        this.version = version;
     }
-
 
     /**
      * Get a schema from an import
@@ -506,121 +853,14 @@ public class XmlSchema
         return schema;
     }
 
-    public XmlSchemaDerivationMethod getFinalDefault() {
-        return finalDefault;
-    }
-
-    public void setFinalDefault(XmlSchemaDerivationMethod finalDefault) {
-        this.finalDefault = finalDefault;
-    }
-
-    public Map<QName, XmlSchemaGroup> getGroups() {
-        return groups;
-    }
-
     /**
-     * Return the includes, imports, and redefines.
-     * @return a list of the objects representing includes, imports, and redefines.
-     */
-    public List<XmlSchemaExternal> getExternals() {
-        return externals;
-    }
-
-    public List<XmlSchemaObject> getItems() {
-        return items;
-    }
-
-    public Map<QName, XmlSchemaNotation> getNotations() {
-        return notations;
-    }
-
-    public Map<QName, XmlSchemaType> getSchemaTypes() {
-        return schemaTypes;
-    }
-
-    public String getTargetNamespace() {
-        return syntacticalTargetNamespace;
-    }
-
-    public void setTargetNamespace(String targetNamespace) {
-        if (!"".equals(targetNamespace)) {
-            logicalTargetNamespace = targetNamespace;
-            syntacticalTargetNamespace = targetNamespace;
-        }
-    }
-
-    public String getVersion() {
-        return version;
-    }
-
-    /**
-     * Serialize the schema into the given output stream
+     * Load the default options
      *
-     * @param out - the output stream to write to
+     * @param options - the map of
      */
-    public void write(OutputStream out) {
-        try {
-            if (this.inputEncoding != null && !"".equals(this.inputEncoding)) {
-                write(new OutputStreamWriter(out, this.inputEncoding));
-            } else {
-                // As per the XML spec the default is taken to be UTF 8
-                write(new OutputStreamWriter(out, UTF_8_ENCODING));
-            }
-        } catch (UnsupportedEncodingException e) {
-            // log the error and just write it without the encoding
-            write(new OutputStreamWriter(out));
-        }
-
-    }
-
-    /**
-     * Serialize the schema into the given output stream
-     *
-     * @param out - the output stream to write to
-     * @param options - a map of options
-     */
-    public void write(OutputStream out, Map<String, String> options) {
-        try {
-            if (this.inputEncoding != null && !"".equals(this.inputEncoding)) {
-                write(new OutputStreamWriter(out, this.inputEncoding), options);
-            } else {
-                write(new OutputStreamWriter(out, UTF_8_ENCODING), options);
-            }
-        } catch (UnsupportedEncodingException e) {
-            // log the error and just write it without the encoding
-            write(new OutputStreamWriter(out));
-        }
-
-    }
-
-    /**
-     * Serialie the schema to a given writer
-     *
-     * @param writer - the writer to write this
-     */
-    public void write(Writer writer, Map<String, String> options) {
-        serializeInternal(this, writer, options);
-    }
-
-    /**
-     * Serialie the schema to a given writer
-     *
-     * @param writer - the writer to write this
-     */
-    public void write(Writer writer) {
-        serializeInternal(this, writer, null);
-    }
-
-    public Document[] getAllSchemas() {
-        try {
-
-            XmlSchemaSerializer xser = new XmlSchemaSerializer();
-            xser.setExtReg(this.parent.getExtReg());
-            return xser.serializeSchema(this, true);
-
-        } catch (XmlSchemaSerializer.XmlSchemaSerializerException e) {
-            throw new XmlSchemaException(e.getMessage());
-        }
+    private void loadDefaultOptions(Map<String, String> options) {
+        options.put(OutputKeys.OMIT_XML_DECLARATION, "yes");
+        options.put(OutputKeys.INDENT, "yes");
     }
 
     /**
@@ -679,150 +919,5 @@ public class XmlSchema
         } catch (IOException e) {
             throw new XmlSchemaException(e.getMessage());
         }
-    }
-
-    /**
-     * Load the default options
-     *
-     * @param options - the map of
-     */
-    private void loadDefaultOptions(Map<String, String> options) {
-        options.put(OutputKeys.OMIT_XML_DECLARATION, "yes");
-        options.put(OutputKeys.INDENT, "yes");
-    }
-
-    public void addType(XmlSchemaType type) {
-        QName qname = type.getQName();
-        if (schemaTypes.containsKey(qname)) {
-            throw new XmlSchemaException(" Schema for namespace '" + syntacticalTargetNamespace
-                                         + "' already contains type '" + qname.getLocalPart() + "'");
-        }
-        schemaTypes.put(qname, type);
-    }
-
-    public NamespacePrefixList getNamespaceContext() {
-        return namespaceContext;
-    }
-
-    /**
-     * Sets the schema elements namespace context. This may be used for schema serialization, until a better
-     * mechanism was found.
-     */
-    public void setNamespaceContext(NamespacePrefixList namespaceContext) {
-        this.namespaceContext = namespaceContext;
-    }
-
-    /**
-     * Override the equals(Object) method with equivalence checking that is specific to this class.
-     */
-    @Override
-    public boolean equals(Object what) {
-
-        // Note: this method may no longer be required when line number/position are used correctly in
-        // XmlSchemaObject.
-        // Currently they are simply initialized to zero, but they are used in XmlSchemaObject.equals
-        // which can result in a false positive (e.g. if a WSDL contains 2 inlined schemas).
-
-        if (what == this) {
-            return true;
-        }
-
-        // If the inherited behaviour determines that the objects are NOT equal, return false.
-        // Otherwise, do some further equivalence checking.
-
-        if (!super.equals(what)) {
-            return false;
-        }
-
-        if (!(what instanceof XmlSchema)) {
-            return false;
-        }
-
-        XmlSchema xs = (XmlSchema)what;
-
-        if (this.getId() != null) {
-            if (!this.getId().equals(xs.getId())) {
-                return false;
-            }
-        } else {
-            if (xs.getId() != null) {
-                return false;
-            }
-        }
-
-        if (this.syntacticalTargetNamespace != null) {
-            if (!this.syntacticalTargetNamespace.equals(xs.syntacticalTargetNamespace)) {
-                return false;
-            }
-        } else {
-            if (xs.syntacticalTargetNamespace != null) {
-                return false;
-            }
-        }
-
-        // TODO decide if further schema content should be checked for equivalence.
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
-
-    /**
-     * Retrieve a DOM tree for this one schema, independent of any included or related schemas.
-     *
-     * @return The DOM document.
-     * @throws XmlSchemaSerializerException
-     */
-    public Document getSchemaDocument() throws XmlSchemaSerializerException {
-        XmlSchemaSerializer xser = new XmlSchemaSerializer();
-        xser.setExtReg(this.parent.getExtReg());
-        return xser.serializeSchema(this, false)[0];
-    }
-
-    public String getInputEncoding() {
-        return inputEncoding;
-    }
-
-    public String getLogicalTargetNamespace() {
-        return logicalTargetNamespace;
-    }
-
-    public String toString() {
-        return super.toString() + "[" + logicalTargetNamespace + "]";
-    }
-
-    public XmlSchemaCollection getParent() {
-        return parent;
-    }
-
-    public String getSchemaNamespacePrefix() {
-        return schemaNamespacePrefix;
-    }
-
-    public void setSchemaNamespacePrefix(String schemaNamespacePrefix) {
-        this.schemaNamespacePrefix = schemaNamespacePrefix;
-    }
-
-    void setParent(XmlSchemaCollection parent) {
-        this.parent = parent;
-    }
-
-    void setSyntacticalTargetNamespace(String syntacticalTargetNamespace) {
-        this.syntacticalTargetNamespace = syntacticalTargetNamespace;
-    }
-
-    String getSyntacticalTargetNamespace() {
-        return syntacticalTargetNamespace;
-    }
-
-    void setLogicalTargetNamespace(String logicalTargetNamespace) {
-        this.logicalTargetNamespace = logicalTargetNamespace;
-    }
-
-    void setVersion(String version) {
-        this.version = version;
     }
 }

@@ -31,10 +31,10 @@ import org.apache.ws.commons.schema.utils.XmlSchemaRef;
 import org.apache.ws.commons.schema.utils.XmlSchemaRefBase;
 
 /**
- * Class for elements. Represents the World Wide Web Consortium (W3C) element element.
+ * Class for elements, representing xs:element.
  *
- * Note that ref= elements are in the parent schema 'items' collection,
- * not in the 'element' Map.
+ * This class represents both global elements and elements nested inside of
+ * types.
  */
 
 public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver, XmlSchemaNamedWithForm,

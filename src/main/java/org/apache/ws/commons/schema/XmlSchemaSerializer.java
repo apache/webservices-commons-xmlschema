@@ -117,6 +117,10 @@ public class XmlSchemaSerializer {
 
     /**
      * Serialize an entire schema, returning an array of DOM Documents, one per XSL file.
+     * If serializeIncluded is false, this will always return a single DOM document. If it is true,
+     * and there are external elements in this schema (include, import, or redefine), and
+     * they contain references to {@link XmlSchema} objects to represent them, they will
+     * be returned as additional documents in the array.
      *
      * @param schemaObj The XML Schema.
      * @param serializeIncluded whether to create DOM trees for any included or imported schemas.

@@ -27,9 +27,9 @@ import org.apache.ws.commons.schema.utils.XmlSchemaRef;
 import org.apache.ws.commons.schema.utils.XmlSchemaRefBase;
 
 /**
- * Class for attribute types. Represents the World Wide Web Consortium (W3C) attribute element.
+ * Class for attributes, representing xs:attribute.
  *
- * ref= attributes are in the parent items collection, not in the map of named items.
+ * This class represents both global and nested attributes.
  */
 public class XmlSchemaAttribute extends XmlSchemaAttributeOrGroupRef implements XmlSchemaNamedWithForm,
     XmlSchemaAttributeGroupMember, XmlSchemaItemWithRef<XmlSchemaAttribute> {

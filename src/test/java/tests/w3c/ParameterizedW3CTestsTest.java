@@ -42,16 +42,16 @@ import org.junit.runners.Parameterized.Parameters;
 
 
 /**
- * 
+ *
  */
 @RunWith(Parameterized.class)
 public class ParameterizedW3CTestsTest extends XMLAssert {
     private SchemaCase currentTest;
-    
+
     public ParameterizedW3CTestsTest(SchemaCase test) {
         currentTest = test;
     }
-    
+
     @Parameters
     public static Collection<Object[]> data() throws Exception {
         List<SchemaCase> tests = W3CTestCaseCollector.getSchemaTests();
@@ -61,7 +61,7 @@ public class ParameterizedW3CTestsTest extends XMLAssert {
         }
         return results;
     }
-    
+
     public XmlSchema loadSchema(File f) throws Exception {
         XmlSchemaCollection col = new XmlSchemaCollection();
         col.setBaseUri(f.getPath());
@@ -101,7 +101,7 @@ public class ParameterizedW3CTestsTest extends XMLAssert {
         }
     }
 
-    private void printFailureDetail(XmlSchema schema, DetailedDiff detaileddiffs) {
+    private void printFailureDetail(XmlSchema schema, DetailedDiff detaileddiffs) throws Exception {
         System.err.println("Failure detail");
         System.err.println("-----");
         schema.write(System.err);

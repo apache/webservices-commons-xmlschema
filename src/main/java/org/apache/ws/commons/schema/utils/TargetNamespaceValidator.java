@@ -21,7 +21,10 @@ package org.apache.ws.commons.schema.utils;
 import org.apache.ws.commons.schema.XmlSchema;
 
 /**
- * Interface of an object, which may validate a schemas target namespace.
+ * Interface called when reading a schema to validate the target namespace.
+ * This is used internally to ensure that an xs:import element (e.g.) that purports
+ * to import a schema with a particular target namespace actually point
+ * to a schema with that namespace.
  */
 public interface TargetNamespaceValidator {
     /**
