@@ -80,8 +80,8 @@ public abstract class XmlSchemaType extends XmlSchemaAnnotated implements XmlSch
             return super.toString() + "[{}" + getName() + "]";
 
         } else {
-            return super.toString() 
-                + "[{" + namedDelegate.getParent().getLogicalTargetNamespace() + "}" 
+            return super.toString()
+                + "[{" + namedDelegate.getParent().getLogicalTargetNamespace() + "}"
                 + getName() + "]";
         }
     }
@@ -107,6 +107,14 @@ public abstract class XmlSchemaType extends XmlSchemaAnnotated implements XmlSch
     }
 
     public void setName(String name) {
+       /*
+        * Inside a redefine, a 'non-top-level' type can have a name.
+        * This requires us to tolerate this case (non-top-level, named) even it
+        * in any other case it's completely invalid.
+        */
+        if (isTopLevel() && name == null) {
+            throw new XmlSchemaException("A non-top-level type may not be anonyous.");
+        }
         if (namedDelegate.isTopLevel() && namedDelegate.getName() != null) {
             namedDelegate.getParent().getSchemaTypes().remove(getQName());
         }

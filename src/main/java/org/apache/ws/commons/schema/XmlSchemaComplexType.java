@@ -165,5 +165,4 @@ public class XmlSchemaComplexType extends XmlSchemaType {
     XmlSchemaParticle getParticleType() {
         return particleType;
     }
-
 }
