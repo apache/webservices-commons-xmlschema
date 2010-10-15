@@ -214,11 +214,15 @@
         </plugin>
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
+	  <version>2.6</version>
           <configuration>
 	    <forkMode>never</forkMode>
 	    <additionalClasspathElements>
 	      <additionalClasspathElement>w3c-testcases</additionalClasspathElement>
 	    </additionalClasspathElements>
+	    <systemPropertyVariables>
+	      <org.apache.ws.commons.schema.protectReadOnlyCollections>true</org.apache.ws.commons.schema.protectReadOnlyCollections>
+	    </systemPropertyVariables>
           </configuration>
         </plugin>
         <plugin>
@@ -386,7 +390,7 @@
         <dependency>
           <groupId>xalan</groupId>
           <artifactId>xalan</artifactId>
-          <version>2.7.0</version>
+          <version>2.7.1</version>
         </dependency>
       </dependencies>
       <build>
@@ -394,23 +398,15 @@
           <plugin>
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>
-              <systemProperties>
-<!--
-									The default xalan TransformerFactory on the ibm jdk is
-									org.apache.xalan.processor.TransformerFactoryImpl which has a
-									known issue with implicit namespaces. Set this property to use
-									the xsltc TransformerFactory (which the sun jdk seems to
-									default to).
-								-->
-                <property>
-                  <name>
-										javax.xml.transform.TransformerFactory
-        							</name>
-                  <value>
-										org.apache.xalan.xsltc.trax.TransformerFactoryImpl
-        							</value>
-                </property>
-              </systemProperties>
+              <systemPropertyVariables>
+		<!--
+		    The default xalan TransformerFactory on the ibm jdk is
+		    org.apache.xalan.processor.TransformerFactoryImpl which has a
+		    known issue with implicit namespaces. Set this property to use
+		    the xsltc TransformerFactory (which the sun jdk seems to
+		    default to). -->
+		<javax.xml.transform.TransformerFactory>org.apache.xalan.xsltc.trax.TransformerFactoryImpl</javax.xml.transform.TransformerFactory>
+              </systemPropertyVariables>
             </configuration>
           </plugin>
         </plugins>

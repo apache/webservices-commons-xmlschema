@@ -45,6 +45,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 
 import org.apache.ws.commons.schema.XmlSchemaSerializer.XmlSchemaSerializerException;
+import org.apache.ws.commons.schema.utils.CollectionFactory;
 import org.apache.ws.commons.schema.utils.NamespaceContextOwner;
 import org.apache.ws.commons.schema.utils.NamespacePrefixList;
 
@@ -201,22 +202,28 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
      * Return a map containing all the defined attribute groups of this schema. The keys are QNames, where the
      * namespace will always be the target namespace of this schema. This makes it easier to look up items for
      * cross-schema references.
+     * <br/>
+     * If org.apache.ws.commons.schema.protectReadOnlyCollections
+     * is 'true', this will return a map that checks at runtime.
      *
      * @return the map of attribute groups.
      */
     public Map<QName, XmlSchemaAttributeGroup> getAttributeGroups() {
-        return attributeGroups;
+        return CollectionFactory.getProtectedMap(attributeGroups);
     }
 
     /**
      * Return a map containing all the defined attributes of this schema. The keys are QNames, where the
      * namespace will always be the target namespace of this schema. This makes it easier to look up items for
      * cross-schema references.
+     * <br/>
+     * If org.apache.ws.commons.schema.protectReadOnlyCollections
+     * is 'true', this will return a map that checks at runtime.
      *
      * @return the map of attributes.
      */
     public Map<QName, XmlSchemaAttribute> getAttributes() {
-        return attributes;
+        return CollectionFactory.getProtectedMap(attributes);
     }
 
     /**
@@ -260,20 +267,26 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
      * Return a map containing all the defined elements of this schema. The keys are QNames, where the
      * namespace will always be the target namespace of this schema. This makes it easier to look up items for
      * cross-schema references.
+     * <br/>
+     * If org.apache.ws.commons.schema.protectReadOnlyCollections
+     * is 'true', this will return a map that checks at runtime
      *
      * @return the map of elements.
      */
     public Map<QName, XmlSchemaElement> getElements() {
-        return elements;
+        return CollectionFactory.getProtectedMap(elements);
     }
 
     /**
      * Return all of the includes, imports, and redefines for this schema.
+     * <br/>
+     * If org.apache.ws.commons.schema.protectReadOnlyCollections
+     * is 'true', this will return a list that checks at runtime
      *
      * @return a list of the objects representing includes, imports, and redefines.
      */
     public List<XmlSchemaExternal> getExternals() {
-        return externals;
+        return CollectionFactory.getProtectedList(externals);
     }
 
     /**
@@ -296,12 +309,14 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
     /**
      * Return a map containing all the defined groups of this schema. The keys are QNames, where the namespace
      * will always be the target namespace of this schema. This makes it easier to look up items for
-     * cross-schema references.
+     * cross-schema references.<br/>
+     * If org.apache.ws.commons.schema.protectReadOnlyCollections
+     * is 'true', this will return a map that checks at runtime
      *
      * @return the map of groups.
      */
     public Map<QName, XmlSchemaGroup> getGroups() {
-        return groups;
+        return CollectionFactory.getProtectedMap(groups);
     }
 
     /**
@@ -315,10 +330,14 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
     }
 
     /**
+     * Return all of the global items in this schema.<br/>
+     * If org.apache.ws.commons.schema.protectReadOnlyCollections
+     * is 'true', this will return a map that checks at runtime.
      * @return <strong>all</strong> of the global items from this schema.
+     *
      */
     public List<XmlSchemaObject> getItems() {
-        return items;
+        return CollectionFactory.getProtectedList(items);
     }
 
     /**
@@ -353,11 +372,14 @@ public class XmlSchema extends XmlSchemaAnnotated implements NamespaceContextOwn
      * Return a map containing all the defined notations of this schema. The keys are QNames, where the
      * namespace will always be the target namespace of this schema. This makes it easier to look up items for
      * cross-schema references.
+     * <br/>
+     * If org.apache.ws.commons.schema.protectReadOnlyCollections
+     * is 'true', this will return a map that checks at runtime.
      *
      * @return the map of notations.
      */
     public Map<QName, XmlSchemaNotation> getNotations() {
-        return notations;
+        return CollectionFactory.getProtectedMap(notations);
     }
 
     /**

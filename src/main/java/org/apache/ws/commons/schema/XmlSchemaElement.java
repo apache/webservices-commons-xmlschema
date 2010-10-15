@@ -25,6 +25,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.apache.ws.commons.schema.utils.CollectionFactory;
 import org.apache.ws.commons.schema.utils.XmlSchemaNamedWithForm;
 import org.apache.ws.commons.schema.utils.XmlSchemaNamedWithFormImpl;
 import org.apache.ws.commons.schema.utils.XmlSchemaRef;
@@ -93,8 +94,13 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver,
         nillable = false;
         finalDerivation = XmlSchemaDerivationMethod.NONE;
         block = XmlSchemaDerivationMethod.NONE;
+        final XmlSchema fParentSchema = parentSchema;
         if (topLevel) {
-            parentSchema.getItems().add(this);
+            CollectionFactory.withSchemaModifiable(new Runnable() {
+                public void run() {
+                    fParentSchema.getItems().add(XmlSchemaElement.this);
+                }
+            });
         }
     }
 
@@ -215,13 +221,18 @@ public class XmlSchemaElement extends XmlSchemaParticle implements TypeReceiver,
     }
 
     public void setName(String name) {
-        if (namedDelegate.isTopLevel() && namedDelegate.getName() != null) {
-            namedDelegate.getParent().getElements().remove(getQName());
-        }
-        namedDelegate.setName(name);
-        if (namedDelegate.isTopLevel()) {
-            namedDelegate.getParent().getElements().put(getQName(), this);
-        }
+        final String fName = name;
+        CollectionFactory.withSchemaModifiable(new Runnable() {
+            public void run() {
+                if (namedDelegate.isTopLevel() && namedDelegate.getName() != null) {
+                    namedDelegate.getParent().getElements().remove(getQName());
+                }
+                namedDelegate.setName(fName);
+                if (namedDelegate.isTopLevel()) {
+                    namedDelegate.getParent().getElements().put(getQName(), XmlSchemaElement.this);
+                }
+            }
+        });
     }
 
     public XmlSchemaForm getForm() {

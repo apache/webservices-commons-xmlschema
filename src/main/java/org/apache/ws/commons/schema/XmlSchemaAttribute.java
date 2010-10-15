@@ -21,6 +21,7 @@ package org.apache.ws.commons.schema;
 
 import javax.xml.namespace.QName;
 
+import org.apache.ws.commons.schema.utils.CollectionFactory;
 import org.apache.ws.commons.schema.utils.XmlSchemaNamedWithForm;
 import org.apache.ws.commons.schema.utils.XmlSchemaNamedWithFormImpl;
 import org.apache.ws.commons.schema.utils.XmlSchemaRef;
@@ -53,8 +54,13 @@ public class XmlSchemaAttribute extends XmlSchemaAttributeOrGroupRef implements 
         namedDelegate.setRefObject(ref);
         ref.setNamedObject(namedDelegate);
         use = XmlSchemaUse.NONE;
+        final XmlSchema fSchema = schema;
         if (topLevel) {
-            schema.getItems().add(this);
+            CollectionFactory.withSchemaModifiable(new Runnable() {
+                public void run() {
+                    fSchema.getItems().add(XmlSchemaAttribute.this);
+                }
+            });
         }
     }
 
@@ -130,17 +136,23 @@ public class XmlSchemaAttribute extends XmlSchemaAttributeOrGroupRef implements 
     }
 
     public void setName(String name) {
+        final String fName = name;
+        CollectionFactory.withSchemaModifiable(new Runnable() {
 
-        if (namedDelegate.isTopLevel() && namedDelegate.getName() != null) {
-            namedDelegate.getParent().getAttributes().remove(getQName());
-        }
-        namedDelegate.setName(name);
-        if (namedDelegate.isTopLevel()) {
-            if (name == null) {
-                throw new XmlSchemaException("Top-level attributes may not be anonymous");
+            public void run() {
+                if (namedDelegate.isTopLevel() && namedDelegate.getName() != null) {
+                    namedDelegate.getParent().getAttributes().remove(getQName());
+                }
+                namedDelegate.setName(fName);
+                if (namedDelegate.isTopLevel()) {
+                    if (fName == null) {
+                        throw new XmlSchemaException("Top-level attributes may not be anonymous");
+                    }
+                    namedDelegate.getParent().getAttributes().put(getQName(), XmlSchemaAttribute.this);
+                }
             }
-            namedDelegate.getParent().getAttributes().put(getQName(), this);
-        }
+
+        });
     }
 
     public boolean isFormSpecified() {

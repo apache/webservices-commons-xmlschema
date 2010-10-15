@@ -19,20 +19,20 @@
 
 package org.apache.ws.commons.schema;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.apache.ws.commons.schema.utils.CollectionFactory;
 import org.apache.ws.commons.schema.utils.XmlSchemaNamed;
 import org.apache.ws.commons.schema.utils.XmlSchemaNamedImpl;
 
 /**
- * Class for attribute groups. Groups a set of attribute declarations so that 
+ * Class for attribute groups. Groups a set of attribute declarations so that
  * they can be incorporated as a
- * group into complex type definitions. Represents the World Wide Web 
+ * group into complex type definitions. Represents the World Wide Web
  * consortium (W3C) attributeGroup element when it does <i>not</i> have a 'ref='
- * attribute. 
+ * attribute.
  */
 
 public class XmlSchemaAttributeGroup extends XmlSchemaAnnotated implements XmlSchemaNamed,
@@ -45,10 +45,16 @@ public class XmlSchemaAttributeGroup extends XmlSchemaAnnotated implements XmlSc
      * Creates new XmlSchemaAttributeGroup
      */
     public XmlSchemaAttributeGroup(XmlSchema parent) {
+        final XmlSchema fParent = parent;
         namedDelegate = new XmlSchemaNamedImpl(parent, true);
-        parent.getItems().add(this);
+        CollectionFactory.withSchemaModifiable(new Runnable() {
+            public void run() {
+                fParent.getItems().add(XmlSchemaAttributeGroup.this);
+            }
+        });
+
         // we can't be put in the map until we have a name. Perhaps we should be forced to have a name ?
-        attributes = new ArrayList<XmlSchemaAttributeGroupMember>();
+        attributes = CollectionFactory.getList(XmlSchemaAttributeGroupMember.class);
     }
 
     public XmlSchemaAnyAttribute getAnyAttribute() {
@@ -84,10 +90,15 @@ public class XmlSchemaAttributeGroup extends XmlSchemaAnnotated implements XmlSc
     }
 
     public void setName(String name) {
-        if (name != null) {
-            namedDelegate.getParent().getAttributeGroups().remove(getQName());
-        }
-        namedDelegate.setName(name);
-        namedDelegate.getParent().getAttributeGroups().put(getQName(), this);
+        final String fName = name;
+        CollectionFactory.withSchemaModifiable(new Runnable() {
+            public void run() {
+                if (fName != null) {
+                    namedDelegate.getParent().getAttributeGroups().remove(getQName());
+                }
+                namedDelegate.setName(fName);
+                namedDelegate.getParent().getAttributeGroups().put(getQName(), XmlSchemaAttributeGroup.this);
+            }
+        });
     }
 }

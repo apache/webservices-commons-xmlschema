@@ -21,6 +21,7 @@ package org.apache.ws.commons.schema;
 
 import javax.xml.namespace.QName;
 
+import org.apache.ws.commons.schema.utils.CollectionFactory;
 import org.apache.ws.commons.schema.utils.XmlSchemaNamed;
 import org.apache.ws.commons.schema.utils.XmlSchemaNamedImpl;
 
@@ -42,10 +43,16 @@ public abstract class XmlSchemaType extends XmlSchemaAnnotated implements XmlSch
      * Creates new XmlSchemaType
      */
     protected XmlSchemaType(XmlSchema schema, boolean topLevel) {
+        final XmlSchema fSchema = schema;
         namedDelegate = new XmlSchemaNamedImpl(schema, topLevel);
         finalDerivation = XmlSchemaDerivationMethod.NONE;
         if (topLevel) {
-            schema.getItems().add(this);
+            CollectionFactory.withSchemaModifiable(new Runnable() {
+
+                public void run() {
+                    fSchema.getItems().add(XmlSchemaType.this);
+                }
+            });
         }
     }
 

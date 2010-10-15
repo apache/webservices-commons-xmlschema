@@ -19,6 +19,8 @@
 
 package org.apache.ws.commons.schema;
 
+import org.apache.ws.commons.schema.utils.CollectionFactory;
+
 /**
  * Common class for include, import, and redefine. All have in common two items:
  * the location of the referenced schema (required) and an optional
@@ -33,8 +35,14 @@ public abstract class XmlSchemaExternal extends XmlSchemaAnnotated {
      * Creates new XmlSchemaExternal
      */
     protected XmlSchemaExternal(XmlSchema parent) {
-        parent.getExternals().add(this);
-        parent.getItems().add(this);
+        final XmlSchema fParent = parent;
+        CollectionFactory.withSchemaModifiable(new Runnable() {
+
+            public void run() {
+                fParent.getExternals().add(XmlSchemaExternal.this);
+                fParent.getItems().add(XmlSchemaExternal.this);
+            }
+        });
     }
 
     public XmlSchema getSchema() {

@@ -22,6 +22,7 @@ package org.apache.ws.commons.schema;
 
 import javax.xml.namespace.QName;
 
+import org.apache.ws.commons.schema.utils.CollectionFactory;
 import org.apache.ws.commons.schema.utils.XmlSchemaNamed;
 import org.apache.ws.commons.schema.utils.XmlSchemaNamedImpl;
 
@@ -31,17 +32,22 @@ import org.apache.ws.commons.schema.utils.XmlSchemaNamedImpl;
  * the World Wide Web Consortium (W3C) group element.
  */
 
-public class XmlSchemaGroup extends XmlSchemaAnnotated implements XmlSchemaNamed, 
+public class XmlSchemaGroup extends XmlSchemaAnnotated implements XmlSchemaNamed,
     XmlSchemaChoiceMember, XmlSchemaSequenceMember {
 
     private XmlSchemaGroupParticle particle;
     private XmlSchemaNamedImpl namedDelegate;
-    
+
     public XmlSchemaGroup(XmlSchema parent) {
         namedDelegate = new XmlSchemaNamedImpl(parent, true);
-        parent.getItems().add(this);
+        final XmlSchema fParent = parent;
+        CollectionFactory.withSchemaModifiable(new Runnable() {
+            public void run() {
+                fParent.getItems().add(XmlSchemaGroup.this);
+            }
+        });
     }
-    
+
 
     public XmlSchemaGroupParticle getParticle() {
         return particle;
@@ -72,13 +78,17 @@ public class XmlSchemaGroup extends XmlSchemaAnnotated implements XmlSchemaNamed
     }
 
     public void setName(String name) {
-        if (namedDelegate.getQName() != null) {
-            namedDelegate.getParent().getGroups().remove(namedDelegate.getQName());
-        }
-        namedDelegate.setName(name);
-        if (name != null) {
-            namedDelegate.getParent().getGroups().put(namedDelegate.getQName(), this);
-        }
+        final String fName = name;
+        CollectionFactory.withSchemaModifiable(new Runnable() {
+            public void run() {
+                if (namedDelegate.getQName() != null) {
+                    namedDelegate.getParent().getGroups().remove(namedDelegate.getQName());
+                }
+                namedDelegate.setName(fName);
+                if (fName != null) {
+                    namedDelegate.getParent().getGroups().put(namedDelegate.getQName(), XmlSchemaGroup.this);
+                }
+            }
+        });
     }
-
 }
