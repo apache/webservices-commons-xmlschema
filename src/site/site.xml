@@ -20,7 +20,7 @@
 
 <project name="Apache XmlSchema">
     <bannerLeft>
-        <name>Apache XmlSchema</name>
+        <name>Apache XmlSchema 2.0.x</name>
         <src>http://www.apache.org/images/asf-logo.gif</src>
         <href>http://ws.apache.org/</href>
     </bannerLeft>
@@ -28,17 +28,14 @@
         <links>
             <item name="Apache" href="http://www.apache.org/"/>
             <item name="WebServices" href="http://ws.apache.org/"/>
-            <item name="WS Commons" href="http://ws.apache.org/commons"/>
             <item name="XmlSchema" href="http://ws.apache.org/commons/XmlSchema/"/>
         </links>
         <menu name="XML Schema">
             <item name="Home" href="index.html"/>
             <item name="Downloads">
-                <item name="Releases" href="download.cgi"/>
                 <item name="Source Code" href="source-repository.html"/>
             </item>
             <item name="Documentation">
-                <item name="Tutorial" href="schematutorial.html"/>
                 <item name="Extensions" href="writingExtensions.html"/>
                 <item name="Javadocs" href="/apidocs/index.html"/>
                 <item name="Jxr Reports" href="jxr.html"/>
